@@ -1,3 +1,4 @@
+import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
@@ -9,16 +10,24 @@ import '../../../Widgets/custom_shape_clipper.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/full_button.dart';
 
+// ignore: must_be_immutable
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  String email;
+  String slug;
+
+  ResetPasswordScreen({Key? key, required this.email, required this.slug})
+      : super(key: key);
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
+
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   //Variable Declarations
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =  TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final GlobalKey _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,72 +61,91 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppSizes.kDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Reset Password',
-                      style: Theme.of(context).textTheme.headlineMedium),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding / 2,
-                  ),
-                  Text(
-                      'Set the new password for your account so you can login and access all the features',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.darkGrey.withOpacity(0.8),
-                          letterSpacing: 0.5)),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 2,
-                  ),
-                  CustomTextField(
-                    isBorder: false,
-                    prefixIcon: const Icon(
-                      Icons.keyboard,
-                      size: 20,
+              child: Form(
+                key: _key,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Reset Password',
+                        style: Theme.of(context).textTheme.headlineMedium),
+                    const SizedBox(
+                      height: AppSizes.kDefaultPadding / 2,
                     ),
-                    hintText: 'Set new password',
-                    controller: _newPasswordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'New Password can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding,
-                  ),
-                  CustomTextField(
-                    isBorder: false,
-                    prefixIcon: const Icon(
-                      Icons.keyboard,
-                      size: 20,
+                    Text(
+                        'Set the new password for your account so you can login and access all the features',
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.darkGrey.withOpacity(0.8),
+                            letterSpacing: 0.5)),
+                    const SizedBox(
+                      height: AppSizes.kDefaultPadding * 2,
                     ),
-                    hintText: 'Confirm new password',
-                    controller: _confirmPasswordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Confirm Password can\'t be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 2,
-                  ),
-                  FullButton(
-                      label: 'Continue',
-                      onPressed: () {
-                        // if (_key.currentState!.validate()) {
-                        context.pushAndRemoveUntil(const LoginScreen());
-                        //}
-                      }),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 1.5,
-                  ),
-                ],
+                    CustomTextField(
+                      isBorder: false,
+                      prefixIcon: const Icon(
+                        Icons.keyboard,
+                        size: 20,
+                      ),
+                      hintText: 'Set new password',
+                      controller: _newPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'New Password can\'t be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: AppSizes.kDefaultPadding,
+                    ),
+                    CustomTextField(
+                      isBorder: false,
+                      prefixIcon: const Icon(
+                        Icons.keyboard,
+                        size: 20,
+                      ),
+                      hintText: 'Confirm new password',
+                      controller: _confirmPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Confirm Password can\'t be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: AppSizes.kDefaultPadding * 2,
+                    ),
+                    FullButton(
+                        label: 'Continue',
+                        onPressed: () async {
+                          var res = await ApiProvider().resetPassword(
+                              widget.email,
+                              _newPasswordController.text.trim(),
+                              _confirmPasswordController.text.trim(), widget.slug);
+
+                          if (res['success'] == true) {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(res['message'].toString())));
+                            // ignore: use_build_context_synchronously
+                            context.pushReplacement(const LoginScreen());
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(res['error'].toString())));
+                          }
+                        }),
+                    const SizedBox(
+                      height: AppSizes.kDefaultPadding * 1.5,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -1,11 +1,10 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/ForgotPassword/Presentation/reset_password.dart';
-import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
-import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
-
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
@@ -20,33 +19,14 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  final TextEditingController _otp1Controller = TextEditingController();
-  final TextEditingController _otp2Controller = TextEditingController();
-  final TextEditingController _otp3Controller = TextEditingController();
-  final TextEditingController _otp4Controller = TextEditingController();
-  final TextEditingController _otp5Controller = TextEditingController();
-  final TextEditingController _otp6Controller = TextEditingController();
-  late FocusNode otp1, otp2, otp3, otp4, otp5, otp6;
-
+  String pinOtp = '';
   @override
   void initState() {
-    otp1 = FocusNode();
-    otp2 = FocusNode();
-    otp3 = FocusNode();
-    otp4 = FocusNode();
-    otp5 = FocusNode();
-    otp6 = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
-    otp1.dispose();
-    otp2.dispose();
-    otp3.dispose();
-    otp4.dispose();
-    otp5.dispose();
-    otp6.dispose();
     super.dispose();
   }
 
@@ -97,121 +77,18 @@ class _OtpScreenState extends State<OtpScreen> {
             const SizedBox(
               height: AppSizes.kDefaultPadding * 2,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(
-                    child: CustomTextField(
-                        maxLength: 1,
-                        keyboardType: TextInputType.number,
-                        isBorder: false,
-                        textSize: 20,
-                        focusNode: otp1,
-                        onChanged: (String? value) {
-                          if (value!.isNotEmpty) {
-                            FocusScope.of(context).requestFocus(otp2);
-                          }
-                        },
-                        autoFocus: true,
-                        textAlign: TextAlign.center,
-                        controller: _otp1Controller)),
-                const SizedBox(
-                  width: AppSizes.kDefaultPadding * 2,
-                ),
-                Expanded(
-                    child: CustomTextField(
-                        isBorder: false,
-                        maxLength: 1,
-                        textSize: 20,
-                        focusNode: otp2,
-                        onChanged: (String? value) {
-                          if (value!.isNotEmpty) {
-                            FocusScope.of(context).requestFocus(otp3);
-                          } else {
-                            FocusScope.of(context).requestFocus(otp1);
-                          }
-                        },
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        controller: _otp2Controller)),
-                const SizedBox(
-                  width: AppSizes.kDefaultPadding * 2,
-                ),
-                Expanded(
-                    child: CustomTextField(
-                        isBorder: false,
-                        maxLength: 1,
-                        textSize: 20,
-                        focusNode: otp3,
-                        onChanged: (String? value) {
-                          if (value!.isNotEmpty) {
-                            FocusScope.of(context).requestFocus(otp4);
-                          } else {
-                            FocusScope.of(context).requestFocus(otp2);
-                          }
-                        },
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        controller: _otp3Controller)),
-                const SizedBox(
-                  width: AppSizes.kDefaultPadding * 2,
-                ),
-                Expanded(
-                    child: CustomTextField(
-                        maxLength: 1,
-                        keyboardType: TextInputType.number,
-                        isBorder: false,
-                        textSize: 20,
-                        onChanged: (String? value) {
-                          if (value!.isNotEmpty) {
-                            // FocusManager.instance.primaryFocus?.unfocus();
-                            FocusScope.of(context).requestFocus(otp5);
-                          } else {
-                            FocusScope.of(context).requestFocus(otp3);
-                          }
-                        },
-                        focusNode: otp4,
-                        textAlign: TextAlign.center,
-                        controller: _otp4Controller)),
-                const SizedBox(
-                  width: AppSizes.kDefaultPadding * 2,
-                ),
-                Expanded(
-                    child: CustomTextField(
-                        maxLength: 1,
-                        keyboardType: TextInputType.number,
-                        isBorder: false,
-                        textSize: 20,
-                        onChanged: (String? value) {
-                          if (value!.isNotEmpty) {
-                            FocusScope.of(context).requestFocus(otp6);
-                          } else {
-                            FocusScope.of(context).requestFocus(otp4);
-                          }
-                        },
-                        focusNode: otp5,
-                        textAlign: TextAlign.center,
-                        controller: _otp5Controller)),
-                const SizedBox(
-                  width: AppSizes.kDefaultPadding * 2,
-                ),
-                Expanded(
-                    child: CustomTextField(
-                        maxLength: 1,
-                        keyboardType: TextInputType.number,
-                        isBorder: false,
-                        textSize: 20,
-                        onChanged: (String? value) {
-                          if (value!.length >= 1) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          } else {
-                            FocusScope.of(context).requestFocus(otp5);
-                          }
-                        },
-                        focusNode: otp6,
-                        textAlign: TextAlign.center,
-                        controller: _otp6Controller)),
-              ],
+            OTPTextField(
+              length: 6,
+              width: MediaQuery.of(context).size.width,
+              fieldWidth: 50,
+              style: const TextStyle(fontSize: 17),
+              textFieldAlignment: MainAxisAlignment.spaceBetween,
+              fieldStyle: FieldStyle.box,
+              onCompleted: (pin) {
+                setState(() {
+                  pinOtp = pin;
+                });
+              },
             ),
             const SizedBox(
               height: AppSizes.kDefaultPadding * 2,
@@ -219,14 +96,14 @@ class _OtpScreenState extends State<OtpScreen> {
             FullButton(
                 label: 'Continue',
                 onPressed: () async {
-                  var res = await ApiProvider().verifyOtp(widget.email, "");
+                  var res = await ApiProvider().verifyOtp(widget.email, pinOtp);
                   if (res['success'] == true) {
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content: Text(res['message'].toString())));
                     // ignore: use_build_context_synchronously
-                    context.pushReplacement(const ResetPasswordScreen());
+                    context.pushReplacement( ResetPasswordScreen(email: widget.email, slug: res['slug'],));
                   } else {
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

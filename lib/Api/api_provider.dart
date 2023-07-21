@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Login/model/login_model.dart';
@@ -62,9 +60,10 @@ class ApiProvider {
       return {"success": false, "error": error};
     }
   }
-   ///--------- veryfie otp-----///
+
+  ///--------- veryfie otp-----///
   Future<Map> verifyOtp(String email, String otp) async {
-    Map<String, dynamic> reqModel = {"email": email.trim(),'otp':otp};
+    Map<String, dynamic> reqModel = {"email": email.trim(), 'otp': otp};
     Response response;
     try {
       _dio.options.headers = {
@@ -88,14 +87,16 @@ class ApiProvider {
       return {"success": false, "error": error};
     }
   }
-   ///--------- veryfie otp-----///
-  Future<Map> resetPassword(String email, String slug, String password, String confirmPassword) async {
+
+  ///--------- veryfie otp-----///
+  Future<Map> resetPassword(
+      String email, String password, String confirmPassword, String slug) async {
     Map<String, dynamic> reqModel = {
-    "slug": slug,
-    "email": email,
-    "password":password,
-    "confirmPassword": confirmPassword
-};
+      'slug': slug,
+      "email": email,
+      "password": password,
+      "confirmPassword": confirmPassword
+    };
     Response response;
     try {
       _dio.options.headers = {
@@ -119,5 +120,4 @@ class ApiProvider {
       return {"success": false, "error": error};
     }
   }
-  
 }
