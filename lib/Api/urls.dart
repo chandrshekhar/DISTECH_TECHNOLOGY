@@ -4,4 +4,7 @@ class Urls{
   static const String forgetPassword = "$_baseUrl/users/forgot-password";
   static const String verifyOtp = "$_baseUrl/users/verify-forgot-password-otp";
   static const String resetPassword = "$_baseUrl/users/reset-password";
+  static const String getAllTicket = "$_baseUrl/tickets/view-all-my-tickets";
+  static const String getUserDetails = "$_baseUrl/users/get-user";
+  static const String editProfile = "$_baseUrl/users/edit-account";
 }

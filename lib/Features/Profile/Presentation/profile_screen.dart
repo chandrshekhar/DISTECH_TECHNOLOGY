@@ -1,7 +1,9 @@
+import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Features/EditProfile/Presentation/edit_profile_screen.dart';
+import 'package:distech_technology/Features/Profile/Presentation/edit_profile_screen.dart';
 import 'package:distech_technology/Features/Profile/Widgets/profile_item_widget.dart';
+import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
@@ -19,6 +21,23 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   //Variable Declarations
+  ApiProvider apiProvider = ApiProvider();
+  UserProfileModel? userProfileModel;
+  bool isLoading = true;
+// get all Ticket
+  void getUserDetails() async {
+    var res = await apiProvider.getUserDetails();
+    setState(() {
+      userProfileModel = res;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserDetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,62 +74,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: AppSizes.kDefaultPadding,
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.kDefaultPadding),
-              child: ListView(
-                children: [
-                  const ProfileItemWidget(title: 'First Name', value: 'Shuvra'),
-                  const ProfileItemWidget(title: 'Last Name', value: 'Paul'),
-                  const ProfileItemWidget(
-                      title: 'Aadhaar ID', value: '0000 0000 0000'),
-                  const ProfileItemWidget(
-                      title: 'Pan Number', value: 'DAZKK2103N'),
-                  const ProfileItemWidget(
-                      title: 'Address 1',
-                      value: 'ABCD Nagar, Block-A, Uttarayan, Bidhannagar'),
-                  const ProfileItemWidget(title: 'PIN Code', value: '743437'),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding,
+          isLoading
+              ? const Center(child: CircularProgressIndicator.adaptive())
+              : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.kDefaultPadding),
+                    child: ListView(
+                      children: [
+                        ProfileItemWidget(
+                            title: 'Full Name',
+                            value: userProfileModel!.user!.fullName ?? ""),
+                        //const ProfileItemWidget(title: 'Last Name', value: 'Paul'),
+                        ProfileItemWidget(
+                            title: 'Aadhaar ID',
+                            value: userProfileModel!.user!.aadhaarId ?? ""),
+                        ProfileItemWidget(
+                            title: 'Pan Number',
+                            value: userProfileModel!.user!.panNumber ?? ""),
+                        ProfileItemWidget(
+                            title: 'Address 1',
+                            value:
+                                '${userProfileModel!.user!.address1}\n${userProfileModel!.user!.address2}'),
+                        ProfileItemWidget(
+                            title: 'PIN Code',
+                            value: userProfileModel!.user!.pinCode ?? ""),
+                        const SizedBox(
+                          height: AppSizes.kDefaultPadding,
+                        ),
+                        Text(
+                          'Other Information'.toUpperCase(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color: AppColors.darkGrey.withOpacity(0.8)),
+                        ),
+                        const SizedBox(
+                          height: AppSizes.kDefaultPadding / 2,
+                        ),
+                        const CustomDivider(),
+                        const SizedBox(
+                          height: AppSizes.kDefaultPadding,
+                        ),
+                        ProfileItemWidget(
+                            title: 'Mobile Number',
+                            value: userProfileModel!.user!.mobileNumber ?? ""),
+                        ProfileItemWidget(
+                            title: 'Email ID',
+                            value: userProfileModel!.user!.email ?? ""),
+                        ProfileItemWidget(
+                            title: 'Trade License Number',
+                            value: userProfileModel!.user!.tradeLicenseNumber ??
+                                ""),
+                        ProfileItemWidget(
+                            title: 'GST Number',
+                            value: userProfileModel!.user!.gstNumber ?? ""),
+                      ],
+                    ),
                   ),
-                  Text(
-                    'Other Information'.toUpperCase(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(color: AppColors.darkGrey.withOpacity(0.8)),
-                  ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding / 2,
-                  ),
-                  const CustomDivider(),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding,
-                  ),
-                  const ProfileItemWidget(
-                      title: 'Mobile Number', value: '6454356425'),
-                  const ProfileItemWidget(
-                      title: 'Email ID', value: 'user@gmail.com'),
-                  const ProfileItemWidget(
-                      title: 'Trade License Number', value: '123456789'),
-                  const ProfileItemWidget(
-                      title: 'GST Number', value: 'AGDF124563DG'),
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Image.asset(
-            AppIcons.editIcon,
-            height: 24,
-            width: 24,
-          ),
-          onPressed: () {
-            context.push(const EditProfileScreen());
-          }),
+      floatingActionButton: isLoading
+          ? Container()
+          : FloatingActionButton(
+              child: Image.asset(
+                AppIcons.editIcon,
+                height: 24,
+                width: 24,
+              ),
+              onPressed: () {
+                context
+                    .push(EditProfileScreen(
+                  firstName: userProfileModel!.user!.fullName ?? "",
+                  mobileNumber: userProfileModel!.user!.mobileNumber ?? "",
+                  aadhaarId: userProfileModel!.user!.aadhaarId ?? "",
+                  address:
+                      '${userProfileModel!.user!.address1}',
+                  emailAddress: userProfileModel!.user!.email ?? "",
+                  gstNo: userProfileModel!.user!.gstNumber ?? "",
+                  lincenseNo: userProfileModel!.user!.tradeLicenseNumber ?? "",
+                  pinCode: userProfileModel!.user!.pinCode ?? "",
+                ))
+                    .then((value) {
+                  setState(() {
+                    getUserDetails();
+                  });
+                });
+              }),
       //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

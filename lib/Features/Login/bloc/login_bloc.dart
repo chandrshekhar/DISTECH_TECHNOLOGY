@@ -15,10 +15,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           LoginRequestModel(email: event.email, password: event.password);
       try {
         emit(LoginLoadingState());
-        final mData = await apiProvider.loginApiCall(reqModel.toJson());
+        final mData = await apiProvider.loginApiCall(reqModel);
         if (mData.success == true) {
+          print("login token--> ${mData.user}");
            LocalStorageService()
-              .saveToDisk(LocalStorageService.ACCESS_TOKEN_KEY, mData.data?.jWT.toString());
+              .saveToDisk(LocalStorageService.ACCESS_TOKEN_KEY, mData.jWT);
+               LocalStorageService()
+              .saveToDisk(LocalStorageService.USER_NAME, mData.user!.fullName);
           emit(LoginSuccessState(loginResponseModel: mData));
         } else {
           emit(LoginErrorState(

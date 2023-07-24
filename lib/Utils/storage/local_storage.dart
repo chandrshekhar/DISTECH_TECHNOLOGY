@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalStorageService {
 /* get stored value */
   static  String ACCESS_TOKEN_KEY = 'accessToken';
+  static String USER_NAME = 'userName';
   
 /* get stored value */
   Future getFromDisk(String key) async{

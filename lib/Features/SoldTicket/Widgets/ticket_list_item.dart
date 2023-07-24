@@ -1,6 +1,6 @@
+import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/ticket_item_model.dart';
 import 'package:flutter/material.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 
@@ -52,14 +52,18 @@ class TicketListItem extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class TicketListItemWithCheckbox extends StatelessWidget {
-  final TicketItemModel ticketItemModel;
+  // final TicketItemModel ticketItemModel;
   final int itemIndex;
   bool isSelectedIndex;
+  Data ticketItemModel;
+
 
   TicketListItemWithCheckbox(
       {Key? key,
       required this.ticketItemModel,
+       
       required this.itemIndex,
       this.isSelectedIndex = false})
       : super(key: key);
@@ -78,7 +82,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                ticketItemModel.slNo.toString(),
+                "${itemIndex+1}",
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -86,19 +90,19 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             Expanded(
                 flex: 3,
                 child: Text(
-                  ticketItemModel.ticketNo.toString(),
+                  ticketItemModel.ticketId.toString(),
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
                 flex: 2,
                 child: Text(
-                  ticketItemModel.sem.toString(),
+                  ticketItemModel.sEM.toString(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
-                flex: 1,
+                // flex: 1,
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: SizedBox(

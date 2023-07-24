@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextField(
                     isBorder: false,
+                    obscureText: true,
                     prefixIcon: const Icon(
                       Icons.keyboard,
                       size: 20,
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     listener: (context, state) {
                       if (state is LoginSuccessState) {
                         context.pushReplacement(HomeScreen(
-                          username: _usernameController.text,
+                          username: state.loginResponseModel.user!.fullName.toString()
                         ));
                       }
                       if (state is LoginErrorState) {

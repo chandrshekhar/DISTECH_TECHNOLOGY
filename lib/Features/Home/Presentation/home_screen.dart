@@ -4,12 +4,14 @@ import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
+import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_history_screen.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Presentation/return_unsold_ticket_screen.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_screen.dart';
 import 'package:distech_technology/Features/Support/Presentation/support_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
+import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -227,7 +229,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
                   child: FullButton(
                     label: 'Logout',
-                    onPressed: () {},
+                    onPressed: () async {
+                      await LocalStorageService()
+                          .removeToDisk(LocalStorageService.ACCESS_TOKEN_KEY);
+                      await LocalStorageService()
+                          .removeToDisk(LocalStorageService.USER_NAME);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                          (route) => false);
+                    },
                     bgColor: AppColors.secondary,
                   ),
                 ),

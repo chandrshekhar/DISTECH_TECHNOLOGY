@@ -1,19 +1,17 @@
+import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Widgets/filter_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/full_button.dart';
-import '../../SoldTicket/Models/ticket_item_model.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
-
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
@@ -22,14 +20,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
-
-  List<TicketItemModel> searchedList = [];
+  List<Data>? searchedList = [];
 
   // Filter List by TICKET NUMBER or Search list by SEM
   void filterSearch(String query) {
     setState(() {
-      searchedList = ticketItemList
-          .where((element) => element.ticketNo!
+      searchedList = allTickets!
+          .where((element) => element.ticketId!
               .trim()
               .toLowerCase()
               .toString()
@@ -41,16 +38,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // Filter List by SEM or Search list by SEM
   void filterSearchBySem(String query) {
     setState(() {
-      searchedList = ticketItemList
+      searchedList = allTickets!
           .where((element) =>
-              element.sem.toString().contains(query.toLowerCase().toString()))
+              element.sEM.toString().contains(query.toLowerCase().toString()))
           .toList();
     });
   }
 
+  // Fetch all Ticket
+  List<Data>? allTickets;
+  ApiProvider apiProvider = ApiProvider();
+  bool isLoading = true;
+   Map<String, dynamic> reqModel = {
+        "offset": 10,
+        "limit": 50
+      };
+
+  // get all Ticket 
+   void fetchALlTicket() async{
+    var res = await apiProvider.getAllTicket(reqModel);
+    setState(() {
+      allTickets = res.data;
+      searchedList = allTickets;
+      isLoading=false;
+    });
+   }
+
   @override
   void initState() {
-    searchedList = ticketItemList;
+    // searchedList = ticketItemList;
+    fetchALlTicket();
     super.initState();
   }
 
@@ -67,7 +84,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         //Hide the onscreen keyboard on outside touch.
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: SingleChildScrollView(
+      child:isLoading?const CircularProgressIndicator.adaptive() :SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
@@ -77,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Text(
-                'My All Ticket (1525)',
+                'My All Ticket (${allTickets!.length})',
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall!
@@ -246,15 +263,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                               width: MediaQuery.of(context).size.width,
                               child: Scrollbar(
-                                child: searchedList.isNotEmpty
+                                child: searchedList!.isNotEmpty
                                     ? ListView.builder(
                                         padding: EdgeInsets.zero,
                                         physics: const BouncingScrollPhysics(),
-                                        itemCount: searchedList.length,
+                                        itemCount: searchedList!.length,
                                         itemBuilder: ((context, index) {
                                           return TicketListItemWithCheckbox(
+                                           
                                               ticketItemModel:
-                                                  searchedList[index],
+                                                  searchedList![index],
                                               itemIndex: index);
                                         }))
                                     : Text(

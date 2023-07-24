@@ -1,28 +1,22 @@
-class LoginResponseModel {
+class UserProfileModel {
   bool? success;
   User? user;
-  String? jWT;
-  String? error;
-
-  LoginResponseModel({this.success, this.user, this.jWT, this.error});
-
-  LoginResponseModel.withError(String errorMsg){
-    error = errorMsg;
-  }
-
-  LoginResponseModel.fromJson(Map<String, dynamic> json) {
+  String? errorMsg;
+  UserProfileModel({this.success, this.user, this.errorMsg});
+  UserProfileModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    user = json['user'] != null ?  User.fromJson(json['user']) : null;
-    jWT = json['JWT'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
+  UserProfileModel.withError(String error){
+     errorMsg = error;
+  }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['success'] = success;
-    if (user != null) {
-      data['user'] = user!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
-    data['JWT'] = jWT;
     return data;
   }
 }
@@ -42,12 +36,10 @@ class User {
   String? purchaseRateUs;
   String? billRatePrice;
   String? email;
-  String? password;
   String? userType;
   String? status;
   List<String>? creators;
   String? entryDate;
-  int? iV;
 
   User(
       {this.forgetPassword,
@@ -64,12 +56,10 @@ class User {
       this.purchaseRateUs,
       this.billRatePrice,
       this.email,
-      this.password,
       this.userType,
       this.status,
       this.creators,
-      this.entryDate,
-      this.iV});
+      this.entryDate});
 
   User.fromJson(Map<String, dynamic> json) {
     forgetPassword = json['forgetPassword'];
@@ -86,12 +76,10 @@ class User {
     purchaseRateUs = json['purchaseRateUs'];
     billRatePrice = json['billRatePrice'];
     email = json['email'];
-    password = json['password'];
     userType = json['userType'];
     status = json['status'];
     creators = json['creators'].cast<String>();
     entryDate = json['entryDate'];
-    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -110,32 +98,10 @@ class User {
     data['purchaseRateUs'] = this.purchaseRateUs;
     data['billRatePrice'] = this.billRatePrice;
     data['email'] = this.email;
-    data['password'] = this.password;
     data['userType'] = this.userType;
     data['status'] = this.status;
     data['creators'] = this.creators;
     data['entryDate'] = this.entryDate;
-    data['__v'] = this.iV;
-    return data;
-  }
-}
-
-
-
-
-
-
-class LoginRequestModel{
-  final String email;
-  final String password;
-
-  const LoginRequestModel({required this.email, required this.password});
-
-   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['email'] = email;
-    data['password'] = password;
-   
     return data;
   }
 }

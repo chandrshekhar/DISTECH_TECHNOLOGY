@@ -1,8 +1,8 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
@@ -240,8 +240,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     itemCount: ticketItemList.length,
                                     itemBuilder: ((context, index) {
                                       return TicketListItemWithCheckbox(
-                                          ticketItemModel:
-                                              ticketItemList[index],
+                                          ticketItemModel:Data(),
+                                          
                                           itemIndex: index);
                                     })),
                               ))

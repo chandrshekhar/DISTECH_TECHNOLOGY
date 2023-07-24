@@ -1,24 +1,30 @@
 import 'package:distech_technology/Commons/theme.dart';
-import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
+import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Features/Splash/Presentation/splash_screen.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.dark));
-       final String jwtToken = await LocalStorageService()
-              .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY)??"";
-  runApp(MyApp(jwtToken: jwtToken));
+  final String jwtToken = await LocalStorageService()
+          .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+      "";
+  final String userName =
+      await LocalStorageService().getFromDisk(LocalStorageService.USER_NAME) ??
+          "";
+  runApp(MyApp(jwtToken: jwtToken, userName: userName));
 }
+
 class MyApp extends StatelessWidget {
   final String jwtToken;
-  const MyApp({super.key ,required this.jwtToken});
+  final String userName;
+  const MyApp({super.key, required this.jwtToken, required this.userName});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,10 +32,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Distech Technology',
-        theme:AppTheme.lightTheme,
+        theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
-        home: (jwtToken!="")?const LoginScreen() :const SplashScreen(),
+        home: (jwtToken != "")
+            ? HomeScreen(username: userName)
+            : const SplashScreen(),
       ),
     );
   }
 }
+
+//

@@ -1,14 +1,19 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
+import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Login/model/login_model.dart';
+import 'package:distech_technology/Features/Profile/model/profile_model.dart';
+import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
+  LocalStorageService localStorageService = LocalStorageService();
 
   ///--------- Login -----///
-  Future<LoginResponseModel> loginApiCall(Map<String, dynamic> reqModel) async {
+  Future<LoginResponseModel> loginApiCall(LoginRequestModel reqModel) async {
     Response response;
     try {
       _dio.options.headers = {
@@ -89,8 +94,8 @@ class ApiProvider {
   }
 
   ///--------- veryfie otp-----///
-  Future<Map> resetPassword(
-      String email, String password, String confirmPassword, String slug) async {
+  Future<Map> resetPassword(String email, String password,
+      String confirmPassword, String slug) async {
     Map<String, dynamic> reqModel = {
       'slug': slug,
       "email": email,
@@ -118,6 +123,107 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return {"success": false, "error": error};
+    }
+  }
+
+  ///--------- get all Ticket -----///
+  Future<AllMyTicketModel> getAllTicket(Map<String, dynamic> reqModel) async {
+    Response response;
+    String? authToken;
+
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("token $token");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.getAllTicket, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response Login : $response');
+      }
+      return response.statusCode == 200
+          ? AllMyTicketModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return AllMyTicketModel.withError(
+          "You are offline. Please check your internet connection.");
+    }
+  }
+
+  ///--------- get User Details -----///
+  Future<UserProfileModel> getUserDetails() async {
+    Response response;
+    String? authToken;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("token $token");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.get(
+        Urls.getUserDetails,
+      );
+      if (kDebugMode) {
+        log('--------Response Login : $response');
+      }
+      return response.statusCode == 200
+          ? UserProfileModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return UserProfileModel.withError(
+          "You are offline. Please check your internet connection.");
+    }
+  }
+
+  Future<bool> editProfile(Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("token $token");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response =
+          await _dio.post(Urls.editProfile, data: jsonEncode(reqModel));
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      
+      return response.statusCode == 200
+          ? true
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return false;
     }
   }
 }
