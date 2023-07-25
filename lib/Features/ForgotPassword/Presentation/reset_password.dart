@@ -88,6 +88,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         size: 20,
                       ),
                       hintText: 'Set new password',
+                      obscureText: true,
                       controller: _newPasswordController,
                       keyboardType: TextInputType.visiblePassword,
                       validator: (String? value) {
@@ -106,6 +107,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         Icons.keyboard,
                         size: 20,
                       ),
+                      obscureText: true,
                       hintText: 'Confirm new password',
                       controller: _confirmPasswordController,
                       keyboardType: TextInputType.visiblePassword,

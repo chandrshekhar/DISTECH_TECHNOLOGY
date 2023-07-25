@@ -79,7 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         isBorder: false,
                         hintText: 'Enter your resister mail',
                         controller: _emailController,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (String? value) {
                           if (value!.isEmpty) {
                             return 'Please enter mail id';

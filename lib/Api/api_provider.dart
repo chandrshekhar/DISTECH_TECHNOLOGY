@@ -200,7 +200,6 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("token $token");
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
