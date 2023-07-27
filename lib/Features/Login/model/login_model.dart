@@ -6,18 +6,18 @@ class LoginResponseModel {
 
   LoginResponseModel({this.success, this.user, this.jWT, this.error});
 
-  LoginResponseModel.withError(String errorMsg){
+  LoginResponseModel.withError(String errorMsg) {
     error = errorMsg;
   }
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    user = json['user'] != null ?  User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     jWT = json['JWT'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['success'] = success;
     if (user != null) {
       data['user'] = user!.toJson();
@@ -95,47 +95,43 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['forgetPassword'] = this.forgetPassword;
-    data['_id'] = this.sId;
-    data['fullName'] = this.fullName;
-    data['aadhaarId'] = this.aadhaarId;
-    data['panNumber'] = this.panNumber;
-    data['address1'] = this.address1;
-    data['address2'] = this.address2;
-    data['pinCode'] = this.pinCode;
-    data['mobileNumber'] = this.mobileNumber;
-    data['tradeLicenseNumber'] = this.tradeLicenseNumber;
-    data['gstNumber'] = this.gstNumber;
-    data['purchaseRateUs'] = this.purchaseRateUs;
-    data['billRatePrice'] = this.billRatePrice;
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['userType'] = this.userType;
-    data['status'] = this.status;
-    data['creators'] = this.creators;
-    data['entryDate'] = this.entryDate;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['forgetPassword'] = forgetPassword;
+    data['_id'] = sId;
+    data['fullName'] =fullName;
+    data['aadhaarId'] = aadhaarId;
+    data['panNumber'] = panNumber;
+    data['address1'] = address1;
+    data['address2'] = address2;
+    data['pinCode'] = pinCode;
+    data['mobileNumber'] = mobileNumber;
+    data['tradeLicenseNumber'] = tradeLicenseNumber;
+    data['gstNumber'] = gstNumber;
+    data['purchaseRateUs'] = purchaseRateUs;
+    data['billRatePrice'] = billRatePrice;
+    data['email'] = email;
+    data['password'] = password;
+    data['userType'] = userType;
+    data['status'] = status;
+    data['creators'] = creators;
+    data['entryDate'] = entryDate;
+    data['__v'] = iV;
     return data;
   }
 }
 
-
-
-
-
-
-class LoginRequestModel{
+class LoginRequestModel {
   final String email;
   final String password;
-
-  const LoginRequestModel({required this.email, required this.password});
-
-   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+  String platform;
+  LoginRequestModel(
+      {required this.email, required this.password, this.platform = "app"});
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['email'] = email;
     data['password'] = password;
-   
+    data['platform'] = platform;
+
     return data;
   }
 }

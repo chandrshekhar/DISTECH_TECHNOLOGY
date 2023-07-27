@@ -20,7 +20,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
-  List<Data>? searchedList = [];
+  List<Tickets>? searchedList = [];
+  List<String> returnTicketList = [];
 
   // Filter List by TICKET NUMBER or Search list by SEM
   void filterSearch(String query) {
@@ -46,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // Fetch all Ticket
-  List<Data>? allTickets;
+  List<Tickets>? allTickets;
   ApiProvider apiProvider = ApiProvider();
   bool isLoading = true;
    Map<String, dynamic> reqModel = {
@@ -57,9 +58,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // get all Ticket 
    void fetchALlTicket() async{
     var res = await apiProvider.getAllTicket(reqModel);
+    print("UI resp--> ${res.tickets}");
     setState(() {
-      allTickets = res.data;
+      allTickets = res.tickets;
       searchedList = allTickets;
+      print( searchedList);
       isLoading=false;
     });
    }
@@ -94,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Text(
-                'My All Ticket (${allTickets!.length})',
+                'My All Ticket (${allTickets?.length})',
                 style: Theme.of(context)
                     .textTheme
                     .headlineSmall!
@@ -269,8 +272,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         physics: const BouncingScrollPhysics(),
                                         itemCount: searchedList!.length,
                                         itemBuilder: ((context, index) {
+                                          print("ticketId $index");
                                           return TicketListItemWithCheckbox(
-                                           
+                                            isSelectedIndex: isSelected,
                                               ticketItemModel:
                                                   searchedList![index],
                                               itemIndex: index);
@@ -296,7 +300,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         FullButton(
                           label: 'Mark sold',
-                          onPressed: () {},
+                          onPressed: () {
+                            apiProvider.returnTicket(returnTicketList);
+                          },
                         ),
                         const SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,

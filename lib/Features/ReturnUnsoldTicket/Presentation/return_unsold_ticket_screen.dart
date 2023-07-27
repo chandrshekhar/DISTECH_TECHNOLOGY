@@ -240,7 +240,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     itemCount: ticketItemList.length,
                                     itemBuilder: ((context, index) {
                                       return TicketListItemWithCheckbox(
-                                          ticketItemModel:Data(),
+                                          ticketItemModel:Tickets(),
                                           
                                           itemIndex: index);
                                     })),

@@ -7,4 +7,5 @@ class Urls{
   static const String getAllTicket = "$_baseUrl/tickets/view-all-my-tickets";
   static const String getUserDetails = "$_baseUrl/users/get-user";
   static const String editProfile = "$_baseUrl/users/edit-account";
+  static const String returnTicket = "$_baseUrl/orders/return-tickets";
 }

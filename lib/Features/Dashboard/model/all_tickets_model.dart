@@ -1,78 +1,91 @@
 class AllMyTicketModel {
   bool? success;
-  List<Data>? data;
-  String? errorMsg ;
+  List<Tickets>? tickets;
+  int? count;
+  String? errorMsg;
 
-  AllMyTicketModel({this.success, this.data});
+  AllMyTicketModel({this.success, this.tickets, this.count, this.errorMsg});
+
+
   AllMyTicketModel.withError(String errorMsg){
-      errorMsg = errorMsg;
+    errorMsg = errorMsg;
   }
 
   AllMyTicketModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add( Data.fromJson(v));
+    if (json['tickets'] != null) {
+      tickets = <Tickets>[];
+      json['tickets'].forEach((v) {
+        tickets!.add( Tickets.fromJson(v));
       });
     }
+    count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  <String, dynamic>{};
-    data['success'] = this.success;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    data['success'] = success;
+    if (tickets != null) {
+      data['tickets'] = tickets!.map((v) => v.toJson()).toList();
     }
+    data['count'] = count;
     return data;
   }
 }
 
-class Data {
+class Tickets {
   String? sId;
   String? ticketId;
+  String? ticketLetter;
+  String? ticketNumber;
   String? barCode;
   String? qrCode;
   String? status;
   String? date;
   String? createdAt;
-  int? iV;
+  String? currOwner;
   int? sEM;
 
-  Data(
+  Tickets(
       {this.sId,
       this.ticketId,
+      this.ticketLetter,
+      this.ticketNumber,
       this.barCode,
       this.qrCode,
       this.status,
       this.date,
       this.createdAt,
-      this.iV,
+      this.currOwner,
       this.sEM});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Tickets.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     ticketId = json['ticketId'];
+    ticketLetter = json['ticketLetter'];
+    ticketNumber = json['ticketNumber'];
     barCode = json['barCode'];
     qrCode = json['qrCode'];
     status = json['status'];
     date = json['date'];
     createdAt = json['createdAt'];
-    iV = json['__v'];
+    currOwner = json['currOwner'];
     sEM = json['SEM'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['ticketId'] = this.ticketId;
-    data['barCode'] = this.barCode;
-    data['qrCode'] = this.qrCode;
-    data['status'] = this.status;
-    data['date'] = this.date;
-    data['createdAt'] = this.createdAt;
-    data['__v'] = this.iV;
-    data['SEM'] = this.sEM;
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['_id'] = sId;
+    data['ticketId'] = ticketId;
+    data['ticketLetter'] = ticketLetter;
+    data['ticketNumber'] = ticketNumber;
+    data['barCode'] = barCode;
+    data['qrCode'] = qrCode;
+    data['status'] = status;
+    data['date'] = date;
+    data['createdAt'] = createdAt;
+    data['currOwner'] = currOwner;
+    data['SEM'] = sEM;
     return data;
   }
 }

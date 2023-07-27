@@ -7,11 +7,9 @@ import '../../../Commons/app_sizes.dart';
 class TicketListItem extends StatelessWidget {
   final TicketItemModel ticketItemModel;
   final int itemIndex;
-
   const TicketListItem(
       {Key? key, required this.ticketItemModel, required this.itemIndex})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,10 +52,9 @@ class TicketListItem extends StatelessWidget {
 
 // ignore: must_be_immutable
 class TicketListItemWithCheckbox extends StatelessWidget {
-  // final TicketItemModel ticketItemModel;
   final int itemIndex;
   bool isSelectedIndex;
-  Data ticketItemModel;
+  Tickets ticketItemModel;
 
 
   TicketListItemWithCheckbox(
