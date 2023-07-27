@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Obx(
         () => soldTicketController.isAllTicketLoading.value
-            ? const CircularProgressIndicator.adaptive()
+            ? const Center(child:  CircularProgressIndicator.adaptive())
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
@@ -229,7 +229,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       constraints: BoxConstraints(
                                         maxHeight:
                                             MediaQuery.of(context).size.height *
-                                                0.28,
+                                                0.27,
                                       ),
                                       width: MediaQuery.of(context).size.width,
                                       child: Scrollbar(
