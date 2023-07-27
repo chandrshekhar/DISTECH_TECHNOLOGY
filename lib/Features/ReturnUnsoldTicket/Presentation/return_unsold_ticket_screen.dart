@@ -1,8 +1,10 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
@@ -19,6 +21,7 @@ class ReturnUnsoldTicket extends StatefulWidget {
 }
 
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
+  final soldTicketzcontroller = Get.put(SoldTicketController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
@@ -241,6 +244,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     itemBuilder: ((context, index) {
                                       return TicketListItemWithCheckbox(
                                           ticketItemModel:Tickets(),
+                                          child: Checkbox(
+                                                        value: true,
+                                                        onChanged: (value) {},
+                                                      ),
                                           
                                           itemIndex: index);
                                     })),

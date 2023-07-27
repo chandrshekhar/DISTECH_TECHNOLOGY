@@ -55,12 +55,12 @@ class TicketListItemWithCheckbox extends StatelessWidget {
   final int itemIndex;
   bool isSelectedIndex;
   Tickets ticketItemModel;
-
+  Widget child;
 
   TicketListItemWithCheckbox(
       {Key? key,
       required this.ticketItemModel,
-       
+      required this.child,
       required this.itemIndex,
       this.isSelectedIndex = false})
       : super(key: key);
@@ -79,7 +79,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                "${itemIndex+1}",
+                "${itemIndex + 1}",
                 textAlign: TextAlign.start,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -101,18 +101,9 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             Expanded(
                 // flex: 1,
                 child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    width: 10,
-                    height: 10,
-                    child: Checkbox(
-                      value: isSelectedIndex,
-                      onChanged: (bool? value) {
-                        isSelectedIndex = value!;
-                      },
-                    ),
-                  ),
-                )),
+              alignment: Alignment.centerRight,
+              child: SizedBox(width: 10, height: 10, child: child),
+            )),
           ],
         ),
       ),

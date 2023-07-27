@@ -162,7 +162,7 @@ class ApiProvider {
   }
 
   /// ----------  return Ticket --------------///
-  Future<Map<String, dynamic>> returnTicket(
+  Future<Map<String, dynamic>> soldTciket(
       List<String> returnTicketIdList) async {
     Response response;
     String token = await localStorageService

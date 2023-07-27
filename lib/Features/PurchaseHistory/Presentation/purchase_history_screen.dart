@@ -99,7 +99,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         color: AppColors.primary,
                         size: 20,
                       ),
-                      onChanged: (String? value) {
+                      onChanged: ( value) {
                         filterSearch(value!);
                       },
                       maxLines: 1,

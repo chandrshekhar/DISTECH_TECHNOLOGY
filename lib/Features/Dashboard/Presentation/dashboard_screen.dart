@@ -1,8 +1,11 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
+import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:distech_technology/Widgets/filter_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -10,6 +13,7 @@ import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/full_button.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
   @override
@@ -20,57 +24,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
-  List<Tickets>? searchedList = [];
-  List<String> returnTicketList = [];
-
-  // Filter List by TICKET NUMBER or Search list by SEM
-  void filterSearch(String query) {
-    setState(() {
-      searchedList = allTickets!
-          .where((element) => element.ticketId!
-              .trim()
-              .toLowerCase()
-              .toString()
-              .contains(query.trim().toLowerCase().toString()))
-          .toList();
-    });
-  }
-
-  // Filter List by SEM or Search list by SEM
-  void filterSearchBySem(String query) {
-    setState(() {
-      searchedList = allTickets!
-          .where((element) =>
-              element.sEM.toString().contains(query.toLowerCase().toString()))
-          .toList();
-    });
-  }
-
-  // Fetch all Ticket
-  List<Tickets>? allTickets;
-  ApiProvider apiProvider = ApiProvider();
-  bool isLoading = true;
-   Map<String, dynamic> reqModel = {
-        "offset": 10,
-        "limit": 50
-      };
-
-  // get all Ticket 
-   void fetchALlTicket() async{
-    var res = await apiProvider.getAllTicket(reqModel);
-    print("UI resp--> ${res.tickets}");
-    setState(() {
-      allTickets = res.tickets;
-      searchedList = allTickets;
-      print( searchedList);
-      isLoading=false;
-    });
-   }
+  final soldTicketController = Get.put(SoldTicketController());
 
   @override
   void initState() {
     // searchedList = ticketItemList;
-    fetchALlTicket();
+    soldTicketController.getAllTicket();
     super.initState();
   }
 
@@ -87,241 +46,276 @@ class _DashboardScreenState extends State<DashboardScreen> {
         //Hide the onscreen keyboard on outside touch.
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child:isLoading?const CircularProgressIndicator.adaptive() :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
-              Text(
-                'My All Ticket (${allTickets?.length})',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: CustomTextField(
-                      controller: _searchController,
-                      hintText: 'Search',
-                      prefixIcon: const Icon(
-                        EvaIcons.searchOutline,
-                        color: AppColors.primary,
-                        size: 20,
+      child: Obx(
+        () => soldTicketController.isAllTicketLoading.value
+            ? const CircularProgressIndicator.adaptive()
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: AppSizes.kDefaultPadding,
                       ),
-                      onChanged: (String? value) {
-                        filterSearch(value!);
-                      },
-                      maxLines: 1,
-                      minLines: 1,
-                      isBorder: false,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: AppSizes.kDefaultPadding / 1.5,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const AlertDialog(
-                                content: FilterDialog(),
-                              );
-                            });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.filterIcon,
-                          width: 25,
-                          height: 25,
-                        ),
+                      Text(
+                        'My All Ticket (${soldTicketController.allTicketList.length})',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(fontWeight: FontWeight.w400),
                       ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding * 1.2,
-              ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Text(
-                    '01 item Selected',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding / 1.5,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.35,
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(AppSizes.cardCornerRadius / 2),
-                      border: Border.all(color: AppColors.bg),
-                    ),
-                    child: Container(
-                      color: AppColors.primaryBg,
-                      child: Column(
+                      const SizedBox(
+                        height: AppSizes.kDefaultPadding,
+                      ),
+                      Row(
                         children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.all(AppSizes.kDefaultPadding),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'SL No',
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.darkGrey
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.w500),
-                                  ),
+                          Expanded(
+                            flex: 5,
+                            child: CustomTextField(
+                              controller: _searchController,
+                              hintText: 'Search',
+                              prefixIcon: const Icon(
+                                EvaIcons.searchOutline,
+                                color: AppColors.primary,
+                                size: 20,
+                              ),
+                              onChanged: (value) {
+                                soldTicketController.filterSearch(value);
+                              },
+                              maxLines: 1,
+                              minLines: 1,
+                              isBorder: false,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: AppSizes.kDefaultPadding / 1.5,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const AlertDialog(
+                                        content: FilterDialog(),
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(
+                                    AppSizes.kDefaultPadding / 1.5),
+                                height: AppSizes.buttonHeight + 4,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        AppSizes.cardCornerRadius / 2),
+                                    border: Border.all(color: AppColors.bg)),
+                                child: Image.asset(
+                                  AppIcons.filterIcon,
+                                  width: 25,
+                                  height: 25,
                                 ),
-                                Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      'Ticket No',
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
-                                Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      'SEM',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                        child: Checkbox(
-                                          value: isSelected,
-                                          onChanged: (bool? value) {
-                                            setState(() {
-                                              isSelected = value!;
-                                            });
-                                          },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: AppSizes.kDefaultPadding * 1.2,
+                      ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Text(
+                            '${soldTicketController.selectedSoldTicket.length.toString()} item Selected',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: AppSizes.kDefaultPadding / 1.5,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.35,
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  AppSizes.cardCornerRadius / 2),
+                              border: Border.all(color: AppColors.bg),
+                            ),
+                            child: Container(
+                              color: AppColors.primaryBg,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(
+                                        AppSizes.kDefaultPadding),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            'SL No',
+                                            textAlign: TextAlign.start,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    color: AppColors.darkGrey
+                                                        .withOpacity(0.8),
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
                                         ),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              'Ticket No',
+                                              textAlign: TextAlign.start,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      color: AppColors.darkGrey
+                                                          .withOpacity(0.8),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            )),
+                                        Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              'SEM',
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      color: AppColors.darkGrey
+                                                          .withOpacity(0.8),
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            )),
+                                        Expanded(
+                                            flex: 1,
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: SizedBox(
+                                                width: 10,
+                                                height: 10,
+                                                child: Checkbox(
+                                                  value: isSelected,
+                                                  onChanged: (bool? value) {},
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  const CustomDivider(),
+                                  Container(
+                                      alignment: Alignment.center,
+                                      constraints: BoxConstraints(
+                                        maxHeight:
+                                            MediaQuery.of(context).size.height *
+                                                0.28,
                                       ),
-                                    )),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Scrollbar(
+                                        child: soldTicketController
+                                                .searchedList.isNotEmpty
+                                            ? ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                physics:
+                                                    const BouncingScrollPhysics(),
+                                                itemCount: soldTicketController
+                                                    .searchedList.length,
+                                                itemBuilder: ((context, index) {
+                                                  var e = soldTicketController
+                                                      .searchedList[index];
+                                                  return TicketListItemWithCheckbox(
+                                                    isSelectedIndex: isSelected,
+                                                    ticketItemModel:
+                                                        soldTicketController
+                                                                .searchedList[
+                                                            index],
+                                                    itemIndex: index,
+                                                    child: Checkbox(
+                                                      value: soldTicketController
+                                                              .checkBoxForAuthor[
+                                                          e.sId],
+                                                      onChanged: (value) {
+                                                        soldTicketController
+                                                            .checkedBoxClicked(
+                                                                e.sId, value);
+                                                      },
+                                                    ),
+                                                  );
+                                                }))
+                                            : Text(
+                                                'No Ticket Found!',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                              ),
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                          SafeArea(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: AppSizes.kDefaultPadding * 1.2,
+                                ),
+                                FullButton(
+                                  label: 'Mark sold',
+                                  onPressed: () async {
+                                    if (soldTicketController
+                                        .selectedSoldTicket.isNotEmpty) {
+                                      await ApiProvider().soldTciket(
+                                          soldTicketController
+                                              .selectedSoldTicket);
+                                      soldTicketController.selectedSoldTicket
+                                          .clear();
+                                      await soldTicketController.getAllTicket();
+                                    } else {}
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: AppSizes.kDefaultPadding * 1.2,
+                                ),
+                                Text(
+                                  "** Once you mark as a sold it can't be modified later",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: AppColors.secondary),
+                                )
                               ],
                             ),
                           ),
-                          const CustomDivider(),
-                          Container(
-                              alignment: Alignment.center,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.28,
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: Scrollbar(
-                                child: searchedList!.isNotEmpty
-                                    ? ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        physics: const BouncingScrollPhysics(),
-                                        itemCount: searchedList!.length,
-                                        itemBuilder: ((context, index) {
-                                          print("ticketId $index");
-                                          return TicketListItemWithCheckbox(
-                                            isSelectedIndex: isSelected,
-                                              ticketItemModel:
-                                                  searchedList![index],
-                                              itemIndex: index);
-                                        }))
-                                    : Text(
-                                        'No Ticket Found!',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w400),
-                                      ),
-                              ))
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                  SafeArea(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: AppSizes.kDefaultPadding * 1.2,
-                        ),
-                        FullButton(
-                          label: 'Mark sold',
-                          onPressed: () {
-                            apiProvider.returnTicket(returnTicketList);
-                          },
-                        ),
-                        const SizedBox(
-                          height: AppSizes.kDefaultPadding * 1.2,
-                        ),
-                        Text(
-                          "** Once you mark as a sold it can't be modified later",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: AppColors.secondary),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
     //   Column(

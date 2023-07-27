@@ -22,7 +22,7 @@ class CustomTextField extends StatelessWidget {
   final TextAlign? textAlign;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
-  final String? Function(String?)? onChanged;
+  final ValueChanged? onChanged;
 
   const CustomTextField({
     Key? key,
