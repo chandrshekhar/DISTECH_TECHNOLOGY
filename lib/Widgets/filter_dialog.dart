@@ -1,10 +1,12 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
+import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Widgets/custom_chip.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../Features/Home/Models/sem_model.dart';
 
@@ -16,6 +18,17 @@ class FilterDialog extends StatefulWidget {
 }
 
 class _FilterDialogState extends State<FilterDialog> {
+  final soldTicketController = Get.put(SoldTicketController());
+  int _selectedIndex = -1;
+
+  void _onButtonSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+      int sem = semList[index].label!;
+      soldTicketController.semNumber.value = sem;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,8 +95,10 @@ class _FilterDialogState extends State<FilterDialog> {
                       fontWeight: FontWeight.w500),
                 ),
                 InkWell(
-                    onTap: () {
-                      setState(() {});
+                    onTap: () async {
+                      soldTicketController.filterSemClear(0);
+                      await soldTicketController.getAllTicket();
+                      Navigator.pop(context);
                     },
                     child: Text(
                       'Clear',
@@ -113,14 +128,13 @@ class _FilterDialogState extends State<FilterDialog> {
                   crossAxisSpacing: AppSizes.kDefaultPadding,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return CustomChip(
-                    onTap: () {
-                      setState(() {
-                        semList[index].isSelected = !semList[index].isSelected!;
-                      });
-                    },
-                    isSelected: semList[index].isSelected,
-                    label: semList[index].label.toString(),
+                  return ElevatedButton(
+                    onPressed: () => _onButtonSelected(index),
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          _selectedIndex == index ? Colors.blue : Colors.grey,
+                    ),
+                    child: Text("${semList[index].label} SEM"),
                   );
                 },
               ),
@@ -129,11 +143,16 @@ class _FilterDialogState extends State<FilterDialog> {
           const SizedBox(
             height: AppSizes.kDefaultPadding,
           ),
-          FullButton(
-              label: 'Apply',
-              onPressed: () {
+          Obx(() => FullButton(
+              label: soldTicketController.isAllTicketLoading.value == false
+                  ? 'Apply'
+                  : "Please wait...",
+              onPressed: () async {
+                await soldTicketController.getAllTicket(
+                    search: soldTicketController.searchText.value,
+                    semNumber: soldTicketController.semNumber.value);
                 Navigator.pop(context);
-              })
+              }))
         ],
       ),
     );

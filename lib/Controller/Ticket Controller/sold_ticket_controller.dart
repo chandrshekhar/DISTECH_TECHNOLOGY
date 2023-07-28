@@ -4,16 +4,26 @@ import 'package:get/get.dart';
 
 class SoldTicketController extends GetxController {
   RxList<Tickets> allTicketList = <Tickets>[].obs;
-  RxList<Tickets> searchedList = <Tickets>[].obs;
   RxList<String> selectedSoldTicket = <String>[].obs;
   ApiProvider apiProvider = ApiProvider();
   var checkBoxForAuthor = {}.obs;
   RxBool isAllTicketLoading = false.obs;
+  RxInt semNumber=0.obs;
+  RxString searchText = ''.obs;
 
-  getAllTicket() async {
-    Map<String, dynamic> reqModel = {"offset": 10, "limit": 50};
+  searchTextSave(String value){
+    searchText.value=value;
+  }
+
+  filterSemClear(int value){
+    semNumber.value=0;
+  }
+
+  getAllTicket({String? search, int? semNumber}) async {
+    Map<String, dynamic> reqModel = {"offset": 0, "limit":1000,"search": search, "SEM": semNumber};
     isAllTicketLoading(true);
     var res = await apiProvider.getAllTicket(reqModel);
+   
     // ignore: prefer_for_elements_to_map_fromiterable
     var cba = Map.fromIterable(res.tickets!, key: (v) {
       return v.sId;
@@ -22,40 +32,17 @@ class SoldTicketController extends GetxController {
     });
     allTicketList.value = res.tickets!;
     checkBoxForAuthor.value = cba;
-    searchedList = allTicketList;
     isAllTicketLoading(false);
   }
-
-  checkBoxChangeAuthor(var key, dynamic checkBoxValue) {
-    checkBoxForAuthor[key] = checkBoxValue;
-  }
-
-  void filterSearch(String? query) {
-    searchedList.value = allTicketList
-        .where((element) => element.ticketId!
-            .trim()
-            .toLowerCase()
-            .toString()
-            .contains(query!.trim().toLowerCase().toString()))
-        .toList();
-  }
-
-  void filterSearchBySem(String query) {
-    searchedList.value = allTicketList
-        .where((element) =>
-            element.sEM.toString().contains(query.toLowerCase().toString()))
-        .toList();
-  }
-
-  checkedBoxClicked(sId, val) {
-    checkBoxChangeAuthor(sId, val);
+   void checkedBoxClicked(String sId, bool val) {
+    checkBoxForAuthor[sId] = val;
     if (val == true) {
       selectedSoldTicket.add(sId.toString());
     } else {
       selectedSoldTicket.remove(sId);
     }
+    update(); // This will trigger UI update
   }
-
   @override
   void onReady() {
     // TODO: implement onReady

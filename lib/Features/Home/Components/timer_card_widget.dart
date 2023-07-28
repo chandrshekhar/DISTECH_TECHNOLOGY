@@ -16,7 +16,6 @@ class TimerCardWidget extends StatefulWidget {
 }
 
 class _TimerCardWidgetState extends State<TimerCardWidget> {
-
   String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
   String hour = DateFormat('a').format(DateTime.now());
   late Timer _timer;
@@ -46,75 +45,63 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
   Widget build(BuildContext context) {
     return CustomCard(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
           children: [
-            Column(
-              children: [
-                Text(
-                  'Current Time',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(
-                      color: AppColors.darkGrey.withOpacity(0.9),
-                      fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: AppSizes.kDefaultPadding / 3,
-                ),
-                Text(
-                  formattedTime,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(
-                      color: AppColors.grey,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
+            Text(
+              'Current Time',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: AppColors.darkGrey.withOpacity(0.9), fontSize: 14),
             ),
-            Column(
-              children: [
-                Image.asset(
-                  AppIcons.timerIcon,
-                  width: 40,
-                  height: 40,
-                ),
-                Text('10:10',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium!
-                        .copyWith(
-                        color: AppColors.primaryDark,
-                        fontWeight: FontWeight.w500)),
-              ],
+            const SizedBox(
+              height: AppSizes.kDefaultPadding / 3,
             ),
-            Column(
-              children: [
-                Text(
-                  'Last Return Time',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(
-                      color: AppColors.secondary.withOpacity(0.9),
-                      fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: AppSizes.kDefaultPadding / 3,
-                ),
-                Text(
-                  '07:55 PM',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            )
+            Text(
+              formattedTime,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18),
+            ),
           ],
-        ));
+        ),
+        Column(
+          children: [
+            Image.asset(
+              AppIcons.timerIcon,
+              width: 40,
+              height: 40,
+            ),
+            Text('10:10',
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: AppColors.primaryDark,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18)),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              'Last Return Time',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: AppColors.secondary.withOpacity(0.9),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14),
+            ),
+            const SizedBox(
+              height: AppSizes.kDefaultPadding / 3,
+            ),
+            Text(
+              '07:55 PM',
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: AppColors.secondary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18),
+            ),
+          ],
+        )
+      ],
+    ));
   }
 }

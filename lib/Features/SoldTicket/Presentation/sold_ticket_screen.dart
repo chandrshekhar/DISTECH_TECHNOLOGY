@@ -1,9 +1,10 @@
+import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/ticket_item_model.dart';
 import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -17,8 +18,18 @@ class SoldTicketScreen extends StatefulWidget {
 }
 
 class _SoldTicketScreenState extends State<SoldTicketScreen> {
+  final soldTicketListController = Get.put(SoldTicketListController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    soldTicketListController.getSoldTicketList();
+    soldTicketListController.searchText.value = '';
+    soldTicketListController.semNumber.value = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +47,13 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
               const SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
-              Text(
-                'All Sold Ticket (565)',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.w400),
-              ),
+              Obx(() => Text(
+                    'All Sold Ticket (${soldTicketListController.soldTicketList.length})',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.w400),
+                  )),
               const SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
@@ -58,6 +69,17 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                         color: AppColors.primary,
                         size: 20,
                       ),
+                      onChanged: (value) async {
+                        if (value.toString().isNotEmpty) {
+                          soldTicketListController.searchTextSave(value);
+                        } else {
+                          soldTicketListController.searchText("");
+                        }
+                        soldTicketListController.getSoldTicketList(
+                            search: soldTicketListController.searchText.value,
+                            semNumber:
+                                soldTicketListController.semNumber.value);
+                      },
                       maxLines: 1,
                       minLines: 1,
                       isBorder: false,
@@ -157,21 +179,41 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                             ),
                             width: MediaQuery.of(context).size.width,
                             // height: MediaQuery.of(context).size.height * 0.45,
-                            child: RawScrollbar(
-                              thumbColor: AppColors.primary,
-                              thickness: 3,
-                              radius: const Radius.circular(
-                                  AppSizes.cardCornerRadius),
-                              child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: ticketItemList.length,
-                                  itemBuilder: ((context, index) {
-                                    return TicketListItem(
-                                        ticketItemModel: ticketItemList[index],
-                                        itemIndex: index);
-                                  })),
-                            )),
+                            child: Obx(() {
+                              if (soldTicketListController
+                                      .isSoldListLoading.value ==
+                                  true) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              } else if (soldTicketListController
+                                  .soldTicketList.isEmpty) {
+                                return Center(child: Text("No ticket found"));
+                              } else {
+                                return RawScrollbar(
+                                  thumbColor: AppColors.primary,
+                                  thickness: 3,
+                                  radius: const Radius.circular(
+                                      AppSizes.cardCornerRadius),
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: soldTicketListController
+                                          .soldTicketList.length,
+                                      itemBuilder: ((context, index) {
+                                        var item = soldTicketListController
+                                            .soldTicketList[index];
+                                        return TicketListItem(
+                                            ticketItemModel: TicketItemModel(
+                                                sem: "5",
+                                                slNo: "${index + 1}",
+                                                ticketNo:
+                                                    item.ticket!.ticketId),
+                                            itemIndex: index);
+                                      })),
+                                );
+                              }
+                            })),
                       )
                     ],
                   ),

@@ -1,16 +1,15 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
-import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../Api/api_provider.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/filter_dialog.dart';
-import '../../SoldTicket/Models/ticket_item_model.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
 
 class ReturnUnsoldTicket extends StatefulWidget {
@@ -25,6 +24,14 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    soldTicketzcontroller.getAllTicket();
+    soldTicketzcontroller.searchText.value='';
+    soldTicketzcontroller.semNumber.value=0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +109,15 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         color: AppColors.primary,
                         size: 20,
                       ),
+                      onChanged: (value) {
+                       if(value.toString().isNotEmpty){
+                         soldTicketzcontroller.searchTextSave(value);
+                       }else{
+                        soldTicketzcontroller.searchText("");
+                       }
+                        soldTicketzcontroller.getAllTicket(
+                            search: soldTicketzcontroller.searchText.value, semNumber: soldTicketzcontroller.semNumber.value);
+                      },
                       maxLines: 1,
                       minLines: 1,
                       isBorder: false,
@@ -232,26 +248,49 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     MediaQuery.of(context).size.height * 0.28,
                               ),
                               width: MediaQuery.of(context).size.width,
-                              child: RawScrollbar(
-                                thumbColor: AppColors.primary,
-                                thickness: 3,
-                                radius: const Radius.circular(
-                                    AppSizes.cardCornerRadius),
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemCount: ticketItemList.length,
-                                    itemBuilder: ((context, index) {
-                                      return TicketListItemWithCheckbox(
-                                          ticketItemModel:Tickets(),
-                                          child: Checkbox(
-                                                        value: true,
-                                                        onChanged: (value) {},
-                                                      ),
-                                          
-                                          itemIndex: index);
-                                    })),
-                              ))
+                              child: Obx(() {
+                                if (soldTicketzcontroller
+                                        .isAllTicketLoading.value ==
+                                    true) {
+                                  return const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  );
+                                } else {
+                                  return RawScrollbar(
+                                    thumbColor: AppColors.primary,
+                                    thickness: 3,
+                                    radius: const Radius.circular(
+                                        AppSizes.cardCornerRadius),
+                                    child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: soldTicketzcontroller
+                                            .allTicketList.length,
+                                        itemBuilder: ((context, index) {
+                                          var e = soldTicketzcontroller
+                                              .allTicketList[index];
+                                          return TicketListItemWithCheckbox(
+                                            isSelectedIndex: isSelected,
+                                            ticketItemModel:
+                                                soldTicketzcontroller
+                                                    .allTicketList[index],
+                                            itemIndex: index,
+                                            child: Checkbox(
+                                              value: soldTicketzcontroller
+                                                  .checkBoxForAuthor[e.sId],
+                                              onChanged: (value) {
+                                                soldTicketzcontroller
+                                                    .checkedBoxClicked(
+                                                        e.sId.toString(),
+                                                        value!);
+                                                setState(() {});
+                                              },
+                                            ),
+                                          );
+                                        })),
+                                  );
+                                }
+                              }))
                         ],
                       ),
                     ),
@@ -264,7 +303,27 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         ),
                         FullButton(
                           label: 'Return Unsold',
-                          onPressed: () {},
+                          onPressed: () async{
+                             if (soldTicketzcontroller
+                                .selectedSoldTicket.isNotEmpty) {
+                              var res = await ApiProvider().retunTicketUnsold(
+                                  soldTicketzcontroller.selectedSoldTicket);
+                              Get.snackbar("Successful", res['message'],
+                                  backgroundColor: AppColors.white,
+                                  colorText: Colors.green,
+                                  isDismissible: true,
+                                  snackPosition: SnackPosition.BOTTOM);
+                              soldTicketzcontroller.selectedSoldTicket.clear();
+                              await soldTicketzcontroller.getAllTicket();
+                            } else {
+                              Get.snackbar("Not response",
+                                  "Your are not selected any ticket for mark as sold",
+                                  backgroundColor: AppColors.black,
+                                  colorText: Colors.white,
+                                  isDismissible: true,
+                                  snackPosition: SnackPosition.BOTTOM);
+                            }
+                          },
                           bgColor: AppColors.secondary,
                         ),
                         const SizedBox(

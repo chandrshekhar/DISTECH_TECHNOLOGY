@@ -2,7 +2,6 @@ import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
@@ -37,21 +36,21 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
     }
   }
 
-  List<TicketItemModel> searchedList = [];
+  // List<TicketItemModel> searchedList = [];
 
-  // Filter List by SEM or Search list by SEM
-  void filterSearch(String query) {
-    setState(() {
-      searchedList = ticketItemList
-          .where((element) =>
-              element.sem.toString().contains(query.toLowerCase().toString()))
-          .toList();
-    });
-  }
+  // // Filter List by SEM or Search list by SEM
+  // void filterSearch(String query) {
+  //   setState(() {
+  //     searchedList = ticketItemList
+  //         .where((element) =>
+  //             element.sem.toString().contains(query.toLowerCase().toString()))
+  //         .toList();
+  //   });
+  // }
 
   @override
   void initState() {
-    searchedList = ticketItemList;
+    // searchedList = ticketItemList;
     super.initState();
   }
 
@@ -100,7 +99,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         size: 20,
                       ),
                       onChanged: ( value) {
-                        filterSearch(value!);
+                        // filterSearch(value!);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -217,10 +216,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                   padding: EdgeInsets.zero,
                                   physics: const BouncingScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: searchedList.length,
+                                  itemCount: 10,
                                   itemBuilder: ((context, index) {
                                     return TicketListItem(
-                                        ticketItemModel: searchedList[index],
+                                        ticketItemModel: TicketItemModel(sem: "5", slNo: "2", ticketNo: "AA1232634"),
                                         itemIndex: index);
                                   })),
                             )),

@@ -31,8 +31,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: Image.asset(
                 AppIcons.arrowBack,
                 color: AppColors.white,
-                width: 24,
-                height: 24,
+                width: 22,
+                height: 22,
                 fit: BoxFit.contain,
               ))
           // IconButton(
