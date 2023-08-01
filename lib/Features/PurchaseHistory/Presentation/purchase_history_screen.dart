@@ -4,7 +4,6 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Utils/date_time_format.dart';
@@ -37,8 +36,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        var formatedDate = formatDate(date: picked, formatType: "yyyy-mm-dd");
-        purchaesController.getSoldTicketList(dateTime: formatedDate);
+        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        print(formatedDate);
+        purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
       });
     }
   }
@@ -47,7 +47,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   void initState() {
     // searchedList = ticketItemList;
     super.initState();
-    purchaesController.getSoldTicketList();
+    purchaesController.getAllPurchaesTicket();
   }
 
   @override
@@ -199,25 +199,25 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                       const CustomDivider(),
                       SafeArea(
                           bottom: false,
-                          child: Obx(() {
-                            if (purchaesController.isPurchaLoading.value ==
-                                true) {
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              );
-                            } else if (purchaesController.puchaseList.isEmpty) {
-                              return const Center(
-                                child: Text("No ticket found"),
-                              );
-                            } else {
-                              return Container(
-                                  constraints: BoxConstraints(
-                                    maxHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.4,
-                                  ),
-                                  width: MediaQuery.of(context).size.width,
-                                  child: RawScrollbar(
+                          child: Container(
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.4,
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              child: Obx(() {
+                                if (purchaesController.isPurchaLoading.value ==
+                                    true) {
+                                  return const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  );
+                                } else if (purchaesController
+                                    .puchaseList.isEmpty) {
+                                  return const Center(
+                                    child: Text("No tickets found"),
+                                  );
+                                } else {
+                                  return RawScrollbar(
                                     thumbColor: AppColors.primary,
                                     thickness: 3,
                                     radius: const Radius.circular(
@@ -226,19 +226,21 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         padding: EdgeInsets.zero,
                                         physics: const BouncingScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: purchaesController.puchaseList.length,
+                                        itemCount: purchaesController
+                                            .puchaseList.length,
                                         itemBuilder: ((context, index) {
-                                          var item =  purchaesController.puchaseList[index];
+                                          var item = purchaesController
+                                              .puchaseList[index];
                                           return TicketListItem(
                                               ticketItemModel: TicketItemModel(
-                                                  sem: item.seller!.mobileNumber??"",
-                                                  slNo: item.seller!.sId??"",
+                                                  sem: item.seller!.sId ?? "",
+                                                  slNo: item.seller!.sId ?? "",
                                                   ticketNo: item.seller!.sId),
                                               itemIndex: index);
                                         })),
-                                  ));
-                            }
-                          }))
+                                  );
+                                }
+                              })))
                     ],
                   ),
                 ),

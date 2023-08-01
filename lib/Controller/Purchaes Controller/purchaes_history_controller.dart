@@ -7,11 +7,11 @@ class PurchaseController extends GetxController {
   RxBool isPurchaLoading = false.obs;
   ApiProvider apiProvider = ApiProvider();
 
-  getSoldTicketList({String? search, int? semNumber, String? dateTime}) async {
+  getAllPurchaesTicket(
+      {String? search, int? semNumber, String? dateTime}) async {
     Map<String, dynamic> reqModel = {
       "offset": 0,
       "limit": 1000,
-      "search": "",
       "date": dateTime
     };
     isPurchaLoading(true);
@@ -20,6 +20,8 @@ class PurchaseController extends GetxController {
       if (res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
+      } else {
+        puchaseList.clear();
       }
     } else {
       Get.snackbar("Error", res.errprMsg.toString());

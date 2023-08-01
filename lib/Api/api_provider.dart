@@ -208,7 +208,7 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.post(Urls.soldTicketList, data: reqModel);
+      response = await _dio.post(Urls.purchaseHistory, data: reqModel);
       if (kDebugMode) {
         log('--------Response sold : $response');
       }

@@ -1,6 +1,5 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
-import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:get/get.dart';
 
 class SoldTicketListController extends GetxController {
