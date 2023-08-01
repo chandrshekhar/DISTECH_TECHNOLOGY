@@ -16,7 +16,7 @@ class PurchaseController extends GetxController {
     };
     isPurchaLoading(true);
     var res = await apiProvider.getAllPurcHistoryTicket(reqModel);
-    if (res.errprMsg == null) {
+    if (res.errorMsg == null) {
       if (res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
@@ -24,7 +24,7 @@ class PurchaseController extends GetxController {
         puchaseList.clear();
       }
     } else {
-      Get.snackbar("Error", res.errprMsg.toString());
+      Get.snackbar("Error", res.errorMsg.toString());
       isPurchaLoading(false);
     }
 
@@ -35,5 +35,6 @@ class PurchaseController extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+    getAllPurchaesTicket();
   }
 }

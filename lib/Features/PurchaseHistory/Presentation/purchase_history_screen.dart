@@ -1,5 +1,6 @@
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchases_details_screen.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       setState(() {
         selectedDate = picked;
         var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-        print(formatedDate);
+
         purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
       });
     }
@@ -154,9 +155,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 1,
+                              flex: 3,
                               child: Text(
-                                'Lot No',
+                                'From ticket - To Ticket',
                                 textAlign: TextAlign.start,
                                 style: Theme.of(context)
                                     .textTheme
@@ -170,7 +171,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                             Expanded(
                                 flex: 1,
                                 child: Text(
-                                  'SEM',
+                                  'Quantity',
                                   textAlign: TextAlign.start,
                                   style: Theme.of(context)
                                       .textTheme
@@ -183,7 +184,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                             Expanded(
                                 flex: 1,
                                 child: Text(
-                                  'Quantity',
+                                  'Seller',
                                   textAlign: TextAlign.end,
                                   style: Theme.of(context)
                                       .textTheme
@@ -231,12 +232,29 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         itemBuilder: ((context, index) {
                                           var item = purchaesController
                                               .puchaseList[index];
-                                          return TicketListItem(
-                                              ticketItemModel: TicketItemModel(
-                                                  sem: item.seller!.sId ?? "",
-                                                  slNo: item.seller!.sId ?? "",
-                                                  ticketNo: item.seller!.sId),
-                                              itemIndex: index);
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          PurchaesDetailsScreen(
+                                                            qrcodeId: item
+                                                                .qrCode
+                                                                .toString(),
+                                                          )));
+                                            },
+                                            child: TicketListItem(
+                                                ticketItemModel: TicketItemModel(
+                                                    sem:
+                                                        item.seller!.fullName ??
+                                                            "",
+                                                    slNo:
+                                                        "${item.fromTicket} - ${item.toTicket}",
+                                                    ticketNo:
+                                                        item.count.toString()),
+                                                itemIndex: index),
+                                          );
                                         })),
                                   );
                                 }

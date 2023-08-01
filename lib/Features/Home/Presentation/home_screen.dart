@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:distech_technology/Commons/app_colors.dart';
-import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';

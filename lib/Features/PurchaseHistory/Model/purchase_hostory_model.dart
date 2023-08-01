@@ -1,11 +1,13 @@
+
+
 class PurchaesModel {
   bool? success;
   List<Purchases>? purchases;
   int? count;
-  String? errprMsg;
+  String? errorMsg;
 
-  PurchaesModel({this.success, this.purchases, this.count, this.errprMsg});
-  PurchaesModel.withError(String errorMsg) {
+  PurchaesModel({this.success, this.purchases, this.count, this.errorMsg});
+   PurchaesModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }
 
@@ -36,8 +38,18 @@ class Purchases {
   Seller? seller;
   String? qrCode;
   String? createdAt;
+  String? fromTicket;
+  String? toTicket;
+  int? count;
 
-  Purchases({this.sId, this.seller, this.qrCode, this.createdAt});
+  Purchases(
+      {this.sId,
+      this.seller,
+      this.qrCode,
+      this.createdAt,
+      this.fromTicket,
+      this.toTicket,
+      this.count});
 
   Purchases.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -45,6 +57,9 @@ class Purchases {
         json['seller'] != null ? new Seller.fromJson(json['seller']) : null;
     qrCode = json['qrCode'];
     createdAt = json['createdAt'];
+    fromTicket = json['fromTicket'];
+    toTicket = json['toTicket'];
+    count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +70,9 @@ class Purchases {
     }
     data['qrCode'] = this.qrCode;
     data['createdAt'] = this.createdAt;
+    data['fromTicket'] = this.fromTicket;
+    data['toTicket'] = this.toTicket;
+    data['count'] = this.count;
     return data;
   }
 }
@@ -83,3 +101,4 @@ class Seller {
     return data;
   }
 }
+

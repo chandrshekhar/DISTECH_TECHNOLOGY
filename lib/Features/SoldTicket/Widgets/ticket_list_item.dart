@@ -22,22 +22,22 @@ class TicketListItem extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: 4,
               child: Text(
                 ticketItemModel.slNo.toString(),
                 textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: const TextStyle(color: Colors.blue),
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 1,
                 child: Text(
                   ticketItemModel.ticketNo.toString(),
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
-                flex: 2,
+                flex: 1,
                 child: Text(
                   ticketItemModel.sem.toString(),
                   textAlign: TextAlign.end,
