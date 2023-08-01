@@ -7,6 +7,7 @@ import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
+import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/SoldTicket/Models/sold_ticket_model.dart';
 
 class ApiProvider {
@@ -163,7 +164,7 @@ class ApiProvider {
   }
 
   Future<SoldTicketModel> getAllSoldTicket(
-    Map<String, dynamic> reqModel) async {
+      Map<String, dynamic> reqModel) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -190,6 +191,38 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return SoldTicketModel.withError(
+          error.toString());
+    }
+  }
+
+  Future<PurchaesModel> getAllPurcHistoryTicket(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.soldTicketList, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response sold : $response');
+      }
+      return response.statusCode == 200
+          ? PurchaesModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return PurchaesModel.withError(
           "You are offline. Please check your internet connection.");
     }
   }

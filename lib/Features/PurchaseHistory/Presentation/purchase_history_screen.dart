@@ -1,9 +1,13 @@
 import 'package:distech_technology/Commons/app_icons.dart';
+import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../SoldTicket/Models/ticket_item_model.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
@@ -19,6 +23,7 @@ class PurchaseHistoryScreen extends StatefulWidget {
 class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+  final purchaesController = Get.put(PurchaseController());
   DateTime selectedDate = DateTime.now();
 
   // Open date picker dialog and select date from calender view
@@ -32,26 +37,17 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        var formatedDate = formatDate(date: picked, formatType: "yyyy-mm-dd");
+        purchaesController.getSoldTicketList(dateTime: formatedDate);
       });
     }
   }
-
-  // List<TicketItemModel> searchedList = [];
-
-  // // Filter List by SEM or Search list by SEM
-  // void filterSearch(String query) {
-  //   setState(() {
-  //     searchedList = ticketItemList
-  //         .where((element) =>
-  //             element.sem.toString().contains(query.toLowerCase().toString()))
-  //         .toList();
-  //   });
-  // }
 
   @override
   void initState() {
     // searchedList = ticketItemList;
     super.initState();
+    purchaesController.getSoldTicketList();
   }
 
   @override
@@ -98,7 +94,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         color: AppColors.primary,
                         size: 20,
                       ),
-                      onChanged: ( value) {
+                      onChanged: (value) {
                         // filterSearch(value!);
                       },
                       maxLines: 1,
@@ -202,28 +198,47 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                       ),
                       const CustomDivider(),
                       SafeArea(
-                        child: Container(
-                            constraints: BoxConstraints(
-                              maxHeight: MediaQuery.of(context).size.height * 0.4,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            child: RawScrollbar(
-                              thumbColor: AppColors.primary,
-                              thickness: 3,
-                              radius: const Radius.circular(
-                                  AppSizes.cardCornerRadius),
-                              child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 10,
-                                  itemBuilder: ((context, index) {
-                                    return TicketListItem(
-                                        ticketItemModel: TicketItemModel(sem: "5", slNo: "2", ticketNo: "AA1232634"),
-                                        itemIndex: index);
-                                  })),
-                            )),
-                      )
+                          bottom: false,
+                          child: Obx(() {
+                            if (purchaesController.isPurchaLoading.value ==
+                                true) {
+                              return const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              );
+                            } else if (purchaesController.puchaseList.isEmpty) {
+                              return const Center(
+                                child: Text("No ticket found"),
+                              );
+                            } else {
+                              return Container(
+                                  constraints: BoxConstraints(
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.4,
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: RawScrollbar(
+                                    thumbColor: AppColors.primary,
+                                    thickness: 3,
+                                    radius: const Radius.circular(
+                                        AppSizes.cardCornerRadius),
+                                    child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        physics: const BouncingScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: purchaesController.puchaseList.length,
+                                        itemBuilder: ((context, index) {
+                                          var item =  purchaesController.puchaseList[index];
+                                          return TicketListItem(
+                                              ticketItemModel: TicketItemModel(
+                                                  sem: item.seller!.mobileNumber??"",
+                                                  slNo: item.seller!.sId??"",
+                                                  ticketNo: item.seller!.sId),
+                                              itemIndex: index);
+                                        })),
+                                  ));
+                            }
+                          }))
                     ],
                   ),
                 ),

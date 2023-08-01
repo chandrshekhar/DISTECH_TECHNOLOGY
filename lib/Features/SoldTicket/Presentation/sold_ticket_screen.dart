@@ -70,15 +70,15 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                         size: 20,
                       ),
                       onChanged: (value) async {
-                        if (value.toString().isNotEmpty) {
-                          soldTicketListController.searchTextSave(value);
-                        } else {
-                          soldTicketListController.searchText("");
-                        }
-                        soldTicketListController.getSoldTicketList(
-                            search: soldTicketListController.searchText.value,
-                            semNumber:
-                                soldTicketListController.semNumber.value);
+                        // if (value.toString().isNotEmpty) {
+                        //   soldTicketListController.searchTextSave(value);
+                        // } else {
+                        //   soldTicketListController.searchText("");
+                        // }
+                        // soldTicketListController.getSoldTicketList(
+                        //     search: soldTicketListController.searchText.value,
+                        //     semNumber:
+                        //         soldTicketListController.semNumber.value);
                       },
                       maxLines: 1,
                       minLines: 1,

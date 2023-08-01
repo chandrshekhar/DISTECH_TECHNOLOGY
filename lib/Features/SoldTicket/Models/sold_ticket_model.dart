@@ -2,8 +2,9 @@ class SoldTicketModel {
   bool? success;
   List<Sales>? sales;
   int? count;
+  String? errorMsg;
 
-  SoldTicketModel({this.success, this.sales, this.count});
+  SoldTicketModel({this.success, this.sales, this.count, this.errorMsg});
   SoldTicketModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }
