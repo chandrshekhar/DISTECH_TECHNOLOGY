@@ -190,8 +190,7 @@ class ApiProvider {
       if (kDebugMode) {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
-      return SoldTicketModel.withError(
-          error.toString());
+      return SoldTicketModel.withError(error.toString());
     }
   }
 
@@ -359,6 +358,70 @@ class ApiProvider {
         log('--------Response : $response');
       }
 
+      return response.statusCode == 200
+          ? true
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return false;
+    }
+  }
+
+  /// check ticket avaliabilty
+  Future<Map<dynamic, dynamic>> verifyTicket(String ticket) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    Map reqModel = {"id": ticket.trim()};
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.verifyTickets, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      //  Map resData = {};
+      Map resData = {
+        "success": response.data['success'],
+        "valid": response.data['valid'],
+        "type": response.data['type'],
+      };
+      return response.statusCode == 200
+          ? resData
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {
+        "success": false,
+        "valid": false,
+        "type": "NA",
+      };
+    }
+  }
+
+  /// app support api
+  Future<bool> userSupportApimethod(Map<String,dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+  
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.contactUs, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
       return response.statusCode == 200
           ? true
           : throw Exception('Something Went Wrong');
