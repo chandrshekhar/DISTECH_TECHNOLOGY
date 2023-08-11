@@ -373,12 +373,12 @@ class ApiProvider {
   }
 
   /// check ticket avaliabilty
-  Future<Map<dynamic, dynamic>> verifyTicket(String ticket) async {
+  Future<Map<dynamic, dynamic>> verifyTicket(String ticket, String date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": ticket.trim()};
+    Map reqModel = {"id": ticket.trim(), 'date':date};
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTickets, data: reqModel);
@@ -386,13 +386,9 @@ class ApiProvider {
         log('--------Response : $response');
       }
       //  Map resData = {};
-      Map resData = {
-        "success": response.data['success'],
-        "valid": response.data['valid'],
-        "type": response.data['type'],
-      };
+     
       return response.statusCode == 200
-          ? resData
+          ? response.data
           : throw Exception('Something Went Wrong');
     } catch (error, stacktrace) {
       if (kDebugMode) {

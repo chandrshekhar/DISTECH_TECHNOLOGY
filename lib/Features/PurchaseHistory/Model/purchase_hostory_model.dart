@@ -1,5 +1,3 @@
-
-
 class PurchaesModel {
   bool? success;
   List<Purchases>? purchases;
@@ -7,7 +5,7 @@ class PurchaesModel {
   String? errorMsg;
 
   PurchaesModel({this.success, this.purchases, this.count, this.errorMsg});
-   PurchaesModel.withError(String errorMsg) {
+  PurchaesModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }
 
@@ -101,4 +99,3 @@ class Seller {
     return data;
   }
 }
-

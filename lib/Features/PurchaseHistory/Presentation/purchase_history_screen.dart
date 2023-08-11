@@ -38,7 +38,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       setState(() {
         selectedDate = picked;
         var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-
         purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
       });
     }
