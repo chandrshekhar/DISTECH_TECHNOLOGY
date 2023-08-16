@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_text_field.dart';
 
 class SoldTicketScreen extends StatefulWidget {
@@ -21,6 +22,25 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
   final soldTicketListController = Get.put(SoldTicketListController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(3000, 8),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        soldTicketListController.getSoldTicketList(
+          date: formatedDate,
+          semNumber: soldTicketListController.semNumber.value,
+        );
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -102,6 +122,31 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.filterIcon,
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            AppSizes.kDefaultPadding / 1.5),
+                        height: AppSizes.buttonHeight + 4,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                AppSizes.cardCornerRadius / 2),
+                            border: Border.all(color: AppColors.bg)),
+                        child: Image.asset(
+                          AppIcons.calenderIcon,
                           width: 25,
                           height: 25,
                         ),

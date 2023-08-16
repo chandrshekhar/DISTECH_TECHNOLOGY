@@ -77,7 +77,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Text(
                 "${itemIndex + 1}",
                 textAlign: TextAlign.start,
@@ -85,25 +85,25 @@ class TicketListItemWithCheckbox extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 1,
                 child: Text(
                   ticketItemModel.ticketId.toString(),
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
-                flex: 2,
+                flex: 1,
                 child: Text(
                   ticketItemModel.sEM.toString(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
-                // flex: 1,
+                flex: 1,
                 child: Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(width: 10, height: 10, child: child),
-            )),
+                  alignment: Alignment.center,
+                  child: SizedBox(width: 10, height: 10, child: child),
+                )),
           ],
         ),
       ),

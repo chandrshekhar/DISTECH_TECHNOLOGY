@@ -8,22 +8,28 @@ class SoldTicketController extends GetxController {
   ApiProvider apiProvider = ApiProvider();
   var checkBoxForAuthor = {}.obs;
   RxBool isAllTicketLoading = false.obs;
-  RxInt semNumber=0.obs;
+  RxInt semNumber = 0.obs;
   RxString searchText = ''.obs;
 
-  searchTextSave(String value){
-    searchText.value=value;
+  searchTextSave(String value) {
+    searchText.value = value;
   }
 
-  filterSemClear(int value){
-    semNumber.value=0;
+  filterSemClear(int value) {
+    semNumber.value = 0;
   }
 
-  getAllTicket({String? search, int? semNumber}) async {
-    Map<String, dynamic> reqModel = {"offset": 0, "limit":1000,"search": search, "SEM": semNumber};
+  getAllTicket({String? search, int? semNumber, String? date}) async {
+    Map<String, dynamic> reqModel = {
+      "offset": 0,
+      "limit": 500,
+      "search": search,
+      "SEM": semNumber,
+      "date": date
+    };
     isAllTicketLoading(true);
     var res = await apiProvider.getAllTicket(reqModel);
-   
+
     // ignore: prefer_for_elements_to_map_fromiterable
     var cba = Map.fromIterable(res.tickets!, key: (v) {
       return v.sId;
@@ -34,7 +40,8 @@ class SoldTicketController extends GetxController {
     checkBoxForAuthor.value = cba;
     isAllTicketLoading(false);
   }
-   void checkedBoxClicked(String sId, bool val) {
+
+  void checkedBoxClicked(String sId, bool val) {
     checkBoxForAuthor[sId] = val;
     if (val == true) {
       selectedSoldTicket.add(sId.toString());
@@ -43,6 +50,7 @@ class SoldTicketController extends GetxController {
     }
     update(); // This will trigger UI update
   }
+
   @override
   void onReady() {
     // TODO: implement onReady

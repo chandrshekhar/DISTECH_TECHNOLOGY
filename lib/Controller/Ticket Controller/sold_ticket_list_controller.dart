@@ -16,8 +16,8 @@ class SoldTicketListController extends GetxController {
     semNumber.value = 0;
   }
 
-  getSoldTicketList({String? search, int? semNumber}) async {
-    Map<String, dynamic> reqModel = {"offset": 0, "limit": 10000};
+  getSoldTicketList({String? search, int? semNumber, String? date}) async {
+    Map<String, dynamic> reqModel = {"offset": 0, "limit": 1000, "date":date};
     isSoldListLoading(true);
     var res = await apiProvider.getAllSoldTicket(reqModel);
     if (res.errorMsg == null) {

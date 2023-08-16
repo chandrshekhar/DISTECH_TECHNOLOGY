@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/full_button.dart';
@@ -20,6 +21,25 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   //Variable Declarations
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(3000, 8),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        soldTicketController.getAllTicket(
+            date: formatedDate,
+            semNumber: soldTicketController.semNumber.value);
+      });
+    }
+  }
+
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
   final soldTicketController = Get.put(SoldTicketController());
@@ -122,6 +142,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            AppSizes.kDefaultPadding / 1.5),
+                        height: AppSizes.buttonHeight + 4,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                AppSizes.cardCornerRadius / 2),
+                            border: Border.all(color: AppColors.bg)),
+                        child: Image.asset(
+                          AppIcons.calenderIcon,
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -165,7 +210,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
                                     'SL No',
                                     textAlign: TextAlign.start,
@@ -179,7 +224,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                    flex: 3,
+                                    flex: 1,
                                     child: Text(
                                       'Ticket No',
                                       textAlign: TextAlign.start,
@@ -192,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               fontWeight: FontWeight.w500),
                                     )),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 1,
                                     child: Text(
                                       'SEM',
                                       textAlign: TextAlign.center,
@@ -206,16 +251,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     )),
                                 Expanded(
                                     flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                        child: Checkbox(
-                                          value: isSelected,
-                                          onChanged: (bool? value) {},
-                                        ),
-                                      ),
+                                    child: Text(
+                                      'Select',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: AppColors.darkGrey
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500),
                                     )),
                               ],
                             ),
@@ -235,46 +280,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 return const Center(
                                   child: CircularProgressIndicator.adaptive(),
                                 );
+                              } else if (soldTicketController
+                                  .allTicketList.isEmpty) {
+                                return const Center(
+                                    child: Text("No tickets found!"));
                               } else {
                                 return Scrollbar(
-                                  child: soldTicketController
-                                          .allTicketList.isNotEmpty
-                                      ? ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          itemCount: soldTicketController
-                                              .allTicketList.length,
-                                          itemBuilder: ((context, index) {
-                                            var e = soldTicketController
-                                                .allTicketList[index];
-                                            return TicketListItemWithCheckbox(
-                                              isSelectedIndex: isSelected,
-                                              ticketItemModel:
-                                                  soldTicketController
-                                                      .allTicketList[index],
-                                              itemIndex: index,
-                                              child: Checkbox(
-                                                value: soldTicketController
-                                                    .checkBoxForAuthor[e.sId],
-                                                onChanged: (value) {
-                                                  soldTicketController
-                                                      .checkedBoxClicked(
-                                                          e.sId.toString(),
-                                                          value!);
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            );
-                                          }))
-                                      : Text(
-                                          'No Ticket Found!',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w400),
-                                        ),
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: soldTicketController
+                                          .allTicketList.length,
+                                      itemBuilder: ((context, index) {
+                                        var e = soldTicketController
+                                            .allTicketList[index];
+                                        return TicketListItemWithCheckbox(
+                                          isSelectedIndex: isSelected,
+                                          ticketItemModel: soldTicketController
+                                              .allTicketList[index],
+                                          itemIndex: index,
+                                          child: Checkbox(
+                                            value: soldTicketController
+                                                .checkBoxForAuthor[e.sId],
+                                            onChanged: (value) {
+                                              soldTicketController
+                                                  .checkedBoxClicked(
+                                                      e.sId.toString(), value!);
+                                              setState(() {});
+                                            },
+                                          ),
+                                        );
+                                      })),
                                 );
                               }
                             }),

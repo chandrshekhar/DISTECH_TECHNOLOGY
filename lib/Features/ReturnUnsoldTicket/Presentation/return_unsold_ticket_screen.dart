@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../Api/api_provider.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../../Widgets/filter_dialog.dart';
@@ -20,6 +21,25 @@ class ReturnUnsoldTicket extends StatefulWidget {
 }
 
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(3000, 8),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        soldTicketzcontroller.getAllTicket(
+            date: formatedDate,
+            semNumber: soldTicketzcontroller.semNumber.value);
+      });
+    }
+  }
+
   final soldTicketzcontroller = Get.put(SoldTicketController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
@@ -29,8 +49,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     // TODO: implement initState
     super.initState();
     soldTicketzcontroller.getAllTicket();
-    soldTicketzcontroller.searchText.value='';
-    soldTicketzcontroller.semNumber.value=0;
+    soldTicketzcontroller.searchText.value = '';
+    soldTicketzcontroller.semNumber.value = 0;
   }
 
   @override
@@ -110,13 +130,14 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         size: 20,
                       ),
                       onChanged: (value) {
-                       if(value.toString().isNotEmpty){
-                         soldTicketzcontroller.searchTextSave(value);
-                       }else{
-                        soldTicketzcontroller.searchText("");
-                       }
+                        if (value.toString().isNotEmpty) {
+                          soldTicketzcontroller.searchTextSave(value);
+                        } else {
+                          soldTicketzcontroller.searchText("");
+                        }
                         soldTicketzcontroller.getAllTicket(
-                            search: soldTicketzcontroller.searchText.value, semNumber: soldTicketzcontroller.semNumber.value);
+                            search: soldTicketzcontroller.searchText.value,
+                            semNumber: soldTicketzcontroller.semNumber.value);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -153,18 +174,43 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         ),
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            AppSizes.kDefaultPadding / 1.5),
+                        height: AppSizes.buttonHeight + 4,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                AppSizes.cardCornerRadius / 2),
+                            border: Border.all(color: AppColors.bg)),
+                        child: Image.asset(
+                          AppIcons.calenderIcon,
+                          width: 25,
+                          height: 25,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
               const SizedBox(
-                height: AppSizes.kDefaultPadding * 1.2,
+                height: AppSizes.kDefaultPadding,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.35,
+                      maxHeight: MediaQuery.of(context).size.height * 0.36,
                     ),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -303,8 +349,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         ),
                         FullButton(
                           label: 'Return Unsold',
-                          onPressed: () async{
-                             if (soldTicketzcontroller
+                          onPressed: () async {
+                            if (soldTicketzcontroller
                                 .selectedSoldTicket.isNotEmpty) {
                               var res = await ApiProvider().retunTicketUnsold(
                                   soldTicketzcontroller.selectedSoldTicket);

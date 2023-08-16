@@ -25,6 +25,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   final TextEditingController _searchController = TextEditingController();
   final purchaesController = Get.put(PurchaseController());
   DateTime selectedDate = DateTime.now();
+  String dateFormat = '';
 
   // Open date picker dialog and select date from calender view
   Future<void> _selectDate(BuildContext context) async {
@@ -32,13 +33,14 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2015, 8),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(3000, 8),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
         var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
+        dateFormat = formatedDate;
       });
     }
   }
@@ -238,6 +240,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                   MaterialPageRoute(
                                                       builder: (_) =>
                                                           PurchaesDetailsScreen(
+                                                            dateTime:
+                                                                dateFormat,
                                                             qrcodeId: item
                                                                 .qrCode
                                                                 .toString(),

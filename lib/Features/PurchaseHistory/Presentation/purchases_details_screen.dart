@@ -1,4 +1,3 @@
-import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
@@ -13,12 +12,12 @@ import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
-import '../../../Widgets/full_button.dart';
-import '../../SoldTicket/Widgets/ticket_list_item.dart';
 
 class PurchaesDetailsScreen extends StatefulWidget {
   final String qrcodeId;
-  const PurchaesDetailsScreen({Key? key, required this.qrcodeId})
+  final String dateTime;
+  const PurchaesDetailsScreen(
+      {Key? key, required this.qrcodeId, required this.dateTime})
       : super(key: key);
   @override
   State<PurchaesDetailsScreen> createState() => _PurchaesDetailsScreenState();
@@ -33,7 +32,8 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
   @override
   void initState() {
     // searchedList = ticketItemList;
-    soldTicketController.getAllTicket(search: widget.qrcodeId);
+    soldTicketController.getAllTicket(
+        search: widget.qrcodeId, date: widget.dateTime);
     soldTicketController.searchText.value = '';
     soldTicketController.semNumber.value = 0;
     super.initState();
@@ -50,7 +50,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
     soldTicketController.getAllTicket(search: widget.qrcodeId);
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Purchase Detail",
+        title: "Purchase Detail ${widget.dateTime}",
         autoImplyLeading: false,
         leadingIcon: EvaIcons.arrowIosBack,
         leadingIconPressed: () => Navigator.pop(context),
@@ -158,7 +158,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container( 
+                    Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
@@ -221,7 +221,8 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                             Container(
                               alignment: Alignment.center,
                               constraints: BoxConstraints(
-                                maxHeight: MediaQuery.of(context).size.height - 262,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height - 262,
                               ),
                               width: MediaQuery.of(context).size.width,
                               child: Obx(() {
