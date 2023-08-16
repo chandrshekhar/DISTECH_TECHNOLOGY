@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: AppSizes.kDefaultPadding / 2,
                   ),
                   Text(
-                      'Enter your register mobile number for the verification process. We will send 4 digit code',
+                      'Enter your register mail id for the verification process. We will send 6 digit code',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.darkGrey.withOpacity(0.8),
                           letterSpacing: 0.5)),
