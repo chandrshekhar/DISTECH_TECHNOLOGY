@@ -1,5 +1,6 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class SoldTicketController extends GetxController {
@@ -28,6 +29,9 @@ class SoldTicketController extends GetxController {
       "date": date
     };
     isAllTicketLoading(true);
+    if(kDebugMode){
+      print(reqModel);
+    }
     var res = await apiProvider.getAllTicket(reqModel);
 
     // ignore: prefer_for_elements_to_map_fromiterable

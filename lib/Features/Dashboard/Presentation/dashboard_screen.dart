@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Widgets/filter_dialog.dart';
@@ -106,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
                         soldTicketController.getAllTicket(
                             search: soldTicketController.searchText.value,
-                            semNumber: soldTicketController.semNumber.value);
+                            semNumber: soldTicketController.semNumber.value,date: formatedDate);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -123,8 +125,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const AlertDialog(
-                                content: FilterDialog(),
+                              return  AlertDialog(
+                                content: FilterDialog(selectedDate: formatedDate,),
                               );
                             });
                       },
@@ -300,15 +302,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           ticketItemModel: soldTicketController
                                               .allTicketList[index],
                                           itemIndex: index,
-                                          child: Checkbox(
-                                            value: soldTicketController
-                                                .checkBoxForAuthor[e.sId],
-                                            onChanged: (value) {
-                                              soldTicketController
-                                                  .checkedBoxClicked(
-                                                      e.sId.toString(), value!);
-                                              setState(() {});
-                                            },
+                                          child:  Transform.scale(
+                                             scale: 1.2,
+                                             alignment: Alignment.center,
+                                            child: Checkbox(
+                                              value: soldTicketController
+                                                  .checkBoxForAuthor[e.sId],
+                                              onChanged: (value) {
+                                                soldTicketController
+                                                    .checkedBoxClicked(
+                                                        e.sId.toString(), value!);
+                                                setState(() {});
+                                              },
+                                            ),
                                           ),
                                         );
                                       })),
@@ -328,7 +334,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         FullButton(
                           label: 'Mark sold',
-                          onPressed: () async {
+                          bgColor:soldTicketController.selectedSoldTicket.isEmpty?AppColors.lightGrey:AppColors.primary ,
+                          onPressed:soldTicketController.selectedSoldTicket.isEmpty?()=>Void :() async {
                             print("selected date--> $selectedDate");
                             if (soldTicketController
                                 .selectedSoldTicket.isNotEmpty) {
@@ -341,7 +348,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   isDismissible: true,
                                   snackPosition: SnackPosition.BOTTOM);
                               soldTicketController.selectedSoldTicket.clear();
-                              await soldTicketController.getAllTicket();
+                              await soldTicketController.getAllTicket(date: formatedDate);
                             } else {
                               Get.snackbar("Not response",
                                   "Your are not selected any ticket for mark as sold",

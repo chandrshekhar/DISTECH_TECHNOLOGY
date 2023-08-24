@@ -129,8 +129,8 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return const AlertDialog(
-                                  content: FilterDialog(),
+                                return  AlertDialog(
+                                  content: FilterDialog(selectedDate:widget.dateTime ,),
                                 );
                               });
                         },

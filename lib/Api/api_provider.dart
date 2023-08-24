@@ -226,7 +226,7 @@ class ApiProvider {
     }
   }
 
-  /// ----------  return Ticket --------------///
+  /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
       List<String> returnTicketIdList, String date) async {
    

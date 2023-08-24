@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 import '../Features/Home/Models/sem_model.dart';
 
 class FilterDialog extends StatefulWidget {
-  const FilterDialog({Key? key}) : super(key: key);
+  final String selectedDate;
+  const FilterDialog({Key? key, required this.selectedDate}) : super(key: key);
 
   @override
   State<FilterDialog> createState() => _FilterDialogState();
@@ -150,7 +151,7 @@ class _FilterDialogState extends State<FilterDialog> {
               onPressed: () async {
                 await soldTicketController.getAllTicket(
                     search: soldTicketController.searchText.value,
-                    semNumber: soldTicketController.semNumber.value);
+                    semNumber: soldTicketController.semNumber.value,date: widget.selectedDate);
                 Navigator.pop(context);
               }))
         ],

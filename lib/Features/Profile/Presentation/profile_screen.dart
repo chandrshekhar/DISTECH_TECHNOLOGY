@@ -9,7 +9,6 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Widgets/custom_shape_clipper.dart';
 

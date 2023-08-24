@@ -22,7 +22,7 @@ class ReturnUnsoldTicket extends StatefulWidget {
 
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   DateTime selectedDate = DateTime.now();
-     String? formatedDate ;
+  String? formatedDate;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -33,10 +33,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketzcontroller.getAllTicket(
             date: formatedDate,
-            semNumber: soldTicketzcontroller.semNumber.value);
+            semNumber: soldTicketzcontroller.semNumber.value,search: soldTicketzcontroller.searchText.value);
       });
     }
   }
@@ -155,8 +155,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const AlertDialog(
-                                content: FilterDialog(),
+                              return  AlertDialog(
+                                content: FilterDialog(selectedDate: formatedDate!,),
                               );
                             });
                       },
@@ -268,7 +268,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                   .withOpacity(0.8),
                                               fontWeight: FontWeight.w500),
                                     )),
-                                       Expanded(
+                                Expanded(
                                     flex: 2,
                                     child: Text(
                                       'Select',
@@ -315,6 +315,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   return const Center(
                                     child: CircularProgressIndicator.adaptive(),
                                   );
+                                } else if (soldTicketzcontroller
+                                    .allTicketList.isEmpty) {
+                                  return const Center(
+                                      child: Text("No tickets found!"));
                                 } else {
                                   return RawScrollbar(
                                     thumbColor: AppColors.primary,
@@ -335,24 +339,25 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                 soldTicketzcontroller
                                                     .allTicketList[index],
                                             itemIndex: index,
-                                            child: Checkbox(
-                                              value: soldTicketzcontroller
-                                                  .checkBoxForAuthor[e.sId],
-                                              onChanged: (value) {
-                                                soldTicketzcontroller
-                                                    .checkedBoxClicked(
-                                                        e.sId.toString(),
-                                                        value!);
-                                                setState(() {});
-                                              },
+                                            child: Transform.scale(
+                                              scale: 1.3,
+                                              child: Checkbox(
+                                                value: soldTicketzcontroller
+                                                    .checkBoxForAuthor[e.sId],
+                                                onChanged: (value) {
+                                                  soldTicketzcontroller
+                                                      .checkedBoxClicked(
+                                                          e.sId.toString(),
+                                                          value!);
+                                                  setState(() {});
+                                                },
+                                              ),
                                             ),
                                           );
                                         })),
                                   );
                                 }
                               }))
-                       
-                       
                         ],
                       ),
                     ),
@@ -365,18 +370,22 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         ),
                         FullButton(
                           label: 'Return Unsold',
-                          onPressed: () async {
+                           
+                          onPressed:soldTicketzcontroller
+                                .selectedSoldTicket.isEmpty?()=>null :() async {
                             if (soldTicketzcontroller
                                 .selectedSoldTicket.isNotEmpty) {
                               var res = await ApiProvider().retunTicketUnsold(
-                                  soldTicketzcontroller.selectedSoldTicket,formatedDate!);
+                                  soldTicketzcontroller.selectedSoldTicket,
+                                  formatedDate!);
                               Get.snackbar("Successful", res['message'],
                                   backgroundColor: AppColors.white,
                                   colorText: Colors.green,
                                   isDismissible: true,
                                   snackPosition: SnackPosition.BOTTOM);
                               soldTicketzcontroller.selectedSoldTicket.clear();
-                              await soldTicketzcontroller.getAllTicket();
+                              await soldTicketzcontroller.getAllTicket(
+                                  date: formatedDate);
                             } else {
                               Get.snackbar("Not response",
                                   "Your are not selected any ticket for mark as sold",
@@ -386,7 +395,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   snackPosition: SnackPosition.BOTTOM);
                             }
                           },
-                          bgColor: AppColors.secondary,
+                          bgColor:soldTicketzcontroller
+                                .selectedSoldTicket.isEmpty?AppColors.lightGrey: AppColors.secondary,
                         ),
                         const SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
