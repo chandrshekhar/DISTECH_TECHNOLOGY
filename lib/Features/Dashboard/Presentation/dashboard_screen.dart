@@ -22,6 +22,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   //Variable Declarations
   DateTime selectedDate = DateTime.now();
+   String formatedDate = '';
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -32,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      formatedDate  = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketController.getAllTicket(
             date: formatedDate,
             semNumber: soldTicketController.semNumber.value);
@@ -328,10 +329,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         FullButton(
                           label: 'Mark sold',
                           onPressed: () async {
+                            print("selected date--> $selectedDate");
                             if (soldTicketController
                                 .selectedSoldTicket.isNotEmpty) {
+                                  print("selected date--> $selectedDate");
                               var res = await ApiProvider().soldTciket(
-                                  soldTicketController.selectedSoldTicket);
+                                  soldTicketController.selectedSoldTicket,formatedDate,);
                               Get.snackbar("Successful", res['message'],
                                   backgroundColor: AppColors.white,
                                   colorText: Colors.green,

@@ -7,22 +7,19 @@ import '../../../Commons/app_sizes.dart';
 class TicketListItem extends StatelessWidget {
   final TicketItemModel ticketItemModel;
   final int itemIndex;
-  const TicketListItem(
-      {Key? key, required this.ticketItemModel, required this.itemIndex})
+  const TicketListItem({Key? key, required this.ticketItemModel, required this.itemIndex})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(
-              flex: 4,
+              flex: 1,
               child: Text(
                 ticketItemModel.slNo.toString(),
                 textAlign: TextAlign.start,
@@ -72,8 +69,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
           const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(

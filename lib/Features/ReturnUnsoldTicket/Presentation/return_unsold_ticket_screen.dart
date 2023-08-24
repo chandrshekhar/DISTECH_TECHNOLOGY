@@ -22,6 +22,7 @@ class ReturnUnsoldTicket extends StatefulWidget {
 
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   DateTime selectedDate = DateTime.now();
+     String? formatedDate ;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -32,7 +33,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketzcontroller.getAllTicket(
             date: formatedDate,
             semNumber: soldTicketzcontroller.semNumber.value);
@@ -242,7 +243,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   ),
                                 ),
                                 Expanded(
-                                    flex: 3,
+                                    flex: 2,
                                     child: Text(
                                       'Ticket No',
                                       textAlign: TextAlign.start,
@@ -255,7 +256,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               fontWeight: FontWeight.w500),
                                     )),
                                 Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: Text(
                                       'SEM',
                                       textAlign: TextAlign.center,
@@ -267,23 +268,36 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                   .withOpacity(0.8),
                                               fontWeight: FontWeight.w500),
                                     )),
-                                Expanded(
-                                    flex: 1,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                        child: Checkbox(
-                                          value: isSelected,
-                                          onChanged: (bool? value) {
-                                            setState(() {
-                                              isSelected = value!;
-                                            });
-                                          },
-                                        ),
-                                      ),
+                                       Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      'Select',
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: AppColors.darkGrey
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500),
                                     )),
+                                // Expanded(
+                                //     flex: 1,
+                                //     child: Align(
+                                //       alignment: Alignment.centerRight,
+                                //       child: SizedBox(
+                                //         width: 10,
+                                //         height: 10,
+                                //         child: Checkbox(
+                                //           value: isSelected,
+                                //           onChanged: (bool? value) {
+                                //             setState(() {
+                                //               isSelected = value!;
+                                //             });
+                                //           },
+                                //         ),
+                                //       ),
+                                //     )),
                               ],
                             ),
                           ),
@@ -337,6 +351,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   );
                                 }
                               }))
+                       
+                       
                         ],
                       ),
                     ),
@@ -353,7 +369,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                             if (soldTicketzcontroller
                                 .selectedSoldTicket.isNotEmpty) {
                               var res = await ApiProvider().retunTicketUnsold(
-                                  soldTicketzcontroller.selectedSoldTicket);
+                                  soldTicketzcontroller.selectedSoldTicket,formatedDate!);
                               Get.snackbar("Successful", res['message'],
                                   backgroundColor: AppColors.white,
                                   colorText: Colors.green,

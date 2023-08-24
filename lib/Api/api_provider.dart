@@ -228,7 +228,8 @@ class ApiProvider {
 
   /// ----------  return Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<String> returnTicketIdList) async {
+      List<String> returnTicketIdList, String date) async {
+   
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -238,7 +239,10 @@ class ApiProvider {
       "message": "No Tickets Found"
     };
 
-    Map<String, dynamic> reqModel = {"tickets": returnTicketIdList};
+    Map<String, dynamic> reqModel = {
+      "tickets": returnTicketIdList,
+      "date": date
+    };
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -268,7 +272,7 @@ class ApiProvider {
   }
 
   Future<Map<String, dynamic>> retunTicketUnsold(
-      List<String> returnTicketIdList) async {
+      List<String> returnTicketIdList,String date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -278,7 +282,7 @@ class ApiProvider {
       "message": "No Tickets Found"
     };
 
-    Map<String, dynamic> reqModel = {"tickets": returnTicketIdList};
+    Map<String, dynamic> reqModel = {"tickets": returnTicketIdList,"date":date};
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -378,7 +382,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": ticket.trim(), 'date':date};
+    Map reqModel = {"id": ticket.trim(), 'date': date};
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTickets, data: reqModel);
@@ -386,7 +390,7 @@ class ApiProvider {
         log('--------Response : $response');
       }
       //  Map resData = {};
-     
+
       return response.statusCode == 200
           ? response.data
           : throw Exception('Something Went Wrong');
@@ -406,12 +410,12 @@ class ApiProvider {
   }
 
   /// app support api
-  Future<bool> userSupportApimethod(Map<String,dynamic> reqModel) async {
+  Future<bool> userSupportApimethod(Map<String, dynamic> reqModel) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-  
+
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.contactUs, data: reqModel);

@@ -1,16 +1,14 @@
-import 'package:distech_technology/Api/api_provider.dart';
+
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/Profile/Presentation/edit_profile_screen.dart';
 import 'package:distech_technology/Features/Profile/Widgets/profile_item_widget.dart';
-import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 
 import '../../../Commons/app_colors.dart';
 import '../../../Widgets/custom_shape_clipper.dart';

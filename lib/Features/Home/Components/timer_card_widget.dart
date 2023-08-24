@@ -50,7 +50,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
         Column(
           children: [
             Text(
-              'Current Time',
+              'Last Return Time',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.9), fontSize: 14),
             ),
@@ -58,7 +58,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               height: AppSizes.kDefaultPadding / 3,
             ),
             Text(
-              formattedTime,
+              "07:30 PM",
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: AppColors.grey,
                   fontWeight: FontWeight.w500,
@@ -73,17 +73,18 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               width: 40,
               height: 40,
             ),
-            Text('10:10',
+            Text('5:00',
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.primaryDark,
                     fontWeight: FontWeight.w500,
                     fontSize: 18)),
           ],
         ),
+       const SizedBox(width: 2),
         Column(
           children: [
             Text(
-              'Last Return Time',
+              'Draw Time',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: AppColors.secondary.withOpacity(0.9),
                   fontWeight: FontWeight.w400,
@@ -93,7 +94,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               height: AppSizes.kDefaultPadding / 3,
             ),
             Text(
-              '07:55 PM',
+              '07:35 PM',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: AppColors.secondary,
                   fontWeight: FontWeight.w500,
