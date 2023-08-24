@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return GlobalBloc(
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Distech Technology',
+        title: 'singham lottery',
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
         home: (jwtToken != "")
