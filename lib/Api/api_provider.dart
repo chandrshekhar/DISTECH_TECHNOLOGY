@@ -5,6 +5,7 @@ import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
@@ -226,6 +227,39 @@ class ApiProvider {
     }
   }
 
+  /// get purchase details ------- ///
+  Future<PurchaseHistoryTicketDetailsModel> getAllPurcHistoryTicketDetails(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.getAllPurchaseDetails, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response sold : $response');
+      }
+      return response.statusCode == 200
+          ? PurchaseHistoryTicketDetailsModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return PurchaseHistoryTicketDetailsModel.withError(
+          "You are offline. Please check your internet connection.");
+    }
+  }
+
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
       List<String> returnTicketIdList, String date) async {
@@ -433,6 +467,35 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return false;
+    }
+  }
+
+  /// get my returns ticket
+  /// 
+  /// app support api
+  Future<Map> getMyReturn(Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.getMyreturn, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {};
     }
   }
 }

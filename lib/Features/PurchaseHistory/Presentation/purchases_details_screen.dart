@@ -1,6 +1,5 @@
-import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
-import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/filter_dialog.dart';
@@ -10,14 +9,15 @@ import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
 
 class PurchaesDetailsScreen extends StatefulWidget {
-  final String qrcodeId;
+  final String orderID;
   final String dateTime;
   const PurchaesDetailsScreen(
-      {Key? key, required this.qrcodeId, required this.dateTime})
+      {Key? key, required this.orderID, required this.dateTime})
       : super(key: key);
   @override
   State<PurchaesDetailsScreen> createState() => _PurchaesDetailsScreenState();
@@ -27,16 +27,20 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
-  final soldTicketController = Get.put(SoldTicketController());
+  // final soldTicketController = Get.put(SoldTicketController());
+
+  final purchaseHistoryTicketController = Get.put(PurchaseController());
 
   @override
   void initState() {
     // searchedList = ticketItemList;
-    soldTicketController.getAllTicket(
-        search: widget.qrcodeId, date: widget.dateTime);
-    soldTicketController.searchText.value = '';
-    soldTicketController.semNumber.value = 0;
+    // soldTicketController.getAllTicket(
+    //     search: widget.qrcodeId, date: widget.dateTime);
+    // soldTicketController.searchText.value = '';
+    // soldTicketController.semNumber.value = 0;
     super.initState();
+    purchaseHistoryTicketController.getAllPurchaesTicketDetails(
+        orderID: widget.orderID);
   }
 
   @override
@@ -47,7 +51,6 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    soldTicketController.getAllTicket(search: widget.qrcodeId);
     return Scaffold(
       appBar: CustomAppBar(
         title: "Purchase Detail ${widget.dateTime}",
@@ -105,14 +108,14 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                           size: 20,
                         ),
                         onChanged: (value) {
-                          if (value.toString().isNotEmpty) {
-                            soldTicketController.searchTextSave(value);
-                          } else {
-                            soldTicketController.searchText("");
-                          }
-                          soldTicketController.getAllTicket(
-                              search: soldTicketController.searchText.value,
-                              semNumber: soldTicketController.semNumber.value);
+                          // if (value.toString().isNotEmpty) {
+                          //   soldTicketController.searchTextSave(value);
+                          // } else {
+                          //   soldTicketController.searchText("");
+                          // }
+                          // soldTicketController.getAllTicket(
+                          //     search: soldTicketController.searchText.value,
+                          //     semNumber: soldTicketController.semNumber.value);
                         },
                         maxLines: 1,
                         minLines: 1,
@@ -129,8 +132,10 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return  AlertDialog(
-                                  content: FilterDialog(selectedDate:widget.dateTime ,),
+                                return AlertDialog(
+                                  content: FilterDialog(
+                                    selectedDate: widget.dateTime,
+                                  ),
                                 );
                               });
                         },
@@ -222,34 +227,39 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                               alignment: Alignment.center,
                               constraints: BoxConstraints(
                                 maxHeight:
-                                    MediaQuery.of(context).size.height - 262,
+                                    MediaQuery.of(context).size.height - 300,
                               ),
                               width: MediaQuery.of(context).size.width,
                               child: Obx(() {
-                                if (soldTicketController
-                                        .isAllTicketLoading.value ==
+                                if (purchaseHistoryTicketController
+                                        .isPurchaseDetailsLoading.value ==
                                     true) {
                                   return const Center(
                                     child: CircularProgressIndicator.adaptive(),
                                   );
                                 } else {
                                   return Scrollbar(
-                                    child: soldTicketController
-                                            .allTicketList.isNotEmpty
+                                    child: purchaseHistoryTicketController
+                                            .purchaseHistoryDetailsList
+                                            .isNotEmpty
                                         ? ListView.builder(
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const BouncingScrollPhysics(),
-                                            itemCount: soldTicketController
-                                                .allTicketList.length,
+                                            itemCount:
+                                                purchaseHistoryTicketController
+                                                    .purchaseHistoryDetailsList
+                                                    .length,
                                             itemBuilder: ((context, index) {
-                                              var e = soldTicketController
-                                                  .allTicketList[index];
+                                              var e = purchaseHistoryTicketController
+                                                      .purchaseHistoryDetailsList[
+                                                  index];
                                               return purchageHistoryWidget(
                                                 // isSelectedIndex: isSelected,
                                                 ticketItemModel:
-                                                    soldTicketController
-                                                        .allTicketList[index],
+                                                    purchaseHistoryTicketController
+                                                            .purchaseHistoryDetailsList[
+                                                        index],
                                                 itemIndex: index,
                                                 // child: Checkbox(
                                                 //   value: soldTicketController

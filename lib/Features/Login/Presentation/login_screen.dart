@@ -10,16 +10,19 @@ import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_shape_clipper.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
   //Variable Declarations
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  bool passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -89,8 +92,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
+                    suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            passwordVisible = !passwordVisible;
+                          });
+                        },
+                        child: Icon(passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off)),
                     isBorder: false,
-                    obscureText: true,
+                    obscureText: !passwordVisible,
                     prefixIcon: const Icon(
                       Icons.keyboard,
                       size: 20,
@@ -132,13 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     listener: (context, state) {
                       if (state is LoginSuccessState) {
                         context.pushReplacement(HomeScreen(
-                          username: state.loginResponseModel.user!.fullName.toString()
-                        ));
+                            username: state.loginResponseModel.user!.fullName
+                                .toString()));
                       }
                       if (state is LoginErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(state.errorMsg)));
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(state.errorMsg)));
                       }
                     },
                     builder: (context, state) {

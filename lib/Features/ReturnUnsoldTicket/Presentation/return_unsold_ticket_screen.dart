@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../Api/api_provider.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
@@ -36,22 +37,41 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketzcontroller.getAllTicket(
             date: formatedDate,
-            semNumber: soldTicketzcontroller.semNumber.value,search: soldTicketzcontroller.searchText.value);
+            semNumber: soldTicketzcontroller.semNumber.value,
+            search: soldTicketzcontroller.searchText.value);
+        getMyreturnController.getAllReturnTicket(dateTime: formatedDate);
       });
     }
+  }
+
+  bool countLimit(bool selectedValue) {
+    if (((getMyreturnController.returnCount.value -
+                soldTicketzcontroller.selectedSoldTicket.length) <=
+            0) &&
+        selectedValue == true) {
+      return false;
+    }
+    return true;
   }
 
   final soldTicketzcontroller = Get.put(SoldTicketController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
+  final getMyreturnController = Get.put(GetMyReturnController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    soldTicketzcontroller.selectedSoldTicket.clear();
     soldTicketzcontroller.getAllTicket();
     soldTicketzcontroller.searchText.value = '';
     soldTicketzcontroller.semNumber.value = 0;
+    getMyreturnController.getAllReturnTicket();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -103,13 +123,22 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           borderRadius: BorderRadius.circular(
                               AppSizes.cardCornerRadius / 2),
                         ),
-                        child: Text('15',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium!
-                                .copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.white)),
+                        child: Obx(() {
+                          if (getMyreturnController
+                              .isReturnTicketLoading.value) {
+                            return const Center(
+                                child: CircularProgressIndicator.adaptive());
+                          }
+
+                          return Text(
+                              "${getMyreturnController.returnCount.value - soldTicketzcontroller.selectedSoldTicket.length}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.white));
+                        }),
                       ),
                     )
                   ],
@@ -155,8 +184,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return  AlertDialog(
-                                content: FilterDialog(selectedDate: formatedDate!,),
+                              return AlertDialog(
+                                content: FilterDialog(
+                                  selectedDate: formatedDate!,
+                                ),
                               );
                             });
                       },
@@ -340,15 +371,18 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                     .allTicketList[index],
                                             itemIndex: index,
                                             child: Transform.scale(
-                                              scale: 1.3,
+                                              scale: 1.2,
                                               child: Checkbox(
                                                 value: soldTicketzcontroller
                                                     .checkBoxForAuthor[e.sId],
                                                 onChanged: (value) {
-                                                  soldTicketzcontroller
-                                                      .checkedBoxClicked(
-                                                          e.sId.toString(),
-                                                          value!);
+                                                  if (countLimit(value!)) {
+                                                    soldTicketzcontroller
+                                                        .checkedBoxClicked(
+                                                            e.sId.toString(),
+                                                            value!);
+                                                    setState(() {});
+                                                  }
                                                   setState(() {});
                                                 },
                                               ),
@@ -368,36 +402,50 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         const SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
-                        FullButton(
-                          label: 'Return Unsold',
-                           
-                          onPressed:soldTicketzcontroller
-                                .selectedSoldTicket.isEmpty?()=>null :() async {
-                            if (soldTicketzcontroller
-                                .selectedSoldTicket.isNotEmpty) {
-                              var res = await ApiProvider().retunTicketUnsold(
-                                  soldTicketzcontroller.selectedSoldTicket,
-                                  formatedDate!);
-                              Get.snackbar("Successful", res['message'],
-                                  backgroundColor: AppColors.white,
-                                  colorText: Colors.green,
-                                  isDismissible: true,
-                                  snackPosition: SnackPosition.BOTTOM);
-                              soldTicketzcontroller.selectedSoldTicket.clear();
-                              await soldTicketzcontroller.getAllTicket(
-                                  date: formatedDate);
-                            } else {
-                              Get.snackbar("Not response",
-                                  "Your are not selected any ticket for mark as sold",
-                                  backgroundColor: AppColors.black,
-                                  colorText: Colors.white,
-                                  isDismissible: true,
-                                  snackPosition: SnackPosition.BOTTOM);
-                            }
-                          },
-                          bgColor:soldTicketzcontroller
-                                .selectedSoldTicket.isEmpty?AppColors.lightGrey: AppColors.secondary,
-                        ),
+                        Obx(() => FullButton(
+                              label: 'Return Unsold',
+                              onPressed: soldTicketzcontroller
+                                      .selectedSoldTicket.isEmpty
+                                  ? () => null
+                                  : () async {
+                                      if (soldTicketzcontroller
+                                          .selectedSoldTicket.isNotEmpty) {
+                                        var res = await ApiProvider()
+                                            .retunTicketUnsold(
+                                                soldTicketzcontroller
+                                                    .selectedSoldTicket,
+                                                formatedDate!);
+                                        await getMyreturnController
+                                            .getAllReturnTicket(
+                                                dateTime: formatedDate);
+
+                                        Get.snackbar(
+                                            "Successful", res['message'],
+                                            backgroundColor: AppColors.white,
+                                            colorText: Colors.green,
+                                            isDismissible: true,
+                                            snackPosition:
+                                                SnackPosition.BOTTOM);
+                                        soldTicketzcontroller.selectedSoldTicket
+                                            .clear();
+
+                                        await soldTicketzcontroller
+                                            .getAllTicket(date: formatedDate);
+                                      } else {
+                                        Get.snackbar("Not response",
+                                            "Your are not selected any ticket for mark as sold",
+                                            backgroundColor: AppColors.black,
+                                            colorText: Colors.white,
+                                            isDismissible: true,
+                                            snackPosition:
+                                                SnackPosition.BOTTOM);
+                                      }
+                                    },
+                              bgColor: soldTicketzcontroller
+                                      .selectedSoldTicket.isEmpty
+                                  ? AppColors.lightGrey
+                                  : AppColors.secondary,
+                            )),
                         const SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),

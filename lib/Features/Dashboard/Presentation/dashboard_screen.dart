@@ -33,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       lastDate: DateTime(3000, 8),
     );
     if (picked != null && picked != selectedDate) {
+      print("selectedDate-->$formatedDate");
       setState(() {
         selectedDate = picked;
       formatedDate  = formatDate(date: picked, formatType: "yyyy-MM-dd");
@@ -50,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // searchedList = ticketItemList;
+     soldTicketController.selectedSoldTicket.clear();
     soldTicketController.getAllTicket();
     soldTicketController.searchText.value = '';
     soldTicketController.semNumber.value = 0;
@@ -303,7 +305,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               .allTicketList[index],
                                           itemIndex: index,
                                           child:  Transform.scale(
-                                             scale: 1.2,
+                                             scale: 1.3,
                                              alignment: Alignment.center,
                                             child: Checkbox(
                                               value: soldTicketController
@@ -349,6 +351,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   snackPosition: SnackPosition.BOTTOM);
                               soldTicketController.selectedSoldTicket.clear();
                               await soldTicketController.getAllTicket(date: formatedDate);
+                            
                             } else {
                               Get.snackbar("Not response",
                                   "Your are not selected any ticket for mark as sold",

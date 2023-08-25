@@ -4,7 +4,7 @@ class PurchaesModel {
   int? count;
   String? errorMsg;
 
-  PurchaesModel({this.success, this.purchases, this.count, this.errorMsg});
+  PurchaesModel({this.success, this.purchases, this.count, this.errorMsg,});
   PurchaesModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }

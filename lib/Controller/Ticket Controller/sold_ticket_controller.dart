@@ -20,11 +20,14 @@ class SoldTicketController extends GetxController {
     semNumber.value = 0;
   }
 
-  getAllTicket({String? search, int? semNumber, String? date}) async {
+  getAllTicket({String? search, int? semNumber, String? date,}) async {
+    if(semNumber==0){
+      semNumber=null;
+    }
     Map<String, dynamic> reqModel = {
       "offset": 0,
       "limit": 500,
-      "search": search,
+      "search": search??"",
       "SEM": semNumber,
       "date": date
     };

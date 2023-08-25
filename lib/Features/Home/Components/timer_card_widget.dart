@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../../Commons/app_colors.dart';
@@ -16,30 +19,17 @@ class TimerCardWidget extends StatefulWidget {
 }
 
 class _TimerCardWidgetState extends State<TimerCardWidget> {
-  String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
-  String hour = DateFormat('a').format(DateTime.now());
-  late Timer _timer;
-
   @override
   void initState() {
-    //update timer in every seconds e.g. 1000 milliseconds
-    _timer = Timer.periodic(
-        const Duration(milliseconds: 1000), (timer) => _update());
     super.initState();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 
-  void _update() {
-    setState(() {
-      formattedTime = DateFormat('hh:mm a').format(DateTime.now());
-      hour = DateFormat('a').format(DateTime.now());
-    });
-  }
+  final timerController = Get.put(TimerController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +39,17 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
       children: [
         Column(
           children: [
-            Text(
-              'Last Return Time',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: AppColors.darkGrey.withOpacity(0.9), fontSize: 14),
-            ),
+            Text('Last Return Time',
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: AppColors.secondary.withOpacity(0.9),
+                    )),
             const SizedBox(
               height: AppSizes.kDefaultPadding / 3,
             ),
             Text(
               "07:30 PM",
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: AppColors.grey,
+                  color: AppColors.secondary,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),
@@ -73,20 +62,22 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               width: 40,
               height: 40,
             ),
-            Text('5:00',
+            Obx(() => Text(
+                timerController.formatDuration(
+                    Duration(seconds: timerController.remainingSeconds.value)),
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.primaryDark,
                     fontWeight: FontWeight.w500,
-                    fontSize: 18)),
+                    fontSize: 18)))
           ],
         ),
-       const SizedBox(width: 2),
+        const SizedBox(width: 2),
         Column(
           children: [
             Text(
               'Draw Time',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: AppColors.secondary.withOpacity(0.9),
+                  color: AppColors.darkGrey.withOpacity(0.9),
                   fontWeight: FontWeight.w400,
                   fontSize: 14),
             ),
@@ -96,7 +87,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
             Text(
               '07:35 PM',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: AppColors.secondary,
+                  color: AppColors.grey,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),

@@ -1,6 +1,7 @@
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchases_details_screen.dart';
+import 'package:distech_technology/Features/PurchaseHistory/widget/purchase_history_card.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -242,12 +243,12 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                           PurchaesDetailsScreen(
                                                             dateTime:
                                                                 dateFormat,
-                                                            qrcodeId: item
-                                                                .qrCode
+                                                            orderID: item
+                                                                .sId
                                                                 .toString(),
                                                           )));
                                             },
-                                            child: TicketListItem(
+                                            child: PurchaseHistoryTicketListItem(
                                                 ticketItemModel: TicketItemModel(
                                                     sem:
                                                         item.seller!.fullName ??
