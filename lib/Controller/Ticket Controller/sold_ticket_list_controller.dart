@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
@@ -20,12 +19,19 @@ class SoldTicketListController extends GetxController {
   }
 
   getSoldTicketList({String? search, int? semNumber, String? date}) async {
-    Map<String, dynamic> reqModel = {"offset": 0, "limit": 1000, "search": search, "date":date};
+    if (semNumber == 0) {}
+    Map<String, dynamic> reqModel = {
+      "offset": 0,
+      "limit": 1000,
+      "search": "",
+      "date": date
+    };
     isSoldListLoading(true);
-    if(kDebugMode){
+    if (kDebugMode) {
       log(reqModel.toString());
     }
     var res = await apiProvider.getAllSoldTicket(reqModel);
+    print(res.sales);
     if (res.errorMsg == null) {
       if (res.sales!.isNotEmpty) {
         isSoldListLoading(false);
