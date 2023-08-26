@@ -22,6 +22,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
   final soldTicketListController = Get.put(SoldTicketListController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+    String formatedDate = '';
   DateTime selectedDate = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -33,7 +34,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketListController.getSoldTicketList(
           date: formatedDate,
           semNumber: soldTicketListController.semNumber.value,
@@ -90,15 +91,16 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                         size: 20,
                       ),
                       onChanged: (value) async {
-                        // if (value.toString().isNotEmpty) {
-                        //   soldTicketListController.searchTextSave(value);
-                        // } else {
-                        //   soldTicketListController.searchText("");
-                        // }
-                        // soldTicketListController.getSoldTicketList(
-                        //     search: soldTicketListController.searchText.value,
-                        //     semNumber:
-                        //         soldTicketListController.semNumber.value);
+                        if (value.toString().isNotEmpty) {
+                          soldTicketListController.searchTextSave(value);
+                        } else {
+                          soldTicketListController.searchText("");
+                        }
+                        soldTicketListController.getSoldTicketList(
+                          date: formatedDate,
+                            search: soldTicketListController.searchText.value,
+                            semNumber:
+                                soldTicketListController.semNumber.value);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -233,7 +235,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                 );
                               } else if (soldTicketListController
                                   .soldTicketList.isEmpty) {
-                                return Center(child: Text("No ticket found"));
+                                return const Center(child: Text("No ticket found"));
                               } else {
                                 return RawScrollbar(
                                   thumbColor: AppColors.primary,

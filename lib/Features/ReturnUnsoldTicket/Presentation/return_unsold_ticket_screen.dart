@@ -105,7 +105,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding / 2),
                         child: Text(
-                          'Sell 5% of your unsold tickets from the total purchase',
+                          'You can unsold your 5% of your total unsold ticket',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -167,7 +167,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         }
                         soldTicketzcontroller.getAllTicket(
                             search: soldTicketzcontroller.searchText.value,
-                            semNumber: soldTicketzcontroller.semNumber.value);
+                            semNumber: soldTicketzcontroller.semNumber.value,
+                            date: formatedDate);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -426,9 +427,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                             isDismissible: true,
                                             snackPosition:
                                                 SnackPosition.BOTTOM);
+                                                _searchController.clear();
                                         soldTicketzcontroller.selectedSoldTicket
                                             .clear();
-
+                                         
                                         await soldTicketzcontroller
                                             .getAllTicket(date: formatedDate);
                                       } else {
@@ -450,9 +452,13 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Text(
-                          '** You can unsold your 5% ticket of your total purchased ticket',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        )
+                          '** You can unsold your 5% of your total unsold ticket',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: AppColors.secondary),
+                        ),
+                        const SizedBox(height: 5)
                       ],
                     ),
                   ),

@@ -80,14 +80,18 @@ class _OtpScreenState extends State<OtpScreen> {
             OTPTextField(
               length: 6,
               width: MediaQuery.of(context).size.width,
-              fieldWidth: 50,
+              fieldWidth: MediaQuery.of(context).size.width/9,
               style: const TextStyle(fontSize: 17),
               textFieldAlignment: MainAxisAlignment.spaceBetween,
               fieldStyle: FieldStyle.box,
+              onChanged: (value) {
+               
+               
+              },
               onCompleted: (pin) {
-                setState(() {
+                 setState(() {
                   pinOtp = pin;
-                });
+                });   
               },
             ),
             const SizedBox(

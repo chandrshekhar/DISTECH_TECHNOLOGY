@@ -65,7 +65,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         height: AppSizes.kDefaultPadding / 2,
                       ),
                       Text(
-                          'Enter your register email id for the verification process. We will send 4 digt code',
+                          'Enter your register email id for the verification process. We will send 6 digt code',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!

@@ -1,38 +1,33 @@
+
 import 'dart:async';
-
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
 class TimerController extends GetxController {
-  RxInt remainingSeconds = 300.obs; // 5 minutes
-  Timer? _timer;
+  final targetTime =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 19,30); // Replace with your target time
+  final countdown = RxString('');
+
+  Rx<DateTime> currentTime = DateTime.now().obs;
+  late Rx<Duration> remainingTime;
 
   @override
   void onInit() {
     super.onInit();
-    startCountdown();
-  }
+    remainingTime = (targetTime.difference(currentTime.value)).obs;
+    // Update the remaining time every second
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      currentTime.value = DateTime.now();
+      remainingTime.value = targetTime.difference(currentTime.value);
 
-  void startCountdown() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (remainingSeconds.value > 0) {
-        remainingSeconds.value--;
+      if (remainingTime.value.isNegative) {
+        countdown.value = "Timer Expired";
+        timer.cancel();
       } else {
-        _timer?.cancel();
-        // You can add actions to perform when the timer reaches zero here.
+        int hours = remainingTime.value.inHours;
+        int minutes = remainingTime.value.inMinutes.remainder(60);
+        int seconds = remainingTime.value.inSeconds.remainder(60);
+        countdown.value =
+            '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
       }
     });
-  }
-  String formatDuration(Duration duration) {
-  String twoDigits(int n) => n.toString().padLeft(2, '0');
-  int minutes = duration.inMinutes;
-  int seconds = duration.inSeconds.remainder(60);
-  return '${twoDigits(minutes)}:${twoDigits(seconds)}';
-}
-
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
   }
 }

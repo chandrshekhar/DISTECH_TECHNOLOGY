@@ -30,6 +30,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
   }
 
   final timerController = Get.put(TimerController());
+  
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +63,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               width: 40,
               height: 40,
             ),
-            Obx(() => Text(
-                timerController.formatDuration(
-                    Duration(seconds: timerController.remainingSeconds.value)),
+            Obx(() => Text(timerController.countdown.value,
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.primaryDark,
                     fontWeight: FontWeight.w500,
