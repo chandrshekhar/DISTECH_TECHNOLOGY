@@ -1,5 +1,6 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   }
 
   final soldTicketzcontroller = Get.put(SoldTicketController());
+  final timerController = Get.put(TimerController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
@@ -405,8 +407,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         ),
                         Obx(() => FullButton(
                               label: 'Return Unsold',
-                              onPressed: soldTicketzcontroller
-                                      .selectedSoldTicket.isEmpty
+                              onPressed: (soldTicketzcontroller
+                                          .selectedSoldTicket.isEmpty &&
+                                      timerController.countdown.value ==
+                                          "0:00:00")
                                   ? () => null
                                   : () async {
                                       if (soldTicketzcontroller
@@ -427,10 +431,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                             isDismissible: true,
                                             snackPosition:
                                                 SnackPosition.BOTTOM);
-                                                _searchController.clear();
+                                        _searchController.clear();
                                         soldTicketzcontroller.selectedSoldTicket
                                             .clear();
-                                         
+
                                         await soldTicketzcontroller
                                             .getAllTicket(date: formatedDate);
                                       } else {
@@ -443,8 +447,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                 SnackPosition.BOTTOM);
                                       }
                                     },
-                              bgColor: soldTicketzcontroller
-                                      .selectedSoldTicket.isEmpty
+                              bgColor: (soldTicketzcontroller
+                                          .selectedSoldTicket.isEmpty &&
+                                      timerController.countdown.value ==
+                                          "0:00:00")
                                   ? AppColors.lightGrey
                                   : AppColors.secondary,
                             )),
