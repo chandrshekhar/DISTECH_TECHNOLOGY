@@ -17,7 +17,6 @@ import '../../SoldTicket/Widgets/ticket_list_item.dart';
 
 class ReturnUnsoldTicket extends StatefulWidget {
   const ReturnUnsoldTicket({Key? key}) : super(key: key);
-
   @override
   State<ReturnUnsoldTicket> createState() => _ReturnUnsoldTicketState();
 }
@@ -47,8 +46,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
 
   bool countLimit(bool selectedValue) {
     if (((getMyreturnController.returnCount.value -
-                soldTicketzcontroller.selectedSoldTicket.length) <=
-            0) &&
+                    soldTicketzcontroller.selectedSoldTicket.length) <=
+                0 ||
+            timerController.countdown.value == "0:00:00") &&
         selectedValue == true) {
       return false;
     }
@@ -408,10 +408,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         Obx(() => FullButton(
                               label: 'Return Unsold',
                               onPressed: (soldTicketzcontroller
-                                          .selectedSoldTicket.isEmpty &&
+                                          .selectedSoldTicket.isEmpty ||
                                       timerController.countdown.value ==
                                           "0:00:00")
-                                  ? () => null
+                                  ? () {}
                                   : () async {
                                       if (soldTicketzcontroller
                                           .selectedSoldTicket.isNotEmpty) {
@@ -423,7 +423,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                         await getMyreturnController
                                             .getAllReturnTicket(
                                                 dateTime: formatedDate);
-
                                         Get.snackbar(
                                             "Successful", res['message'],
                                             backgroundColor: AppColors.white,
@@ -448,7 +447,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                       }
                                     },
                               bgColor: (soldTicketzcontroller
-                                          .selectedSoldTicket.isEmpty &&
+                                          .selectedSoldTicket.isEmpty ||
                                       timerController.countdown.value ==
                                           "0:00:00")
                                   ? AppColors.lightGrey

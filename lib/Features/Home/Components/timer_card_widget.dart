@@ -48,7 +48,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               height: AppSizes.kDefaultPadding / 3,
             ),
             Text(
-              "07:30 PM",
+              "07:00 PM",
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: AppColors.secondary,
                   fontWeight: FontWeight.w500,

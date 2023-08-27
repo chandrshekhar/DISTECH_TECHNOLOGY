@@ -7,24 +7,20 @@ class TimerController extends GetxController {
   Rx<DateTime> currentTime = DateTime.now().obs;
   late Rx<Duration> remainingTime;
    var targetTime = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day, 17,39);
-
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 19,30);
   @override
   void onInit() {
     super.onInit();
-    startTimer();
+    startTimer(targetTime);
   }
-
-  void startTimer() {
-    final targetTime = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day, 19,30);
-    remainingTime = (targetTime.difference(currentTime.value)).obs;
+  void startTimer(DateTime dateTime) {
+    remainingTime = (dateTime.difference(currentTime.value)).obs;
     // Update the remaining time every second
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       currentTime.value = DateTime.now();
-      remainingTime.value = targetTime.difference(currentTime.value);
+      remainingTime.value = dateTime.difference(currentTime.value);
       if (remainingTime.value.isNegative) {
-        countdown.value = "0:00:0";
+        countdown.value = "0:00:00";
         timer.cancel();
         _startMethodAfterDelay();
       } else {
@@ -38,7 +34,9 @@ class TimerController extends GetxController {
   }
 
   Future<void> _startMethodAfterDelay() async {
-    await Future.delayed(const Duration(hours: 4,minutes: 31));
-    startTimer();
+    var targetTime = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 17,39);
+    await Future.delayed(const Duration(hours: 4,minutes: 30));
+    startTimer(targetTime);
   }
 }
