@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 
 class SoldTicketController extends GetxController {
   RxList<Tickets> allTicketList = <Tickets>[].obs;
+  RxInt allticketCount = 0.obs;
   RxList<String> selectedSoldTicket = <String>[].obs;
   ApiProvider apiProvider = ApiProvider();
   var checkBoxForAuthor = {}.obs;
   RxBool isAllTicketLoading = false.obs;
   RxInt semNumber = 0.obs;
   RxString searchText = ''.obs;
-
+  RxInt limit = 3.obs;
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -20,19 +21,23 @@ class SoldTicketController extends GetxController {
     semNumber.value = 0;
   }
 
-  getAllTicket({String? search, int? semNumber, String? date,}) async {
-    if(semNumber==0){
-      semNumber=null;
+  Future<void> getAllTicket({
+    String? search,
+    int? semNumber,
+    String? date,
+  }) async {
+    if (semNumber == 0) {
+      semNumber = null;
     }
     Map<String, dynamic> reqModel = {
       "offset": 0,
-      "limit": 500,
-      "search": search??"",
+      "limit": limit.value,
+      "search": search ?? "",
       "SEM": semNumber,
       "date": date
     };
     isAllTicketLoading(true);
-    if(kDebugMode){
+    if (kDebugMode) {
       print(reqModel);
     }
     var res = await apiProvider.getAllTicket(reqModel);
@@ -44,7 +49,10 @@ class SoldTicketController extends GetxController {
       return false;
     });
     allTicketList.value = res.tickets!;
+    allticketCount.value = res.count!;
+
     checkBoxForAuthor.value = cba;
+
     isAllTicketLoading(false);
   }
 
@@ -62,6 +70,5 @@ class SoldTicketController extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    getAllTicket();
   }
 }
