@@ -303,7 +303,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Obx(() => Text(soldTicketController.limit.value.toString())),
+                  
                   SafeArea(
                     child: Column(
                       children: [
