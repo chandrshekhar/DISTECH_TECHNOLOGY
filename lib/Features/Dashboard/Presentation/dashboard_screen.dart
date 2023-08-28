@@ -40,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         soldTicketController.getAllTicket(
             date: formatedDate,
             semNumber: soldTicketController.semNumber.value);
-        soldTicketController.limit.value += 3;
+       
       });
     }
   }
@@ -303,7 +303,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  
                   SafeArea(
                     child: Column(
                       children: [
