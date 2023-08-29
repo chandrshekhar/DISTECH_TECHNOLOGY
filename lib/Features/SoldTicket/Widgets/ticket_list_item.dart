@@ -1,14 +1,15 @@
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
-import 'package:distech_technology/Features/SoldTicket/Models/ticket_item_model.dart';
+import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
+
 import 'package:flutter/material.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 
 class TicketListItem extends StatelessWidget {
-  final TicketItemModel ticketItemModel;
+  final String ticketId;
   final int itemIndex;
   const TicketListItem(
-      {Key? key, required this.ticketItemModel, required this.itemIndex})
+      {Key? key, required this.ticketId, required this.itemIndex})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class TicketListItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Text(
-                ticketItemModel.slNo.toString(),
+                "${itemIndex + 1}",
                 textAlign: TextAlign.start,
                 style: const TextStyle(color: Colors.blue),
               ),
@@ -32,8 +33,7 @@ class TicketListItem extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Text(
-                  ticketItemModel.ticketNo.toString(),
-                  textAlign: TextAlign.start,
+                  ticketId,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             // Expanded(

@@ -12,11 +12,12 @@ class PurchaseController extends GetxController {
 
   getAllPurchaesTicket(
       {String? search, int? semNumber, String? dateTime}) async {
-    Map<String, dynamic> reqModel = {
-      "offset": 0,
-      "limit": 1000,
-      "date": dateTime
-    };
+    Map<String, dynamic> reqModel = dateTime == null || dateTime.isEmpty
+        ? {
+            "offset": 0,
+            "limit": 1000,
+          }
+        : {"offset": 0, "limit": 1000, "date": dateTime};
     isPurchaLoading(true);
     var res = await apiProvider.getAllPurcHistoryTicket(reqModel);
     if (res.errorMsg == null) {

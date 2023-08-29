@@ -7,7 +7,7 @@ class TimerController extends GetxController {
   Rx<DateTime> currentTime = DateTime.now().obs;
   late Rx<Duration> remainingTime;
    var targetTime = DateTime(
-        DateTime.now().year, DateTime.now().month, DateTime.now().day, 19,30);
+        DateTime.now().year, DateTime.now().month, DateTime.now().day, 19,00);
   @override
   void onInit() {
     super.onInit();

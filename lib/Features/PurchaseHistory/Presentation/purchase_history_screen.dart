@@ -10,7 +10,6 @@ import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
-import '../../SoldTicket/Models/ticket_item_model.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
 import '../../../Utils/app_helper.dart';
 
@@ -243,20 +242,15 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                           PurchaesDetailsScreen(
                                                             dateTime:
                                                                 dateFormat,
-                                                            orderID: item
-                                                                .sId
+                                                            orderID: item.sId
                                                                 .toString(),
                                                           )));
                                             },
                                             child: PurchaseHistoryTicketListItem(
-                                                ticketItemModel: TicketItemModel(
-                                                    sem:
-                                                        item.seller!.fullName ??
-                                                            "",
-                                                    slNo:
-                                                        "${item.fromTicket } - ${item.toTicket}",
-                                                    ticketNo:
-                                                        item.count.toString()),
+                                                ticket:
+                                                    "${item.fromTicket} - ${item.toTicket}",
+                                                    quantity: item.count!.toInt(),
+                                                    seller: item.seller!.fullName??"",
                                                 itemIndex: index),
                                           );
                                         })),

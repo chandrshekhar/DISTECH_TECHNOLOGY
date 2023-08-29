@@ -52,6 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // searchedList = ticketItemList;
+
     soldTicketController.selectedSoldTicket.clear();
     soldTicketController.searchText.value = '';
     soldTicketController.semNumber.value = 0;
@@ -91,21 +92,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             .headlineSmall!
                             .copyWith(fontWeight: FontWeight.w400),
                       )),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  Expanded(
-                      child: AppDropDown(
-                          onChanged: (value) async {
-                            soldTicketController.limit.value = value;
-                            soldTicketController.dropDownValue.value = value;
-                            await soldTicketController.getAllTicket(
-                                date: formatedDate,
-                                search: soldTicketController.searchText.value,
-                                semNumber:
-                                    soldTicketController.semNumber.value);
-                          },
-                          list: soldTicketController.selectedValueList))
+                  const Spacer(),
+                  AppDropDown(
+                      onChanged: (value) async {
+                        soldTicketController.limit.value = value;
+                        soldTicketController.dropDownValue.value = value;
+                        await soldTicketController.getAllTicket(
+                            date: formatedDate,
+                            search: soldTicketController.searchText.value,
+                            semNumber: soldTicketController.semNumber.value);
+                      },
+                      list: soldTicketController.selectedValueList)
                 ],
               ),
               const SizedBox(
@@ -365,6 +362,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               .selectedSoldTicket,
                                           formatedDate,
                                         );
+                                       
                                         Get.snackbar(
                                             "Successful", res['message'],
                                             backgroundColor: AppColors.white,

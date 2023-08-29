@@ -31,13 +31,22 @@ class SoldTicketController extends GetxController {
     if (semNumber == 0) {
       semNumber = null;
     }
-    Map<String, dynamic> reqModel = {
-      "offset": 0,
-      "limit": limit.value,
-      "search": search ?? "",
-      "SEM": semNumber,
-      "date": date
-    };
+    if (date == null || date.isEmpty) {}
+
+    Map<String, dynamic> reqModel = (date == null || date.isEmpty)
+        ? {
+            "offset": 0,
+            "limit": limit.value,
+            "search": search ?? "",
+            "SEM": semNumber,
+          }
+        : {
+            "offset": 0,
+            "limit": limit.value,
+            "search": search ?? "",
+            "SEM": semNumber,
+            "date": date
+          };
     isAllTicketLoading(true);
     if (kDebugMode) {
       print(reqModel);

@@ -163,8 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             if (_key.currentState!.validate()) {
                               context.read<LoginBloc>().add(UserLoginEvent(
-                                  email: _usernameController.text,
-                                  password: _passwordController.text));
+                                  email: _usernameController.text.trim(),
+                                  password: _passwordController.text.trim()));
                             }
                           });
                     },

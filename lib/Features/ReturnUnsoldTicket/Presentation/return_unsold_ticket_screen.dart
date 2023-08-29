@@ -1,10 +1,12 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Api/api_provider.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -12,7 +14,7 @@ import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
-import '../../SoldTicket/Widgets/ticket_list_item.dart';
+import '../../Dashboard/Presentation/dashboard_list.dart';
 
 class ReturnUnsoldTicket extends StatefulWidget {
   const ReturnUnsoldTicket({Key? key}) : super(key: key);
@@ -21,6 +23,9 @@ class ReturnUnsoldTicket extends StatefulWidget {
 }
 
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
+  final soldTicketController = Get.put(SoldTicketController());
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
   DateTime selectedDate = DateTime.now();
   String? formatedDate;
   Future<void> _selectDate(BuildContext context) async {
@@ -68,6 +73,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     soldTicketzcontroller.searchText.value = '';
     soldTicketzcontroller.semNumber.value = 0;
     getMyreturnController.getAllReturnTicket();
+    soldTicketzcontroller.limit.value = 10;
   }
 
   @override
@@ -141,7 +147,18 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                       color: AppColors.white));
                         }),
                       ),
-                    )
+                    ),
+                    SizedBox(width: 10),
+                    AppDropDown(
+                        onChanged: (value) async {
+                          soldTicketController.limit.value = value;
+                          soldTicketController.dropDownValue.value = value;
+                          await soldTicketController.getAllTicket(
+                              date: formatedDate,
+                              search: soldTicketController.searchText.value,
+                              semNumber: soldTicketController.semNumber.value);
+                        },
+                        list: soldTicketController.selectedValueList)
                   ],
                 ),
               ),
@@ -257,8 +274,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       child: Column(
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.all(AppSizes.kDefaultPadding),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppSizes.kDefaultPadding),
                             child: Row(
                               children: [
                                 Expanded(
@@ -288,32 +305,52 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                   .withOpacity(0.8),
                                               fontWeight: FontWeight.w500),
                                     )),
-                                // Expanded(
-                                //     flex: 3,
-                                //     child: Text(
-                                //       'SEM',
-                                //       textAlign: TextAlign.center,
-                                //       style: Theme.of(context)
-                                //           .textTheme
-                                //           .bodyMedium!
-                                //           .copyWith(
-                                //               color: AppColors.darkGrey
-                                //                   .withOpacity(0.8),
-                                //               fontWeight: FontWeight.w500),
-                                //     )),
+
                                 Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      'Select',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
+                                  flex: 2,
+                                  child: Transform.scale(
+                                    scale: 1.3,
+                                    child: Obx(() => Checkbox(
+                                          value: (timerController
+                                                      .countdown.value ==
+                                                  "0:00:00")
+                                              ? false
+                                              : soldTicketController
+                                                  .isAllSelect.value,
+                                          onChanged: (value) {
+                                            soldTicketController
+                                                .isAllSelect.value = value!;
+                                            if (value == true &&
+                                                (timerController
+                                                        .countdown.value !=
+                                                    "0:00:00")) {
+                                              for (int i = 0;
+                                                  i <
+                                                      getMyreturnController
+                                                          .returnCount.value;
+                                                  i++) {
+                                                soldTicketController
+                                                    .checkedBoxClicked(
+                                                        soldTicketController
+                                                            .allTicketList[i]
+                                                            .sId
+                                                            .toString(),
+                                                        true);
+                                              }
+                                            } else {
+                                              for (var element
+                                                  in soldTicketController
+                                                      .allTicketList) {
+                                                soldTicketController
+                                                    .checkedBoxClicked(
+                                                        element.sId!, false);
+                                              }
+                                            }
+                                            setState(() {});
+                                          },
+                                        )),
+                                  ),
+                                ),
                                 // Expanded(
                                 //     flex: 1,
                                 //     child: Align(
@@ -336,64 +373,28 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           ),
                           const CustomDivider(),
                           Container(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.28,
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: Obx(() {
-                                if (soldTicketzcontroller
-                                        .isAllTicketLoading.value ==
-                                    true) {
-                                  return const Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  );
-                                } else if (soldTicketzcontroller
-                                    .allTicketList.isEmpty) {
-                                  return const Center(
-                                      child: Text("No tickets found!"));
-                                } else {
-                                  return RawScrollbar(
-                                    thumbColor: AppColors.primary,
-                                    thickness: 3,
-                                    radius: const Radius.circular(
-                                        AppSizes.cardCornerRadius),
-                                    child: ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        physics: const BouncingScrollPhysics(),
-                                        itemCount: soldTicketzcontroller
-                                            .allTicketList.length,
-                                        itemBuilder: ((context, index) {
-                                          var e = soldTicketzcontroller
-                                              .allTicketList[index];
-                                          return TicketListItemWithCheckbox(
-                                            isSelectedIndex: isSelected,
-                                            ticketItemModel:
-                                                soldTicketzcontroller
-                                                    .allTicketList[index],
-                                            itemIndex: index,
-                                            child: Transform.scale(
-                                              scale: 1.2,
-                                              child: Checkbox(
-                                                value: soldTicketzcontroller
-                                                    .checkBoxForAuthor[e.sId],
-                                                onChanged: (value) {
-                                                  if (countLimit(value!)) {
-                                                    soldTicketzcontroller
-                                                        .checkedBoxClicked(
-                                                            e.sId.toString(),
-                                                            value);
-                                                    setState(() {});
-                                                  }
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        })),
-                                  );
-                                }
-                              }))
+                            constraints: BoxConstraints(
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.28,
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            child: Obx(() =>
+                                soldTicketController.allTicketList.isNotEmpty
+                                    ? DashboardListWidget(
+                                        date: formatedDate ?? "",
+                                        isSelected: isSelected,
+                                        dashBoard: false,
+                                      )
+                                    : soldTicketController
+                                                .isAllTicketLoading.value ==
+                                            true
+                                        ? const Center(
+                                            child: CircularProgressIndicator
+                                                .adaptive(),
+                                          )
+                                        : const Center(
+                                            child: Text("No tickets found"))),
+                          )
                         ],
                       ),
                     ),

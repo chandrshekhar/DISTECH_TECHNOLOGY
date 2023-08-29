@@ -19,29 +19,37 @@ class SoldTicketListController extends GetxController {
   }
 
   getSoldTicketList({String? search, int? semNumber, String? date}) async {
-    if (semNumber == 0) {}
-    Map<String, dynamic> reqModel = {
-      "offset": 0,
-      "limit": 1000,
-      "search": "",
-      "date": date
-    };
+    if (semNumber == 0) {
+      semNumber = null;
+    }
+    Map<String, dynamic> reqModel = (date == null || date.isEmpty)
+        ? {
+            "offset": 0,
+            "limit": 500,
+            "search": search ?? "",
+            "SEM": semNumber,
+          }
+        : {
+            "offset": 0,
+            "limit": 500,
+            "search": search ?? "",
+            "SEM": semNumber,
+            "date": date
+          };
+
     isSoldListLoading(true);
     if (kDebugMode) {
       log(reqModel.toString());
     }
     var res = await apiProvider.getAllSoldTicket(reqModel);
-    print(res.sales);
-    if (res.errorMsg == null) {
-      if (res.sales!.isNotEmpty) {
-        isSoldListLoading(false);
-        soldTicketList.value = res.sales!;
-      }
+
+    if (res.sales!.isNotEmpty) {
+      isSoldListLoading(false);
+      soldTicketList.value = res.sales!;
     } else {
-      Get.snackbar("Error", res.errorMsg.toString());
+      soldTicketList.value = [];
       isSoldListLoading(false);
     }
-
     isSoldListLoading(false);
   }
 

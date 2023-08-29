@@ -6,6 +6,7 @@ import 'package:distech_technology/Features/Login/Presentation/login_screen.dart
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_history_screen.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Presentation/return_unsold_ticket_screen.dart';
+import 'package:distech_technology/Features/ReturnedTickets/Presentation/returned_tickets_screen.dart';
 import 'package:distech_technology/Features/ScanCode/scan_code_screen.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_screen.dart';
 import 'package:distech_technology/Features/Support/Presentation/support_screen.dart';
@@ -15,8 +16,6 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Widgets/full_button.dart';
 import '../Components/timer_card_widget.dart';
@@ -44,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardScreen(),
     ReturnUnsoldTicket(),
     SoldTicketScreen(),
+    ReturnedTicketScreen(),
     PurchaseHistoryScreen(),
     SupportScreen(),
     ScanBarCodeScreen()
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //drawer item selected background color.
   //by default: dashboard will be selected.
-  List<bool> isHighlighted = [true, false, false, false, false, false];
+  List<bool> isHighlighted = [true, false, false, false, false, false, false];
 
   //Close Drawer if open
   void closeDrawer() {
@@ -96,11 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIndex = 5;
           });
           break;
+        case 6:
+          setState(() {
+            selectedIndex = 6;
+          });
       }
     });
   }
 
-  
   // Hardware Back Button Pressed on Android Devices to Close the Application.
   Future<bool> _onBackPressed() async {
     return await showDialog(

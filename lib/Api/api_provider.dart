@@ -9,6 +9,7 @@ import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_histo
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
+import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
 import '../Features/SoldTicket/Models/sold_ticket_model.dart';
 
 class ApiProvider {
@@ -138,7 +139,6 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("token $token");
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -262,7 +262,7 @@ class ApiProvider {
 
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<String> returnTicketIdList, String date) async {
+      List<String> returnTicketIdList, String? date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -272,10 +272,11 @@ class ApiProvider {
       "message": "No Tickets Found"
     };
 
-    Map<String, dynamic> reqModel = {
-      "tickets": returnTicketIdList,
-      "date": date
-    };
+    Map<String, dynamic> reqModel = (date == null || date.isEmpty)
+        ? {
+            "tickets": returnTicketIdList,
+          }
+        : {"tickets": returnTicketIdList, "date": date};
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -475,7 +476,7 @@ class ApiProvider {
   /// get my returns ticket
   ///
   /// app support api
-  Future<Map> getMyReturn(Map<String, dynamic> reqModel) async {
+  Future<ReturnedTicketModel> getMyReturn(Map<String, dynamic> reqModel) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -488,7 +489,7 @@ class ApiProvider {
         log('--------Response : $response');
       }
       return response.statusCode == 200
-          ? response.data
+          ? ReturnedTicketModel.fromJson(response.data)
           : throw Exception('Something Went Wrong');
     } catch (error, stacktrace) {
       if (kDebugMode) {
@@ -497,7 +498,7 @@ class ApiProvider {
       if (kDebugMode) {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
-      return {};
+      return ReturnedTicketModel.withError("Someting went wrong");
     }
   }
 }

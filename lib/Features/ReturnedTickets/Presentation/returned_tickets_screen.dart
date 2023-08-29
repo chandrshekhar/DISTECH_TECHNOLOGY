@@ -10,14 +10,14 @@ import '../../../Commons/app_sizes.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_text_field.dart';
 
-class SoldTicketScreen extends StatefulWidget {
-  const SoldTicketScreen({Key? key}) : super(key: key);
+class ReturnedTicketScreen extends StatefulWidget {
+  const ReturnedTicketScreen({Key? key}) : super(key: key);
 
   @override
-  State<SoldTicketScreen> createState() => _SoldTicketScreenState();
+  State<ReturnedTicketScreen> createState() => _ReturnedTicketScreenState();
 }
 
-class _SoldTicketScreenState extends State<SoldTicketScreen> {
+class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
   final soldTicketListController = Get.put(SoldTicketListController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
@@ -68,7 +68,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
-                    'All Sold Ticket (${soldTicketListController.soldTicketList.length})',
+                    'All Returned Tickets (${soldTicketListController.soldTicketList.length})',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!
@@ -251,7 +251,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                         var item = soldTicketListController
                                             .soldTicketList[index];
                                         return TicketListItem(
-                                           ticketId: item.ticketId??"",
+                                            ticketId: item.ticketId ?? "",
                                             itemIndex: index);
                                       })),
                                 );

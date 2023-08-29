@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:flutter/material.dart';
 
 class AppDropDown extends StatefulWidget {
@@ -24,7 +26,8 @@ class _AppDropDownState extends State<AppDropDown> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: AppSizes.buttonHeight + 4,
+      width: 80,
       child: DropdownButtonFormField(
           dropdownColor: Colors.white,
           focusColor: Colors.black,
@@ -32,16 +35,21 @@ class _AppDropDownState extends State<AppDropDown> {
             widget.hintText ?? "10",
           ),
           decoration: InputDecoration(
+              fillColor: AppColors.white,
+              filled: true,
               contentPadding:
-                  EdgeInsets.only(top: 4, bottom: 4, left: 18, right: 18),
+                  EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 0.5),
-                  borderRadius: BorderRadius.circular(5)),
+                  borderSide: BorderSide(color: AppColors.bg, width: 0.8),
+                  borderRadius:
+                      BorderRadius.circular(AppSizes.cardCornerRadius / 2)),
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 0.5),
-                  borderRadius: BorderRadius.circular(5)),
+                  borderSide: BorderSide(color: AppColors.bg, width: 0.8),
+                  borderRadius:
+                      BorderRadius.circular(AppSizes.cardCornerRadius / 2)),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.cardCornerRadius / 2),
               )),
           items: widget.list.map((e) {
             return DropdownMenuItem(
@@ -54,3 +62,11 @@ class _AppDropDownState extends State<AppDropDown> {
     );
   }
 }
+
+
+
+  //  height: AppSizes.buttonHeight + 4,
+  //                       decoration: BoxDecoration(
+  //                           borderRadius: BorderRadius.circular(
+  //                               AppSizes.cardCornerRadius / 2),
+  //                           border: Border.all(color: AppColors.bg)),

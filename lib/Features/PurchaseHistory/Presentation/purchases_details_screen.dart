@@ -2,12 +2,10 @@ import 'package:distech_technology/Features/Profile/Presentation/profile_screen.
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
-import 'package:distech_technology/Widgets/filter_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart';
 import '../../../Widgets/custom_divider.dart';
@@ -194,7 +192,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                                     ),
                                   ),
                                   Expanded(
-                                      flex: 3,
+                                      flex: 2,
                                       child: Text(
                                         'Ticket No',
                                         textAlign: TextAlign.start,
@@ -206,19 +204,19 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                                                     .withOpacity(0.8),
                                                 fontWeight: FontWeight.w500),
                                       )),
-                                  Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        'SEM',
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: AppColors.darkGrey
-                                                    .withOpacity(0.8),
-                                                fontWeight: FontWeight.w500),
-                                      )),
+                                  // Expanded(
+                                  //     flex: 2,
+                                  //     child: Text(
+                                  //       'SEM',
+                                  //       textAlign: TextAlign.center,
+                                  //       style: Theme.of(context)
+                                  //           .textTheme
+                                  //           .bodyMedium!
+                                  //           .copyWith(
+                                  //               color: AppColors.darkGrey
+                                  //                   .withOpacity(0.8),
+                                  //               fontWeight: FontWeight.w500),
+                                  //     )),
                                 ],
                               ),
                             ),
@@ -353,19 +351,19 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 2,
                 child: Text(
                   ticketItemModel.ticketId.toString(),
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
-            Expanded(
-                flex: 2,
-                child: Text(
-                  ticketItemModel.sEM.toString(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )),
+            // Expanded(
+            //     flex: 2,
+            //     child: Text(
+            //       ticketItemModel.sEM.toString(),
+            //       textAlign: TextAlign.center,
+            //       style: Theme.of(context).textTheme.bodyMedium,
+            //     )),
             // Expanded(
             //     // flex: 1,
             //     child: Align(
