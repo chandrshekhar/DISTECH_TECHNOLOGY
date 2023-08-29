@@ -73,6 +73,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     soldTicketzcontroller.searchText.value = '';
     soldTicketzcontroller.semNumber.value = 0;
     getMyreturnController.getAllReturnTicket();
+    soldTicketController.dropDownValue.value = 10;
     soldTicketzcontroller.limit.value = 10;
   }
 

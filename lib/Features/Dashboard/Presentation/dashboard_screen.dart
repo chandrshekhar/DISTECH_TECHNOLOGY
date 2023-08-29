@@ -52,11 +52,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // searchedList = ticketItemList;
-
     soldTicketController.selectedSoldTicket.clear();
     soldTicketController.searchText.value = '';
     soldTicketController.semNumber.value = 0;
     soldTicketController.limit.value = 10;
+    soldTicketController.dropDownValue.value = 10;
     soldTicketController.getAllTicket();
     super.initState();
   }
@@ -362,7 +362,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               .selectedSoldTicket,
                                           formatedDate,
                                         );
-                                       
+
                                         Get.snackbar(
                                             "Successful", res['message'],
                                             backgroundColor: AppColors.white,

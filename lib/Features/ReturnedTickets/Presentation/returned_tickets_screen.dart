@@ -1,4 +1,3 @@
-import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_text_field.dart';
 
@@ -18,7 +18,8 @@ class ReturnedTicketScreen extends StatefulWidget {
 }
 
 class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
-  final soldTicketListController = Get.put(SoldTicketListController());
+  final soldTicketListController = Get.put(GetMyReturnController());
+
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
   String formatedDate = '';
@@ -34,9 +35,8 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
       setState(() {
         selectedDate = picked;
         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-        soldTicketListController.getSoldTicketList(
-          date: formatedDate,
-          semNumber: soldTicketListController.semNumber.value,
+        soldTicketListController.getAllReturnTicket(
+          dateTime: formatedDate,
         );
       });
     }
@@ -46,9 +46,11 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    soldTicketListController.getSoldTicketList();
-    soldTicketListController.searchText.value = '';
-    soldTicketListController.semNumber.value = 0;
+    soldTicketListController.getAllReturnTicket(
+      dateTime: formatedDate,
+    );
+    // soldTicketListController.searchText.value = '';
+    // soldTicketListController.semNumber.value = 0;
   }
 
   @override
@@ -68,7 +70,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
-                    'All Returned Tickets (${soldTicketListController.soldTicketList.length})',
+                    'All Returned Tickets (${soldTicketListController.returnTicketsList.length})',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!
@@ -90,16 +92,16 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         size: 20,
                       ),
                       onChanged: (value) async {
-                        if (value.toString().isNotEmpty) {
-                          soldTicketListController.searchTextSave(value);
-                        } else {
-                          soldTicketListController.searchText("");
-                        }
-                        soldTicketListController.getSoldTicketList(
-                            date: formatedDate,
-                            search: soldTicketListController.searchText.value,
-                            semNumber:
-                                soldTicketListController.semNumber.value);
+                        // if (value.toString().isNotEmpty) {
+                        //   soldTicketListController.searchTextSave(value);
+                        // } else {
+                        //   soldTicketListController.searchText("");
+                        // }
+                        // soldTicketListController.getSoldTicketList(
+                        //     date: formatedDate,
+                        //     search: soldTicketListController.searchText.value,
+                        //     semNumber:
+                        //         soldTicketListController.semNumber.value);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -227,13 +229,13 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                             // height: MediaQuery.of(context).size.height * 0.45,
                             child: Obx(() {
                               if (soldTicketListController
-                                      .isSoldListLoading.value ==
+                                      .isReturnTicketLoading.value ==
                                   true) {
                                 return const Center(
                                   child: CircularProgressIndicator.adaptive(),
                                 );
                               } else if (soldTicketListController
-                                  .soldTicketList.isEmpty) {
+                                  .returnTicketsList.isEmpty) {
                                 return const Center(
                                     child: Text("No ticket found"));
                               } else {
@@ -246,10 +248,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                       padding: EdgeInsets.zero,
                                       physics: const BouncingScrollPhysics(),
                                       itemCount: soldTicketListController
-                                          .soldTicketList.length,
+                                          .returnTicketsList.length,
                                       itemBuilder: ((context, index) {
                                         var item = soldTicketListController
-                                            .soldTicketList[index];
+                                            .returnTicketsList[index];
                                         return TicketListItem(
                                             ticketId: item.ticketId ?? "",
                                             itemIndex: index);
