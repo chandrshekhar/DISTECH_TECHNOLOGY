@@ -254,7 +254,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                         item.seller!.fullName ??
                                                             "",
                                                     slNo:
-                                                        "${item.fromTicket} - ${item.toTicket}",
+                                                        "${item.fromTicket } - ${item.toTicket}",
                                                     ticketNo:
                                                         item.count.toString()),
                                                 itemIndex: index),

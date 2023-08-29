@@ -55,8 +55,8 @@ class Purchases {
         json['seller'] != null ? new Seller.fromJson(json['seller']) : null;
     qrCode = json['qrCode'];
     createdAt = json['createdAt'];
-    fromTicket = json['fromTicket'];
-    toTicket = json['toTicket'];
+    fromTicket = json['fromLetter'];
+    toTicket = json['toLetter'];
     count = json['count'];
   }
 
