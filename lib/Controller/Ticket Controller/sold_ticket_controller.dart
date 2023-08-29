@@ -9,10 +9,12 @@ class SoldTicketController extends GetxController {
   RxList<String> selectedSoldTicket = <String>[].obs;
   ApiProvider apiProvider = ApiProvider();
   var checkBoxForAuthor = {}.obs;
+  RxBool isAllSelect = false.obs;
   RxBool isAllTicketLoading = false.obs;
   RxInt semNumber = 0.obs;
   RxString searchText = ''.obs;
-  RxInt limit = 3.obs;
+  RxInt limit = 10.obs;
+  RxInt dropDownValue = 10.obs;
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -50,9 +52,8 @@ class SoldTicketController extends GetxController {
     });
     allTicketList.value = res.tickets!;
     allticketCount.value = res.count!;
-
     checkBoxForAuthor.value = cba;
-
+    isAllSelect.value = false;
     isAllTicketLoading(false);
   }
 
@@ -71,4 +72,6 @@ class SoldTicketController extends GetxController {
     // TODO: implement onReady
     super.onReady();
   }
+
+  List selectedValueList = [10, 25, 50, 100, 500];
 }

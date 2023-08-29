@@ -30,11 +30,14 @@ class _DashboardListWidgetState extends State<DashboardListWidget> {
           refreshController.refreshCompleted();
         },
         onLoading: () async {
+          soldTicketController.selectedSoldTicket.clear();
+          soldTicketController.limit.value +=
+              soldTicketController.dropDownValue.value;
           await soldTicketController.getAllTicket(
               date: widget.date,
               search: soldTicketController.searchText.value,
               semNumber: soldTicketController.semNumber.value);
-          soldTicketController.limit.value += 3;
+
           refreshController.loadComplete();
         },
         footer: const CustomFooterWidget(),

@@ -12,7 +12,6 @@ import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 import '../../../Widgets/custom_text_field.dart';
-import '../../../Widgets/filter_dialog.dart';
 import '../../SoldTicket/Widgets/ticket_list_item.dart';
 
 class ReturnUnsoldTicket extends StatefulWidget {
@@ -107,7 +106,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding / 2),
                         child: Text(
-                          'You can unsold your 5% of your total unsold ticket',
+                          'You can return 5% of your total unsold tickets',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -180,36 +179,36 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   const SizedBox(
                     width: AppSizes.kDefaultPadding / 1.5,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: FilterDialog(
-                                  selectedDate: formatedDate!,
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.filterIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       showDialog(
+                  //           context: context,
+                  //           builder: (context) {
+                  //             return AlertDialog(
+                  //               content: FilterDialog(
+                  //                 selectedDate: formatedDate!,
+                  //               ),
+                  //             );
+                  //           });
+                  //     },
+                  //     child: Container(
+                  //       padding: const EdgeInsets.all(
+                  //           AppSizes.kDefaultPadding / 1.5),
+                  //       height: AppSizes.buttonHeight + 4,
+                  //       decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(
+                  //               AppSizes.cardCornerRadius / 2),
+                  //           border: Border.all(color: AppColors.bg)),
+                  //       child: Image.asset(
+                  //         AppIcons.filterIcon,
+                  //         width: 25,
+                  //         height: 25,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -289,19 +288,19 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                   .withOpacity(0.8),
                                               fontWeight: FontWeight.w500),
                                     )),
-                                Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      'SEM',
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
+                                // Expanded(
+                                //     flex: 3,
+                                //     child: Text(
+                                //       'SEM',
+                                //       textAlign: TextAlign.center,
+                                //       style: Theme.of(context)
+                                //           .textTheme
+                                //           .bodyMedium!
+                                //           .copyWith(
+                                //               color: AppColors.darkGrey
+                                //                   .withOpacity(0.8),
+                                //               fontWeight: FontWeight.w500),
+                                //     )),
                                 Expanded(
                                     flex: 2,
                                     child: Text(
@@ -383,7 +382,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                     soldTicketzcontroller
                                                         .checkedBoxClicked(
                                                             e.sId.toString(),
-                                                            value!);
+                                                            value);
                                                     setState(() {});
                                                   }
                                                   setState(() {});
@@ -457,7 +456,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Text(
-                          '** You can unsold your 5% of your total unsold ticket',
+                          '** You can return 5% of your total unsold tickets',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
