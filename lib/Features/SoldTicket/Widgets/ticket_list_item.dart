@@ -7,15 +7,18 @@ import '../../../Commons/app_sizes.dart';
 class TicketListItem extends StatelessWidget {
   final TicketItemModel ticketItemModel;
   final int itemIndex;
-  const TicketListItem({Key? key, required this.ticketItemModel, required this.itemIndex})
+  const TicketListItem(
+      {Key? key, required this.ticketItemModel, required this.itemIndex})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
+      padding:
+          const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(
@@ -33,13 +36,13 @@ class TicketListItem extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
-            Expanded(
-                flex: 1,
-                child: Text(
-                  ticketItemModel.sem.toString(),
-                  textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )),
+            // Expanded(
+            //     flex: 1,
+            //     child: Text(
+            //       ticketItemModel.sem.toString(),
+            //       textAlign: TextAlign.end,
+            //       style: Theme.of(context).textTheme.bodyMedium,
+            //     )),
           ],
         ),
       ),
@@ -67,7 +70,8 @@ class TicketListItemWithCheckbox extends StatelessWidget {
     return Container(
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(
@@ -85,13 +89,13 @@ class TicketListItemWithCheckbox extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
-            Expanded(
-                flex: 1,
-                child: Text(
-                  ticketItemModel.sEM.toString(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )),
+            // Expanded(
+            //     flex: 1,
+            //     child: Text(
+            //       ticketItemModel.sEM.toString(),
+            //       textAlign: TextAlign.center,
+            //       style: Theme.of(context).textTheme.bodyMedium,
+            //     )),
             Expanded(
                 flex: 1,
                 child: Align(

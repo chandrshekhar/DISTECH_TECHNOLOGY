@@ -22,7 +22,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
   final soldTicketListController = Get.put(SoldTicketListController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
-    String formatedDate = '';
+  String formatedDate = '';
   DateTime selectedDate = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -34,7 +34,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
         soldTicketListController.getSoldTicketList(
           date: formatedDate,
           semNumber: soldTicketListController.semNumber.value,
@@ -97,7 +97,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                           soldTicketListController.searchText("");
                         }
                         soldTicketListController.getSoldTicketList(
-                          date: formatedDate,
+                            date: formatedDate,
                             search: soldTicketListController.searchText.value,
                             semNumber:
                                 soldTicketListController.semNumber.value);
@@ -110,29 +110,29 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   const SizedBox(
                     width: AppSizes.kDefaultPadding,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.filterIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: GestureDetector(
+                  //     onTap: () {},
+                  //     child: Container(
+                  //       padding: const EdgeInsets.all(
+                  //           AppSizes.kDefaultPadding / 1.5),
+                  //       height: AppSizes.buttonHeight + 4,
+                  //       decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(
+                  //               AppSizes.cardCornerRadius / 2),
+                  //           border: Border.all(color: AppColors.bg)),
+                  //       child: Image.asset(
+                  //         AppIcons.filterIcon,
+                  //         width: 25,
+                  //         height: 25,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   width: 10,
+                  // ),
                   Expanded(
                     flex: 1,
                     child: InkWell(
@@ -189,7 +189,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                               ),
                             ),
                             Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: Text(
                                   'Ticket No',
                                   textAlign: TextAlign.start,
@@ -201,19 +201,19 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                               .withOpacity(0.8),
                                           fontWeight: FontWeight.w500),
                                 )),
-                            Expanded(
-                                flex: 2,
-                                child: Text(
-                                  'SEM',
-                                  textAlign: TextAlign.end,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          color: AppColors.darkGrey
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500),
-                                )),
+                            // Expanded(
+                            //     flex: 2,
+                            //     child: Text(
+                            //       'SEM',
+                            //       textAlign: TextAlign.end,
+                            //       style: Theme.of(context)
+                            //           .textTheme
+                            //           .bodyMedium!
+                            //           .copyWith(
+                            //               color: AppColors.darkGrey
+                            //                   .withOpacity(0.8),
+                            //               fontWeight: FontWeight.w500),
+                            //     )),
                           ],
                         ),
                       ),
@@ -235,7 +235,8 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                 );
                               } else if (soldTicketListController
                                   .soldTicketList.isEmpty) {
-                                return const Center(child: Text("No ticket found"));
+                                return const Center(
+                                    child: Text("No ticket found"));
                               } else {
                                 return RawScrollbar(
                                   thumbColor: AppColors.primary,
@@ -252,10 +253,9 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                             .soldTicketList[index];
                                         return TicketListItem(
                                             ticketItemModel: TicketItemModel(
-                                                sem: "5",
+                                                sem: item.sEM.toString(),
                                                 slNo: "${index + 1}",
-                                                ticketNo:
-                                                    item.ticket!.ticketId),
+                                                ticketNo: item.ticketId ?? ""),
                                             itemIndex: index);
                                       })),
                                 );

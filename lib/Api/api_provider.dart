@@ -263,7 +263,6 @@ class ApiProvider {
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
       List<String> returnTicketIdList, String date) async {
-   
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -306,7 +305,7 @@ class ApiProvider {
   }
 
   Future<Map<String, dynamic>> retunTicketUnsold(
-      List<String> returnTicketIdList,String date) async {
+      List<String> returnTicketIdList, String date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -316,7 +315,10 @@ class ApiProvider {
       "message": "No Tickets Found"
     };
 
-    Map<String, dynamic> reqModel = {"tickets": returnTicketIdList,"date":date};
+    Map<String, dynamic> reqModel = {
+      "tickets": returnTicketIdList,
+      "date": date
+    };
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -471,7 +473,7 @@ class ApiProvider {
   }
 
   /// get my returns ticket
-  /// 
+  ///
   /// app support api
   Future<Map> getMyReturn(Map<String, dynamic> reqModel) async {
     Response response;
