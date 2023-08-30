@@ -1,7 +1,6 @@
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
-import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchases_details_screen.dart';
-import 'package:distech_technology/Features/PurchaseHistory/widget/purchase_history_card.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Presentation/purches_list_pagination_widget.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
-import '../../SoldTicket/Widgets/ticket_list_item.dart';
 import '../../../Utils/app_helper.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
@@ -49,6 +47,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   void initState() {
     // searchedList = ticketItemList;
     super.initState();
+    purchaesController.limit.value = 30;
     purchaesController.getAllPurchaesTicket();
   }
 
@@ -72,17 +71,17 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: AppSizes.kDefaultPadding,
+                height: 10,
               ),
-              Text(
-                'Purchase History',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.w400),
-              ),
+              Obx(() => Text(
+                    "Purchase History (${purchaesController.countPurchaesTickets})",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.w400),
+                  )),
               const SizedBox(
-                height: AppSizes.kDefaultPadding,
+                height: 10,
               ),
               Row(
                 children: [
@@ -132,14 +131,14 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                 ],
               ),
               const SizedBox(
-                height: AppSizes.kDefaultPadding * 1.2,
+                height: 10,
               ),
               Text(
                 'Purchase History on ${AppHelper.formatDate(selectedDate.toLocal())}',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(
-                height: AppSizes.kDefaultPadding,
+                height: 10,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -204,59 +203,23 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           child: Container(
                               constraints: BoxConstraints(
                                 maxHeight:
-                                    MediaQuery.of(context).size.height * 0.4,
+                                    MediaQuery.of(context).size.height * 0.40,
                               ),
                               width: MediaQuery.of(context).size.width,
-                              child: Obx(() {
-                                if (purchaesController.isPurchaLoading.value ==
-                                    true) {
-                                  return const Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  );
-                                } else if (purchaesController
-                                    .puchaseList.isEmpty) {
-                                  return const Center(
-                                    child: Text("No tickets found"),
-                                  );
-                                } else {
-                                  return RawScrollbar(
-                                    thumbColor: AppColors.primary,
-                                    thickness: 3,
-                                    radius: const Radius.circular(
-                                        AppSizes.cardCornerRadius),
-                                    child: ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        physics: const BouncingScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: purchaesController
-                                            .puchaseList.length,
-                                        itemBuilder: ((context, index) {
-                                          var item = purchaesController
-                                              .puchaseList[index];
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          PurchaesDetailsScreen(
-                                                            dateTime:
-                                                                dateFormat,
-                                                            orderID: item.sId
-                                                                .toString(),
-                                                          )));
-                                            },
-                                            child: PurchaseHistoryTicketListItem(
-                                                ticket:
-                                                    "${item.fromTicket} - ${item.toTicket}",
-                                                    quantity: item.count!.toInt(),
-                                                    seller: item.seller!.fullName??"",
-                                                itemIndex: index),
-                                          );
-                                        })),
-                                  );
-                                }
-                              })))
+                              child: Obx(() => purchaesController
+                                      .puchaseList.isNotEmpty
+                                  ? PurchesHistoryTicketWidget(
+                                      date: dateFormat,
+                                    )
+                                  : purchaesController.isPurchaLoading.value ==
+                                          true
+                                      ? const Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive(),
+                                        )
+                                      : const Center(
+                                          child: Text("No tickets found"),
+                                        ))))
                     ],
                   ),
                 ),

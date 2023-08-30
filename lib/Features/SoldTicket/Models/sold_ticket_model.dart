@@ -1,8 +1,9 @@
 class SoldTicketModel {
   bool? success;
   List<Sales>? sales;
+  int? count;
   String? errorMsg;
-  SoldTicketModel({this.success, this.sales, this.errorMsg});
+  SoldTicketModel({this.success, this.sales, this.count, this.errorMsg});
 
   SoldTicketModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -12,9 +13,10 @@ class SoldTicketModel {
         sales!.add(new Sales.fromJson(v));
       });
     }
+    count = json['count'];
   }
   SoldTicketModel.withError(String error) {
-     errorMsg = error;
+    errorMsg = error;
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +25,7 @@ class SoldTicketModel {
     if (this.sales != null) {
       data['sales'] = this.sales!.map((v) => v.toJson()).toList();
     }
+    data['count'] = this.count;
     return data;
   }
 }

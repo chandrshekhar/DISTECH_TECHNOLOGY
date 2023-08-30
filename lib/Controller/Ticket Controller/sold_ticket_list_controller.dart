@@ -10,6 +10,8 @@ class SoldTicketListController extends GetxController {
   RxBool isSoldListLoading = false.obs;
   RxInt semNumber = 0.obs;
   RxString searchText = ''.obs;
+  RxInt soldTicketCont = 0.obs;
+  RxInt limit = 10.obs;
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -25,29 +27,27 @@ class SoldTicketListController extends GetxController {
     Map<String, dynamic> reqModel = (date == null || date.isEmpty)
         ? {
             "offset": 0,
-            "limit": 500,
+            "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
           }
         : {
             "offset": 0,
-            "limit": 500,
+            "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
             "date": date
           };
 
     isSoldListLoading(true);
-    if (kDebugMode) {
-      log(reqModel.toString());
-    }
     var res = await apiProvider.getAllSoldTicket(reqModel);
-
+    print(res);
     if (res.sales!.isNotEmpty) {
       isSoldListLoading(false);
       soldTicketList.value = res.sales!;
+      soldTicketCont.value = res.count!;
     } else {
-      soldTicketList.value = [];
+      soldTicketList.value = res.sales!;
       isSoldListLoading(false);
     }
     isSoldListLoading(false);

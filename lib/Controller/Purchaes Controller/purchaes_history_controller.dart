@@ -9,21 +9,24 @@ class PurchaseController extends GetxController {
   RxBool isPurchaseDetailsLoading = false.obs;
   RxBool isPurchaLoading = false.obs;
   ApiProvider apiProvider = ApiProvider();
-
+  RxInt limit = 30.obs;
+  RxInt purDetLimit = 40.obs;
+  RxInt countPurchaesTickets = 0.obs;
   getAllPurchaesTicket(
       {String? search, int? semNumber, String? dateTime}) async {
     Map<String, dynamic> reqModel = dateTime == null || dateTime.isEmpty
         ? {
             "offset": 0,
-            "limit": 1000,
+            "limit": limit.value,
           }
-        : {"offset": 0, "limit": 1000, "date": dateTime};
+        : {"offset": 0, "limit": limit.value, "date": dateTime};
     isPurchaLoading(true);
     var res = await apiProvider.getAllPurcHistoryTicket(reqModel);
     if (res.errorMsg == null) {
       if (res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
+        countPurchaesTickets.value = res.count!;
       } else {
         puchaseList.clear();
       }
@@ -38,22 +41,20 @@ class PurchaseController extends GetxController {
   getAllPurchaesTicketDetails(
       {String? search, int? semNumber, String? orderID}) async {
     Map<String, dynamic> reqModel = {
+      "orderId": orderID,
       "offset": 0,
-      "limit": 1000,
-      "orderId": orderID
+      "limit": purDetLimit.value
     };
+   
     isPurchaseDetailsLoading(true);
     var res = await apiProvider.getAllPurcHistoryTicketDetails(reqModel);
-    if (res.errorMsg == null) {
-      if (res.tickets!.isNotEmpty) {
-        isPurchaseDetailsLoading(false);
-        purchaseHistoryDetailsList.value = res.tickets!;
-      } else {
-        purchaseHistoryDetailsList.clear();
-      }
-    } else {
-      Get.snackbar("Error", res.errorMsg.toString());
+   
+    if (res.tickets!.isNotEmpty) {
       isPurchaseDetailsLoading(false);
+      purchaseHistoryDetailsList.value = res.tickets!;
+    } else {
+      isPurchaseDetailsLoading(false);
+      purchaseHistoryDetailsList.value = [];
     }
 
     isPurchaseDetailsLoading(false);

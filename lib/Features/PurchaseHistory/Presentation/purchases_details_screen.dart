@@ -1,5 +1,5 @@
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
-import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_detils_list_widget.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -31,12 +31,9 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
 
   @override
   void initState() {
-    // searchedList = ticketItemList;
-    // soldTicketController.getAllTicket(
-    //     search: widget.qrcodeId, date: widget.dateTime);
-    // soldTicketController.searchText.value = '';
-    // soldTicketController.semNumber.value = 0;
     super.initState();
+    purchaseHistoryTicketController.purchaseHistoryDetailsList.clear();
+    purchaseHistoryTicketController.purDetLimit.value = 40;
     purchaseHistoryTicketController.getAllPurchaesTicketDetails(
         orderID: widget.orderID);
   }
@@ -228,63 +225,21 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                                     MediaQuery.of(context).size.height - 300,
                               ),
                               width: MediaQuery.of(context).size.width,
-                              child: Obx(() {
-                                if (purchaseHistoryTicketController
-                                        .isPurchaseDetailsLoading.value ==
-                                    true) {
-                                  return const Center(
-                                    child: CircularProgressIndicator.adaptive(),
-                                  );
-                                } else {
-                                  return Scrollbar(
-                                    child: purchaseHistoryTicketController
-                                            .purchaseHistoryDetailsList
-                                            .isNotEmpty
-                                        ? ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const BouncingScrollPhysics(),
-                                            itemCount:
-                                                purchaseHistoryTicketController
-                                                    .purchaseHistoryDetailsList
-                                                    .length,
-                                            itemBuilder: ((context, index) {
-                                              var e = purchaseHistoryTicketController
-                                                      .purchaseHistoryDetailsList[
-                                                  index];
-                                              return purchageHistoryWidget(
-                                                // isSelectedIndex: isSelected,
-                                                ticketItemModel:
-                                                    purchaseHistoryTicketController
-                                                            .purchaseHistoryDetailsList[
-                                                        index],
-                                                itemIndex: index,
-                                                // child: Checkbox(
-                                                //   value: soldTicketController
-                                                //           .checkBoxForAuthor[
-                                                //       e.sId],
-                                                //   onChanged: (value) {
-                                                //     soldTicketController
-                                                //         .checkedBoxClicked(
-                                                //             e.sId.toString(),
-                                                //             value!);
-                                                //     setState(() {});
-                                                //   },
-                                                // ),
-                                              );
-                                            }))
-                                        : Text(
-                                            'No Ticket Found!',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                          ),
-                                  );
-                                }
-                              }),
+                              child: Obx(() => purchaseHistoryTicketController
+                                      .purchaseHistoryDetailsList.isNotEmpty
+                                  ? PurchaseDetailsListWidget(
+                                      orderId: widget.orderID,
+                                    )
+                                  : purchaseHistoryTicketController
+                                              .isPurchaseDetailsLoading.value ==
+                                          true
+                                      ? const Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive(),
+                                        )
+                                      : const Center(
+                                          child: Text("No tickt found"),
+                                        )),
                             ),
                           ],
                         ),
@@ -329,50 +284,5 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
     //     )
     //   ],
     // );
-  }
-
-  Widget purchageHistoryWidget(
-      {required Tickets ticketItemModel, required int itemIndex}) {
-    return Container(
-      padding:
-          const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
-      color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
-      child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Text(
-                "${itemIndex + 1}",
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            Expanded(
-                flex: 2,
-                child: Text(
-                  ticketItemModel.ticketId.toString(),
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )),
-            // Expanded(
-            //     flex: 2,
-            //     child: Text(
-            //       ticketItemModel.sEM.toString(),
-            //       textAlign: TextAlign.center,
-            //       style: Theme.of(context).textTheme.bodyMedium,
-            //     )),
-            // Expanded(
-            //     // flex: 1,
-            //     child: Align(
-            //   alignment: Alignment.centerRight,
-            //   child: SizedBox(width: 10, height: 10, child: child),
-            // )),
-          ],
-        ),
-      ),
-    );
   }
 }
