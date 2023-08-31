@@ -4,7 +4,12 @@ class PurchaesModel {
   int? count;
   String? errorMsg;
 
-  PurchaesModel({this.success, this.purchases, this.count, this.errorMsg,});
+  PurchaesModel({
+    this.success,
+    this.purchases,
+    this.count,
+    this.errorMsg,
+  });
   PurchaesModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }
@@ -14,19 +19,19 @@ class PurchaesModel {
     if (json['purchases'] != null) {
       purchases = <Purchases>[];
       json['purchases'].forEach((v) {
-        purchases!.add(new Purchases.fromJson(v));
+        purchases!.add(Purchases.fromJson(v));
       });
     }
     count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.purchases != null) {
-      data['purchases'] = this.purchases!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (purchases != null) {
+      data['purchases'] = purchases!.map((v) => v.toJson()).toList();
     }
-    data['count'] = this.count;
+    data['count'] = count;
     return data;
   }
 }
@@ -38,6 +43,8 @@ class Purchases {
   String? createdAt;
   String? fromTicket;
   String? toTicket;
+  String? fromNumber;
+  String? toNumber;
   int? count;
 
   Purchases(
@@ -46,31 +53,36 @@ class Purchases {
       this.qrCode,
       this.createdAt,
       this.fromTicket,
+      this.fromNumber,
+      this.toNumber,
       this.toTicket,
       this.count});
 
   Purchases.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    seller =
-        json['seller'] != null ? new Seller.fromJson(json['seller']) : null;
+    seller = json['seller'] != null ? Seller.fromJson(json['seller']) : null;
     qrCode = json['qrCode'];
     createdAt = json['createdAt'];
     fromTicket = json['fromLetter'];
+    fromNumber = json['fromNumber'];
+    toNumber = json['toNumber'];
     toTicket = json['toLetter'];
     count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.seller != null) {
-      data['seller'] = this.seller!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (seller != null) {
+      data['seller'] = seller!.toJson();
     }
-    data['qrCode'] = this.qrCode;
-    data['createdAt'] = this.createdAt;
-    data['fromTicket'] = this.fromTicket;
-    data['toTicket'] = this.toTicket;
-    data['count'] = this.count;
+    data['qrCode'] = qrCode;
+    data['createdAt'] = createdAt;
+    data['fromTicket'] = fromTicket;
+     data['fromNumber'] = fromNumber;
+    data['toNumber'] = toNumber;
+    data['toTicket'] = toTicket;
+    data['count'] = count;
     return data;
   }
 }
@@ -91,11 +103,11 @@ class Seller {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['fullName'] = this.fullName;
-    data['mobileNumber'] = this.mobileNumber;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['fullName'] = fullName;
+    data['mobileNumber'] = mobileNumber;
+    data['email'] = email;
     return data;
   }
 }

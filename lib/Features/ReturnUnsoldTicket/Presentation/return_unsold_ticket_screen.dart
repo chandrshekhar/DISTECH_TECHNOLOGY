@@ -117,7 +117,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
-                              .copyWith(fontWeight: FontWeight.w400),
+                              .copyWith(
+                                  fontWeight: FontWeight.w400, fontSize: 14),
                         ),
                       ),
                     ),
@@ -149,7 +150,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         }),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     AppDropDown(
                         onChanged: (value) async {
                           soldTicketController.limit.value = value;
@@ -319,6 +320,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               : soldTicketController
                                                   .isAllSelect.value,
                                           onChanged: (value) {
+                                            setState(() {});
                                             soldTicketController
                                                 .isAllSelect.value = value!;
                                             if (value == true &&
@@ -334,8 +336,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                     .checkedBoxClicked(
                                                         soldTicketController
                                                             .allTicketList[i]
-                                                            .sId
-                                                            .toString(),
+                                                            .sId!,
                                                         true);
                                               }
                                             } else {
@@ -347,7 +348,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                         element.sId!, false);
                                               }
                                             }
-                                            setState(() {});
                                           },
                                         )),
                                   ),

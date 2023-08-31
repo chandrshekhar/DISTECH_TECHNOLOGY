@@ -71,17 +71,17 @@ class Tickets {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['ticketId'] = this.ticketId;
-    data['ticketLetter'] = this.ticketLetter;
-    data['ticketNumber'] = this.ticketNumber;
-    data['barCode'] = this.barCode;
-    data['qrCode'] = this.qrCode;
-    data['SEM'] = this.sEM;
-    data['status'] = this.status;
-    data['date'] = this.date;
-    data['createdAt'] = this.createdAt;
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['_id'] = sId;
+    data['ticketId'] =ticketId;
+    data['ticketLetter'] = ticketLetter;
+    data['ticketNumber'] = ticketNumber;
+    data['barCode'] = barCode;
+    data['qrCode'] = qrCode;
+    data['SEM'] = sEM;
+    data['status'] = status;
+    data['date'] = date;
+    data['createdAt'] = createdAt;
     return data;
   }
 }

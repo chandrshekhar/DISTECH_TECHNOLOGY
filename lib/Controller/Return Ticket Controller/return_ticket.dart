@@ -21,7 +21,7 @@ class GetMyReturnController extends GetxController {
       returnCount.value = res.remainingReturns!;
       returnTicketsList.value = res.allReturnedTickets!;
     } else {
-       returnTicketsList.value = [];
+      returnTicketsList.value = [];
       isReturnTicketLoading(false);
       Get.snackbar("Error", "Something went wrong");
     }

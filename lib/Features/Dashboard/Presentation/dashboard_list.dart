@@ -11,9 +11,12 @@ import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 class DashboardListWidget extends StatefulWidget {
   final String date;
   final bool isSelected;
-   bool dashBoard;
-   DashboardListWidget(
-      {super.key, required this.date, required this.isSelected,  this.dashBoard = true});
+  bool dashBoard;
+  DashboardListWidget(
+      {super.key,
+      required this.date,
+      required this.isSelected,
+      this.dashBoard = true});
 
   @override
   State<DashboardListWidget> createState() => _DashboardListWidgetState();
@@ -41,7 +44,7 @@ class _DashboardListWidgetState extends State<DashboardListWidget> {
   Widget build(BuildContext context) {
     return SmartRefresher(
         controller: refreshController,
-        enablePullDown: true,
+        enablePullDown: false,
         enablePullUp: true,
         onRefresh: () {
           // soldTicketController.getAllTicket(date: formatedDate);
@@ -73,17 +76,17 @@ class _DashboardListWidgetState extends State<DashboardListWidget> {
                 child: Checkbox(
                   value: soldTicketController.checkBoxForAuthor[e.sId],
                   onChanged: (value) {
-                  if(widget.dashBoard==false){
+                    if (widget.dashBoard == false) {
                       if (countLimit(value!)) {
+                        soldTicketController.checkedBoxClicked(
+                            e.sId.toString(), value);
+                        setState(() {});
+                      }
+                    } else {
                       soldTicketController.checkedBoxClicked(
-                          e.sId.toString(), value);
-                      setState(() {});
-                    }
-                  }else{
-                    soldTicketController.checkedBoxClicked(
                           e.sId.toString(), value!);
                       setState(() {});
-                  }
+                    }
                   },
                 ),
               ),

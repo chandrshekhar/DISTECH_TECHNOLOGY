@@ -1,12 +1,9 @@
-import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
-import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -27,29 +24,12 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final profileController = Get.put(ProfileController());
-  // //Variable Declarations
-  // final TextEditingController _fullNameController = TextEditingController();
-  // final TextEditingController _aadhaarIdController = TextEditingController();
-  // final TextEditingController _addressController = TextEditingController();
-  // final TextEditingController _pinCodeController = TextEditingController();
-  // final TextEditingController _mobileNumberController = TextEditingController();
-  // final TextEditingController _emailIdController = TextEditingController();
-  // final TextEditingController _tradeLicencesController =
-  //     TextEditingController();
-  // final TextEditingController _gstNumberController = TextEditingController();
+ 
 
   
   @override
   void initState() {
-    // TODO: implement initState
-    // _fullNameController.text = widget.firstName;
-    // _aadhaarIdController.text = widget.aadhaarId;
-    // _addressController.text = widget.address;
-    // _pinCodeController.text = widget.pinCode;
-    // _mobileNumberController.text = widget.mobileNumber;
-    // _emailIdController.text = widget.emailAddress;
-    // _tradeLicencesController.text = widget.lincenseNo;
-    // _gstNumberController.text = widget.gstNo;
+   
     profileController.getUserDetails();
     super.initState();
   }
@@ -99,7 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   
                      CustomTextField(
                       controller: profileController.firstNameController.value,
-                      hintText: 'Shuvra',
+                      hintText: 'Please enter name',
                       labelText: 'First Name',
                       isBorder: false,
                       keyboardType: TextInputType.name,
@@ -124,7 +104,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.addharController.value,
-                    hintText: '0000 0000 0000',
+                    hintText: 'Enter aadhaar id',
                     labelText: 'Aadhaar ID',
                     keyboardType: TextInputType.number,
                     isBorder: false,
@@ -136,7 +116,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.addressController.value,
-                    hintText: 'ABCD Nagar, Block-A, Uttarayan, Bidhannagar ',
+                    hintText: 'Please enter address',
                     labelText: 'Address',
                     isBorder: false,
                     keyboardType: TextInputType.streetAddress,
@@ -148,7 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.pincodeController.value,
-                    hintText: '743437',
+                    hintText: 'Enter pincode',
                     labelText: 'PIN Code',
                     isBorder: false,
                     keyboardType: TextInputType.number,
@@ -174,7 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.mobileControlelr.value,
-                    hintText: '6535653542',
+                    hintText: 'Please Enter Mobile Number',
                     labelText: 'Mobile Number',
                     keyboardType: TextInputType.number,
                     isBorder: false,
@@ -187,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.emailComtroller.value,
-                    hintText: 'user@gmail.com',
+                    hintText: 'Please enter email',
                     labelText: 'Email ID',
                     keyboardType: TextInputType.emailAddress,
                     isBorder: false,
@@ -199,7 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.tradeLicenceController.value,
-                    hintText: '123456789',
+                    hintText: "Please enter trade license",
                     labelText: 'Trade License Number',
                     isBorder: false,
                     keyboardType: TextInputType.text,
@@ -211,7 +191,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   CustomTextField(
                     controller: profileController.gstController.value,
-                    hintText: '16365253454',
+                    hintText: 'Please Enter GST',
                     keyboardType: TextInputType.text,
                     labelText: 'GST Number',
                     isBorder: false,

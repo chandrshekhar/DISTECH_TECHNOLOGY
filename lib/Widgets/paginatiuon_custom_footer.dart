@@ -12,10 +12,7 @@ class CustomFooterWidget extends StatelessWidget {
         body = const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Data loading"),
-            SizedBox(
-              width: 10,
-            ),
+           
             CircularProgressIndicator.adaptive(),
           ],
         );
@@ -23,8 +20,10 @@ class CustomFooterWidget extends StatelessWidget {
         body = const Text("Load Failed! Click retry!");
       } else if (mode == LoadStatus.canLoading) {
         body = const Text("Release to load more");
-      } else {
+      } else if (mode == LoadStatus.idle) {
         body = const Text("No more data");
+      } else {
+        body = const Text("No data found");
       }
       return SizedBox(
         height: 40.0,

@@ -25,11 +25,11 @@ class ProfileController extends GetxController {
       isLoading(true);
       var res = await apiProvider.getUserDetails();
       if (res.success == true) {
-        var res = await apiProvider.getUserDetails();
         userProfileModel.value = res;
         intiValueController();
         isLoading(false);
       } else {
+        userProfileModel.value = res;
         isLoading(false);
       }
     } catch (e) {
@@ -41,11 +41,12 @@ class ProfileController extends GetxController {
     firstNameController.value.text =
         userProfileModel.value.user!.fullName ?? "";
     addressController.value.text = userProfileModel.value.user!.address1 ?? "";
-    addharController.value.text = "377348";
+    addharController.value.text = userProfileModel.value.user!.aadhaarId ??"";
     panController.value.text = userProfileModel.value.user!.panNumber ?? "";
     pincodeController.value.text = userProfileModel.value.user!.pinCode ?? "";
     mobileControlelr.value.text =
         userProfileModel.value.user!.mobileNumber ?? "";
+    emailComtroller.value.text = userProfileModel.value.user!.email ?? "";
     tradeLicenceController.value.text =
         userProfileModel.value.user!.tradeLicenseNumber ?? "";
     gstController.value.text = userProfileModel.value.user!.gstNumber ?? "";
