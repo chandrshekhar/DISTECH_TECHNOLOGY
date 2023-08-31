@@ -22,7 +22,7 @@ class ProfileItemWidget extends StatelessWidget {
               .bodyMedium!
               .copyWith(color: AppColors.darkGrey.withOpacity(0.8)),
         ),
-        const SizedBox(
+         SizedBox(
           height: AppSizes.kDefaultPadding / 3,
         ),
         Text(
@@ -34,7 +34,7 @@ class ProfileItemWidget extends StatelessWidget {
               .headlineSmall!
               .copyWith(fontWeight: FontWeight.w400),
         ),
-        const SizedBox(
+         SizedBox(
           height: AppSizes.kDefaultPadding,
         ),
       ],

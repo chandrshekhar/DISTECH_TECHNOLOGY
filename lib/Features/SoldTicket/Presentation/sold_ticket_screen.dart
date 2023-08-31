@@ -59,11 +59,11 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Padding(
-        padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+        padding: EdgeInsets.all(AppSizes.kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+            SizedBox(
               height: AppSizes.kDefaultPadding,
             ),
             Obx(() => Text(
@@ -73,7 +73,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                       .headlineSmall!
                       .copyWith(fontWeight: FontWeight.w400),
                 )),
-            const SizedBox(
+            SizedBox(
               height: AppSizes.kDefaultPadding,
             ),
             Row(
@@ -104,7 +104,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                     isBorder: false,
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: AppSizes.kDefaultPadding,
                 ),
                 // Expanded(
@@ -137,8 +137,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                       _selectDate(context);
                     },
                     child: Container(
-                      padding:
-                          const EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
+                      padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                       height: AppSizes.buttonHeight + 4,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(
@@ -154,7 +153,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                 )
               ],
             ),
-            const SizedBox(
+            SizedBox(
               height: AppSizes.kDefaultPadding,
             ),
             Container(
@@ -168,7 +167,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                      padding: EdgeInsets.all(AppSizes.kDefaultPadding),
                       child: Row(
                         children: [
                           Expanded(
@@ -214,12 +213,9 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height * 0.41,
-                        ),
+                    SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        // height: MediaQuery.of(context).size.height * 0.45,
+                        height: MediaQuery.of(context).size.height * 0.36,
                         child: Obx(
                           () => soldTicketListController
                                   .soldTicketList.isNotEmpty
@@ -234,7 +230,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                           CircularProgressIndicator.adaptive(),
                                     )
                                   : const Center(
-                                      child:  Text("No tickets found")),
+                                      child: Text("No tickets found")),
                         ))
                   ],
                 ),

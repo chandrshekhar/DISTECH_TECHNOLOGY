@@ -31,7 +31,7 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
     return RawScrollbar(
       thumbColor: AppColors.primary,
       thickness: 3,
-      radius: const Radius.circular(AppSizes.cardCornerRadius),
+      radius:  Radius.circular(AppSizes.cardCornerRadius),
       child: SmartRefresher(
         controller: refreshController,
         enablePullDown: false,

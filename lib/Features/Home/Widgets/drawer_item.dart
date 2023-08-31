@@ -1,6 +1,5 @@
 import 'package:distech_technology/Features/Home/Models/drawer_item_model.dart';
 import 'package:flutter/material.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 
@@ -14,7 +13,7 @@ class DrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: bgColor,
-      padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+      padding:  EdgeInsets.all(AppSizes.kDefaultPadding),
       child: Row(
         children: [
           Image.asset(
@@ -22,7 +21,7 @@ class DrawerItem extends StatelessWidget {
             width: 20,
             height: 20,
           ),
-          const SizedBox(
+           SizedBox(
             width: AppSizes.kDefaultPadding,
           ),
           Expanded(

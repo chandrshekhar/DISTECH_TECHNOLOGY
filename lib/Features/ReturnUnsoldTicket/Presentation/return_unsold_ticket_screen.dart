@@ -5,6 +5,7 @@ import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dar
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Api/api_provider.dart';
@@ -91,10 +92,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
       },
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+          padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Container(
@@ -110,7 +111,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                     Expanded(
                       flex: 6,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding / 2),
                         child: Text(
                           'You can return 5% of your total unsold tickets',
@@ -118,7 +119,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                  fontWeight: FontWeight.w400, fontSize: 14),
+                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
                         ),
                       ),
                     ),
@@ -150,7 +151,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         }),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10.w),
                     AppDropDown(
                         onChanged: (value) async {
                           soldTicketController.limit.value = value;
@@ -164,7 +165,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   ],
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding * 1.2,
               ),
               Row(
@@ -174,10 +175,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon: const Icon(
+                      prefixIcon:  Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20,
+                        size: 20.h,
                       ),
                       onChanged: (value) {
                         if (value.toString().isNotEmpty) {
@@ -195,8 +196,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       isBorder: false,
                     ),
                   ),
-                  const SizedBox(
-                    width: AppSizes.kDefaultPadding / 1.5,
+                  SizedBox(
+                    width: 15.h,
                   ),
                   // Expanded(
                   //   flex: 1,
@@ -228,8 +229,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   //     ),
                   //   ),
                   // ),
-                  const SizedBox(
-                    width: 10,
+                   SizedBox(
+                    width: 10.w,
                   ),
                   Expanded(
                     flex: 1,
@@ -238,8 +239,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         _selectDate(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                         height: AppSizes.buttonHeight + 4,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -247,15 +247,15 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
+                          width: 25.w,
+                          height: 25.h,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Column(
@@ -276,7 +276,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                                 horizontal: AppSizes.kDefaultPadding),
                             child: Row(
                               children: [
@@ -403,7 +403,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   SafeArea(
                     child: Column(
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Obx(() => FullButton(
@@ -454,7 +454,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   ? AppColors.lightGrey
                                   : AppColors.secondary,
                             )),
-                        const SizedBox(
+                        SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Text(
@@ -464,7 +464,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               .bodyMedium!
                               .copyWith(color: AppColors.secondary),
                         ),
-                        const SizedBox(height: 5)
+                         SizedBox(height: 5.h)
                       ],
                     ),
                   ),

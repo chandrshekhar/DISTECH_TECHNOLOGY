@@ -38,7 +38,7 @@ class CustomChip extends StatelessWidget {
                   )
                 : const SizedBox(),
             isSelected!
-                ? const SizedBox(
+                ?  SizedBox(
                     width: AppSizes.kDefaultPadding / 4,
                   )
                 : const SizedBox(),

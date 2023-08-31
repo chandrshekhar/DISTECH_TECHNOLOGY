@@ -3,6 +3,7 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppDropDown extends StatefulWidget {
   ValueChanged onChanged;
@@ -26,8 +27,7 @@ class _AppDropDownState extends State<AppDropDown> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppSizes.buttonHeight + 4,
-      width: 80,
+      width: 90.w,
       child: DropdownButtonFormField(
           dropdownColor: Colors.white,
           focusColor: Colors.black,
@@ -37,8 +37,8 @@ class _AppDropDownState extends State<AppDropDown> {
           decoration: InputDecoration(
               fillColor: AppColors.white,
               filled: true,
-              contentPadding:
-                  EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+              contentPadding: EdgeInsets.only(
+                  top: 4.h, bottom: 4.h, left: 12.w, right: 12.w),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: AppColors.bg, width: 0.8),
                   borderRadius:

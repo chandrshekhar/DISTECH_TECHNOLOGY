@@ -38,12 +38,11 @@ dependencies:
   get: ^4.6.5
   flutter_barcode_scanner:
   pull_to_refresh: ^2.0.0
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
 
 flutter_icons:

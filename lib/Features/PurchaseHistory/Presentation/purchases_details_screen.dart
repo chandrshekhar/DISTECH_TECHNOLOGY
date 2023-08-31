@@ -4,6 +4,7 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
@@ -55,9 +56,9 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
         actions: [
           GestureDetector(
             onTap: () => context.push(const ProfileScreen()),
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.only(right: AppSizes.kDefaultPadding),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 16,
                 backgroundColor: AppColors.white,
                 foregroundImage: NetworkImage(
@@ -76,7 +77,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Padding(
-            padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+            padding: EdgeInsets.all(AppSizes.kDefaultPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,163 +91,104 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                 // const SizedBox(
                 //   height: AppSizes.kDefaultPadding,
                 // ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: CustomTextField(
-                        controller: _searchController,
-                        hintText: 'Search',
-                        prefixIcon: const Icon(
-                          EvaIcons.searchOutline,
-                          color: AppColors.primary,
-                          size: 20,
+                CustomTextField(
+                  controller: _searchController,
+                  hintText: 'Search',
+                  prefixIcon: Icon(
+                    EvaIcons.searchOutline,
+                    color: AppColors.primary,
+                    size: 20.h,
+                  ),
+                  onChanged: (value) {
+                    // if (value.toString().isNotEmpty) {
+                    //   soldTicketController.searchTextSave(value);
+                    // } else {
+                    //   soldTicketController.searchText("");
+                    // }
+                    // soldTicketController.getAllTicket(
+                    //     search: soldTicketController.searchText.value,
+                    //     semNumber: soldTicketController.semNumber.value);
+                  },
+                  maxLines: 1,
+                  minLines: 1,
+                  isBorder: false,
+                ),
+                SizedBox(
+                  height: AppSizes.kDefaultPadding / 1.5,
+                ),
+                Container(
+                  color: AppColors.primaryBg,
+                  child: Padding(
+                    padding: EdgeInsets.all(AppSizes.kDefaultPadding),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            'SL No',
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: AppColors.darkGrey.withOpacity(0.8),
+                                    fontWeight: FontWeight.w500),
+                          ),
                         ),
-                        onChanged: (value) {
-                          // if (value.toString().isNotEmpty) {
-                          //   soldTicketController.searchTextSave(value);
-                          // } else {
-                          //   soldTicketController.searchText("");
-                          // }
-                          // soldTicketController.getAllTicket(
-                          //     search: soldTicketController.searchText.value,
-                          //     semNumber: soldTicketController.semNumber.value);
-                        },
-                        maxLines: 1,
-                        minLines: 1,
-                        isBorder: false,
-                      ),
+                        Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Ticket No',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color:
+                                          AppColors.darkGrey.withOpacity(0.8),
+                                      fontWeight: FontWeight.w500),
+                            )),
+
+                        // Expanded(
+                        //     flex: 2,
+                        //     child: Text(
+                        //       'SEM',
+                        //       textAlign: TextAlign.center,
+                        //       style: Theme.of(context)
+                        //           .textTheme
+                        //           .bodyMedium!
+                        //           .copyWith(
+                        //               color: AppColors.darkGrey
+                        //                   .withOpacity(0.8),
+                        //               fontWeight: FontWeight.w500),
+                        //     )),
+                      ],
                     ),
-                    const SizedBox(
-                      width: AppSizes.kDefaultPadding / 1.5,
-                    ),
-                    // Expanded(
-                    //   flex: 1,
-                    //   child: InkWell(
-                    //     onTap: () {
-                    //       showDialog(
-                    //           context: context,
-                    //           builder: (context) {
-                    //             return AlertDialog(
-                    //               content: FilterDialog(
-                    //                 selectedDate: widget.dateTime,
-                    //               ),
-                    //             );
-                    //           });
-                    //     },
-                    //     child: Container(
-                    //       padding: const EdgeInsets.all(
-                    //           AppSizes.kDefaultPadding / 1.5),
-                    //       height: AppSizes.buttonHeight + 4,
-                    //       decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(
-                    //               AppSizes.cardCornerRadius / 2),
-                    //           border: Border.all(color: AppColors.bg)),
-                    //       child: Image.asset(
-                    //         AppIcons.filterIcon,
-                    //         width: 25,
-                    //         height: 25,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
-                  ],
+                  ),
                 ),
-                const SizedBox(
-                  height: AppSizes.kDefaultPadding / 1,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            AppSizes.cardCornerRadius / 2),
-                        border: Border.all(color: AppColors.bg),
-                      ),
-                      child: Container(
-                        color: AppColors.primaryBg,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(
-                                  AppSizes.kDefaultPadding),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      'SL No',
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        'Ticket No',
-                                        textAlign: TextAlign.start,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(
-                                                color: AppColors.darkGrey
-                                                    .withOpacity(0.8),
-                                                fontWeight: FontWeight.w500),
-                                      )),
-                                  // Expanded(
-                                  //     flex: 2,
-                                  //     child: Text(
-                                  //       'SEM',
-                                  //       textAlign: TextAlign.center,
-                                  //       style: Theme.of(context)
-                                  //           .textTheme
-                                  //           .bodyMedium!
-                                  //           .copyWith(
-                                  //               color: AppColors.darkGrey
-                                  //                   .withOpacity(0.8),
-                                  //               fontWeight: FontWeight.w500),
-                                  //     )),
-                                ],
-                              ),
-                            ),
-                            const CustomDivider(),
-                            Container(
-                              alignment: Alignment.center,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 300,
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: Obx(() => purchaseHistoryTicketController
-                                      .purchaseHistoryDetailsList.isNotEmpty
-                                  ? PurchaseDetailsListWidget(
-                                      orderId: widget.orderID,
-                                    )
-                                  : purchaseHistoryTicketController
-                                              .isPurchaseDetailsLoading.value ==
-                                          true
-                                      ? const Center(
-                                          child: CircularProgressIndicator
-                                              .adaptive(),
-                                        )
-                                      : const Center(
-                                          child: Text("No tickt found"),
-                                        )),
-                            ),
-                          ],
+                const CustomDivider(),
+                Obx(() => purchaseHistoryTicketController
+                        .purchaseHistoryDetailsList.isNotEmpty
+                    ? Expanded(
+                        child: PurchaseDetailsListWidget(
+                          orderId: widget.orderID,
                         ),
-                      ),
-                    ),
-                  ],
-                ),
+                      )
+                    : purchaseHistoryTicketController
+                                .isPurchaseDetailsLoading.value ==
+                            true
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.35),
+                            child: const Center(
+                                child: CircularProgressIndicator.adaptive()),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.35),
+                            child:
+                                const Center(child: Text("No tickets found")),
+                          )),
               ],
             ),
           ),

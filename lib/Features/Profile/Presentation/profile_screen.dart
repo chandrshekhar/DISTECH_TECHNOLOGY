@@ -63,14 +63,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ))
               ],
             ),
-            const SizedBox(
+             SizedBox(
               height: AppSizes.kDefaultPadding,
             ),
             profileController.isLoading.value
                 ? const Center(child: CircularProgressIndicator.adaptive())
                 : Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding:  EdgeInsets.symmetric(
                           horizontal: AppSizes.kDefaultPadding),
                       child: ListView(
                         children: [
@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ProfileItemWidget(
                               title: 'PIN Code',
                               value: profileController.userProfileModel.value.user!.pinCode ?? ""),
-                          const SizedBox(
+                           SizedBox(
                             height: AppSizes.kDefaultPadding,
                           ),
                           Text(
@@ -102,11 +102,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .copyWith(
                                     color: AppColors.darkGrey.withOpacity(0.8)),
                           ),
-                          const SizedBox(
+                           SizedBox(
                             height: AppSizes.kDefaultPadding / 2,
                           ),
                           const CustomDivider(),
-                          const SizedBox(
+                           SizedBox(
                             height: AppSizes.kDefaultPadding,
                           ),
                           ProfileItemWidget(

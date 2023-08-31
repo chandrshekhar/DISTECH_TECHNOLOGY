@@ -67,13 +67,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ))
             ],
           ),
-          const SizedBox(
+           SizedBox(
             height: AppSizes.kDefaultPadding,
           ),
           Expanded(
             child: Obx(()=>
                ListView(
-                padding: const EdgeInsets.symmetric(
+                padding:  EdgeInsets.symmetric(
                     horizontal: AppSizes.kDefaultPadding),
                 children: [
                   
@@ -99,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   //   maxLines: 1,
                   //   minLines: 1,
                   // ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -111,7 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -123,7 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -135,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding * 2,
                   ),
                   Text(
@@ -145,11 +145,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .bodyLarge!
                         .copyWith(color: AppColors.darkGrey.withOpacity(0.8)),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding / 2,
                   ),
                   const CustomDivider(),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -162,7 +162,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -174,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -186,7 +186,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -198,7 +198,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   profileController.isUserDataSave.value
@@ -209,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                            
                             profileController.editProfile(context);
                           }),
-                  const SafeArea(
+                   SafeArea(
                     child: SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),

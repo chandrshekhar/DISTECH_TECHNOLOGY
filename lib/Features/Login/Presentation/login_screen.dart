@@ -6,6 +6,7 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
@@ -37,47 +38,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.5,
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                         horizontal: AppSizes.kDefaultPadding),
-                    decoration:
-                        const BoxDecoration(gradient: AppColors.radialGradient),
+                    decoration: const BoxDecoration(
+                      gradient: AppColors.radialGradient,
+                    ),
                     child: SafeArea(
+                        bottom: true,
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                          const SizedBox(
-                            height: AppSizes.kDefaultPadding,
-                          ),
-                          Image.asset(
-                            AppImages.appLogo,
-                            width: MediaQuery.of(context).size.width * 0.6,
-                          ),
-                        ])))),
+                              Image.asset(
+                                AppImages.appLogo,
+                                //width: MediaQuery.of(context).size.width * 0.6,
+                              ),
+                            ])))),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.kDefaultPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
               child: Column(
+                //  shrinkWrap: true,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('User Login',
                       style: Theme.of(context).textTheme.headlineMedium),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding / 2,
+                  SizedBox(
+                    height: 10.h,
                   ),
                   Text(
                       'Enter your register mail id for the verification process. We will send 6 digit code',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.darkGrey.withOpacity(0.8),
                           letterSpacing: 0.5)),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 2,
+                  SizedBox(
+                    height: 15.h,
                   ),
                   CustomTextField(
                     isBorder: false,
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.lock,
-                      size: 20,
+                      size: 20.h,
                     ),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -88,8 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _usernameController,
                     hintText: 'Username',
                   ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding,
+                  SizedBox(
+                    height: 15.h,
                   ),
                   CustomTextField(
                     suffixIcon: GestureDetector(
@@ -103,9 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Icons.visibility_off)),
                     isBorder: false,
                     obscureText: !passwordVisible,
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.keyboard,
-                      size: 20,
+                      size: 20.h,
                     ),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -116,29 +117,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     hintText: 'Password',
                   ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding / 3,
+                  SizedBox(
+                    height: AppSizes.caption,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            context.push(const ForgotPassword());
-                          },
-                          child: Text(
-                            'Forgot Password ?',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w400),
-                          )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 1.5,
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                        onPressed: () {
+                          context.push(const ForgotPassword());
+                        },
+                        child: Text(
+                          'Forgot Password ?',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w400),
+                        )),
                   ),
                   BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) {
@@ -169,9 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                     },
                   ),
-                  const SizedBox(
-                    height: AppSizes.kDefaultPadding * 2,
-                  ),
+                  SizedBox(
+                    height: 20.h,
+                  )
                 ],
               ),
             ),

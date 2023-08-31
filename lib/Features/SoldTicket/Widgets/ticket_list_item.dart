@@ -15,11 +15,11 @@ class TicketListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding:
-          const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
+           EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
         padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+             EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(
@@ -71,7 +71,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
         padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+             EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(

@@ -6,7 +6,8 @@ import '../Commons/app_sizes.dart';
 class PurchaseDetilsCardWidget extends StatefulWidget {
   final int itemIndex;
   final String ticketId;
-  const PurchaseDetilsCardWidget({super.key, required this.itemIndex, required this.ticketId});
+  const PurchaseDetilsCardWidget(
+      {super.key, required this.itemIndex, required this.ticketId});
 
   @override
   State<PurchaseDetilsCardWidget> createState() =>
@@ -17,13 +18,11 @@ class _PurchaseDetilsCardWidgetState extends State<PurchaseDetilsCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
+      padding: EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color:
           (widget.itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(

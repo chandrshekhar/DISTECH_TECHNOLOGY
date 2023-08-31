@@ -59,7 +59,7 @@ class CustomTextField extends StatelessWidget {
               )
             : const SizedBox(),
         labelText != ''
-            ? const SizedBox(
+            ?  SizedBox(
                 height: AppSizes.kDefaultPadding / 2,
               )
             : const SizedBox(),
@@ -87,7 +87,7 @@ class CustomTextField extends StatelessWidget {
                     prefixIcon: prefixIcon,
                     counterText: '',
                     contentPadding:
-                        const EdgeInsets.all(AppSizes.kDefaultPadding),
+                         EdgeInsets.all(AppSizes.kDefaultPadding),
                     hintText: hintText!,
                     hintStyle: Theme.of(context).textTheme.bodyMedium,
                     errorStyle: Theme.of(context)

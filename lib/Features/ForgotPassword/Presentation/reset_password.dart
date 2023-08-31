@@ -41,7 +41,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.4,
-                    padding: const EdgeInsets.symmetric(
+                    padding:  EdgeInsets.symmetric(
                         horizontal: AppSizes.kDefaultPadding),
                     decoration:
                         const BoxDecoration(gradient: AppColors.radialGradient),
@@ -50,7 +50,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                          const SizedBox(
+                           SizedBox(
                             height: AppSizes.kDefaultPadding,
                           ),
                           Image.asset(
@@ -59,7 +59,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                         ])))),
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding:  EdgeInsets.symmetric(
                   horizontal: AppSizes.kDefaultPadding),
               child: Form(
                 key: _key,
@@ -69,7 +69,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   children: [
                     Text('Reset Password',
                         style: Theme.of(context).textTheme.headlineMedium),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding / 2,
                     ),
                     Text(
@@ -78,7 +78,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             fontWeight: FontWeight.w400,
                             color: AppColors.darkGrey.withOpacity(0.8),
                             letterSpacing: 0.5)),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding * 2,
                     ),
                     CustomTextField(
@@ -98,7 +98,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     CustomTextField(
@@ -118,7 +118,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding * 2,
                     ),
                     FullButton(
@@ -143,7 +143,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 content: Text(res['error'].toString())));
                           }
                         }),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding * 1.5,
                     ),
                   ],

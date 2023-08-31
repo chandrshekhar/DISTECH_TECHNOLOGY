@@ -16,6 +16,7 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Widgets/full_button.dart';
 import '../Components/timer_card_widget.dart';
@@ -163,12 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             GestureDetector(
               onTap: () => context.push(const ProfileScreen()),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(right: AppSizes.kDefaultPadding),
                 child: CircleAvatar(
-                  radius: 16,
+                  radius: 16.r,
                   backgroundColor: AppColors.white,
-                  foregroundImage: NetworkImage(
+                  foregroundImage: const NetworkImage(
                     'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000',
                   ),
                 ),
@@ -183,14 +184,13 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    width: 100,
-                    height: 100,
-                    padding: const EdgeInsets.only(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    padding: EdgeInsets.only(
                         top: AppSizes.kDefaultPadding / 3,
                         left: AppSizes.kDefaultPadding / 3,
                         bottom: AppSizes.kDefaultPadding * 2,
                         right: AppSizes.kDefaultPadding * 2),
-                    margin: const EdgeInsets.only(
+                    margin: EdgeInsets.only(
                         top: AppSizes.kDefaultPadding,
                         left: AppSizes.kDefaultPadding),
                     decoration: const BoxDecoration(
@@ -201,11 +201,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ))),
                     child: Image.asset(
                       AppImages.drawerLogo,
-                      width: 30,
+                      width: 30.w,
                       fit: BoxFit.contain,
-                      height: 30,
+                      height: 30.h,
                     )),
-                const SizedBox(
+                SizedBox(
                   height: AppSizes.kDefaultPadding,
                 ),
                 Expanded(
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                  padding: EdgeInsets.all(AppSizes.kDefaultPadding),
                   child: FullButton(
                     label: 'Logout',
                     onPressed: () async {
@@ -267,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                  padding: EdgeInsets.all(AppSizes.kDefaultPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipPath(
                   clipper: CustomShape(),
                   child: Container(
-                    height: 150,
+                    height: 150.h,
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
                     color: AppColors.primaryDark,
@@ -313,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .headlineMedium!
+                            .headlineSmall!
                             .copyWith(
                                 color: AppColors.white,
                                 fontWeight: FontWeight.w500),
@@ -321,11 +321,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const Positioned(
-                  bottom: 0,
+                Positioned(
+                  bottom: 0.h,
                   left: AppSizes.kDefaultPadding,
                   right: AppSizes.kDefaultPadding,
-                  child: TimerCardWidget(),
+                  child: const TimerCardWidget(),
                 )
               ],
             ),

@@ -26,7 +26,7 @@ class _PurchaseDetailsListWidgetState extends State<PurchaseDetailsListWidget> {
     return RawScrollbar(
       thickness: 3,
       thumbColor: AppColors.primary,
-      radius: const Radius.circular(AppSizes.cardCornerRadius),
+      radius:  Radius.circular(AppSizes.cardCornerRadius),
       child: SmartRefresher(
         controller: refreshController,
         enablePullDown: false,

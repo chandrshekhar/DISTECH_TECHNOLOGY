@@ -1,5 +1,4 @@
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
@@ -22,7 +21,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.8,
-              padding: const EdgeInsets.symmetric(
+              padding:  EdgeInsets.symmetric(
                   horizontal: AppSizes.kDefaultPadding),
               decoration:
                   const BoxDecoration(gradient: AppColors.radialGradient),
@@ -30,14 +29,14 @@ class WelcomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Image.asset(
                       AppImages.appLogo,
                       width: MediaQuery.of(context).size.width * 0.6,
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding * 3,
                     ),
                     Text(
@@ -47,22 +46,22 @@ class WelcomeScreen extends StatelessWidget {
                                 color: AppColors.white,
                               ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Text(
                       'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs',
-                     // textAlign: TextAlign.center,
+                      // textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: AppColors.white, fontWeight: FontWeight.w300),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Expanded(
                       child: Image.asset(
                         AppImages.welcomeImage,
-                        width: MediaQuery.of(context).size.width * 0.7,
+                        width: MediaQuery.of(context).size.width * 0.8,
                       ),
                     ),
                   ],
@@ -72,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding:  EdgeInsets.symmetric(
                 horizontal: AppSizes.kDefaultPadding),
             child: FullButton(
               label: 'Portal Login',

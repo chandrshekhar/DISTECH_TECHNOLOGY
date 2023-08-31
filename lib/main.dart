@@ -2,10 +2,13 @@ import 'package:distech_technology/Commons/theme.dart';
 import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Features/Splash/Presentation/splash_screen.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
+import 'package:distech_technology/Widgets/dismissable_widget.dart';
 import 'package:distech_technology/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -28,15 +31,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GlobalBloc(
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'singham lottery',
-        theme: AppTheme.lightTheme,
-        themeMode: ThemeMode.light,
-        home: (jwtToken != "")
-            ? HomeScreen(username: userName)
-            : const SplashScreen(),
+    return DismissKeyboard(
+      child: ScreenUtilInit(
+        designSize: const Size(390, 760),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return GlobalBloc(
+            child: GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'singham lottery',
+              theme: AppTheme.lightTheme,
+              themeMode: ThemeMode.light,
+              home: (jwtToken != "")
+                  ? HomeScreen(username: userName)
+                  : const SplashScreen(),
+            ),
+          );
+        },
       ),
     );
   }

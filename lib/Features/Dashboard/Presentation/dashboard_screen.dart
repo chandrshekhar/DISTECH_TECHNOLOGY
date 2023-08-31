@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
@@ -6,6 +5,7 @@ import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_lis
 import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Commons/app_colors.dart';
@@ -76,13 +76,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+          padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
+              // SizedBox(
+              //   height: AppSizes.kDefaultPadding,
+              // ),
               Row(
                 children: [
                   Obx(() => Text(
@@ -105,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       list: soldTicketController.selectedValueList)
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Row(
@@ -115,10 +115,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20,
+                        size: 20.h,
                       ),
                       onChanged: (value) {
                         if (value.toString().isNotEmpty) {
@@ -136,8 +136,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       isBorder: false,
                     ),
                   ),
-                  const SizedBox(
-                    width: AppSizes.kDefaultPadding / 1.5,
+                  SizedBox(
+                    width: 10.w,
                   ),
                   // Expanded(
                   //   flex: 1,
@@ -169,8 +169,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   //     ),
                   //   ),
                   // ),
-                  const SizedBox(
-                    width: 10,
+                  SizedBox(
+                    width: 10.w,
                   ),
                   Expanded(
                     flex: 1,
@@ -179,8 +179,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         _selectDate(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                         height: AppSizes.buttonHeight + 4,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -188,16 +187,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
+                          width: 25.w,
+                          height: 25.h,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding * 1.2,
+              SizedBox(
+                height: 15.h,
               ),
               Row(
                 children: [
@@ -210,15 +209,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       )),
                 ],
               ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding / 1.5,
+              SizedBox(
+                height: 15.h,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.33,
+                      maxHeight: MediaQuery.of(context).size.height * 0.37,
                     ),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -231,9 +230,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSizes.kDefaultPadding,
-                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppSizes.kDefaultPadding,
+                                vertical: 5.h),
                             child: Row(
                               children: [
                                 Expanded(
@@ -332,7 +331,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             child: CircularProgressIndicator
                                                 .adaptive(),
                                           )
-                                        : const Text("No tickets found")),
+                                        : Text(
+                                            "No tickets found",
+                                            style: TextStyle(fontSize: 15.sp),
+                                          )),
                           ),
                         ],
                       ),
@@ -341,7 +343,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   SafeArea(
                     child: Column(
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Obx(() => FullButton(
@@ -352,7 +354,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   : AppColors.primary,
                               onPressed: soldTicketController
                                       .selectedSoldTicket.isEmpty
-                                  ? () => Void
+                                  ? () {}
                                   : () async {
                                       if (soldTicketController
                                           .selectedSoldTicket.isNotEmpty) {
@@ -388,7 +390,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       }
                                     },
                             )),
-                        const SizedBox(
+                        SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
                         Text(

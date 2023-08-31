@@ -34,13 +34,13 @@ class AppTheme {
       scrollbarTheme: ScrollbarThemeData(
         thumbColor: MaterialStateProperty.all<Color>(AppColors.primary),
         thickness: MaterialStateProperty.all<double>(3),
-        radius: const Radius.circular(AppSizes.cardCornerRadius),
+        radius:  Radius.circular(AppSizes.cardCornerRadius),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           elevation: 5, backgroundColor: AppColors.primary),
       // AppBar Theme
-      appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(
+      appBarTheme:  AppBarTheme(
+          iconTheme: const IconThemeData(
             size: 24,
             color: AppColors.white,
           ),
@@ -76,7 +76,7 @@ class AppTheme {
             borderSide: BorderSide(color: AppColors.primary)),
       ),
       // Text Theme
-      textTheme: const TextTheme(
+      textTheme:  TextTheme(
         headline1: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline1,

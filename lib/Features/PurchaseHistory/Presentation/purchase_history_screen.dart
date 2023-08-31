@@ -66,7 +66,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       },
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+          padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,7 +103,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                       isBorder: false,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: AppSizes.kDefaultPadding / 1.5,
                   ),
                   Expanded(
@@ -113,8 +113,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         _selectDate(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                         height: AppSizes.buttonHeight + 4,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -151,7 +150,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding),
                         child: Row(
                           children: [
                             Expanded(

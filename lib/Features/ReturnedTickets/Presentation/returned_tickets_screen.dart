@@ -2,6 +2,7 @@ import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
@@ -62,11 +63,11 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
       },
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+          padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
@@ -76,7 +77,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         .headlineSmall!
                         .copyWith(fontWeight: FontWeight.w400),
                   )),
-              const SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Row(
@@ -86,10 +87,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20,
+                        size: 20.h,
                       ),
                       onChanged: (value) async {
                         // if (value.toString().isNotEmpty) {
@@ -108,7 +109,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                       isBorder: false,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: AppSizes.kDefaultPadding,
                   ),
                   // Expanded(
@@ -141,8 +142,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         _selectDate(context);
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(
-                            AppSizes.kDefaultPadding / 1.5),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                         height: AppSizes.buttonHeight + 4,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
@@ -150,16 +150,16 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
+                          width: 25.w,
+                          height: 25.h,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              const SizedBox(
-                height: AppSizes.kDefaultPadding,
+              SizedBox(
+                height: 15.h,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -172,7 +172,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(AppSizes.kDefaultPadding),
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding),
                         child: Row(
                           children: [
                             Expanded(
@@ -223,7 +223,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         child: Container(
                             constraints: BoxConstraints(
                               maxHeight:
-                                  MediaQuery.of(context).size.height * 0.45,
+                                  MediaQuery.of(context).size.height * 0.40,
                             ),
                             width: MediaQuery.of(context).size.width,
                             // height: MediaQuery.of(context).size.height * 0.45,
@@ -242,7 +242,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                 return RawScrollbar(
                                   thumbColor: AppColors.primary,
                                   thickness: 3,
-                                  radius: const Radius.circular(
+                                  radius: Radius.circular(
                                       AppSizes.cardCornerRadius),
                                   child: ListView.builder(
                                       padding: EdgeInsets.zero,

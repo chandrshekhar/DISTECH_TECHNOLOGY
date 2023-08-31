@@ -41,7 +41,7 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.6,
-              padding: const EdgeInsets.symmetric(
+              padding:  EdgeInsets.symmetric(
                   horizontal: AppSizes.kDefaultPadding),
               decoration:
                   const BoxDecoration(gradient: AppColors.radialGradient),
@@ -50,7 +50,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                    const SizedBox(
+                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Image.asset(
@@ -60,13 +60,13 @@ class _OtpScreenState extends State<OtpScreen> {
                   ])))),
       Padding(
         padding:
-            const EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+             EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Enter 6 Digit Code',
                 style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(
+             SizedBox(
               height: AppSizes.kDefaultPadding,
             ),
             Text(
@@ -74,7 +74,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppColors.darkGrey.withOpacity(0.8),
                     letterSpacing: 0.5)),
-            const SizedBox(
+             SizedBox(
               height: AppSizes.kDefaultPadding * 2,
             ),
             OTPTextField(
@@ -94,7 +94,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 });   
               },
             ),
-            const SizedBox(
+             SizedBox(
               height: AppSizes.kDefaultPadding * 2,
             ),
             FullButton(
@@ -115,7 +115,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         content: Text(res['error'].toString())));
                   }
                 }),
-            const SizedBox(
+             SizedBox(
               height: AppSizes.kDefaultPadding * 2,
             ),
           ],

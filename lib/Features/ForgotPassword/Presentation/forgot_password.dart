@@ -36,7 +36,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.4,
-                        padding: const EdgeInsets.symmetric(
+                        padding:  EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding),
                         decoration: const BoxDecoration(
                             gradient: AppColors.radialGradient),
@@ -45,7 +45,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                              const SizedBox(
+                               SizedBox(
                                 height: AppSizes.kDefaultPadding,
                               ),
                               Image.asset(
@@ -54,14 +54,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ),
                             ])))),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding:  EdgeInsets.symmetric(
                       horizontal: AppSizes.kDefaultPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Forgot Password',
                           style: Theme.of(context).textTheme.headlineMedium),
-                      const SizedBox(
+                       SizedBox(
                         height: AppSizes.kDefaultPadding / 2,
                       ),
                       Text(
@@ -72,7 +72,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               .copyWith(
                                   color: AppColors.darkGrey.withOpacity(0.8),
                                   letterSpacing: 0.5)),
-                      const SizedBox(
+                       SizedBox(
                         height: AppSizes.kDefaultPadding * 2,
                       ),
                       CustomTextField(
@@ -87,7 +87,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           return null;
                         },
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: AppSizes.kDefaultPadding * 2,
                       ),
                       FullButton(
@@ -115,7 +115,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               }
                             }
                           }),
-                      const SizedBox(
+                       SizedBox(
                         height: AppSizes.kDefaultPadding * 1.5,
                       ),
                     ],
