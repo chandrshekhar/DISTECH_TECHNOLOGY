@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class SoldTicketListController extends GetxController {
@@ -41,13 +39,14 @@ class SoldTicketListController extends GetxController {
 
     isSoldListLoading(true);
     var res = await apiProvider.getAllSoldTicket(reqModel);
-    print(res);
+
     if (res.sales!.isNotEmpty) {
       isSoldListLoading(false);
       soldTicketList.value = res.sales!;
       soldTicketCont.value = res.count!;
     } else {
       soldTicketList.value = res.sales!;
+      soldTicketCont.value = 0;
       isSoldListLoading(false);
     }
     isSoldListLoading(false);

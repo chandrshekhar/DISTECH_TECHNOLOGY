@@ -28,7 +28,9 @@ class PurchaseController extends GetxController {
         puchaseList.value = res.purchases!;
         countPurchaesTickets.value = res.count!;
       } else {
+        countPurchaesTickets.value = 0;
         puchaseList.clear();
+        isPurchaLoading(false);
       }
     } else {
       Get.snackbar("Error", res.errorMsg.toString());
@@ -45,10 +47,10 @@ class PurchaseController extends GetxController {
       "offset": 0,
       "limit": purDetLimit.value
     };
-   
+
     isPurchaseDetailsLoading(true);
     var res = await apiProvider.getAllPurcHistoryTicketDetails(reqModel);
-   
+
     if (res.tickets!.isNotEmpty) {
       isPurchaseDetailsLoading(false);
       purchaseHistoryDetailsList.value = res.tickets!;

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return DismissKeyboard(
       child: ScreenUtilInit(
         designSize: const Size(390, 760),
-        minTextAdapt: true,
+       
         splitScreenMode: true,
         builder: (context, child) {
           return GlobalBloc(

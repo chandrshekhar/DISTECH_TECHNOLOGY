@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Enter your register mail id for the verification process. We will send 6 digit code',
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.darkGrey.withOpacity(0.8),
+                          //color: AppColors.primary,
                           letterSpacing: 0.5)),
                   SizedBox(
                     height: 15.h,
