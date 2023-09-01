@@ -6,7 +6,6 @@ import 'package:distech_technology/Widgets/dismissable_widget.dart';
 import 'package:distech_technology/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -32,23 +31,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
-      child: ScreenUtilInit(
-        designSize: const Size(390, 760),
-       
-        splitScreenMode: true,
-        builder: (context, child) {
-          return GlobalBloc(
-            child: GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'singham lottery',
-              theme: AppTheme.lightTheme,
-              themeMode: ThemeMode.light,
-              home: (jwtToken != "")
-                  ? HomeScreen(username: userName)
-                  : const SplashScreen(),
-            ),
-          );
-        },
+      child: GlobalBloc(
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'singham lottery',
+          theme: AppTheme.lightTheme,
+          themeMode: ThemeMode.light,
+          home: (jwtToken != "")
+              ? HomeScreen(username: userName)
+              : const SplashScreen(),
+        ),
       ),
     );
   }

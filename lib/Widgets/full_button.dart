@@ -2,7 +2,7 @@ import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class FullButton extends StatelessWidget {
   final String label;
@@ -24,7 +24,7 @@ class FullButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
           elevation: 0,
-          minimumSize: Size.fromHeight(50.h)),
+          minimumSize: const Size.fromHeight(50)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -43,8 +43,8 @@ class FullButton extends StatelessWidget {
           arrowIconVisible!
               ? Image.asset(
                   AppIcons.forwardArrowIcon,
-                  width: 24.w,
-                  height: 24.h,
+                  width: 24,
+                  height: 24,
                   color: AppColors.white,
                 )
               : const SizedBox()

@@ -6,7 +6,7 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
@@ -63,8 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text('User Login',
                       style: Theme.of(context).textTheme.headlineMedium),
-                  SizedBox(
-                    height: 10.h,
+                  const SizedBox(
+                    height: 10,
                   ),
                   Text(
                       'Enter your register mail id for the verification process. We will send 6 digit code',
@@ -72,14 +72,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: AppColors.darkGrey.withOpacity(0.8),
                           //color: AppColors.primary,
                           letterSpacing: 0.5)),
-                  SizedBox(
-                    height: 15.h,
+                  const SizedBox(
+                    height: 15,
                   ),
                   CustomTextField(
                     isBorder: false,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.lock,
-                      size: 20.h,
+                      size: 20,
                     ),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -90,8 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _usernameController,
                     hintText: 'Username',
                   ),
-                  SizedBox(
-                    height: 15.h,
+                  const SizedBox(
+                    height: 15,
                   ),
                   CustomTextField(
                     suffixIcon: GestureDetector(
@@ -105,9 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Icons.visibility_off)),
                     isBorder: false,
                     obscureText: !passwordVisible,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.keyboard,
-                      size: 20.h,
+                      size: 20,
                     ),
                     validator: (String? value) {
                       if (value!.isEmpty) {
@@ -166,8 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                     },
                   ),
-                  SizedBox(
-                    height: 20.h,
+                  const SizedBox(
+                    height: 20,
                   )
                 ],
               ),

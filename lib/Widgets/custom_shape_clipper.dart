@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class CustomShape extends CustomClipper<Path> {
   @override
@@ -8,8 +8,8 @@ class CustomShape extends CustomClipper<Path> {
     double width = size.width;
 
     var path = Path();
-    path.lineTo(0, height - 60.h);
-    path.quadraticBezierTo(width / 2, height, width, height - 60.h);
+    path.lineTo(0, height - 60);
+    path.quadraticBezierTo(width / 2, height, width, height - 60);
     path.lineTo(width, 0);
     path.close();
     return path;

@@ -4,7 +4,6 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
@@ -94,10 +93,10 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
                 CustomTextField(
                   controller: _searchController,
                   hintText: 'Search',
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     EvaIcons.searchOutline,
                     color: AppColors.primary,
-                    size: 20.h,
+                    size: 20,
                   ),
                   onChanged: (value) {
                     // if (value.toString().isNotEmpty) {

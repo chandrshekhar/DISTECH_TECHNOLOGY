@@ -5,7 +5,6 @@ import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_lis
 import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Commons/app_colors.dart';
@@ -115,10 +114,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20.h,
+                        size: 20,
                       ),
                       onChanged: (value) {
                         if (value.toString().isNotEmpty) {
@@ -136,8 +135,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       isBorder: false,
                     ),
                   ),
-                  SizedBox(
-                    width: 10.w,
+                  const SizedBox(
+                    width: 10,
                   ),
                   // Expanded(
                   //   flex: 1,
@@ -169,8 +168,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(
-                    width: 10.w,
+                  const SizedBox(
+                    width: 10,
                   ),
                   Expanded(
                     flex: 1,
@@ -187,16 +186,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25.w,
-                          height: 25.h,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              SizedBox(
-                height: 15.h,
+              const SizedBox(
+                height: 15,
               ),
               Row(
                 children: [
@@ -209,8 +208,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       )),
                 ],
               ),
-              SizedBox(
-                height: 15.h,
+              const SizedBox(
+                height: 15,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,7 +231,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppSizes.kDefaultPadding,
-                                vertical: 5.h),
+                                vertical: 5),
                             child: Row(
                               children: [
                                 Expanded(
@@ -331,9 +330,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             child: CircularProgressIndicator
                                                 .adaptive(),
                                           )
-                                        : Text(
+                                        : const Text(
                                             "No tickets found",
-                                            style: TextStyle(fontSize: 15.sp),
+                                            style: TextStyle(fontSize: 15),
                                           )),
                           ),
                         ],

@@ -16,7 +16,7 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../Commons/app_images.dart';
 import '../../../Widgets/full_button.dart';
 import '../Components/timer_card_widget.dart';
@@ -166,10 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () => context.push(const ProfileScreen()),
               child: Padding(
                 padding: EdgeInsets.only(right: AppSizes.kDefaultPadding),
-                child: CircleAvatar(
-                  radius: 16.r,
+                child: const CircleAvatar(
+                  radius: 16,
                   backgroundColor: AppColors.white,
-                  foregroundImage: const NetworkImage(
+                  foregroundImage: NetworkImage(
                     'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000',
                   ),
                 ),
@@ -201,9 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ))),
                     child: Image.asset(
                       AppImages.drawerLogo,
-                      width: 30.w,
+                      width: 30,
                       fit: BoxFit.contain,
-                      height: 30.h,
+                      height: 30,
                     )),
                 SizedBox(
                   height: AppSizes.kDefaultPadding,
@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipPath(
                   clipper: CustomShape(),
                   child: Container(
-                    height: 150.h,
+                    height: 150,
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
                     color: AppColors.primaryDark,
@@ -322,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 Positioned(
-                  bottom: 0.h,
+                  bottom: 0,
                   left: AppSizes.kDefaultPadding,
                   right: AppSizes.kDefaultPadding,
                   child: const TimerCardWidget(),

@@ -5,7 +5,6 @@ import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dar
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Api/api_provider.dart';
@@ -119,7 +118,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                  fontWeight: FontWeight.w400, fontSize: 12.sp),
+                                  fontWeight: FontWeight.w400, fontSize: 12),
                         ),
                       ),
                     ),
@@ -151,7 +150,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         }),
                       ),
                     ),
-                    SizedBox(width: 10.w),
+                    const SizedBox(width: 10),
                     AppDropDown(
                         onChanged: (value) async {
                           soldTicketController.limit.value = value;
@@ -175,10 +174,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon:  Icon(
+                      prefixIcon:  const Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20.h,
+                        size: 20,
                       ),
                       onChanged: (value) {
                         if (value.toString().isNotEmpty) {
@@ -196,8 +195,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       isBorder: false,
                     ),
                   ),
-                  SizedBox(
-                    width: 15.h,
+                  const SizedBox(
+                    width: 15,
                   ),
                   // Expanded(
                   //   flex: 1,
@@ -229,8 +228,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   //     ),
                   //   ),
                   // ),
-                   SizedBox(
-                    width: 10.w,
+                   const SizedBox(
+                    width: 10,
                   ),
                   Expanded(
                     flex: 1,
@@ -247,8 +246,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25.w,
-                          height: 25.h,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ),
@@ -464,7 +463,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               .bodyMedium!
                               .copyWith(color: AppColors.secondary),
                         ),
-                         SizedBox(height: 5.h)
+                         const SizedBox(height: 5)
                       ],
                     ),
                   ),

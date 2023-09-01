@@ -1,7 +1,7 @@
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../Commons/app_colors.dart';
 
@@ -32,8 +32,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: Image.asset(
                 AppIcons.arrowBack,
                 color: AppColors.white,
-                width: 22.w,
-                height: 22.h,
+                width: 22,
+                height: 22,
                 fit: BoxFit.contain,
               ))
           // IconButton(
@@ -50,11 +50,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: leadingIconPressed,
               icon: Icon(
                 leadingIcon,
-                size: 30.h,
+                size: 30,
                 color: AppColors.white,
               ),
             ),
-      title: Text(title!, style: TextStyle(fontSize: 18.sp)),
+      title: Text(title!, style: const TextStyle(fontSize: 18)),
     );
   }
 

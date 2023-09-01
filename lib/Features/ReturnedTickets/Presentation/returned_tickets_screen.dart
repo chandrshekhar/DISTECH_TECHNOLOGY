@@ -2,7 +2,6 @@ import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
@@ -87,10 +86,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                     child: CustomTextField(
                       controller: _searchController,
                       hintText: 'Search',
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         EvaIcons.searchOutline,
                         color: AppColors.primary,
-                        size: 20.h,
+                        size: 20,
                       ),
                       onChanged: (value) async {
                         // if (value.toString().isNotEmpty) {
@@ -150,16 +149,16 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                             border: Border.all(color: AppColors.bg)),
                         child: Image.asset(
                           AppIcons.calenderIcon,
-                          width: 25.w,
-                          height: 25.h,
+                          width: 25,
+                          height: 25,
                         ),
                       ),
                     ),
                   )
                 ],
               ),
-              SizedBox(
-                height: 15.h,
+              const SizedBox(
+                height: 15,
               ),
               Container(
                 decoration: BoxDecoration(
