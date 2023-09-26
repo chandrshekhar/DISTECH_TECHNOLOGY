@@ -501,4 +501,31 @@ class ApiProvider {
       return ReturnedTicketModel.withError("Someting went wrong");
     }
   }
+
+  Future<Map<String, dynamic>> varidateReturnTicket(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? {"success": false, "error": ""}
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {"success": false, "error": error};
+    }
+  }
 }

@@ -1,7 +1,9 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
+import 'package:distech_technology/Widgets/purchase_details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -17,6 +19,7 @@ class ReturnUnsoldTicket extends StatefulWidget {
   @override
   State<ReturnUnsoldTicket> createState() => _ReturnUnsoldTicketState();
 }
+
 class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   final soldTicketController = Get.put(SoldTicketController());
   final RefreshController refreshController =
@@ -42,6 +45,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
       });
     }
   }
+
   bool countLimit(bool selectedValue) {
     if (((getMyreturnController.returnCount.value -
                     soldTicketzcontroller.selectedSoldTicket.length) <=
@@ -52,10 +56,12 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     }
     return true;
   }
+
   final soldTicketzcontroller = Get.put(SoldTicketController());
   final timerController = Get.put(TimerController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+
   bool isSelected = false;
   final getMyreturnController = Get.put(GetMyReturnController());
   @override
@@ -75,13 +81,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     super.dispose();
   }
 
-  List<DynamicRow> listDynamic = [];
-  addDynamic() {
-    // add new dynamic text field widget to list
-    listDynamic.add(DynamicRow());
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -94,9 +93,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
           padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             children: [
-              SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
+              // SizedBox(
+              //   height: AppSizes.kDefaultPadding,
+              // ),
               Container(
                 height: AppSizes.buttonHeight,
                 decoration: BoxDecoration(
@@ -172,7 +171,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    const SizedBox(width: 10),
+
                     // AppDropDown(
                     //     onChanged: (value) async {
                     //       soldTicketController.limit.value = value;
@@ -256,13 +257,12 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
 
               //   ],
               // ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.36,
+                      maxHeight: MediaQuery.of(context).size.height * 0.46,
                     ),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -275,15 +275,14 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: AppSizes.kDefaultPadding,
-                                vertical: 15),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  flex: 1,
                                   child: Text(
-                                    'F Ser.',
+                                    'F.L.',
                                     textAlign: TextAlign.start,
                                     style: Theme.of(context)
                                         .textTheme
@@ -295,23 +294,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'No.',
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.darkGrey
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Expanded(
-                                    flex: 2,
+                                    flex: 1,
                                     child: Text(
-                                      'To Ser.',
+                                      'T. L.',
                                       textAlign: TextAlign.start,
                                       style: Theme.of(context)
                                           .textTheme
@@ -324,7 +309,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                 Expanded(
                                   flex: 2,
                                   child: Text(
-                                    'No.',
+                                    'From No.',
                                     textAlign: TextAlign.start,
                                     style: Theme.of(context)
                                         .textTheme
@@ -336,120 +321,243 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   ),
                                 ),
                                 Expanded(
-                                    child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            addDynamic();
-                                          });
-                                        },
-                                        icon: Icon(Icons.add))),
-                                // Expanded(
-                                //   flex: 2,
-                                //   child: Transform.scale(
-                                //     scale: 1.3,
-                                //     child: Obx(() => Checkbox(
-                                //           value: (timerController
-                                //                       .countdown.value ==
-                                //                   "0:00:00")
-                                //               ? false
-                                //               : soldTicketController
-                                //                   .isAllSelect.value,
-                                //           onChanged: (value) {
-                                //             setState(() {});
-                                //             soldTicketController
-                                //                 .isAllSelect.value = value!;
-                                //             if (value == true &&
-                                //                 (timerController
-                                //                         .countdown.value !=
-                                //                     "0:00:00")) {
-                                //               for (int i = 0;
-                                //                   i <
-                                //                       getMyreturnController
-                                //                           .returnCount.value;
-                                //                   i++) {
-                                //                 soldTicketController
-                                //                     .checkedBoxClicked(
-                                //                         soldTicketController
-                                //                             .allTicketList[i]
-                                //                             .sId!,
-                                //                         true);
-                                //               }
-                                //             } else {
-                                //               for (var element
-                                //                   in soldTicketController
-                                //                       .allTicketList) {
-                                //                 soldTicketController
-                                //                     .checkedBoxClicked(
-                                //                         element.sId!, false);
-                                //               }
-                                //             }
-                                //           },
-                                //         )),
-                                //   ),
-                                // ),
-                                // Expanded(
-                                //     flex: 1,
-                                //     child: Align(
-                                //       alignment: Alignment.centerRight,
-                                //       child: SizedBox(
-                                //         width: 10,
-                                //         height: 10,
-                                //         child: Checkbox(
-                                //           value: isSelected,
-                                //           onChanged: (bool? value) {
-                                //             setState(() {
-                                //               isSelected = value!;
-                                //             });
-                                //           },
-                                //         ),
-                                //       ),
-                                //     )),
+                                  flex: 2,
+                                  child: Text(
+                                    '     To No.',
+                                    textAlign: TextAlign.start,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                            color: AppColors.darkGrey
+                                                .withOpacity(0.8),
+                                            fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                Text(
+                                  'Add',
+                                  textAlign: TextAlign.start,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: AppColors.darkGrey
+                                              .withOpacity(0.8),
+                                          fontWeight: FontWeight.w500),
+                                ),
                               ],
                             ),
                           ),
-
+                          //  const CustomDivider(),
+                          Row(children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: TextField(
+                                     keyboardType: TextInputType.name,
+                                  controller: getMyreturnController
+                                      .fromLetterController.value,
+                                  decoration: const InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blueGrey),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: TextField(
+                                     keyboardType: TextInputType.name,
+                                  controller: getMyreturnController
+                                      .toLetterController.value,
+                                  decoration: const InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blueGrey),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: TextField(
+                                     keyboardType: TextInputType.number,
+                                  controller: getMyreturnController
+                                      .fromNumberController.value,
+                                  decoration: const InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blueGrey),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: TextField(
+                                  controller: getMyreturnController
+                                      .toNumberController.value,
+                                      keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.blueGrey),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 1, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (getMyreturnController
+                                        .fromLetterController.value
+                                        .toString() !=
+                                    '') {
+                                  getMyreturnController.validateReturnTicket(
+                                      "64b8e5368131b37df3303d8d",
+                                      formatedDate ?? "");
+                                }
+                              },
+                              child: Container(
+                                  margin: const EdgeInsets.only(right: 2),
+                                  width: AppSizes.buttonHeight,
+                                  height: AppSizes.buttonHeight + 8,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(
+                                          AppSizes.cardCornerRadius / 2),
+                                      border: Border.all(color: AppColors.bg)),
+                                  child: const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.white,
+                                  )),
+                            )
+                          ]),
+                          const SizedBox(height: 5),
                           const CustomDivider(),
-                          Column(
-                            children: listDynamic,
-                          )
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: [
-                          //     DynamicWidget(),
-                          //     DynamicWidget(),
-                          //     DynamicWidget(),
-                          //     DynamicWidget(),
-                          //     IconButton(
-                          //         onPressed: () {
-                          //          addDynamic();
-                          //         }, icon: const Icon(Icons.add))
-                          //   ],
-                          // )
-                          // Container(
-                          //   constraints: BoxConstraints(
-                          //     maxHeight:
-                          //         MediaQuery.of(context).size.height * 0.28,
-                          //   ),
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child:
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Obx(() {
+                            // if (getMyreturnController
+                            //     .returnTicketsList.isEmpty) {
+                            //   return const Center(
+                            //       child: Text("No Ticket for Return"));
+                            // } else if (getMyreturnController
+                            //     .isReturnTicketLoading.value) {
+                            //   return const Center(
+                            //       child: CircularProgressIndicator.adaptive());
+                            // } else
+                            {
+                              return Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: getMyreturnController
+                                      .validateTicketsList.length,
+                                  itemBuilder: (context, index) {
+                                    var data = getMyreturnController
+                                        .validateTicketsList[index];
 
-                          //  Obx(() =>
-                          //     soldTicketController.allTicketList.isNotEmpty
-                          //         ? DashboardListWidget(
-                          //             date: formatedDate ?? "",
-                          //             isSelected: isSelected,
-                          //             dashBoard: false,
-                          //           )
-                          //         : soldTicketController
-                          //                     .isAllTicketLoading.value ==
-                          //                 true
-                          //             ? const Center(
-                          //                 child: CircularProgressIndicator
-                          //                     .adaptive(),
-                          //               )
-                          //             : const Center(
-                          //                 child: Text("No tickets found"))),
-                          // )
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              AppSizes.kDefaultPadding / 1.5),
+                                      color: (index % 2 == 0)
+                                          ? AppColors.white
+                                          : AppColors.primaryBg,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                AppSizes.kDefaultPadding),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                data['fromLetter'].toString(),
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                data['toLetter'].toString(),
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                data['fromNumber'].toString(),
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                            Expanded(
+                                                flex: 2,
+                                                child: Text(
+                                                  data['toNumber'].toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.blue),
+                                                )),
+                                            InkWell(
+                                              onTap: () {
+                                                getMyreturnController
+                                                    .removeValidateReturnTicket(
+                                                        index);
+                                              },
+                                              child: const CircleAvatar(
+                                                backgroundColor: Colors.red,
+                                                radius: 10,
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                  size: 15,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                    ;
+                                  },
+                                ),
+                              );
+                            }
+                          })
                         ],
                       ),
                     ),
@@ -457,13 +565,11 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   SafeArea(
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: AppSizes.kDefaultPadding * 1.2,
-                        ),
+                        const SizedBox(height: 10),
                         Obx(() => FullButton(
                               label: 'Return Unsold',
-                              onPressed: (soldTicketzcontroller
-                                          .selectedSoldTicket.isEmpty ||
+                              onPressed: (getMyreturnController
+                                          .validateTicketsList.isEmpty ||
                                       timerController.countdown.value ==
                                           "0:00:00")
                                   ? () {}
@@ -485,7 +591,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                             isDismissible: true,
                                             snackPosition:
                                                 SnackPosition.BOTTOM);
-                                        _searchController.clear();
                                         soldTicketzcontroller.selectedSoldTicket
                                             .clear();
 
@@ -493,7 +598,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                             .getAllTicket(date: formatedDate);
                                       } else {
                                         Get.snackbar("Not response",
-                                            "Your are not selected any ticket for mark as sold",
+                                            "Your are not added any ticket for mark as sold",
                                             backgroundColor: AppColors.black,
                                             colorText: Colors.white,
                                             isDismissible: true,
@@ -501,15 +606,15 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                 SnackPosition.BOTTOM);
                                       }
                                     },
-                              bgColor: (soldTicketzcontroller
-                                          .selectedSoldTicket.isEmpty ||
+                              bgColor: (getMyreturnController
+                                          .validateTicketsList.isEmpty ||
                                       timerController.countdown.value ==
                                           "0:00:00")
                                   ? AppColors.lightGrey
                                   : AppColors.secondary,
                             )),
                         SizedBox(
-                          height: AppSizes.kDefaultPadding * 1.2,
+                          height: AppSizes.kDefaultPadding * 0.5,
                         ),
                         Text(
                           '** You can return 5% of your total unsold tickets',
@@ -526,52 +631,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class DynamicRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          DynamicWidget(),
-          DynamicWidget(
-            width: 100,
-          ),
-          DynamicWidget(),
-          DynamicWidget(
-            width: 100,
-          ),
-          const Icon(Icons.add)
-        ],
-      ),
-    );
-  }
-}
-
-class DynamicWidget extends StatelessWidget {
-  double? width;
-  DynamicWidget({this.width});
-  TextEditingController controller = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width ?? 50,
-      child: TextField(
-        controller: controller,
-        decoration: const InputDecoration(
-           enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2, color: Colors.blueGrey),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2, color: Colors.black),
-    ),
         ),
       ),
     );
