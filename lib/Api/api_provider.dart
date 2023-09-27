@@ -508,15 +508,16 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-
+    print("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
+      print(response.data);
       if (kDebugMode) {
-        log('--------Response : $response');
+        log('--------Response valid : $response');
       }
       return response.statusCode == 200
-          ? {"success": false, "error": ""}
+          ? response.data
           : throw Exception('Something Went Wrong');
     } catch (error, stacktrace) {
       if (kDebugMode) {

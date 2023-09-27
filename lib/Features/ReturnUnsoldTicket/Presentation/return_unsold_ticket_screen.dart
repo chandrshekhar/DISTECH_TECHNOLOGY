@@ -1,10 +1,12 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:distech_technology/Widgets/purchase_details_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../Api/api_provider.dart';
@@ -59,6 +61,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
 
   final soldTicketzcontroller = Get.put(SoldTicketController());
   final timerController = Get.put(TimerController());
+  final profileController = Get.put(ProfileController());
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
 
@@ -355,7 +358,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: TextField(
-                                     keyboardType: TextInputType.name,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(2)
+                                  ],
+                                  keyboardType: TextInputType.name,
                                   controller: getMyreturnController
                                       .fromLetterController.value,
                                   decoration: const InputDecoration(
@@ -375,7 +381,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: TextField(
-                                     keyboardType: TextInputType.name,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(2)
+                                  ],
+                                  keyboardType: TextInputType.name,
                                   controller: getMyreturnController
                                       .toLetterController.value,
                                   decoration: const InputDecoration(
@@ -396,7 +405,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: TextField(
-                                     keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(6)
+                                  ],
+                                  keyboardType: TextInputType.number,
                                   controller: getMyreturnController
                                       .fromNumberController.value,
                                   decoration: const InputDecoration(
@@ -417,9 +429,12 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: TextField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(6)
+                                  ],
                                   controller: getMyreturnController
                                       .toNumberController.value,
-                                      keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
@@ -440,7 +455,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                         .toString() !=
                                     '') {
                                   getMyreturnController.validateReturnTicket(
-                                      "64b8e5368131b37df3303d8d",
+                                      "${profileController.userProfileModel.value.user!.sId}",
                                       formatedDate ?? "");
                                 }
                               },
