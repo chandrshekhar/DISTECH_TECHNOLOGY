@@ -59,14 +59,14 @@ class GetMyReturnController extends GetxController {
       "fromNumber": fromNumberController.value.text.toString().trim(),
       "toNumber": toNumberController.value.text.toString().trim()
     };
-    validateTicketsList.add(reqModel);
     clearText();
     isTicketValidating(false);
-    // var res = await apiProvider.varidateReturnTicket(reqModel);
-    // if (res['success']) {
-    //   print("validate--> ${res['success']}");
-    // } else {
-    //   print("validate--> ${res['success']}");
-    // }
+    var res = await apiProvider.varidateReturnTicket(reqModel);
+    if (res['success']) {
+      validateTicketsList.add(reqModel);
+      print("validate--> ${res['success']}");
+    } else {
+      print("validate--> ${res['success']}");
+    }
   }
 }

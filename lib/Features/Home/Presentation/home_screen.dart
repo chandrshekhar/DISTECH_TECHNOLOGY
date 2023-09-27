@@ -16,8 +16,11 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
 
 import '../../../Commons/app_images.dart';
+import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../../Widgets/full_button.dart';
 import '../Components/timer_card_widget.dart';
 import '../Models/drawer_item_model.dart';
@@ -53,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   //drawer item selected background color.
   //by default: dashboard will be selected.
   List<bool> isHighlighted = [true, false, false, false, false, false, false];
+
+  final userProfileController = Get.put(ProfileController());
 
   //Close Drawer if open
   void closeDrawer() {
@@ -307,18 +312,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Text(
-                        'Hi, ${widget.username}',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w500),
-                      ),
-                    ),
+                    GetX<ProfileController>(
+                      builder: (controller) {
+                        return Text(
+                          'Hi, ${controller.userProfileModel.value.user?.fullName.toString()}',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w500),
+                        );
+                      },
+                    )
                   ],
                 ),
                 Positioned(
