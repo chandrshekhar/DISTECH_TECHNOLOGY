@@ -142,7 +142,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           }
 
                           return Text(
-                              "${getMyreturnController.returnCount.value - soldTicketzcontroller.selectedSoldTicket.length}",
+                              "${getMyreturnController.returnCount.value - getMyreturnController.validateTicketsList.length}",
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium!
@@ -358,8 +358,19 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: TextField(
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                  onChanged: (v) =>
+                                      getMyreturnController.buttonEnabled(),
+                                  readOnly:
+                                      getMyreturnController.returnCount.value ==
+                                              0 &&
+                                          timerController.countdown.value ==
+                                              "0:00:00",
                                   inputFormatters: [
-                                    LengthLimitingTextInputFormatter(2)
+                                    LengthLimitingTextInputFormatter(2),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[A-Z]'))
                                   ],
                                   keyboardType: TextInputType.name,
                                   controller: getMyreturnController
@@ -381,8 +392,19 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: TextField(
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                  onChanged: (v) =>
+                                      getMyreturnController.buttonEnabled(),
+                                  readOnly:
+                                      getMyreturnController.returnCount.value ==
+                                              0 &&
+                                          timerController.countdown.value ==
+                                              "0:00:00",
                                   inputFormatters: [
-                                    LengthLimitingTextInputFormatter(2)
+                                    LengthLimitingTextInputFormatter(2),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[A-Z]'))
                                   ],
                                   keyboardType: TextInputType.name,
                                   controller: getMyreturnController
@@ -405,8 +427,15 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: TextField(
+                                  onChanged: (v) =>
+                                      getMyreturnController.buttonEnabled(),
+                                  readOnly:
+                                      getMyreturnController.returnCount.value ==
+                                              0 &&
+                                          timerController.countdown.value ==
+                                              "0:00:00",
                                   inputFormatters: [
-                                    LengthLimitingTextInputFormatter(6)
+                                    LengthLimitingTextInputFormatter(5)
                                   ],
                                   keyboardType: TextInputType.number,
                                   controller: getMyreturnController
@@ -429,8 +458,15 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: TextField(
+                                  onChanged: (v) =>
+                                      getMyreturnController.buttonEnabled(),
+                                  readOnly:
+                                      getMyreturnController.returnCount.value ==
+                                              0 &&
+                                          timerController.countdown.value ==
+                                              "0:00:00",
                                   inputFormatters: [
-                                    LengthLimitingTextInputFormatter(6)
+                                    LengthLimitingTextInputFormatter(5)
                                   ],
                                   controller: getMyreturnController
                                       .toNumberController.value,
@@ -448,31 +484,35 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                if (getMyreturnController
-                                        .fromLetterController.value
-                                        .toString() !=
-                                    '') {
-                                  getMyreturnController.validateReturnTicket(
-                                      "${profileController.userProfileModel.value.user!.sId}",
-                                      formatedDate ?? "");
-                                }
-                              },
-                              child: Container(
-                                  margin: const EdgeInsets.only(right: 2),
-                                  width: AppSizes.buttonHeight,
-                                  height: AppSizes.buttonHeight + 8,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.primary,
-                                      borderRadius: BorderRadius.circular(
-                                          AppSizes.cardCornerRadius / 2),
-                                      border: Border.all(color: AppColors.bg)),
-                                  child: const Icon(
-                                    Icons.add,
-                                    size: 20,
-                                    color: Colors.white,
-                                  )),
+                            Obx(
+                              () => InkWell(
+                                onTap: getMyreturnController
+                                        .addButtonEnable.value
+                                    ? () {
+                                        getMyreturnController.validateReturnTicket(
+                                            "${profileController.userProfileModel.value.user!.sId}",
+                                            formatedDate ?? "");
+                                      }
+                                    : null,
+                                child: Container(
+                                    margin: const EdgeInsets.only(right: 2),
+                                    width: AppSizes.buttonHeight,
+                                    height: AppSizes.buttonHeight + 8,
+                                    decoration: BoxDecoration(
+                                        color: getMyreturnController
+                                                .addButtonEnable.value
+                                            ? AppColors.primary
+                                            : AppColors.lightGrey,
+                                        borderRadius: BorderRadius.circular(
+                                            AppSizes.cardCornerRadius / 2),
+                                        border:
+                                            Border.all(color: AppColors.bg)),
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 20,
+                                      color: Colors.white,
+                                    )),
+                              ),
                             )
                           ]),
                           const SizedBox(height: 5),
@@ -481,16 +521,19 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                             height: 5,
                           ),
                           Obx(() {
-                            // if (getMyreturnController
-                            //     .returnTicketsList.isEmpty) {
-                            //   return const Center(
-                            //       child: Text("No Ticket for Return"));
-                            // } else if (getMyreturnController
-                            //     .isReturnTicketLoading.value) {
-                            //   return const Center(
-                            //       child: CircularProgressIndicator.adaptive());
-                            // } else
-                            {
+                            if (getMyreturnController
+                                .returnTicketsList.isEmpty) {
+                              return const Center(
+                                  child: Text("No Ticket for Return"));
+                            } else if (getMyreturnController
+                                    .isReturnTicketLoading.value ==
+                                true) {
+                              return const Center(
+                                  child: CircularProgressIndicator.adaptive());
+                            } else if (timerController.countdown.value ==
+                                "0:00:00") {
+                              return const Text("Return Time is Over");
+                            } else {
                               return Expanded(
                                 child: ListView.builder(
                                   shrinkWrap: true,

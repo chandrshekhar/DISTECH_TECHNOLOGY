@@ -41,12 +41,14 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
             const SizedBox(
               height: 2,
             ),
-            Text(
-              "07:00 PM",
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: AppColors.secondary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
+            Obx(
+              () => Text(
+                '${timerController.lastReturnTime.value} PM',
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: AppColors.secondary,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
+              ),
             ),
           ],
         ),
@@ -79,12 +81,14 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
             SizedBox(
               height: AppSizes.kDefaultPadding / 3,
             ),
-            Text(
-              '07:35 PM',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: AppColors.grey,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
+            Obx(
+              () => Text(
+                '${timerController.drawTime.value} PM',
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: AppColors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
+              ),
             ),
           ],
         )

@@ -348,6 +348,40 @@ class ApiProvider {
     }
   }
 
+  ///------------- get server Time---------------///
+  Future<Map<String, dynamic>> getServerTime() async {
+    Response response;
+    String? authToken;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("token $token");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.get(
+        Urls.serverTime,
+      );
+      if (kDebugMode) {
+        log('--------Response time : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {};
+    }
+  }
+
   ///--------- get User Details -----///
   Future<UserProfileModel> getUserDetails() async {
     Response response;
