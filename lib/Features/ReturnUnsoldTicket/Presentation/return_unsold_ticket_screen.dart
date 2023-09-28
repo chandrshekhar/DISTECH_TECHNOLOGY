@@ -27,7 +27,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
   DateTime selectedDate = DateTime.now();
-  String? formatedDate;
+  String? formatedDate =
+      formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd");
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -77,6 +79,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     getMyreturnController.getAllReturnTicket();
     soldTicketController.dropDownValue.value = 10;
     soldTicketzcontroller.limit.value = 10;
+    _selectDate(context);
   }
 
   @override
@@ -176,90 +179,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       ),
                     ),
                     const SizedBox(width: 10),
-
-                    // AppDropDown(
-                    //     onChanged: (value) async {
-                    //       soldTicketController.limit.value = value;
-                    //       soldTicketController.dropDownValue.value = value;
-                    //       await soldTicketController.getAllTicket(
-                    //           date: formatedDate,
-                    //           search: soldTicketController.searchText.value,
-                    //           semNumber: soldTicketController.semNumber.value);
-                    //     },
-                    //     list: soldTicketController.selectedValueList)
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: AppSizes.kDefaultPadding * 1.2,
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       flex: 5,
-              //       child: CustomTextField(
-              //         controller: _searchController,
-              //         hintText: 'Search',
-              //         prefixIcon:  const Icon(
-              //           EvaIcons.searchOutline,
-              //           color: AppColors.primary,
-              //           size: 20,
-              //         ),
-              //         onChanged: (value) {
-              //           if (value.toString().isNotEmpty) {
-              //             soldTicketzcontroller.searchTextSave(value);
-              //           } else {
-              //             soldTicketzcontroller.searchText("");
-              //           }
-              //           soldTicketzcontroller.getAllTicket(
-              //               search: soldTicketzcontroller.searchText.value,
-              //               semNumber: soldTicketzcontroller.semNumber.value,
-              //               date: formatedDate);
-              //         },
-              //         maxLines: 1,
-              //         minLines: 1,
-              //         isBorder: false,
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       width: 15,
-              //     ),
-              //     // Expanded(
-              //     //   flex: 1,
-              //     //   child: InkWell(
-              //     //     onTap: () {
-              //     //       showDialog(
-              //     //           context: context,
-              //     //           builder: (context) {
-              //     //             return AlertDialog(
-              //     //               content: FilterDialog(
-              //     //                 selectedDate: formatedDate!,
-              //     //               ),
-              //     //             );
-              //     //           });
-              //     //     },
-              //     //     child: Container(
-              //     //       padding: const EdgeInsets.all(
-              //     //           AppSizes.kDefaultPadding / 1.5),
-              //     //       height: AppSizes.buttonHeight + 4,
-              //     //       decoration: BoxDecoration(
-              //     //           borderRadius: BorderRadius.circular(
-              //     //               AppSizes.cardCornerRadius / 2),
-              //     //           border: Border.all(color: AppColors.bg)),
-              //     //       child: Image.asset(
-              //     //         AppIcons.filterIcon,
-              //     //         width: 25,
-              //     //         height: 25,
-              //     //       ),
-              //     //     ),
-              //     //   ),
-              //     // ),
-              //     //  const SizedBox(
-              //     //   width: 10,
-              //     // ),
-
-              //   ],
-              // ),
               const SizedBox(height: 10),
               Column(
                 children: [
@@ -369,8 +291,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               "0:00:00",
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(2),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[A-Z]'))
+                                    UpperCaseTextFormatter()
                                   ],
                                   keyboardType: TextInputType.name,
                                   controller: getMyreturnController
@@ -403,8 +324,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               "0:00:00",
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(2),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[A-Z]'))
+                                    UpperCaseTextFormatter()
                                   ],
                                   keyboardType: TextInputType.name,
                                   controller: getMyreturnController
@@ -691,6 +611,17 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

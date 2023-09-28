@@ -94,10 +94,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           label: 'Send OTP',
                           onPressed: () async {
                             if (_key.currentState!.validate()) {
-                               print("pandey jii");
+                       
                               var res = await ApiProvider()
                                   .forgetPassword(_emailController.text.trim());
-                              print("res---> $res");
+                             
                               if (res['success'] == true) {
                                 // ignore: use_build_context_synchronously
                                 ScaffoldMessenger.of(context).showSnackBar(

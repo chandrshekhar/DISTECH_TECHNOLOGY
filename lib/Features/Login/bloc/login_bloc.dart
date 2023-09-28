@@ -17,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginLoadingState());
         final mData = await apiProvider.loginApiCall(reqModel);
         if (mData.success == true) {
-          print("login token--> ${mData.user}");
+        
            LocalStorageService()
               .saveToDisk(LocalStorageService.ACCESS_TOKEN_KEY, mData.jWT);
                LocalStorageService()

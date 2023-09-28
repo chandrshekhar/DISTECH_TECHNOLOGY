@@ -20,7 +20,7 @@ class ApiProvider {
   Future<LoginResponseModel> loginApiCall(LoginRequestModel reqModel) async {
     Response response;
     if (kDebugMode) {
-      print(reqModel.toJson());
+   
     }
     try {
       _dio.options.headers = {
@@ -355,7 +355,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("token $token");
+  
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -389,7 +389,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("token $token");
+   
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -546,7 +546,7 @@ class ApiProvider {
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
-      print(response.data);
+   
       if (kDebugMode) {
         log('--------Response valid : $response');
       }

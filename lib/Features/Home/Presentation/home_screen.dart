@@ -17,7 +17,6 @@ import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 
 import '../../../Commons/app_images.dart';
 import '../../../Controller/Profile Controller/profile_controller.dart';
