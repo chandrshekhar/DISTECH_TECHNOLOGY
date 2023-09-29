@@ -7,6 +7,7 @@ import 'package:distech_technology/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:upgrader/upgrader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,13 +38,20 @@ class MyApp extends StatelessWidget {
           title: 'singham lottery',
           theme: AppTheme.lightTheme,
           themeMode: ThemeMode.light,
-          home: (jwtToken != "")
-              ? HomeScreen(username: userName)
-              : const SplashScreen(),
+          home: UpgradeAlert(
+            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+            child: SafeArea(
+              child: (jwtToken != "")
+                  ? HomeScreen(username: userName)
+                  : const SplashScreen(),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
+
+ 
 //

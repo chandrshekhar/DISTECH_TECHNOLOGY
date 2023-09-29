@@ -6,6 +6,7 @@ import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.da
 import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
+import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
@@ -303,8 +304,8 @@ class ApiProvider {
     }
   }
 
-  Future<Map<dynamic, dynamic>> retunTicketUnsold(
-      List<dynamic> returnTicketIdList,
+  Future<ReturnTicketsResponseModel> retunTicketUnsold(
+      List<FailedSeriesList> returnTicketIdList,
       String date,
       String userId) async {
     Response response;
@@ -334,9 +335,9 @@ class ApiProvider {
 
       if (response.statusCode == 200) {
         resData = response.data;
-        return resData;
+        return ReturnTicketsResponseModel.fromJson(resData);
       } else {
-        return resData;
+        return ReturnTicketsResponseModel.withError("Something went wrong");
       }
     } catch (error, stacktrace) {
       if (kDebugMode) {
@@ -345,7 +346,7 @@ class ApiProvider {
       if (kDebugMode) {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
-      return resData;
+      return ReturnTicketsResponseModel.withError(error.toString());
     }
   }
 

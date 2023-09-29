@@ -3,6 +3,7 @@ import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticke
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import '../Timer Controller/timer_controller.dart';
 
 class GetMyReturnController extends GetxController {
@@ -11,8 +12,7 @@ class GetMyReturnController extends GetxController {
   RxBool isReturnTicketLoading = false.obs;
   RxBool isTicketValidating = false.obs;
   ApiProvider apiProvider = ApiProvider();
-  RxList<Map<String, dynamic>> validateTicketsList =
-      <Map<String, dynamic>>[].obs;
+  RxList<FailedSeriesList> validateTicketsList = <FailedSeriesList>[].obs;
 
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();
@@ -99,16 +99,25 @@ class GetMyReturnController extends GetxController {
           backgroundColor: Colors.red);
       isTicketValidating(false);
     } else {
-      Map<String, dynamic> reqModel = {
-        "userId": userId,
-        "date": date,
-        "fromLetter": fromLetterController.value.text.toString().trim(),
-        "toLetter": toLetterController.value.text.toString().trim(),
-        "fromNumber": fromNumberController.value.text.toString().trim(),
-        "toNumber": toNumberController.value.text.toString().trim()
-      };
+      FailedSeriesList reqModel = FailedSeriesList(
+        date: date,
+        userId: userId,
+         fromLetter: fromLetterController.value.text.toString().trim(),
+        toLetter: toLetterController.value.text.toString().trim(),
+        fromNumber: fromNumberController.value.text.toString().trim(),
+        toNumber: toNumberController.value.text.toString().trim()
+         
+      );
+      // Map<String, dynamic> reqModel = {
+      //   "userId": userId,
+      //   "date": date,
+      //   "fromLetter": fromLetterController.value.text.toString().trim(),
+      //   "toLetter": toLetterController.value.text.toString().trim(),
+      //   "fromNumber": fromNumberController.value.text.toString().trim(),
+      //   "toNumber": toNumberController.value.text.toString().trim()
+      // };
 
-      var res = await apiProvider.varidateReturnTicket(reqModel);
+      var res = await apiProvider.varidateReturnTicket(reqModel.toJson());
       if (res['success']) {
         validateTicketsList.add(reqModel);
         isTicketValidating(false);

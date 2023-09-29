@@ -37,7 +37,7 @@ dependencies:
   get: ^4.6.5
   flutter_barcode_scanner:
   pull_to_refresh: ^2.0.0
- 
+  upgrader: ^8.1.0
   # flutter_screenutil: ^5.9.0
   
 

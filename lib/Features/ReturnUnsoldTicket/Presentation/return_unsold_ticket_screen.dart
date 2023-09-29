@@ -2,6 +2,7 @@ import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:distech_technology/Widgets/purchase_details_card.dart';
@@ -481,7 +482,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  data['fromLetter'].toString(),
+                                                  data.fromLetter.toString(),
                                                   textAlign: TextAlign.start,
                                                   style: const TextStyle(
                                                       color: Colors.blue),
@@ -490,7 +491,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  data['toLetter'].toString(),
+                                                  data.toLetter.toString(),
                                                   textAlign: TextAlign.start,
                                                   style: const TextStyle(
                                                       color: Colors.blue),
@@ -499,7 +500,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               Expanded(
                                                 flex: 2,
                                                 child: Text(
-                                                  data['fromNumber'].toString(),
+                                                  data.fromNumber.toString(),
                                                   textAlign: TextAlign.start,
                                                   style: const TextStyle(
                                                       color: Colors.blue),
@@ -508,7 +509,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               Expanded(
                                                   flex: 2,
                                                   child: Text(
-                                                    data['toNumber'].toString(),
+                                                    data.toNumber.toString(),
                                                     style: const TextStyle(
                                                         color: Colors.blue),
                                                   )),
@@ -565,7 +566,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                     .value
                                                     .user!
                                                     .sId!);
-                                        if (res['success']) {
+                                        if (res.success) {
                                           await getMyreturnController
                                               .getAllReturnTicket(
                                                   dateTime: formatedDate);
@@ -579,6 +580,22 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                           getMyreturnController
                                               .validateTicketsList
                                               .clear();
+                                          getMyreturnController
+                                              .validateTicketsList
+                                              .value = res.failedSeriesList!;
+                                          if (res
+                                              .failedSeriesList!.isNotEmpty) {
+                                            // ignore: use_build_context_synchronously
+                                            showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return modelBottomSheet(res
+                                                    .failedSeriesList!); // Your custom widget with ListView.builder
+                                              },
+                                            );
+                                          }
+
                                           // soldTicketzcontroller
                                           //     .selectedSoldTicket
                                           //     .clear();
@@ -587,7 +604,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               .getAllTicket(date: formatedDate);
                                         } else {
                                           Get.snackbar(
-                                              "Error", res['error'].toString(),
+                                              "Error", res.error.toString(),
                                               backgroundColor: AppColors.black,
                                               colorText: Colors.white,
                                               isDismissible: true,
@@ -621,6 +638,110 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget modelBottomSheet(List<FailedSeriesList> failedSeriesList) {
+    return Container(
+      padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      height: 300,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  "These Tickets are alredy sold please clear It.",
+                  style: TextStyle(color: AppColors.secondary, fontSize: 22),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    getMyreturnController.validateTicketsList.clear();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("delete"))
+            ],
+          ),
+          const SizedBox(height: 20),
+          const CustomDivider(),
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: failedSeriesList.length,
+                itemBuilder: (context, index) {
+                  var data = failedSeriesList[index];
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: AppSizes.kDefaultPadding / 1.5),
+                    color: (index % 2 == 0)
+                        ? AppColors.white
+                        : AppColors.primaryBg,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes.kDefaultPadding),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              data.fromLetter.toString(),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              data.toLetter.toString(),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              data.fromNumber.toString(),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: Text(
+                                data.toNumber.toString(),
+                                style: const TextStyle(color: Colors.blue),
+                              )),
+                          InkWell(
+                            onTap: () {
+                              getMyreturnController
+                                  .removeValidateReturnTicket(index);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 10,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                  ;
+                }),
+          ),
+        ],
       ),
     );
   }
