@@ -11,7 +11,8 @@ class GetMyReturnController extends GetxController {
   RxBool isReturnTicketLoading = false.obs;
   RxBool isTicketValidating = false.obs;
   ApiProvider apiProvider = ApiProvider();
-  RxList<Map> validateTicketsList = <Map>[].obs;
+  RxList<Map<String, dynamic>> validateTicketsList =
+      <Map<String, dynamic>>[].obs;
 
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();

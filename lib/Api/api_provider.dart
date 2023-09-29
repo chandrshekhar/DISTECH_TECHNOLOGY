@@ -19,9 +19,7 @@ class ApiProvider {
   ///--------- Login -----///
   Future<LoginResponseModel> loginApiCall(LoginRequestModel reqModel) async {
     Response response;
-    if (kDebugMode) {
-   
-    }
+    if (kDebugMode) {}
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -305,8 +303,10 @@ class ApiProvider {
     }
   }
 
-  Future<Map<String, dynamic>> retunTicketUnsold(
-      List<String> returnTicketIdList, String date) async {
+  Future<Map<dynamic, dynamic>> retunTicketUnsold(
+      List<dynamic> returnTicketIdList,
+      String date,
+      String userId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -317,7 +317,8 @@ class ApiProvider {
     };
 
     Map<String, dynamic> reqModel = {
-      "tickets": returnTicketIdList,
+      "userId": userId,
+      "returnList": returnTicketIdList,
       "date": date
     };
     try {
@@ -326,9 +327,9 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.post(Urls.returnTicket, data: reqModel);
+      response = await _dio.post(Urls.returnSeriesList, data: reqModel);
       if (kDebugMode) {
-        log('--------Response Login : $response');
+        log('--------Response returnTicket : $response');
       }
 
       if (response.statusCode == 200) {
@@ -355,7 +356,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-  
+
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -389,7 +390,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-   
+
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -546,7 +547,7 @@ class ApiProvider {
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
-   
+
       if (kDebugMode) {
         log('--------Response valid : $response');
       }

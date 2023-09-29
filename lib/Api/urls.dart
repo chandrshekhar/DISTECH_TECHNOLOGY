@@ -20,6 +20,6 @@ class Urls {
       "$_baseUrl/orders/get-order-tickets";
   static const String validateReturnTicket =
       "$_baseUrl/orders/check-return-series";
-
   static const String serverTime = "$_baseUrl/get-draw-time";
+  static const String returnSeriesList = "$_baseUrl/orders/return-series-list";
 }
