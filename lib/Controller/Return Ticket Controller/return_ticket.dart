@@ -2,7 +2,6 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import '../Timer Controller/timer_controller.dart';
 

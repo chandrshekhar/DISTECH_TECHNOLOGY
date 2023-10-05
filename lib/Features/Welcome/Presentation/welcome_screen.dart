@@ -21,22 +21,22 @@ class WelcomeScreen extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.8,
-              padding:  EdgeInsets.symmetric(
-                  horizontal: AppSizes.kDefaultPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
               decoration:
                   const BoxDecoration(gradient: AppColors.radialGradient),
               child: SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     SizedBox(
+                    SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Image.asset(
                       AppImages.appLogo,
                       width: MediaQuery.of(context).size.width * 0.6,
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: AppSizes.kDefaultPadding * 3,
                     ),
                     Text(
@@ -46,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
                                 color: AppColors.white,
                               ),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Text(
@@ -55,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: AppColors.white, fontWeight: FontWeight.w300),
                     ),
-                     SizedBox(
+                    SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Expanded(
@@ -71,8 +71,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding:  EdgeInsets.symmetric(
-                horizontal: AppSizes.kDefaultPadding),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
             child: FullButton(
               label: 'Portal Login',
               arrowIconVisible: true,

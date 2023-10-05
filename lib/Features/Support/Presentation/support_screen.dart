@@ -28,11 +28,11 @@ class _SupportScreenState extends State<SupportScreen> {
       },
       child: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(AppSizes.kDefaultPadding),
+          padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               Text(
@@ -42,7 +42,7 @@ class _SupportScreenState extends State<SupportScreen> {
                     .headlineSmall!
                     .copyWith(fontWeight: FontWeight.w400),
               ),
-               SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding * 1.2,
               ),
               CustomTextField(
@@ -52,7 +52,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 maxLines: 1,
                 minLines: 1,
               ),
-               SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
               CustomTextField(
@@ -62,7 +62,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 maxLines: 5,
                 minLines: 5,
               ),
-               SizedBox(
+              SizedBox(
                 height: AppSizes.kDefaultPadding * 2,
               ),
               Obx(() => supportController.isLoading.value == true

@@ -13,5 +13,4 @@ class AppIcons {
   static const String editIcon = '${path}edit-icon.png';
   static const String closeIcon = '${path}close-icon.png';
   static const String forwardArrowIcon = '${path}forward-arrow-icon.png';
-
 }

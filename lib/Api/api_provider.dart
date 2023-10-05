@@ -18,9 +18,11 @@ class ApiProvider {
   LocalStorageService localStorageService = LocalStorageService();
 
   ///--------- Login -----///
-  Future<LoginResponseModel> loginApiCall(LoginRequestModel reqModel) async {
+  Future<LoginResponseModel> loginApiCall(Map<String, dynamic> reqModel) async {
     Response response;
-    if (kDebugMode) {}
+    if (kDebugMode) {
+      print("login reqModel--> ${reqModel}");
+    }
     try {
       _dio.options.headers = {
         'Accept': 'application/json',

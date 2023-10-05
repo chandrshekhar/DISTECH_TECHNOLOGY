@@ -41,7 +41,7 @@ class ProfileController extends GetxController {
     firstNameController.value.text =
         userProfileModel.value.user!.fullName ?? "";
     addressController.value.text = userProfileModel.value.user!.address1 ?? "";
-    addharController.value.text = userProfileModel.value.user!.aadhaarId ??"";
+    addharController.value.text = userProfileModel.value.user!.aadhaarId ?? "";
     panController.value.text = userProfileModel.value.user!.panNumber ?? "";
     pincodeController.value.text = userProfileModel.value.user!.pinCode ?? "";
     mobileControlelr.value.text =

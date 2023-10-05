@@ -3,7 +3,6 @@ import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Features/Splash/Presentation/splash_screen.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/dismissable_widget.dart';
-import 'package:distech_technology/global_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -32,19 +31,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
-      child: GlobalBloc(
-        child: GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'singham lottery',
-          theme: AppTheme.lightTheme,
-          themeMode: ThemeMode.light,
-          home: UpgradeAlert(
-            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
-            child: SafeArea(
-              child: (jwtToken != "")
-                  ? HomeScreen(username: userName)
-                  : const SplashScreen(),
-            ),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'singham lottery',
+        theme: AppTheme.lightTheme,
+        themeMode: ThemeMode.light,
+        home: UpgradeAlert(
+          upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+          child: SafeArea(
+            child: (jwtToken != "")
+                ? HomeScreen(username: userName)
+                : const SplashScreen(),
           ),
         ),
       ),

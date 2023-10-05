@@ -23,13 +23,13 @@ class SupportController extends GetxController {
           colorText: Colors.white,
           isDismissible: true,
           snackPosition: SnackPosition.BOTTOM);
-          subjectController.value.clear();
-          messageController.value.clear();
+      subjectController.value.clear();
+      messageController.value.clear();
     } else {
       isLoading(false);
       Get.snackbar(
           "Not response", "Your are not selected any ticket for mark as sold",
-          backgroundColor:  Colors.red,
+          backgroundColor: Colors.red,
           colorText: Colors.white,
           isDismissible: true,
           snackPosition: SnackPosition.BOTTOM);

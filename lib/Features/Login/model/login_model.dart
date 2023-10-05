@@ -17,7 +17,7 @@ class LoginResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['success'] = success;
     if (user != null) {
       data['user'] = user!.toJson();
@@ -95,10 +95,10 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['forgetPassword'] = forgetPassword;
     data['_id'] = sId;
-    data['fullName'] =fullName;
+    data['fullName'] = fullName;
     data['aadhaarId'] = aadhaarId;
     data['panNumber'] = panNumber;
     data['address1'] = address1;
@@ -116,22 +116,6 @@ class User {
     data['creators'] = creators;
     data['entryDate'] = entryDate;
     data['__v'] = iV;
-    return data;
-  }
-}
-
-class LoginRequestModel {
-  final String email;
-  final String password;
-  String platform;
-  LoginRequestModel(
-      {required this.email, required this.password, this.platform = "app"});
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email;
-    data['password'] = password;
-    data['platform'] = platform;
-
     return data;
   }
 }
