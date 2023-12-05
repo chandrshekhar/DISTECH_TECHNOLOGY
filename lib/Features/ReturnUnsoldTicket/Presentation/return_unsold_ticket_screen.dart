@@ -3,13 +3,12 @@ import 'package:distech_technology/Controller/Profile%20Controller/profile_contr
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
-import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
-import 'package:distech_technology/Widgets/purchase_details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../../Api/api_provider.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -415,6 +414,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               .validateReturnTicket(
                                                   "${profileController.userProfileModel.value.user!.sId}",
                                                   formatedDate ?? "");
+                                          getMyreturnController.buttonEnabled();
                                         }
                                       : null,
                                   child: Container(
@@ -430,11 +430,18 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                               AppSizes.cardCornerRadius / 2),
                                           border:
                                               Border.all(color: AppColors.bg)),
-                                      child: const Icon(
-                                        Icons.add,
-                                        size: 20,
-                                        color: Colors.white,
-                                      )),
+                                      child: getMyreturnController
+                                                  .isTicketValidating ==
+                                              true
+                                          ? const Center(
+                                              child: CircularProgressIndicator
+                                                  .adaptive(),
+                                            )
+                                          : const Icon(
+                                              Icons.add,
+                                              size: 20,
+                                              color: Colors.white,
+                                            )),
                                 ),
                               )
                             ]),
@@ -533,7 +540,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                           ),
                                         ),
                                       );
-                                      ;
                                     }),
                               );
                             }
@@ -738,7 +744,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       ),
                     ),
                   );
-                  ;
                 }),
           ),
         ],

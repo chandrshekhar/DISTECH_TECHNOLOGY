@@ -2,6 +2,7 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import '../Timer Controller/timer_controller.dart';
 
@@ -86,7 +87,7 @@ class GetMyReturnController extends GetxController {
     int fromLetter = fromLetter1.codeUnitAt(0) + fromLetter2.codeUnitAt(0);
     int toLetter = toLetter1.codeUnitAt(0) + toLetter2.codeUnitAt(0);
 
-    if (fromNumber < 00012 || toNumber > 99999 || fromNumber > 99999) {
+    if (fromNumber < 00000 || toNumber > 99999 || fromNumber > 99999) {
       Get.snackbar("Error", "Invalid Number", backgroundColor: Colors.red);
       isTicketValidating(false);
     } else if (fromNumber > toNumber) {
@@ -99,14 +100,12 @@ class GetMyReturnController extends GetxController {
       isTicketValidating(false);
     } else {
       FailedSeriesList reqModel = FailedSeriesList(
-        date: date,
-        userId: userId,
-         fromLetter: fromLetterController.value.text.toString().trim(),
-        toLetter: toLetterController.value.text.toString().trim(),
-        fromNumber: fromNumberController.value.text.toString().trim(),
-        toNumber: toNumberController.value.text.toString().trim()
-         
-      );
+          date: date,
+          userId: userId,
+          fromLetter: fromLetterController.value.text.toString().trim(),
+          toLetter: toLetterController.value.text.toString().trim(),
+          fromNumber: fromNumberController.value.text.toString().trim(),
+          toNumber: toNumberController.value.text.toString().trim());
       // Map<String, dynamic> reqModel = {
       //   "userId": userId,
       //   "date": date,
@@ -126,6 +125,8 @@ class GetMyReturnController extends GetxController {
         Get.snackbar("Error", res['error'], backgroundColor: Colors.red);
       }
       clearText();
+      isTicketValidating(false);
+      buttonEnabled();
     }
   }
 }

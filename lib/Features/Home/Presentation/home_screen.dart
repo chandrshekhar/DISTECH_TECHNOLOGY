@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
@@ -173,8 +174,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const CircleAvatar(
                   radius: 16,
                   backgroundColor: AppColors.white,
-                  foregroundImage: NetworkImage(
-                    'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?w=2000',
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                    maxRadius: 16,
+                    minRadius: 16,
                   ),
                 ),
               ),

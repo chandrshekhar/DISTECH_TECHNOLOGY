@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
+import 'package:distech_technology/Controller/Scan%20Barcode/scan_barcode_controller.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
@@ -9,6 +11,7 @@ import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_histo
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
+
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
 import '../Features/SoldTicket/Models/sold_ticket_model.dart';
@@ -21,7 +24,7 @@ class ApiProvider {
   Future<LoginResponseModel> loginApiCall(Map<String, dynamic> reqModel) async {
     Response response;
     if (kDebugMode) {
-      print("login reqModel--> ${reqModel}");
+      print("login reqModel--> $reqModel");
     }
     try {
       _dio.options.headers = {
@@ -452,22 +455,61 @@ class ApiProvider {
   }
 
   /// check ticket avaliabilty
-  Future<Map<dynamic, dynamic>> verifyTicket(String ticket, String date) async {
+  Future<ScanTicketModel> verifyTicket(String barCode, String date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": ticket.trim(), 'date': date};
+    Map reqModel = {"id": barCode.trim(), 'date': date};
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTickets, data: reqModel);
       if (kDebugMode) {
         log('--------Response : $response');
       }
+      if (response.statusCode == 200 && response.data['valid'] == true) {
+        var res = await verifyTicketbyID(
+            ticketId: response.data["ticket"]["ticketId"], date: date);
+        print(res.success);
+        return res;
+      } else {
+        return ScanTicketModel.withError(response.data['message']);
+      }
+
+      // return response.statusCode == 200
+      //     ? response.data
+      //     : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return ScanTicketModel.withError(error.toString());
+    }
+  }
+
+  /// check ticket avaliabilty
+  Future<ScanTicketModel> verifyTicketbyID(
+      {String? ticketId, String? date}) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    Map reqModel = {"id": ticketId ?? "".trim(), 'date': date};
+    print("req-> $reqModel");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.verifyTicketById, data: reqModel);
+
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
       //  Map resData = {};
 
       return response.statusCode == 200
-          ? response.data
+          ? ScanTicketModel.fromJson(response.data)
           : throw Exception('Something Went Wrong');
     } catch (error, stacktrace) {
       if (kDebugMode) {
@@ -476,11 +518,8 @@ class ApiProvider {
       if (kDebugMode) {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
-      return {
-        "success": false,
-        "valid": false,
-        "type": "NA",
-      };
+
+      return ScanTicketModel.withError(error.toString());
     }
   }
 

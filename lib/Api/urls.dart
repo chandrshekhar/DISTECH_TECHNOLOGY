@@ -14,6 +14,7 @@ class Urls {
   static const String soldTicketList = "$_baseUrl/orders/get-my-sales";
   static const String purchaseHistory = "$_baseUrl/orders/get-my-purchases";
   static const String verifyTickets = "$_baseUrl/verify-ticket";
+  static const String verifyTicketById = "$_baseUrl/tickets/search-ticket";
   static const String contactUs = "$_baseUrl/users/contact-us";
   static const String getMyreturn = "$_baseUrl/orders/get-my-returns";
   static const String getAllPurchaseDetails =

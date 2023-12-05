@@ -7,16 +7,14 @@ import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Widgets/custom_shape_clipper.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  
-
-  const EditProfileScreen(
-      {Key? key,
-})
-      : super(key: key);
+  const EditProfileScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -24,17 +22,12 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final profileController = Get.put(ProfileController());
- 
 
-  
   @override
   void initState() {
-   
     profileController.getUserDetails();
     super.initState();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -67,26 +60,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ))
             ],
           ),
-           SizedBox(
+          SizedBox(
             height: AppSizes.kDefaultPadding,
           ),
           Expanded(
-            child: Obx(()=>
-               ListView(
-                padding:  EdgeInsets.symmetric(
-                    horizontal: AppSizes.kDefaultPadding),
+            child: Obx(
+              () => ListView(
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
                 children: [
-                  
-                     CustomTextField(
-                      controller: profileController.firstNameController.value,
-                      hintText: 'Please enter name',
-                      labelText: 'First Name',
-                      isBorder: false,
-                      keyboardType: TextInputType.name,
-                      maxLines: 1,
-                      minLines: 1,
-                    ),
-                  
+                  CustomTextField(
+                    controller: profileController.firstNameController.value,
+                    hintText: 'Please enter name',
+                    labelText: 'First Name',
+                    isBorder: false,
+                    keyboardType: TextInputType.name,
+                    maxLines: 1,
+                    minLines: 1,
+                  ),
+
                   // const SizedBox(
                   //   height: AppSizes.kDefaultPadding,
                   // ),
@@ -99,7 +91,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   //   maxLines: 1,
                   //   minLines: 1,
                   // ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -111,7 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -123,7 +115,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -135,7 +127,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding * 2,
                   ),
                   Text(
@@ -145,11 +137,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .bodyLarge!
                         .copyWith(color: AppColors.darkGrey.withOpacity(0.8)),
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding / 2,
                   ),
                   const CustomDivider(),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -162,7 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -174,7 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -186,7 +178,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   CustomTextField(
@@ -198,18 +190,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 1,
                     minLines: 1,
                   ),
-                   SizedBox(
+                  SizedBox(
                     height: AppSizes.kDefaultPadding,
                   ),
                   profileController.isUserDataSave.value
-                      ? const CircularProgressIndicator.adaptive()
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive())
                       : FullButton(
                           label: "Save",
                           onPressed: () {
-                           
                             profileController.editProfile(context);
                           }),
-                   SafeArea(
+                  SafeArea(
                     child: SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
