@@ -43,13 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
 
   //all screens which will be visible on home screens
-  final List<Widget> screens = const [
-    DashboardScreen(),
-    ReturnUnsoldTicket(),
-    SoldTicketScreen(),
-    ReturnedTicketScreen(),
-    PurchaseHistoryScreen(),
-    SupportScreen(),
+  final List<Widget> screens = [
+    const DashboardScreen(),
+    const ReturnUnsoldTicket(),
+    const SoldTicketScreen(),
+    const ReturnedTicketScreen(),
+    const PurchaseHistoryScreen(),
+    const SupportScreen(),
     ScanBarCodeScreen()
   ];
 
@@ -318,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     GetX<ProfileController>(
                       builder: (controller) {
                         return Text(
-                          'Hi, ${controller.userProfileModel.value.user?.fullName.toString()}',
+                          'Hi, ${controller.userProfileModel.value.user?.fullName ?? ""}',
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme

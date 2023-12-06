@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
+import '../Features/ScanCode/Model/scan_ticket_model.dart';
 import '../Features/SoldTicket/Models/sold_ticket_model.dart';
 
 class ApiProvider {
@@ -461,6 +462,7 @@ class ApiProvider {
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
     Map reqModel = {"id": barCode.trim(), 'date': date};
+    
     log("reqModel-- >$reqModel");
     try {
       _dio.options.headers = {"access-token": token};

@@ -49,19 +49,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: AppColors.darkGrey,
                       child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: AppColors.darkGrey,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
-                          maxRadius: 60,
-                          minRadius: 60,
-                        ),
-                      ))
+                        backgroundImage: NetworkImage(
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                        maxRadius: 60,
+                        minRadius: 60,
+                      ),
+                    ),
+                  )
                 ],
               ),
               SizedBox(
