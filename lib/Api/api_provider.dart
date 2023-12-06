@@ -455,30 +455,22 @@ class ApiProvider {
   }
 
   /// check ticket avaliabilty
-  Future<ScanTicketModel> verifyTicket(String barCode, String date) async {
+  Future<Map<String, dynamic>> verifyTicket(String barCode, String date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
     Map reqModel = {"id": barCode.trim(), 'date': date};
+    log("reqModel-- >$reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTickets, data: reqModel);
       if (kDebugMode) {
         log('--------Response : $response');
       }
-      if (response.statusCode == 200 && response.data['valid'] == true) {
-        var res = await verifyTicketbyID(
-            ticketId: response.data["ticket"]["ticketId"], date: date);
-        print(res.success);
-        return res;
-      } else {
-        return ScanTicketModel.withError(response.data['message']);
-      }
-
-      // return response.statusCode == 200
-      //     ? response.data
-      //     : throw Exception('Something Went Wrong');
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
     } catch (error, stacktrace) {
       if (kDebugMode) {
         log('$error');
@@ -486,7 +478,7 @@ class ApiProvider {
       if (kDebugMode) {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
-      return ScanTicketModel.withError(error.toString());
+      return {"success": true, "valid": false, "type": "Ticket", "ticket": {}};
     }
   }
 
@@ -497,16 +489,16 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": ticketId ?? "".trim(), 'date': date};
+    Map reqModel = {"ticketId": ticketId ?? "".trim(), 'date': date};
     print("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTicketById, data: reqModel);
 
-      if (kDebugMode) {
-        log('--------Response : $response');
-      }
+      log('--------Response : $response');
+
       //  Map resData = {};
+      print(response.statusCode);
 
       return response.statusCode == 200
           ? ScanTicketModel.fromJson(response.data)

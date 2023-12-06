@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -14,28 +16,42 @@ class ScanBarcodeController extends GetxController {
   RxString barcodeValue = "NA".obs;
 
   RxString invalidString = ''.obs;
+  RxString ticketId = ''.obs;
 
   Future<void> scanBarcodeNormal(String dateFormat) async {
+    invalidString.value = "";
     try {
       isTicketScanning(true);
       String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       barcodeValue.value = barcodeScanRes;
-      await apiProvider
-          .verifyTicket(barcodeValue.trim(), dateFormat)
-          .then((value) {
-        print("value1->${value.error}");
+      var data = await apiProvider.verifyTicket(
+          barcodeValue.value.toString().trim(), dateFormat);
+      log("data--> $data");
+      isTicketScanning(false);
+      if (data['valid'] == true && data['success']) {
+        ticketId.value = data["ticket"]["ticketId"];
+        scanTickModel.value = await apiProvider.verifyTicketbyID(
+            ticketId: ticketId.value, date: dateFormat);
+      } else {
+        invalidString.value = data['message'];
+        scanTickModel.value = ScanTicketModel();
+      }
 
-        invalidString.value = value.error.toString();
-
-        isTicketScanning(false);
-      });
+      isTicketScanning(false);
     } on PlatformException {
       if (kDebugMode) {
         print("Platform  Exception");
       }
       isTicketScanning(false);
     }
+  }
+
+  void callBarCode(String dateFormat) async {
+    print(dateFormat);
+    var res = await apiProvider.verifyTicketbyID(
+        ticketId: ticketId.value, date: dateFormat);
+    scanTickModel.value = res;
   }
 }
 

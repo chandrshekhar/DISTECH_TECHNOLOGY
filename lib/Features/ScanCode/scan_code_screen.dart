@@ -47,6 +47,9 @@ class _ScanBarCodeScreenState extends State<ScanBarCodeScreen> {
         dateFormat = formatedDate;
         purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
       });
+      scanbarcodeController.invalidString.value = "";
+      // scanbarcodeController.barcodeValue.value = "NA";
+      scanbarcodeController.callBarCode(dateFormat);
     }
   }
 
@@ -86,153 +89,194 @@ class _ScanBarCodeScreenState extends State<ScanBarCodeScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Text("Ticket--> ${scanbarcodeController.barcodeValue}"),
-              Text(scanbarcodeController.invalidString == ''
-                  ? ''
-                  : scanbarcodeController.invalidString.toString()),
-              scanbarcodeController.scanTickModel.value.success != true
-                  ? const SizedBox.shrink()
-                  : Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          Card(
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 17, top: 10, right: 17, bottom: 25),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Ticket Details",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      )),
-                                  const SizedBox(height: 10),
-                                  rowWidget(
-                                      title: "Ticket Number:",
-                                      value: scanbarcodeController.scanTickModel
-                                              .value.ticket?.ticketId ??
-                                          ""),
-                                  rowWidget(
-                                      title: "Draw Date:",
-                                      value: scanbarcodeController
-                                          .scanTickModel.value.ticket?.date
-                                          .toString()),
-                                  rowWidget(title: "Status:")
-                                ],
-                              ),
-                            ),
-                          ),
-                          Card(
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 17, top: 10, right: 17, bottom: 25),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Prize Details",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      )),
-                                  const SizedBox(height: 10),
-                                  rowWidget(
-                                      title: "Prize Name:",
-                                      value: scanbarcodeController.scanTickModel
-                                          .value.ticket?.prize?.name),
-                                  rowWidget(
-                                    title: "Prize Amount:",
-                                    value: scanbarcodeController.scanTickModel
-                                        .value.ticket?.prize?.prizeAmount
-                                        .toString(),
+              //   Text("Ticket--> ${scanbarcodeController.barcodeValue}"),
+
+              Expanded(
+                child: Obx(
+                  () => (scanbarcodeController.invalidString.value == "" &&
+                          scanbarcodeController.barcodeValue.value == "NA")
+                      ? const SizedBox.shrink()
+                      : (scanbarcodeController.invalidString.value != "")
+                          ? Text(scanbarcodeController.invalidString.toString())
+                          : ListView(
+                              shrinkWrap: true,
+                              children: [
+                                Card(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        left: 17,
+                                        top: 10,
+                                        right: 17,
+                                        bottom: 25),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text("Ticket Details",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                            )),
+                                        const SizedBox(height: 10),
+                                        rowWidget(
+                                            title: "Ticket Number:",
+                                            value: scanbarcodeController
+                                                    .scanTickModel
+                                                    .value
+                                                    .ticket
+                                                    ?.ticketId ??
+                                                ""),
+                                        rowWidget(
+                                            title: "Draw Date:",
+                                            value: scanbarcodeController
+                                                .scanTickModel
+                                                .value
+                                                .ticket
+                                                ?.date
+                                                .toString()),
+                                        rowWidget(
+                                            title: "Status:",
+                                            value: scanbarcodeController
+                                                .scanTickModel
+                                                .value
+                                                .ticket
+                                                ?.status)
+                                      ],
+                                    ),
                                   ),
-                                  rowWidget(
-                                      title: "Agent Amount:",
-                                      value: scanbarcodeController.scanTickModel
-                                          .value.ticket?.prize?.agentAmount
-                                          .toString())
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 10),
+                                scanbarcodeController.scanTickModel.value.ticket
+                                            ?.prize ==
+                                        null
+                                    ? const SizedBox()
+                                    : Card(
+                                        elevation: 5,
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 17,
+                                              top: 10,
+                                              right: 17,
+                                              bottom: 25),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.white),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text("Prize Details",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                              const SizedBox(height: 10),
+                                              rowWidget(
+                                                  title: "Prize Name:",
+                                                  value: scanbarcodeController
+                                                      .scanTickModel
+                                                      .value
+                                                      .ticket
+                                                      ?.prize
+                                                      ?.name),
+                                              rowWidget(
+                                                title: "Prize Amount:",
+                                                value: scanbarcodeController
+                                                    .scanTickModel
+                                                    .value
+                                                    .ticket
+                                                    ?.prize
+                                                    ?.prizeAmount
+                                                    .toString(),
+                                              ),
+                                              rowWidget(
+                                                  title: "Agent Amount:",
+                                                  value: scanbarcodeController
+                                                      .scanTickModel
+                                                      .value
+                                                      .ticket
+                                                      ?.prize
+                                                      ?.agentAmount
+                                                      .toString())
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                // Card(
+                                //   child: Container(
+                                //     padding: const EdgeInsets.only(
+                                //         left: 17, top: 10, right: 17, bottom: 25),
+                                //     decoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.circular(10),
+                                //         color: Colors.white),
+                                //     child: Column(
+                                //       crossAxisAlignment: CrossAxisAlignment.start,
+                                //       children: [
+                                //         const Text("Current Owner Details",
+                                //             style: TextStyle(
+                                //               fontSize: 20,
+                                //               fontWeight: FontWeight.w700,
+                                //             )),
+                                //         const SizedBox(height: 10),
+                                //         rowWidget(title: "Name:", value: "AZ000343"),
+                                //         rowWidget(
+                                //             title: "username:",
+                                //             value: "3rd Dec 2023"),
+                                //         rowWidget(
+                                //             title: "Email:",
+                                //             value: "pandey211998@gmail.com"),
+                                //         rowWidget(title: "City:", value: ""),
+                                //         rowWidget(title: "District", value: "")
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                // Card(
+                                //   child: Container(
+                                //     padding: const EdgeInsets.only(
+                                //         left: 17, top: 10, right: 17, bottom: 25),
+                                //     decoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.circular(10),
+                                //         color: Colors.white),
+                                //     child: Column(
+                                //       crossAxisAlignment: CrossAxisAlignment.start,
+                                //       children: [
+                                //         const Text("Previous Seller",
+                                //             style: TextStyle(
+                                //               fontSize: 20,
+                                //               fontWeight: FontWeight.w700,
+                                //             )),
+                                //         const SizedBox(height: 10),
+                                //         rowWidget(title: "Name:", value: "AZ000343"),
+                                //         rowWidget(
+                                //             title: "username:",
+                                //             value: "3rd Dec 2023"),
+                                //         rowWidget(
+                                //             title: "Email:",
+                                //             value: "pandey211998@gmail.com"),
+                                //         rowWidget(title: "City:", value: ""),
+                                //         rowWidget(title: "District", value: "")
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
                             ),
-                          ),
-                          // Card(
-                          //   child: Container(
-                          //     padding: const EdgeInsets.only(
-                          //         left: 17, top: 10, right: 17, bottom: 25),
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(10),
-                          //         color: Colors.white),
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         const Text("Current Owner Details",
-                          //             style: TextStyle(
-                          //               fontSize: 20,
-                          //               fontWeight: FontWeight.w700,
-                          //             )),
-                          //         const SizedBox(height: 10),
-                          //         rowWidget(title: "Name:", value: "AZ000343"),
-                          //         rowWidget(
-                          //             title: "username:",
-                          //             value: "3rd Dec 2023"),
-                          //         rowWidget(
-                          //             title: "Email:",
-                          //             value: "pandey211998@gmail.com"),
-                          //         rowWidget(title: "City:", value: ""),
-                          //         rowWidget(title: "District", value: "")
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                          // Card(
-                          //   child: Container(
-                          //     padding: const EdgeInsets.only(
-                          //         left: 17, top: 10, right: 17, bottom: 25),
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(10),
-                          //         color: Colors.white),
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       children: [
-                          //         const Text("Previous Seller",
-                          //             style: TextStyle(
-                          //               fontSize: 20,
-                          //               fontWeight: FontWeight.w700,
-                          //             )),
-                          //         const SizedBox(height: 10),
-                          //         rowWidget(title: "Name:", value: "AZ000343"),
-                          //         rowWidget(
-                          //             title: "username:",
-                          //             value: "3rd Dec 2023"),
-                          //         rowWidget(
-                          //             title: "Email:",
-                          //             value: "pandey211998@gmail.com"),
-                          //         rowWidget(title: "City:", value: ""),
-                          //         rowWidget(title: "District", value: "")
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
+                ),
+              ),
               // const Spacer(),
               dateFormat.toString().isNotEmpty
-                  ? scanbarcodeController.isTicketScanning == true
+                  ? scanbarcodeController.isTicketScanning.value == true
                       ? const CircularProgressIndicator.adaptive()
                       : FullButton(
                           label: "Scan Barcode",
                           onPressed: () {
                             scanbarcodeController.invalidString.value = "";
-                            scanbarcodeController.barcodeValue.value = "";
+                            scanbarcodeController.barcodeValue.value = "NA";
                             scanbarcodeController.scanBarcodeNormal(dateFormat);
                           })
                   : const Text("Please select date first")
