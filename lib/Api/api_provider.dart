@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
-import 'package:distech_technology/Controller/Scan%20Barcode/scan_barcode_controller.dart';
+import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
+import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
+import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
@@ -228,6 +230,38 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return PurchaesModel.withError(
+          "You are offline. Please check your internet connection.");
+    }
+  }
+
+  Future<MyClaimTicketModel> getMyClaims(Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      log("req --> ${reqModel}");
+      response = await _dio.post(Urls.getMyclaims, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response sold : $response');
+      }
+      return response.statusCode == 200
+          ? MyClaimTicketModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return MyClaimTicketModel.withError(
           "You are offline. Please check your internet connection.");
     }
   }
@@ -481,6 +515,65 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return {"success": true, "valid": false, "type": "Ticket", "ticket": {}};
+    }
+  }
+
+  /// verify ticket avaliabilty
+  Future<ClaimToTicketModel> verifyToTicket(String barCode, String date) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    Map reqModel = {"barCode": barCode.trim(), 'date': date};
+
+    log("reqModel-- >$reqModel");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.scanPwt, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? ClaimToTicketModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return ClaimToTicketModel.withError(error.toString());
+    }
+  }
+
+  /// verify ticket fromTickey
+  Future<ClaimFromTicketModel> verifyFromTicket(
+      String barCode, String date) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    Map reqModel = {"barCode": barCode.trim(), 'date': date};
+
+    log("reqModel-- >$reqModel");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.scanPwt, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? ClaimFromTicketModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return ClaimFromTicketModel.withError(error.toString());
     }
   }
 

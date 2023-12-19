@@ -13,7 +13,7 @@ import '../../Features/ScanCode/Model/scan_ticket_model.dart';
 
 class ScanBarcodeController extends GetxController {
   ApiProvider apiProvider = ApiProvider();
-
+     
   Rx<ScanTicketModel> scanTickModel = ScanTicketModel().obs;
   RxBool isTicketScanning = false.obs;
   RxString barcodeValue = "NA".obs;

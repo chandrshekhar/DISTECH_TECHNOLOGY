@@ -25,4 +25,6 @@ class Urls {
   static const String returnSeriesList = "$_baseUrl/orders/return-series-list";
 
   static const String getmycnf = "$_baseUrl/users/get-my-cnf";
+  static const String scanPwt = "$_baseUrl/lottery/scan-pwt";
+  static const String getMyclaims = "$_baseUrl/users/get-my-claims-date";
 }
