@@ -462,7 +462,7 @@ class ApiProvider {
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
     Map reqModel = {"id": barCode.trim(), 'date': date};
-    
+
     log("reqModel-- >$reqModel");
     try {
       _dio.options.headers = {"access-token": token};
@@ -598,6 +598,33 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return {"success": false, "error": error};
+    }
+  }
+
+  /// get my CNF
+  Future<Map> getMyCnf() async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.get(Urls.getmycnf);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {"success": false};
     }
   }
 }

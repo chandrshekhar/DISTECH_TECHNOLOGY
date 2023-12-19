@@ -14,6 +14,8 @@ final List<DrawerItemModel> drawerItemsList = [
   DrawerItemModel('Sold Ticket', AppIcons.ticketIcon),
   DrawerItemModel('Returned Ticket', AppIcons.ticketIcon),
   DrawerItemModel('View Purchase History', AppIcons.purchaseHistoryIcon),
-  DrawerItemModel('Support', AppIcons.supportIcon),
-  DrawerItemModel('Scan Code', AppIcons.dashboardIcon),
+  DrawerItemModel('Verify Ticket', AppIcons.dashboardIcon),
+  DrawerItemModel("New Claim", AppIcons.newClaimIcon),
+  DrawerItemModel("My Claim", AppIcons.myClaimIcon),
+    DrawerItemModel('Support', AppIcons.supportIcon),
 ];

@@ -23,4 +23,6 @@ class Urls {
       "$_baseUrl/orders/check-return-series";
   static const String serverTime = "$_baseUrl/get-draw-time";
   static const String returnSeriesList = "$_baseUrl/orders/return-series-list";
+
+  static const String getmycnf = "$_baseUrl/users/get-my-cnf";
 }

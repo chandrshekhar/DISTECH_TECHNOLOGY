@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
+import 'package:distech_technology/Controller/Claim%20Controller/my_claim_controller.dart';
+import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
@@ -18,10 +20,10 @@ import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Commons/app_images.dart';
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../../Widgets/full_button.dart';
+import '../../Claim/Presentation/new_claim_screen.dart';
 import '../Components/timer_card_widget.dart';
 import '../Models/drawer_item_model.dart';
 import '../Widgets/drawer_item.dart';
@@ -49,13 +51,25 @@ class _HomeScreenState extends State<HomeScreen> {
     const SoldTicketScreen(),
     const ReturnedTicketScreen(),
     const PurchaseHistoryScreen(),
+    ScanBarCodeScreen(),
+    const NewClaimScreen(),
+    const MyClaimScreen(),
     const SupportScreen(),
-    ScanBarCodeScreen()
   ];
 
   //drawer item selected background color.
   //by default: dashboard will be selected.
-  List<bool> isHighlighted = [true, false, false, false, false, false, false];
+  List<bool> isHighlighted = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   final userProfileController = Get.put(ProfileController());
 
@@ -105,6 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
         case 6:
           setState(() {
             selectedIndex = 6;
+          });
+          break;
+        case 7:
+          setState(() {
+            selectedIndex = 7;
           });
       }
     });
@@ -192,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.7,
                     padding: EdgeInsets.only(
                         top: AppSizes.kDefaultPadding / 3,
                         left: AppSizes.kDefaultPadding / 3,
@@ -201,21 +220,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     margin: EdgeInsets.only(
                         top: AppSizes.kDefaultPadding,
                         left: AppSizes.kDefaultPadding),
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              AppImages.drawerLogoBg,
-                            ))),
+                    // decoration: const BoxDecoration(
+                    //     image: DecorationImage(
+                    //         fit: BoxFit.cover,
+                    //         image: AssetImage(
+                    //           AppImages.drawerLogoBg,
+                    //         ))),
                     child: Image.asset(
-                      AppImages.drawerLogo,
-                      width: 30,
+                      "assets/images/logo2.png",
+                      // width: 30,
                       fit: BoxFit.contain,
-                      height: 30,
+                      // height: 30,
                     )),
-                SizedBox(
-                  height: AppSizes.kDefaultPadding,
-                ),
+                // SizedBox(
+                //   height: AppSizes.kDefaultPadding,
+                // ),
                 Expanded(
                   child: ListView.builder(
                       itemCount: drawerItemsList.length,
@@ -256,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(AppSizes.kDefaultPadding),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: FullButton(
                     label: 'Logout',
                     onPressed: () async {

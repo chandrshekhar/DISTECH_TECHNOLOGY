@@ -10,6 +10,7 @@ import 'package:upgrader/upgrader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -38,13 +39,18 @@ class MyApp extends StatelessWidget {
         title: 'singham lottery',
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
-        home: UpgradeAlert(
-          upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
-          child: SafeArea(
-            child: (jwtToken != "")
-                ? HomeScreen(username: userName)
-                : const SplashScreen(),
-          ),
+        home: SafeArea(
+          child: (jwtToken != "")
+              ? UpgradeAlert(
+                  upgrader: Upgrader(
+                    // debugDisplayAlways: true,
+                    dialogStyle: UpgradeDialogStyle.cupertino,
+                    showIgnore: false,
+                    showLater: false,
+                    showReleaseNotes: false,
+                  ),
+                  child: HomeScreen(username: userName))
+              : const SplashScreen(),
         ),
       ),
     );

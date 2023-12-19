@@ -7,21 +7,24 @@ class DrawerItem extends StatelessWidget {
   final DrawerItemModel drawerItemModel;
   final Color bgColor;
 
-  const DrawerItem({Key? key, required this.drawerItemModel, required this.bgColor}) : super(key: key);
+  const DrawerItem(
+      {Key? key, required this.drawerItemModel, required this.bgColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: bgColor,
-      padding:  EdgeInsets.all(AppSizes.kDefaultPadding),
+      padding: EdgeInsets.all(AppSizes.kDefaultPadding),
       child: Row(
         children: [
           Image.asset(
             drawerItemModel.icon,
+            color: AppColors.primary,
             width: 20,
             height: 20,
           ),
-           SizedBox(
+          SizedBox(
             width: AppSizes.kDefaultPadding,
           ),
           Expanded(

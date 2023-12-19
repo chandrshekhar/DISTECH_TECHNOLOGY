@@ -302,7 +302,10 @@ class ScanBarCodeScreen extends StatelessWidget {
         ],
       ),
     );
+ 
+ 
   }
+
 
   TextStyle statusColor(String? title) {
     if (title == "Sold") {
