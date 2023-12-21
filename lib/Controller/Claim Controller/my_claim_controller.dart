@@ -8,23 +8,23 @@ import '../../Utils/date_time_format.dart';
 class MyClaimController extends GetxController {
   RxString dateFormat = ''.obs;
   RxInt limit = 50.obs;
+  var toDates = ''.obs;
+  var fromDates = ''.obs;
   RxList<ClaimsData> claimsDataList = <ClaimsData>[].obs;
   RxBool isClaimingDataLoading = false.obs;
   Rx<MyClaimTicketModel> myClaimTicketModel = MyClaimTicketModel().obs;
   final myClaimSearcController = TextEditingController().obs;
   ApiProvider apiProvider = ApiProvider();
 
-  getMyClaim({
-    double? limit,
-  }) async {
+  getMyClaim() async {
     isClaimingDataLoading(true);
     Map<String, dynamic> reqModel = {
-      "fromDate": null,
-      "limit": limit,
+      "fromDate": fromDates.value,
+      "limit": limit.value,
       "offset": 0,
       "search": "",
       "status": "",
-      "toDate": null
+      "toDate": toDates.value
     };
     myClaimTicketModel.value = await apiProvider.getMyClaims(reqModel);
     claimsDataList.value = myClaimTicketModel.value.claimsData ?? [];
@@ -33,17 +33,43 @@ class MyClaimController extends GetxController {
 
   //void selectDate() {}
   DateTime selectedDate = DateTime.now();
+
   Future<void> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    // final DateTime? picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: selectedDate,
+    //   firstDate: DateTime(2015, 8),
+    //   lastDate: DateTime(3000, 8),
+    // );
+    final picked = await showDateRangePicker(
       context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(3000, 8),
+      saveText: "Select",
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              // primary: MyColors.primary,
+              primary: Theme.of(context).colorScheme.primary,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            //.dialogBackgroundColor:Colors.blue[900],
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
-      var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      var formatedDate =
+          formatDate(date: picked.start, formatType: "yyyy-MM-dd");
+      var toDate = formatDate(date: picked.end, formatType: "yyyy-MM-dd");
       dateFormat.value = formatedDate;
+      toDates.value = toDate;
+      fromDates.value = formatedDate;
+      getMyClaim();
     }
   }
 

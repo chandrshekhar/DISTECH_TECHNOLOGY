@@ -1,5 +1,7 @@
+import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -10,8 +12,18 @@ class NewClaimScreen extends StatefulWidget {
   @override
   State<NewClaimScreen> createState() => _NewClaimScreenState();
 }
+
 class _NewClaimScreenState extends State<NewClaimScreen> {
   final newClaimController = Get.put(NewClaimController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    newClaimController.fromTicketScanValue.value = '';
+    newClaimController.toTicketScanValue.value = '';
+    newClaimController.dateFormat.value = '';
+  }
+
   @override
   Widget build(BuildContext context) {
     newClaimController.getMyCnf();
@@ -59,13 +71,27 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
               title: "From Tickets",
               subTitle: newClaimController.fromTicketScanValue.value,
               onTap: () async {
-                newClaimController.scanBarCode(true);
+                if (newClaimController.dateFormat.value.isNotEmpty) {
+                  newClaimController.scanBarCode(true, context);
+                } else {
+                  ToastMessage().toast(
+                      context: context,
+                      background: Colors.red,
+                      message: "Please select date",
+                      messageColor: Colors.white);
+                }
               },
             ),
-            customTileCard(
-              title: "To Tickets",
-              subTitle: newClaimController.toTicketScanValue.value,
-              onTap: () => newClaimController.scanBarCode(false),
+
+            Obx(
+              () => newClaimController.fromTicketScanValue.value.isNotEmpty
+                  ? customTileCard(
+                      title: "To Tickets",
+                      subTitle: newClaimController.toTicketScanValue.value,
+                      onTap: () {
+                        newClaimController.scanBarCode(false, context);
+                      })
+                  : const SizedBox.shrink(),
             ),
 
             const SizedBox(height: 20),
@@ -107,14 +133,22 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
               ],
             ),
           ),
-          InkWell(
-            onTap: onTap,
-            child: Image.asset(
-              icon ?? "assets/icons/barcode-scanner.png",
-              width: 25,
-              height: 25,
-            ),
-          ),
+          Obx(() => newClaimController.fromTicketScaning.value ||
+                  newClaimController.toTicketScaing.value
+              ? const Center(
+                  child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator.adaptive()),
+                )
+              : InkWell(
+                  onTap: onTap,
+                  child: Image.asset(
+                    icon ?? "assets/icons/barcode-scanner.png",
+                    width: 25,
+                    height: 25,
+                  ),
+                )),
         ],
       ),
     );

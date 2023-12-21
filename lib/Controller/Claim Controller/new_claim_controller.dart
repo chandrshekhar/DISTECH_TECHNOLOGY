@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 
+import '../../Commons/app_colors.dart';
 import '../../Utils/date_time_format.dart';
 
 class NewClaimController extends GetxController {
@@ -19,19 +21,68 @@ class NewClaimController extends GetxController {
   Rx<ClaimFromTicketModel> claimFromTicketModel = ClaimFromTicketModel().obs;
   Rx<ClaimToTicketModel> claimToTicketModel = ClaimToTicketModel().obs;
 
-  void scanBarCode(bool fromTicket) async {
+  void scanBarCode(bool fromTicket, BuildContext context) async {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
 
     if (fromTicket) {
+      fromTicketScaning(true);
       claimFromTicketModel.value =
           await apiProvider.verifyFromTicket(barcodeScanRes, dateFormat.value);
-      fromTicketScanValue.value =
-          claimFromTicketModel.value.ticket!.ticketId ?? "";
+      if (claimFromTicketModel.value.success == false) {
+        // ignore: use_build_context_synchronously
+        AwesomeDialog(
+                btnOkColor: AppColors.primary,
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.bottomSlide,
+                dismissOnTouchOutside: true,
+                title: "Error!",
+                btnOkOnPress: () {},
+                desc:
+                    "${claimFromTicketModel.value.message}\n${dateFormat.value}\n",
+                btnOkText: "Ok",
+                titleTextStyle: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16))
+            .show();
+        fromTicketScaning(false);
+      } else {
+        fromTicketScanValue.value =
+            claimFromTicketModel.value.ticket!.ticketId ?? "";
+        fromTicketScaning(false);
+      }
     } else {
+      toTicketScaing(true);
       claimToTicketModel.value =
           await apiProvider.verifyToTicket(barcodeScanRes, dateFormat.value);
-      toTicketScanValue.value = claimToTicketModel.value.ticket!.ticketId ?? "";
+
+      if (claimToTicketModel.value.success == false) {
+        toTicketScaing(false);
+        // ignore: use_build_context_synchronously
+        AwesomeDialog(
+                btnOkColor: AppColors.primary,
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.bottomSlide,
+                dismissOnTouchOutside: true,
+                title: "Error!",
+                btnOkOnPress: () {},
+                desc:
+                    "${claimToTicketModel.value.message}\n${dateFormat.value}\n",
+                btnOkText: "Ok",
+                titleTextStyle: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16))
+            .show();
+      } else {
+        toTicketScanValue.value =
+            claimToTicketModel.value.ticket!.ticketId ?? "";
+        toTicketScaing(false);
+      }
     }
   }
 
