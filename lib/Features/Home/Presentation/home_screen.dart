@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Controller/Claim%20Controller/my_claim_controller.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
@@ -20,7 +19,7 @@ import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Commons/app_images.dart';
+
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../../Widgets/full_button.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
@@ -80,6 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       _key.currentState!.openDrawer();
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userProfileController.getUserDetails();
   }
 
   // Navigate to content from Drawer
@@ -334,10 +340,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GetX<ProfileController>(
-                      builder: (controller) {
-                        return Text(
-                          'Hi, ${controller.userProfileModel.value.user?.fullName ?? ""}',
+                    Obx(() => Text(
+                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}',
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -345,9 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               .copyWith(
                                   color: AppColors.white,
                                   fontWeight: FontWeight.w500),
-                        );
-                      },
-                    )
+                        ))
                   ],
                 ),
                 Positioned(

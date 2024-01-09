@@ -246,7 +246,7 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      log("req --> ${reqModel}");
+      log("req --> $reqModel");
       response = await _dio.post(Urls.getMyclaims, data: reqModel);
       if (kDebugMode) {
         log('--------Response sold : $response');
@@ -575,6 +575,35 @@ class ApiProvider {
       }
       return ClaimFromTicketModel.withError(error.toString());
     }
+  }
+
+  // claim scan ticket value
+  Future<Map> claimScannedticket({required Map reqModel}) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    log("reqModel-- >$reqModel");
+
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.claimTicket, data: jsonEncode(reqModel));
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {"error": error};
+    }
+    // return {};
   }
 
   /// check ticket avaliabilty
