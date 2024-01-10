@@ -200,7 +200,8 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
                                                           FontWeight.bold),
                                                 ),
                                                 TextSpan(
-                                                  text: "${data[index].claims}",
+                                                  text:
+                                                      "${data[index].claims ?? 0}",
                                                 ),
                                               ],
                                             ),
@@ -292,9 +293,6 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
                                   ],
                                 ),
                               );
-                         
-                         
-                         
                             },
                           ),
                         )
@@ -346,7 +344,4 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
       ),
     );
   }
-
-
-
 }
