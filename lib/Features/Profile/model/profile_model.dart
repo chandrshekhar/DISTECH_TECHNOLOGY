@@ -5,20 +5,20 @@ class UserProfileModel {
   UserProfileModel({this.success, this.user, this.errorMsg});
   UserProfileModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
-  UserProfileModel.withError(String error){
-     errorMsg = error;
+  UserProfileModel.withError(String error) {
+    errorMsg = error;
   }
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['success'] = this.success;
+  //   if (this.user != null) {
+  //     data['user'] = this.user!.toJson();
+  //   }
+  //   return data;
+  // }
 }
 
 class User {
@@ -40,6 +40,7 @@ class User {
   String? status;
   List<String>? creators;
   String? entryDate;
+  int? returnPercentage;
 
   User(
       {this.forgetPassword,
@@ -59,7 +60,8 @@ class User {
       this.userType,
       this.status,
       this.creators,
-      this.entryDate});
+      this.entryDate,
+      this.returnPercentage});
 
   User.fromJson(Map<String, dynamic> json) {
     forgetPassword = json['forgetPassword'];
@@ -80,28 +82,29 @@ class User {
     status = json['status'];
     creators = json['creators'].cast<String>();
     entryDate = json['entryDate'];
+    returnPercentage = json['returnPercentage'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['forgetPassword'] = this.forgetPassword;
-    data['_id'] = this.sId;
-    data['fullName'] = this.fullName;
-    data['aadhaarId'] = this.aadhaarId;
-    data['panNumber'] = this.panNumber;
-    data['address1'] = this.address1;
-    data['address2'] = this.address2;
-    data['pinCode'] = this.pinCode;
-    data['mobileNumber'] = this.mobileNumber;
-    data['tradeLicenseNumber'] = this.tradeLicenseNumber;
-    data['gstNumber'] = this.gstNumber;
-    data['purchaseRateUs'] = this.purchaseRateUs;
-    data['billRatePrice'] = this.billRatePrice;
-    data['email'] = this.email;
-    data['userType'] = this.userType;
-    data['status'] = this.status;
-    data['creators'] = this.creators;
-    data['entryDate'] = this.entryDate;
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['forgetPassword'] = this.forgetPassword;
+  //   data['_id'] = this.sId;
+  //   data['fullName'] = this.fullName;
+  //   data['aadhaarId'] = this.aadhaarId;
+  //   data['panNumber'] = this.panNumber;
+  //   data['address1'] = this.address1;
+  //   data['address2'] = this.address2;
+  //   data['pinCode'] = this.pinCode;
+  //   data['mobileNumber'] = this.mobileNumber;
+  //   data['tradeLicenseNumber'] = this.tradeLicenseNumber;
+  //   data['gstNumber'] = this.gstNumber;
+  //   data['purchaseRateUs'] = this.purchaseRateUs;
+  //   data['billRatePrice'] = this.billRatePrice;
+  //   data['email'] = this.email;
+  //   data['userType'] = this.userType;
+  //   data['status'] = this.status;
+  //   data['creators'] = this.creators;
+  //   data['entryDate'] = this.entryDate;
+  //   return data;
+  // }
 }

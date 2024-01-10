@@ -57,8 +57,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       radius: 60,
                       backgroundColor: AppColors.darkGrey,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                        backgroundImage: AssetImage(
+                            "assets/images/blank-profile-picture.webp"),
                         maxRadius: 60,
                         minRadius: 60,
                       ),
@@ -80,27 +80,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfileItemWidget(
                                 title: 'Full Name',
                                 value: profileController.userProfileModel.value
-                                        .user!.fullName ??
+                                        .user?.fullName ??
                                     ""),
                             //const ProfileItemWidget(title: 'Last Name', value: 'Paul'),
                             ProfileItemWidget(
                                 title: 'Aadhaar ID',
                                 value: profileController.userProfileModel.value
-                                        .user!.aadhaarId ??
+                                        .user?.aadhaarId ??
                                     ""),
                             ProfileItemWidget(
                                 title: 'Pan Number',
                                 value: profileController.userProfileModel.value
-                                        .user!.panNumber ??
+                                        .user?.panNumber ??
                                     ""),
                             ProfileItemWidget(
                                 title: 'Address 1',
                                 value:
-                                    '${profileController.userProfileModel.value.user!.address1}\n${profileController.userProfileModel.value.user!.address2}'),
+                                    '${profileController.userProfileModel.value.user?.address1}\n${profileController.userProfileModel.value.user?.address2}'),
                             ProfileItemWidget(
                                 title: 'PIN Code',
                                 value: profileController
-                                        .userProfileModel.value.user!.pinCode ??
+                                        .userProfileModel.value.user?.pinCode ??
                                     ""),
                             SizedBox(
                               height: AppSizes.kDefaultPadding,
@@ -124,22 +124,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ProfileItemWidget(
                                 title: 'Mobile Number',
                                 value: profileController.userProfileModel.value
-                                        .user!.mobileNumber ??
+                                        .user?.mobileNumber ??
                                     ""),
                             ProfileItemWidget(
                                 title: 'Email ID',
                                 value: profileController
-                                        .userProfileModel.value.user!.email ??
+                                        .userProfileModel.value.user?.email ??
                                     ""),
                             ProfileItemWidget(
                                 title: 'Trade License Number',
                                 value: profileController.userProfileModel.value
-                                        .user!.tradeLicenseNumber ??
+                                        .user?.tradeLicenseNumber ??
                                     ""),
                             ProfileItemWidget(
                                 title: 'GST Number',
                                 value: profileController.userProfileModel.value
-                                        .user!.gstNumber ??
+                                        .user?.gstNumber ??
                                     ""),
                           ],
                         ),

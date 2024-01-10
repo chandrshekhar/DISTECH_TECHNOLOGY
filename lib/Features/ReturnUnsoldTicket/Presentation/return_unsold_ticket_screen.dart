@@ -117,7 +117,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         padding: EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding / 2),
                         child: Text(
-                          'You can return 5% of your total unsold tickets',
+                          'You can return ${profileController.userProfileModel.value.user?.returnPercentage ?? 0}% of your total unsold tickets',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
@@ -548,96 +548,75 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: AppSizes.kDefaultPadding * 2,
+                  ),
                   SafeArea(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Obx(() => FullButton(
-                              label: 'Return Unsold',
-                              onPressed: (getMyreturnController
-                                          .validateTicketsList.isEmpty ||
-                                      timerController.countdown.value ==
-                                          "0:00:00")
-                                  ? () {}
-                                  : () async {
-                                      if (getMyreturnController
-                                          .validateTicketsList.isNotEmpty) {
-                                        var res = await ApiProvider()
-                                            .retunTicketUnsold(
-                                                getMyreturnController
-                                                    .validateTicketsList,
-                                                formatedDate!,
-                                                profileController
-                                                    .userProfileModel
-                                                    .value
-                                                    .user!
-                                                    .sId!);
-                                        if (res.success) {
-                                          await getMyreturnController
-                                              .getAllReturnTicket(
-                                                  dateTime: formatedDate);
-                                          Get.snackbar("Successful",
-                                              "Ticket Return Success",
-                                              backgroundColor: AppColors.white,
-                                              colorText: Colors.green,
-                                              isDismissible: true,
-                                              snackPosition: SnackPosition.TOP);
-                                          getMyreturnController.clearText();
-                                          getMyreturnController
-                                              .validateTicketsList
-                                              .clear();
-                                          getMyreturnController
-                                              .validateTicketsList
-                                              .value = res.failedSeriesList!;
-                                          if (res
-                                              .failedSeriesList!.isNotEmpty) {
-                                            // ignore: use_build_context_synchronously
-                                            showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return modelBottomSheet(res
-                                                    .failedSeriesList!); // Your custom widget with ListView.builder
-                                              },
-                                            );
-                                          }
-
-                                          // soldTicketzcontroller
-                                          //     .selectedSoldTicket
-                                          //     .clear();
-
-                                          await soldTicketzcontroller
-                                              .getAllTicket(date: formatedDate);
-                                        } else {
-                                          Get.snackbar(
-                                              "Error", res.error.toString(),
-                                              backgroundColor: AppColors.black,
-                                              colorText: Colors.white,
-                                              isDismissible: true,
-                                              snackPosition: SnackPosition.TOP);
-                                        }
+                    child: Obx(() => FullButton(
+                          label: 'Return Unsold',
+                          onPressed: (getMyreturnController
+                                      .validateTicketsList.isEmpty ||
+                                  timerController.countdown.value == "0:00:00")
+                              ? () {}
+                              : () async {
+                                  if (getMyreturnController
+                                      .validateTicketsList.isNotEmpty) {
+                                    var res = await ApiProvider()
+                                        .retunTicketUnsold(
+                                            getMyreturnController
+                                                .validateTicketsList,
+                                            formatedDate!,
+                                            profileController.userProfileModel
+                                                .value.user!.sId!);
+                                    if (res.success) {
+                                      await getMyreturnController
+                                          .getAllReturnTicket(
+                                              dateTime: formatedDate);
+                                      Get.snackbar(
+                                          "Successful", "Ticket Return Success",
+                                          backgroundColor: AppColors.white,
+                                          colorText: Colors.green,
+                                          isDismissible: true,
+                                          snackPosition: SnackPosition.TOP);
+                                      getMyreturnController.clearText();
+                                      getMyreturnController.validateTicketsList
+                                          .clear();
+                                      getMyreturnController.validateTicketsList
+                                          .value = res.failedSeriesList!;
+                                      if (res.failedSeriesList!.isNotEmpty) {
+                                        // ignore: use_build_context_synchronously
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return modelBottomSheet(res
+                                                .failedSeriesList!); // Your custom widget with ListView.builder
+                                          },
+                                        );
                                       }
-                                    },
-                              bgColor: (getMyreturnController
-                                          .validateTicketsList.isEmpty ||
-                                      timerController.countdown.value ==
-                                          "0:00:00")
-                                  ? AppColors.lightGrey
-                                  : AppColors.secondary,
-                            )),
-                        SizedBox(
-                          height: AppSizes.kDefaultPadding * 0.5,
-                        ),
-                        Text(
-                          '** You can return 5% of your total unsold tickets',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: AppColors.secondary),
-                        ),
-                        const SizedBox(height: 5)
-                      ],
-                    ),
+
+                                      // soldTicketzcontroller
+                                      //     .selectedSoldTicket
+                                      //     .clear();
+
+                                      await soldTicketzcontroller.getAllTicket(
+                                          date: formatedDate);
+                                    } else {
+                                      Get.snackbar(
+                                          "Error", res.error.toString(),
+                                          backgroundColor: AppColors.black,
+                                          colorText: Colors.white,
+                                          isDismissible: true,
+                                          snackPosition: SnackPosition.TOP);
+                                    }
+                                  }
+                                },
+                          bgColor: (getMyreturnController
+                                      .validateTicketsList.isEmpty ||
+                                  timerController.countdown.value == "0:00:00")
+                              ? AppColors.lightGrey
+                              : AppColors.secondary,
+                        )),
                   ),
                 ],
               ),

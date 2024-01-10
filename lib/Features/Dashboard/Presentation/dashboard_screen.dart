@@ -1,4 +1,3 @@
-
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_list.dart';
@@ -7,6 +6,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -392,13 +392,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         SizedBox(
                           height: AppSizes.kDefaultPadding * 1.2,
                         ),
-                        Text(
-                          "** Once you mark as a sold it can't be modified later",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: AppColors.secondary),
-                        )
+                        // Text(
+                        //   "** Once you mark as a sold it can't be modified later",
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .bodyMedium!
+                        //       .copyWith(color: AppColors.secondary),
+                        // )
                       ],
                     ),
                   ),

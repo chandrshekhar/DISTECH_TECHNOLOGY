@@ -83,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userProfileController.getUserDetails();
   }
@@ -200,8 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   radius: 16,
                   backgroundColor: AppColors.white,
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                    backgroundImage:
+                        AssetImage("assets/images/blank-profile-picture.webp"),
                     maxRadius: 16,
                     minRadius: 16,
                   ),

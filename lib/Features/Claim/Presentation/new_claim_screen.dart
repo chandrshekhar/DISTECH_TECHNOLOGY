@@ -1,4 +1,4 @@
-import 'package:distech_technology/Utils/Toast/app_toast.dart';
+import 'package:distech_technology/Widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +21,7 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
     super.initState();
     newClaimController.fromTicketScanValue.value = '';
     newClaimController.toTicketScanValue.value = '';
-    newClaimController.dateFormat.value = '';
+    // newClaimController.dateFormat.value = '';
   }
 
   @override
@@ -72,14 +72,15 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                   title: "From Tickets",
                   subTitle: newClaimController.fromTicketScanValue.value,
                   onTap: () async {
-                    if (newClaimController.dateFormat.value.isNotEmpty) {
-                      newClaimController.scanBarCode(true, context);
-                    } else {
+                    // newClaimController.createSignature("B7393471Z");
+                    if (newClaimController.dateFormat.value.isEmpty) {
                       ToastMessage().toast(
                           context: context,
                           background: Colors.red,
                           message: "Please select date",
                           messageColor: Colors.white);
+                    } else {
+                      newClaimController.scanBarCode(true, context);
                     }
                   },
                 ),

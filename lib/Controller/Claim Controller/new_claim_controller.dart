@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -10,6 +12,7 @@ import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
 import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 
@@ -142,6 +145,9 @@ class NewClaimController extends GetxController {
                   color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
           .show();
     } else {
+      print("barcode1--> ${barCode1.value}");
+      print("barcode--2> $barCode2");
+
       totalCliamTicket.value = countTicketsInRange(
         claimFromTicketModel.value.ticket!.ticketLetter,
         claimToTicketModel.value.ticket!.ticketLetter,
@@ -154,7 +160,10 @@ class NewClaimController extends GetxController {
           fromTicket: claimFromTicketModel.value.ticket!.ticketLetter!,
           toTicket: claimToTicketModel.value.ticket!.ticketLetter!,
           totalAmount: totalAmount.value,
-          totalTicket: totalCliamTicket.value));
+          totalTicket: totalCliamTicket.value,
+          fromTickeCode: barCode1.value,
+          toTicketCode: barCode2.value,
+          ticketDate: dateFormat.toString()));
       // clear the from ticket to ticket value
       fromTicketScanValue.value = '';
       toTicketScanValue.value = '';
@@ -198,39 +207,77 @@ class NewClaimController extends GetxController {
 
   onSubmitClaim(BuildContext context) async {
     var reqModel = {
-      "ticketList": [
-        {
-          "fromTicket": createSignature(barCode1.value),
-          "toTicket": createSignature(barCode2.value)
-        }
-      ]
+      "ticketList": ticketClaimList
+          .map((element) => {
+                "date": element.ticketDate,
+                "fromTicket": createSignature(element.fromTickeCode),
+                "toTicket": createSignature(element.toTicketCode)
+              })
+          .toList()
     };
+    log("req--> ${reqModel.toString()}");
+    var resp = await apiProvider.claimScannedticket(reqModel: reqModel);
+    if (resp['success']) {
+      final completed = resp['completed'] as List;
+      final failed = resp['failed'] as List;
 
-    var res = await apiProvider.claimScannedticket(reqModel: reqModel);
-    if (res["success"] == true) {
-      // ignore: use_build_context_synchronously
-      ToastMessage().toast(
-          context: context,
-          background: Colors.red,
-          message: res["failed"][0]["error"],
-          messageColor: Colors.white);
+      if (completed.isNotEmpty) {
+        if (failed.isNotEmpty) {
+          ToastMessage().toast(
+              context: context,
+              message:
+                  '${completed.length} claims submitted for claim and ${failed.length} claims failed to submit for claim',
+              background: Colors.yellow,
+              messageColor: Colors.white);
+        } else {
+          ToastMessage().toast(
+              context: context,
+              messageColor: Colors.white,
+              background: Colors.green,
+              message:
+                  'Succes \n ${completed.length} claims submitted for claim');
+        }
+      } else if (failed.isNotEmpty) {
+        ToastMessage().toast(
+            context: context,
+            messageColor: Colors.white,
+            background: Colors.red,
+            message:
+                'Error \n ${failed.length} claims failed to submit for claim');
+      } else {
+        ToastMessage().toast(
+            context: context,
+            messageColor: Colors.white,
+            background: Colors.red,
+            message: 'Error \n Something went wrong');
+      }
+
+      ticketClaimList.clear();
+
+      log("res--> ${resp.toString()}");
     }
-    log("res--> ${res.toString()}");
   }
 
-  createSignature(String text) {
-    debugPrint("barcode-> $text");
-    var timeStamp = DateTime.now().millisecondsSinceEpoch;
+  Map<String, dynamic> createSignature(String text) {
+    // var timeStamp = 1704867041219;
+    final timeStamp = DateTime.now().millisecondsSinceEpoch;
     var data = {"text": text, "timeStamp": timeStamp};
-    String base32String = base32.encodeString(timeStamp.toString());
-    var key = utf8.encode(
-        Urls.encKey1 + text.toLowerCase() + Urls.encKey2 + base32String);
-    var bytes = utf8.encode(text);
-    var hmacSha256 = Hmac(sha256, key); // HMAC-SHA256
-    var digest = hmacSha256.convert(bytes);
-    log("digest--> $digest");
-    var returnObject = {"data": data, "signature": digest.toString()};
-    return returnObject;
+    String base32String = base32
+        .encode(Uint8List.fromList(timeStamp.toRadixString(32).codeUnits));
+    var decodedTimeStam = base32.decodeAsString(base32String);
+    log("time--> $decodedTimeStam");
+    var key =
+        Urls.encKey1 + text.toLowerCase() + Urls.encKey2 + decodedTimeStam;
+
+    log("kwy--> $key");
+    final hmacSha256 = Hmac(sha256, utf8.encode(key));
+    final digest = hmacSha256.convert(utf8.encode(jsonEncode(data)));
+
+    final signature = digest.toString();
+    log("signature--> $signature");
+
+    // log("digest--> $hexString");
+    return {"data": data, "signature": signature};
   }
 }
 
@@ -239,10 +286,16 @@ class ClaimModel {
   int totalTicket;
   String fromTicket;
   String toTicket;
+  String fromTickeCode;
+  String toTicketCode;
+  String ticketDate;
 
   ClaimModel(
       {required this.fromTicket,
       required this.toTicket,
       required this.totalAmount,
-      required this.totalTicket});
+      required this.totalTicket,
+      required this.fromTickeCode,
+      required this.toTicketCode,
+      required this.ticketDate});
 }
