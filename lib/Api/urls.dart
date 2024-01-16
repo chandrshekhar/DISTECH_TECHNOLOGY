@@ -1,12 +1,13 @@
 class Urls {
   //static const String _baseUrl = "http://16.16.177.66:5000/api/v1";
+  // static const String _baseUrl = "https://api.singhamlottery.in/api/v1";  // production
   static const String _baseUrl =
       "https://devapi.singhamlottery.in/api/v1"; //dev api
   static const String encKey1 =
       "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
   static const String encKey2 =
       "WzxefYBrnfsQGDf6KsayoDRRo9dRE4yq9plUtZ0PJsIvYElHOHFArj2m0AAySf8SDjWE8Hr3L1FWsUqg5AgO224HLybYjZbRHI2JYq5MgYzqI2cbltzO9fEK9JlEXV0I";
-  //static const String _baseUrl = "https://api.singhamlottery.in/api/v1";  // production
+
   static const String loginUrl = "$_baseUrl/users/login";
   static const String forgetPassword = "$_baseUrl/users/forgot-password";
   static const String verifyOtp = "$_baseUrl/users/verify-forgot-password-otp";

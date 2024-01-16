@@ -17,5 +17,16 @@ final List<DrawerItemModel> drawerItemsList = [
   DrawerItemModel('Verify Ticket', AppIcons.dashboardIcon),
   DrawerItemModel("New Claim", AppIcons.newClaimIcon),
   DrawerItemModel("My Claim", AppIcons.myClaimIcon),
-    DrawerItemModel('Support', AppIcons.supportIcon),
+  DrawerItemModel('Support', AppIcons.supportIcon),
+];
+
+final List<DrawerItemModel> drawerItemsListNew = [
+  DrawerItemModel('Dashboard', AppIcons.dashboardIcon),
+  DrawerItemModel('Inventory', AppIcons.ticketIcon),
+  DrawerItemModel('Sales', AppIcons.ticketIcon),
+  DrawerItemModel('Unsold', AppIcons.ticketIcon),
+  DrawerItemModel('Verify', AppIcons.purchaseHistoryIcon),
+  DrawerItemModel('Claim', AppIcons.newClaimIcon),
+  DrawerItemModel("Billing", AppIcons.newClaimIcon),
+  DrawerItemModel('Support', AppIcons.supportIcon),
 ];

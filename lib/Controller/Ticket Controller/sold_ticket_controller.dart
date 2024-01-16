@@ -1,6 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 
 class SoldTicketController extends GetxController {
@@ -15,6 +24,7 @@ class SoldTicketController extends GetxController {
   RxString searchText = ''.obs;
   RxInt limit = 10.obs;
   RxInt dropDownValue = 10.obs;
+  // final soldTicketController = Get.put(SoldTicketListController());
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -80,6 +90,130 @@ class SoldTicketController extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+  }
+
+  // scan bar code for return ticket
+  RxString barcodeValue = ''.obs;
+  RxBool scannedReturningTicket = false.obs;
+
+  Future<void> scanBarcodeNormal(BuildContext context) async {
+    RxList<String> scanedTicket = <String>[].obs;
+    scannedReturningTicket(true);
+    String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    // String barcodeScanRes = "0VY5WAG8Y";
+    var data = await apiProvider.verifyTicket(
+        barcodeScanRes.toString().trim(), formatedDate.value);
+    log("data--> $data");
+    if (data['valid'] == true && data['success']) {
+      scanedTicket.add(data["ticket"]["ticketId"]);
+
+      AwesomeDialog(
+        btnOkColor: Colors.green,
+        context: context,
+        dialogType: DialogType.question,
+        animType: AnimType.bottomSlide,
+        dismissOnTouchOutside: false,
+        body: Column(
+          children: [
+            const Text(
+              "Ticket Details",
+              style: TextStyle(fontSize: 20, color: AppColors.primary),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "TicketId  : ${data['ticket']['ticketId'].toString()}",
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.grey),
+            ),
+            Text(
+              "BarCode  : ${data['ticket']['barCode'].toString()}",
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.grey),
+            ),
+            Text(
+              "QrCode  : ${data['ticket']['qrCode'].toString()}",
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.grey),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              "Please Choose One option:",
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.blue),
+            ),
+          ],
+        ),
+        btnCancelOnPress: () {},
+        btnOkText: "Sold",
+        btnCancelColor: Colors.red,
+        btnOkOnPress: () async {
+          var res = await ApiProvider().soldTciket(
+            scanedTicket,
+            "formatedDate.value",
+          );
+
+          log("return Res--> $res");
+          if (res['success'] = true) {
+            Get.snackbar("Successful", "${scanedTicket.first} Ticket Sold",
+                backgroundColor: Colors.green,
+                colorText: Colors.white,
+                isDismissible: true,
+                snackPosition: SnackPosition.BOTTOM);
+          } else {
+            Get.snackbar("Error!", res['message'],
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+                isDismissible: true,
+                snackPosition: SnackPosition.BOTTOM);
+          }
+        },
+      ).show();
+
+      scannedReturningTicket(false);
+      await getAllTicket(
+        date: formatedDate.value,
+      );
+    } else {
+      Get.snackbar("Error!", data['message'],
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          isDismissible: true,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
+  // choose date
+  RxString formatedDate = ''.obs;
+  DateTime selectedDate = DateTime.now();
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(3000, 8),
+    );
+    if (picked != null && picked != selectedDate) {
+      selectedDate = picked;
+      formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      await getAllTicket(
+          date: formatedDate.value,
+          search: searchText.value,
+          semNumber: semNumber.value);
+      print("date--> $formatedDate");
+    }
   }
 
   List selectedValueList = [10, 25, 50, 100, 500];

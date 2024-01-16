@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../Commons/app_colors.dart';
 
 // ignore: must_be_immutable
@@ -25,7 +26,7 @@ class CustomExpansionPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-        collapsedTextColor: Colors.white,
+        collapsedTextColor: AppColors.lightGrey,
         leading: leading,
         childrenPadding: EdgeInsets.zero,
         // tilePadding: EdgeInsets.symmetric(horizontal: 0.w),
@@ -36,11 +37,10 @@ class CustomExpansionPanel extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(0))),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         backgroundColor: backgroundColor ?? AppColors.white,
-        collapsedBackgroundColor:
-            collapsedBackgroundColor ?? AppColors.lightGrey,
+        collapsedBackgroundColor: AppColors.white,
         expandedAlignment: Alignment.topLeft,
-        collapsedIconColor: Colors.white,
-        iconColor: AppColors.primaryBg,
+        collapsedIconColor: Colors.grey,
+        iconColor: AppColors.primary,
         title: Transform.translate(
           offset: const Offset(-15, 0),
           child: Text(title, style: titleStyle ?? const TextStyle()),

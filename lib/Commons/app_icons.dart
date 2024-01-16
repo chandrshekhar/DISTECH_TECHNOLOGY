@@ -14,5 +14,6 @@ class AppIcons {
   static const String closeIcon = '${path}close-icon.png';
   static const String forwardArrowIcon = '${path}forward-arrow-icon.png';
   static const String newClaimIcon = '${path}new_claim.png';
-  static const String myClaimIcon ='${path}my_claim.png';
+  static const String myClaimIcon = '${path}my_claim.png';
+  static const String barCode = "assets/icons/barcode-scanner.png";
 }
