@@ -1,6 +1,6 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Features/Home/Models/drawer_item_model.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_expation_tile.dart';
@@ -15,8 +15,107 @@ class CustomDrawarWidget extends StatefulWidget {
 }
 
 class _CustomDrawarWidgetState extends State<CustomDrawarWidget> {
+  int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> expansionList = [
+      {
+        "title": "Dashboard",
+        "icon": AppIcons.dashboardIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Inventory",
+        "icon": AppIcons.ticketIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Sales",
+        "icon": AppIcons.ticketIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Unsold",
+        "icon": AppIcons.ticketIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Verify",
+        "icon": AppIcons.purchaseHistoryIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Claim",
+        "icon": AppIcons.myClaimIcon,
+        "children": [
+          const ListTile(
+            title: Text("New Claim"),
+          ),
+          const ListTile(
+            title: Text("My Claim"),
+          )
+        ]
+      },
+      {
+        "title": "Billing",
+        "icon": AppIcons.purchaseHistoryIcon,
+        "children": [
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      },
+      {
+        "title": "Support",
+        "icon": AppIcons.purchaseHistoryIcon,
+        "children": <Widget>[
+          const ListTile(
+            title: Text("button1"),
+          ),
+          const ListTile(
+            title: Text("button2"),
+          )
+        ]
+      }
+    ];
     return SafeArea(
       child: Drawer(
         backgroundColor: AppColors.white,
@@ -51,21 +150,29 @@ class _CustomDrawarWidgetState extends State<CustomDrawarWidget> {
               // ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: drawerItemsListNew.length,
+                  key: Key(selectedIndex.toString()),
+                  itemCount: expansionList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: CustomExpansionPanel(
-                          leading: Image.asset(
-                            drawerItemsListNew[index].icon,
-                            color: AppColors.primary,
-                            width: 20,
-                            height: 20,
-                          ),
-                          title: drawerItemsListNew[index].label,
-                          onExpansionChanged: (v) {},
-                          initiallyExpanded: false,
-                          children: const []),
+                    return CustomExpansionPanel(
+                      leading: Image.asset(
+                        expansionList[index]['icon'],
+                        height: 20,
+                        width: 20,
+                      ),
+                      title: expansionList[index]['title'],
+                      onExpansionChanged: (v) {
+                        if (v) {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        } else {
+                          setState(() {
+                            selectedIndex = -1;
+                          });
+                        }
+                      },
+                      initiallyExpanded: index == selectedIndex,
+                      children: expansionList[index]['children'],
                     );
                   },
                 ),
