@@ -7,6 +7,8 @@ import 'package:distech_technology/Widgets/custom_expation_tile.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 
+import '../Features/Inventory/Presentation/inventory_screen.dart';
+
 class CustomDrawarWidget extends StatefulWidget {
   const CustomDrawarWidget({super.key});
 
@@ -22,97 +24,76 @@ class _CustomDrawarWidgetState extends State<CustomDrawarWidget> {
       {
         "title": "Dashboard",
         "icon": AppIcons.dashboardIcon,
-        "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
-        ]
+        "children": <Widget>[]
       },
       {
         "title": "Inventory",
         "icon": AppIcons.ticketIcon,
         "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(
+              title: "Inventory",
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const InVentoryScreen()));
+              }),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Sales",
         "icon": AppIcons.ticketIcon,
         "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Unsold",
         "icon": AppIcons.ticketIcon,
         "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Verify",
         "icon": AppIcons.purchaseHistoryIcon,
         "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Claim",
         "icon": AppIcons.myClaimIcon,
         "children": [
-          const ListTile(
-            title: Text("New Claim"),
-          ),
-          const ListTile(
-            title: Text("My Claim"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Billing",
         "icon": AppIcons.purchaseHistoryIcon,
         "children": [
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       },
       {
         "title": "Support",
         "icon": AppIcons.purchaseHistoryIcon,
         "children": <Widget>[
-          const ListTile(
-            title: Text("button1"),
-          ),
-          const ListTile(
-            title: Text("button2"),
-          )
+          subTile(title: "Inventory", onTap: () {}),
+          const SizedBox(height: 20),
+          subTile(title: "View Inventory", onTap: () {})
         ]
       }
     ];
@@ -158,6 +139,9 @@ class _CustomDrawarWidgetState extends State<CustomDrawarWidget> {
                         expansionList[index]['icon'],
                         height: 20,
                         width: 20,
+                        color: selectedIndex == index
+                            ? AppColors.primaryDark
+                            : AppColors.primaryIconColor,
                       ),
                       title: expansionList[index]['title'],
                       onExpansionChanged: (v) {
@@ -223,6 +207,27 @@ class _CustomDrawarWidgetState extends State<CustomDrawarWidget> {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget subTile({String? title, void Function()? onTap}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 55),
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          children: [
+            const Icon(
+              Icons.inventory,
+              size: 15,
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Text(title ?? "")
+          ],
         ),
       ),
     );

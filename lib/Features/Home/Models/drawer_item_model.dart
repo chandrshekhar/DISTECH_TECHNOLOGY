@@ -9,7 +9,6 @@ class DrawerItemModel {
 
 final List<DrawerItemModel> drawerItemsList = [
   DrawerItemModel('Dashboard', AppIcons.dashboardIcon),
-  //DrawerItemModel('My Profile', AppIcons.myProfileIcon),
   DrawerItemModel('Return Unsold Ticket', AppIcons.ticketIcon),
   DrawerItemModel('Sold Ticket', AppIcons.ticketIcon),
   DrawerItemModel('Returned Ticket', AppIcons.ticketIcon),
@@ -18,6 +17,8 @@ final List<DrawerItemModel> drawerItemsList = [
   DrawerItemModel("New Claim", AppIcons.newClaimIcon),
   DrawerItemModel("My Claim", AppIcons.myClaimIcon),
   DrawerItemModel('Support', AppIcons.supportIcon),
+  DrawerItemModel("Prize", AppIcons.filterIcon),
+  DrawerItemModel('Inventory', AppIcons.myProfileIcon),
 ];
 
 final List<DrawerItemModel> drawerItemsListNew = [

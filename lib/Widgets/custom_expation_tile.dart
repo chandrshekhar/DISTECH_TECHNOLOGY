@@ -26,7 +26,7 @@ class CustomExpansionPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-        collapsedTextColor: AppColors.primary,
+        collapsedTextColor: AppColors.primaryIconColor,
         leading: leading,
         childrenPadding: EdgeInsets.zero,
         trailing: const Icon(
@@ -43,8 +43,9 @@ class CustomExpansionPanel extends StatelessWidget {
         backgroundColor: backgroundColor ?? AppColors.white,
         collapsedBackgroundColor: AppColors.white,
         expandedAlignment: Alignment.topLeft,
-        collapsedIconColor: AppColors.primary,
-        iconColor: AppColors.primary,
+        collapsedIconColor: AppColors.primaryIconColor,
+        textColor: AppColors.primaryDark,
+        iconColor: AppColors.primaryDark,
         title: Transform.translate(
           offset: const Offset(-15, 0),
           child: Text(title, style: titleStyle ?? const TextStyle()),

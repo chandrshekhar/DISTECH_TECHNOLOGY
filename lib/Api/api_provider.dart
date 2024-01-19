@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
 import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
@@ -390,8 +391,9 @@ class ApiProvider {
     }
   }
 
-  ///------------- get server Time---------------///
-  Future<Map<String, dynamic>> getServerTime() async {
+  /// ------------ geting slot--------------///
+
+  Future<DrawSlotModel> getSlot() async {
     Response response;
     String? authToken;
     String token = await localStorageService
@@ -405,7 +407,40 @@ class ApiProvider {
         "access-token": token
       };
       response = await _dio.get(
+        Urls.getSlot,
+      );
+      if (kDebugMode) {
+        log('--------Response time : $response');
+      }
+      if (response.statusCode == 200) {
+        return DrawSlotModel.fromJson(response.data);
+
+        // print(userServicesList);
+      } else {
+        return DrawSlotModel.witError("Something Went wrong");
+      }
+    } catch (error) {
+      return DrawSlotModel.witError(error.toString());
+    }
+  }
+
+  ///------------- get server Time---------------///
+  Future<Map<String, dynamic>> getServerTime(Map<String,dynamic> reqModel) async {
+    Response response;
+    String? authToken;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(
         Urls.serverTime,
+        data: reqModel
       );
       if (kDebugMode) {
         log('--------Response time : $response');

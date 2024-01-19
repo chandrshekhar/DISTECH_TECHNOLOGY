@@ -1,9 +1,9 @@
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
-import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_card.dart';
 
 class TimerCardWidget extends StatefulWidget {
@@ -39,7 +39,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
                       color: AppColors.secondary.withOpacity(0.9),
                     )),
             const SizedBox(
-              height: 2,
+              height: 1,
             ),
             Obx(
               () => Text(
@@ -47,7 +47,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.secondary,
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: 15),
               ),
             ),
           ],
@@ -56,14 +56,14 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
           children: [
             Image.asset(
               AppIcons.timerIcon,
-              width: 40,
-              height: 40,
+              width: 20,
+              height: 20,
             ),
             Obx(() => Text(timerController.countdown.value,
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.primaryDark,
                     fontWeight: FontWeight.w500,
-                    fontSize: 18)))
+                    fontSize: 16)))
           ],
         ),
         const SizedBox(
@@ -76,10 +76,10 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.9),
                   fontWeight: FontWeight.w400,
-                  fontSize: 18),
+                  fontSize: 15),
             ),
-            SizedBox(
-              height: AppSizes.kDefaultPadding / 3,
+            const SizedBox(
+              height: 1,
             ),
             Obx(
               () => Text(
@@ -87,7 +87,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.grey,
                     fontWeight: FontWeight.w500,
-                    fontSize: 16),
+                    fontSize: 15),
               ),
             ),
           ],

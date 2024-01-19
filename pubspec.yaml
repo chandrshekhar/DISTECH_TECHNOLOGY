@@ -41,6 +41,8 @@ dependencies:
   crypto: ^3.0.3
   base32: any
   awesome_dialog: 
+  #svg pic
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   change_app_package_name: ^1.1.0

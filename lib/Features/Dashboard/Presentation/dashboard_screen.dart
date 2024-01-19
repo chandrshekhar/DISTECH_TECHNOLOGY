@@ -1,5 +1,6 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_list.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/drop_down.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -45,6 +46,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
   final soldTicketController = Get.put(SoldTicketController());
+  final timerController = Get.put(TimerController());
+
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
   @override
@@ -83,59 +86,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // ),
               Row(
                 children: [
-                  Obx(() => Text(
-                        'My All Ticket (${soldTicketController.allticketCount.value})',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(fontWeight: FontWeight.w400),
-                      )),
-                  const Spacer(),
-                  AppDropDown(
-                      onChanged: (value) async {
-                        soldTicketController.limit.value = value;
-                        soldTicketController.dropDownValue.value = value;
-                        await soldTicketController.getAllTicket(
-                            date: soldTicketController.formatedDate.value,
-                            search: soldTicketController.searchText.value,
-                            semNumber: soldTicketController.semNumber.value);
-                      },
-                      list: soldTicketController.selectedValueList)
-                ],
-              ),
-              SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
-              Row(
-                children: [
                   Expanded(
-                    flex: 5,
-                    child: CustomTextField(
-                      controller: _searchController,
-                      hintText: 'Search',
-                      prefixIcon: const Icon(
-                        EvaIcons.searchOutline,
-                        color: AppColors.primary,
-                        size: 20,
-                      ),
-                      onChanged: (value) {
-                        if (value.toString().isNotEmpty) {
-                          soldTicketController.searchTextSave(value);
-                        } else {
-                          soldTicketController.searchText("");
-                        }
-                        soldTicketController.getAllTicket(
-                            search: soldTicketController.searchText.value,
-                            semNumber: soldTicketController.semNumber.value,
-                            date: soldTicketController.formatedDate.value);
-                      },
-                      maxLines: 1,
-                      minLines: 1,
-                      isBorder: false,
+                    flex: 2,
+                    child: Text(
+                      'My All Ticket (${soldTicketController.allticketCount.value})',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(fontWeight: FontWeight.w400),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
                   ),
                   Expanded(
                     flex: 1,
@@ -190,6 +149,69 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   )
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: AppDropDown(
+                        onChanged: (value) async {
+                          timerController.intialSlot.value = value.toString();
+                        },
+                        list: timerController.slotList),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    flex: 1,
+                    child: AppDropDown(
+                        onChanged: (value) async {
+                          soldTicketController.limit.value = value;
+                          soldTicketController.dropDownValue.value = value;
+                          await soldTicketController.getAllTicket(
+                              date: soldTicketController.formatedDate.value,
+                              search: soldTicketController.searchText.value,
+                              semNumber: soldTicketController.semNumber.value);
+                        },
+                        list: soldTicketController.selectedValueList),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: AppSizes.kDefaultPadding,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: CustomTextField(
+                      controller: _searchController,
+                      hintText: 'Search',
+                      prefixIcon: const Icon(
+                        EvaIcons.searchOutline,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                      onChanged: (value) {
+                        if (value.toString().isNotEmpty) {
+                          soldTicketController.searchTextSave(value);
+                        } else {
+                          soldTicketController.searchText("");
+                        }
+                        soldTicketController.getAllTicket(
+                            search: soldTicketController.searchText.value,
+                            semNumber: soldTicketController.semNumber.value,
+                            date: soldTicketController.formatedDate.value);
+                      },
+                      maxLines: 1,
+                      minLines: 1,
+                      isBorder: false,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
               const SizedBox(

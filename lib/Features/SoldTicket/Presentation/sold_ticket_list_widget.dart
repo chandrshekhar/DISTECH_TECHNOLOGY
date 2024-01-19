@@ -20,11 +20,6 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
   final soldTicketListController = Get.put(SoldTicketListController());
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 class AppIcons {
   static const String path = 'assets/icons/';
-
   static const String arrowBack = '${path}arrow-back.png';
   static const String dashboardIcon = '${path}dashboard-icon.png';
   static const String myProfileIcon = '${path}my-profile-icon.png';
@@ -16,4 +15,6 @@ class AppIcons {
   static const String newClaimIcon = '${path}new_claim.png';
   static const String myClaimIcon = '${path}my_claim.png';
   static const String barCode = "assets/icons/barcode-scanner.png";
+  static const String prize = "assets/icons/cup.svg";
+  static const String soldTicket = "assets/icons/ticket.svg";
 }

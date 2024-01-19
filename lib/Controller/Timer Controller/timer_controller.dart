@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:get/get.dart';
 
@@ -11,9 +12,15 @@ class TimerController extends GetxController {
   late Rx<Duration> remainingTime;
   List<String> timeParts = RxList<String>();
 
+  RxBool gettingSlotLoding = false.obs;
+  RxString intialSlot = ''.obs;
+
+  Rx<DrawSlotModel> drawModel = DrawSlotModel().obs;
+  List<dynamic> slotList = <String>[].obs;
+
   @override
   void onInit() {
-    getServerTime();
+    getSloat();
     super.onInit();
   }
 
@@ -45,8 +52,9 @@ class TimerController extends GetxController {
     startTimer(targetTime);
   }
 
-  getServerTime() async {
-    var res = await apiProvider.getServerTime();
+  getServerTime({required String slotId}) async {
+    Map<String, dynamic> reqModel = {"drawSlotId": "65951f18d149a836eaa4682e"};
+    var res = await apiProvider.getServerTime(reqModel);
     if (res['success'] == true) {
       lastReturnTime.value = res['lastReturnTime'].toString().substring(0, 5);
       drawTime.value = res['drawTime'].toString().substring(0, 5);
@@ -55,5 +63,128 @@ class TimerController extends GetxController {
           DateTime.now().day, int.parse(timeParts[0]), int.parse(timeParts[1]));
       startTimer(targetTime);
     }
+  }
+
+  getSloat() async {
+    gettingSlotLoding(true);
+    var res = await apiProvider.getSlot();
+    if (res.success == true) {
+      drawModel.value = res;
+      getServerTime(slotId: drawModel.value.data?[0].sId ?? "");
+
+      for (int i = 0; i < drawModel.value.data!.length; i++) {
+        slotList.add(drawModel.value.data![i].name);
+      }
+      intialSlot.value = slotList[0];
+      gettingSlotLoding(false);
+    } else {
+      gettingSlotLoding(false);
+    }
+  }
+}
+
+class DrawSlotModel {
+  bool? success;
+  List<Data>? data;
+  String? error;
+
+  DrawSlotModel({this.success, this.data});
+
+  DrawSlotModel.witError(String errorMsg) {
+    error = errorMsg;
+  }
+
+  DrawSlotModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+      });
+    }
+  }
+}
+
+class Data {
+  String? sId;
+  int? number;
+  String? name;
+  String? drawTime;
+  String? returnTime;
+  String? returnDeleteTime;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  List<Sems>? sems;
+
+  Data(
+      {this.sId,
+      this.number,
+      this.name,
+      this.drawTime,
+      this.returnTime,
+      this.returnDeleteTime,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.sems});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    number = json['number'];
+    name = json['name'];
+    drawTime = json['drawTime'];
+    returnTime = json['returnTime'];
+    returnDeleteTime = json['returnDeleteTime'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    if (json['sems'] != null) {
+      sems = <Sems>[];
+      json['sems'].forEach((v) {
+        sems!.add(Sems.fromJson(v));
+      });
+    }
+  }
+}
+
+class Sems {
+  String? name;
+  int? count;
+  String? fromLetter;
+  String? toLetter;
+  String? fromNumber;
+  String? toNumber;
+  String? sId;
+
+  Sems(
+      {this.name,
+      this.count,
+      this.fromLetter,
+      this.toLetter,
+      this.fromNumber,
+      this.toNumber,
+      this.sId});
+
+  Sems.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    count = json['count'];
+    fromLetter = json['fromLetter'];
+    toLetter = json['toLetter'];
+    fromNumber = json['fromNumber'];
+    toNumber = json['toNumber'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['count'] = count;
+    data['fromLetter'] = fromLetter;
+    data['toLetter'] = toLetter;
+    data['fromNumber'] = fromNumber;
+    data['toNumber'] = toNumber;
+    data['_id'] = sId;
+    return data;
   }
 }

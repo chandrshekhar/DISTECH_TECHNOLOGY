@@ -1,7 +1,9 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const primaryIconColor = Color(0xFF939fad);
   static const primary = Color(0xFF1F6AFD);
   static const primaryBg = Color(0xFFF2F4FF);
   static const primaryDark = Color(0xFF0042C2);
