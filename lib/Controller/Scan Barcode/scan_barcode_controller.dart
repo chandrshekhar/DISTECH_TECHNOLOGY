@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../../Features/ScanCode/Model/scan_ticket_model.dart';
 
 class ScanBarcodeController extends GetxController {
   ApiProvider apiProvider = ApiProvider();
-     
+
   Rx<ScanTicketModel> scanTickModel = ScanTicketModel().obs;
   RxBool isTicketScanning = false.obs;
   RxString barcodeValue = "NA".obs;
@@ -22,6 +23,7 @@ class ScanBarcodeController extends GetxController {
   RxString dateFormat = ''.obs;
   RxString select = "Please Scan".obs;
   final purchaseController = Get.put(PurchaseController());
+  final timerController = Get.put(TimerController());
 
   //void selectDate() {}
   DateTime selectedDate = DateTime.now();
@@ -54,12 +56,14 @@ class ScanBarcodeController extends GetxController {
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       barcodeValue.value = barcodeScanRes;
       var data = await apiProvider.verifyTicket(
-          barcodeValue.value.toString().trim(), dateFormat.value);
+          barcodeValue.value.toString().trim(),
+          dateFormat.value,
+          timerController.slotId.toString());
       log("data--> $data");
       if (data['valid'] == true && data['success']) {
         ticketId.value = data["ticket"]["ticketId"];
         scanTickModel.value = await apiProvider.verifyTicketbyID(
-            ticketId: ticketId.value, date: dateFormat.value);
+            ticketId: ticketId.value, date: dateFormat.value,slotId:timerController.slotId.value);
       } else {
         invalidString.value = data['message'];
         scanTickModel.value = ScanTicketModel();

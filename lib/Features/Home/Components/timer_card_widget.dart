@@ -43,7 +43,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
             ),
             Obx(
               () => Text(
-                '${timerController.lastReturnTime.value} PM',
+                timerController.lastReturnTime.value,
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.secondary,
                     fontWeight: FontWeight.w500,
@@ -83,7 +83,7 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
             ),
             Obx(
               () => Text(
-                '${timerController.drawTime.value} PM',
+                timerController.drawTime.value,
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: AppColors.grey,
                     fontWeight: FontWeight.w500,

@@ -12,6 +12,7 @@ import 'package:distech_technology/Features/Login/model/login_model.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 
@@ -300,9 +301,41 @@ class ApiProvider {
     }
   }
 
+  /// get my dashboard details details ------- ///
+  Future<GetMyDashboardModel> getMyDashboardDetails(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.getMyDashboard, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response sold : $response');
+      }
+      return response.statusCode == 200
+          ? GetMyDashboardModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return GetMyDashboardModel.withError(error.toString());
+    }
+  }
+
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<String> returnTicketIdList, String? date) async {
+      List<String> returnTicketIdList, String? date, String? slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -313,10 +346,8 @@ class ApiProvider {
     };
 
     Map<String, dynamic> reqModel = (date == null || date.isEmpty)
-        ? {
-            "tickets": returnTicketIdList,
-          }
-        : {"tickets": returnTicketIdList, "date": date};
+        ? {"tickets": returnTicketIdList, "drawSlotId": slotId}
+        : {"tickets": returnTicketIdList, "date": date, "drawSlotId": slotId};
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -425,7 +456,8 @@ class ApiProvider {
   }
 
   ///------------- get server Time---------------///
-  Future<Map<String, dynamic>> getServerTime(Map<String,dynamic> reqModel) async {
+  Future<Map<String, dynamic>> getServerTime(
+      Map<String, dynamic> reqModel) async {
     Response response;
     String? authToken;
     String token = await localStorageService
@@ -438,10 +470,7 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.post(
-        Urls.serverTime,
-        data: reqModel
-      );
+      response = await _dio.post(Urls.serverTime, data: reqModel);
       if (kDebugMode) {
         log('--------Response time : $response');
       }
@@ -525,12 +554,13 @@ class ApiProvider {
   }
 
   /// check ticket avaliabilty
-  Future<Map<String, dynamic>> verifyTicket(String barCode, String date) async {
+  Future<Map<String, dynamic>> verifyTicket(
+      String barCode, String date, String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": barCode.trim(), 'date': date};
+    Map reqModel = {"id": barCode.trim(), 'date': date, "drawSlotId": slotId};
 
     log("reqModel-- >$reqModel");
     try {
@@ -643,12 +673,16 @@ class ApiProvider {
 
   /// check ticket avaliabilty
   Future<ScanTicketModel> verifyTicketbyID(
-      {String? ticketId, String? date}) async {
+      {String? ticketId, String? date, String? slotId}) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"ticketId": ticketId ?? "".trim(), 'date': date};
+    Map reqModel = {
+      "ticketId": ticketId ?? "".trim(),
+      'date': date,
+      "drawSlotId": slotId
+    };
     print("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};

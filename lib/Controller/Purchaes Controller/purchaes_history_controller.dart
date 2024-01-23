@@ -41,11 +41,12 @@ class PurchaseController extends GetxController {
   }
 
   getAllPurchaesTicketDetails(
-      {String? search, int? semNumber, String? orderID}) async {
+      {String? search, int? semNumber, String? orderID, String? slotId}) async {
     Map<String, dynamic> reqModel = {
       "orderId": orderID,
       "offset": 0,
-      "limit": purDetLimit.value
+      "limit": purDetLimit.value,
+         "drawSlotId": slotId
     };
 
     isPurchaseDetailsLoading(true);

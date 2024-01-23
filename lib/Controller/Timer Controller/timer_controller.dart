@@ -13,10 +13,11 @@ class TimerController extends GetxController {
   List<String> timeParts = RxList<String>();
 
   RxBool gettingSlotLoding = false.obs;
+  RxString slotId = ''.obs;
   RxString intialSlot = ''.obs;
 
   Rx<DrawSlotModel> drawModel = DrawSlotModel().obs;
-  List<dynamic> slotList = <String>[].obs;
+  // RxList<String> slotList = <String>[].obs;
 
   @override
   void onInit() {
@@ -52,13 +53,33 @@ class TimerController extends GetxController {
     startTimer(targetTime);
   }
 
-  getServerTime({required String slotId}) async {
-    Map<String, dynamic> reqModel = {"drawSlotId": "65951f18d149a836eaa4682e"};
+  String convertTo12HourFormat(String time24) {
+    // Split the time into hours and minutes
+    List<String> timeParts = time24.split(':');
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+    // Determine AM or PM
+    String amPm = hours < 12 ? 'AM' : 'PM';
+    // Convert to 12-hour format
+    hours = hours % 12 == 0 ? 12 : hours % 12;
+    // Format the result
+    String time12 = '$hours:${minutes.toString().padLeft(2, '0')} $amPm';
+    return time12;
+  }
+
+  getServerTime() async {
+    Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
     var res = await apiProvider.getServerTime(reqModel);
     if (res['success'] == true) {
-      lastReturnTime.value = res['lastReturnTime'].toString().substring(0, 5);
-      drawTime.value = res['drawTime'].toString().substring(0, 5);
-      timeParts = lastReturnTime.value.split(':');
+      lastReturnTime.value = convertTo12HourFormat(
+          res['lastReturnTime'].toString().substring(0, 5));
+      // lastReturnTime.value = res['lastReturnTime'].toString().substring(0, 5);
+      print(lastReturnTime.value);
+      // drawTime.value = res['drawTime'].toString().substring(0, 5);
+      drawTime.value =
+          convertTo12HourFormat(res['drawTime'].toString().substring(0, 5));
+      timeParts = res['lastReturnTime'].toString().substring(0, 5).split(':');
+      print("target Time--$timeParts");
       var targetTime = DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, int.parse(timeParts[0]), int.parse(timeParts[1]));
       startTimer(targetTime);
@@ -70,12 +91,13 @@ class TimerController extends GetxController {
     var res = await apiProvider.getSlot();
     if (res.success == true) {
       drawModel.value = res;
-      getServerTime(slotId: drawModel.value.data?[0].sId ?? "");
+      slotId.value = drawModel.value.data?[0].sId ?? "";
+      getServerTime();
 
-      for (int i = 0; i < drawModel.value.data!.length; i++) {
-        slotList.add(drawModel.value.data![i].name);
-      }
-      intialSlot.value = slotList[0];
+      // for (int i = 0; i < drawModel.value.data!.length; i++) {
+      //   slotList.add(drawModel.value.data![i].name.toString());
+      // }
+      intialSlot.value = drawModel.value.data![0].name.toString();
       gettingSlotLoding(false);
     } else {
       gettingSlotLoding(false);

@@ -89,11 +89,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      'My All Ticket (${soldTicketController.allticketCount.value})',
+                      'My All Ticket \n (${soldTicketController.allticketCount.value})',
+                      textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
-                          .copyWith(fontWeight: FontWeight.w400),
+                          .copyWith(fontWeight: FontWeight.w400, fontSize: 18),
                     ),
                   ),
                   Expanded(
@@ -111,8 +112,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
+                        height: AppSizes.buttonHeight,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 AppSizes.cardCornerRadius / 2),
@@ -135,8 +136,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         soldTicketController.selectDate(context);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
+                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
+                        height: AppSizes.buttonHeight,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 AppSizes.cardCornerRadius / 2),
@@ -148,21 +149,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: AppDropDown(
-                        onChanged: (value) async {
-                          timerController.intialSlot.value = value.toString();
-                        },
-                        list: timerController.slotList),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     flex: 1,
                     child: AppDropDown(
@@ -178,9 +168,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   )
                 ],
               ),
-              SizedBox(
-                height: AppSizes.kDefaultPadding,
-              ),
+              const SizedBox(height: 10),
+
               Row(
                 children: [
                   Expanded(
@@ -208,9 +197,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       minLines: 1,
                       isBorder: false,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
                   ),
                 ],
               ),
@@ -378,13 +364,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   : () async {
                                       if (soldTicketController
                                           .selectedSoldTicket.isNotEmpty) {
-                                        var res =
-                                            await ApiProvider().soldTciket(
-                                          soldTicketController
-                                              .selectedSoldTicket,
-                                          soldTicketController
-                                              .formatedDate.value,
-                                        );
+                                        var res = await ApiProvider()
+                                            .soldTciket(
+                                                soldTicketController
+                                                    .selectedSoldTicket,
+                                                soldTicketController
+                                                    .formatedDate.value,
+                                                timerController.slotId.value);
 
                                         Get.snackbar(
                                             "Successful", res['message'],

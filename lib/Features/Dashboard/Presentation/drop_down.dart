@@ -4,7 +4,6 @@ import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:flutter/material.dart';
 
-
 class AppDropDown extends StatefulWidget {
   ValueChanged onChanged;
   List<dynamic> list;
@@ -37,8 +36,8 @@ class _AppDropDownState extends State<AppDropDown> {
           decoration: InputDecoration(
               fillColor: AppColors.white,
               filled: true,
-              contentPadding: EdgeInsets.only(
-                  top: 4, bottom: 4, left: 12, right: 12),
+              contentPadding:
+                  EdgeInsets.only(top: 4, bottom: 4, left: 10, right: 5),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: AppColors.bg, width: 0.8),
                   borderRadius:

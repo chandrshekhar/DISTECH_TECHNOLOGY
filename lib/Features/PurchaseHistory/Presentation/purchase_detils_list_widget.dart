@@ -1,5 +1,6 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Widgets/paginatiuon_custom_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class PurchaseDetailsListWidget extends StatefulWidget {
 
 class _PurchaseDetailsListWidgetState extends State<PurchaseDetailsListWidget> {
   final purchaseDetailsController = Get.put(PurchaseController());
+  final timerController = Get.put(TimerController());
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
   @override
@@ -26,7 +28,7 @@ class _PurchaseDetailsListWidgetState extends State<PurchaseDetailsListWidget> {
     return RawScrollbar(
       thickness: 3,
       thumbColor: AppColors.primary,
-      radius:  Radius.circular(AppSizes.cardCornerRadius),
+      radius: Radius.circular(AppSizes.cardCornerRadius),
       child: SmartRefresher(
         controller: refreshController,
         enablePullDown: false,
@@ -37,7 +39,7 @@ class _PurchaseDetailsListWidgetState extends State<PurchaseDetailsListWidget> {
         onLoading: () async {
           purchaseDetailsController.purDetLimit.value += 40;
           await purchaseDetailsController.getAllPurchaesTicketDetails(
-              orderID: widget.orderId);
+              orderID: widget.orderId, slotId: timerController.slotId.value);
           refreshController.loadComplete();
         },
         footer: const CustomFooterWidget(),

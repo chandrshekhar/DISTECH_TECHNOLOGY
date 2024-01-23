@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +25,7 @@ class SoldTicketController extends GetxController {
   RxString searchText = ''.obs;
   RxInt limit = 10.obs;
   RxInt dropDownValue = 10.obs;
-  // final soldTicketController = Get.put(SoldTicketListController());
+  final timerController = Get.put(TimerController());
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -49,13 +50,15 @@ class SoldTicketController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
+            "drawSlotId": timerController.slotId
           }
         : {
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            "date": date
+            "date": date,
+            "drawSlotId": timerController.slotId
           };
     isAllTicketLoading(true);
     if (kDebugMode) {
@@ -102,8 +105,8 @@ class SoldTicketController extends GetxController {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // String barcodeScanRes = "0VY5WAG8Y";
-    var data = await apiProvider.verifyTicket(
-        barcodeScanRes.toString().trim(), formatedDate.value);
+    var data = await apiProvider.verifyTicket(barcodeScanRes.toString().trim(),
+        formatedDate.value, timerController.slotId.toString());
     log("data--> $data");
     if (data['valid'] == true && data['success']) {
       scanedTicket.add(data["ticket"]["ticketId"]);
@@ -162,7 +165,8 @@ class SoldTicketController extends GetxController {
         btnOkOnPress: () async {
           var res = await ApiProvider().soldTciket(
             scanedTicket,
-            "formatedDate.value",
+            formatedDate.value,
+            timerController.slotId.value,
           );
 
           log("return Res--> $res");

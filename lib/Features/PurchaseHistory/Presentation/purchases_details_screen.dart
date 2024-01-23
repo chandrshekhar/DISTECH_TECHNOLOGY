@@ -1,3 +1,4 @@
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_detils_list_widget.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
@@ -5,6 +6,7 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart';
@@ -28,6 +30,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
   // final soldTicketController = Get.put(SoldTicketController());
 
   final purchaseHistoryTicketController = Get.put(PurchaseController());
+  final timerController = Get.put(TimerController());
 
   @override
   void initState() {
@@ -35,7 +38,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
     purchaseHistoryTicketController.purchaseHistoryDetailsList.clear();
     purchaseHistoryTicketController.purDetLimit.value = 40;
     purchaseHistoryTicketController.getAllPurchaesTicketDetails(
-        orderID: widget.orderID);
+        orderID: widget.orderID, slotId: timerController.slotId.value);
   }
 
   @override

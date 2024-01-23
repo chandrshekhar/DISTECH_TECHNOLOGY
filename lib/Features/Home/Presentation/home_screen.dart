@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Commons/app_images.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
@@ -24,6 +25,7 @@ import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/Profile Controller/profile_controller.dart';
@@ -95,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void callProfile() async {
     await Future.delayed(const Duration(microseconds: 2000), () {
+      timerController.getSloat();
       userProfileController.getUserDetails();
     });
   }
@@ -215,6 +218,31 @@ class _HomeScreenState extends State<HomeScreen> {
           leadingIcon: EvaIcons.menu2Outline,
           leadingIconPressed: () => _key.currentState!.openDrawer(),
           actions: [
+            PopupMenuButton<Data>(
+              icon: SvgPicture.asset(
+                AppImages.calanderImage,
+                color: AppColors.white,
+                width: 25,
+                height: 25,
+              ),
+              position: PopupMenuPosition.under,
+              onSelected: (value) {
+                timerController.intialSlot.value = value.name.toString();
+                timerController.slotId.value = value.sId.toString();
+                timerController.getServerTime();
+              },
+              itemBuilder: (BuildContext bc) {
+                return List.generate(
+                    timerController.drawModel.value.data!.length, (index) {
+                  return PopupMenuItem<Data>(
+                    value: timerController.drawModel.value.data![index],
+                    child: Text(timerController
+                        .drawModel.value.data![index].name
+                        .toString()),
+                  );
+                });
+              },
+            ),
             GestureDetector(
               onTap: () => context.push(const ProfileScreen()),
               child: Padding(
@@ -377,9 +405,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w500),
                       children: <TextSpan>[
                         TextSpan(
-                          text: timerController.intialSlot.isEmpty
+                          text: timerController.intialSlot.isNotEmpty
                               ? '< ${timerController.intialSlot} >'
-                              : '< Evening slot >',
+                              : '',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!

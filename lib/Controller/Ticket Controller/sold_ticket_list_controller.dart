@@ -1,4 +1,5 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,7 @@ class SoldTicketListController extends GetxController {
   RxString searchText = ''.obs;
   RxInt soldTicketCont = 0.obs;
   RxInt limit = 10.obs;
+  final timerController = Get.put(TimerController());
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -28,13 +30,15 @@ class SoldTicketListController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
+            "drawSlotId": timerController.slotId.value
           }
         : {
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            "date": date
+            "date": date,
+            "drawSlotId": timerController.slotId.value
           };
 
     isSoldListLoading(true);

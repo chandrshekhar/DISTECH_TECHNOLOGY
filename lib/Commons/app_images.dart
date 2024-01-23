@@ -4,5 +4,5 @@ class AppImages {
   static const String welcomeImage = '${path}welcome-image.png';
   static const String drawerLogo = '${path}drawer-logo.png';
   static const String drawerLogoBg = '${path}drawer-logo-bg.png';
-
+  static const String calanderImage = 'assets/icons/calendar.svg';
 }
