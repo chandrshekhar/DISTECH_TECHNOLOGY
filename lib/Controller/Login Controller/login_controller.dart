@@ -36,7 +36,7 @@ class LoginController extends GetxController {
         LocalStorageService()
             .saveToDisk(LocalStorageService.USER_NAME, mData.user!.fullName);
         // ignore: use_build_context_synchronously
-        context.pushReplacement(const HomeScreen());
+        context.pushReplacement( HomeScreen());
         isLoading(false);
       } else {
         Get.snackbar("Error", mData.error ?? "Something Went Wrong");

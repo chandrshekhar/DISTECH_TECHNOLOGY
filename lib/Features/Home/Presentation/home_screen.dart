@@ -33,7 +33,8 @@ import '../../Claim/Presentation/new_claim_screen.dart';
 import '../Components/timer_card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  String? comeFrom;
+  HomeScreen({Key? key, this.comeFrom}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -79,10 +80,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void callProfile() async {
-    await Future.delayed(const Duration(microseconds: 2000), () {
-      timerController.getSloat();
-      userProfileController.getUserDetails();
-    });
+    if (widget.comeFrom.toString().contains("home")) {
+    } else {
+      await Future.delayed(const Duration(microseconds: 2000), () {
+        timerController.getSloat();
+        userProfileController.getUserDetails();
+      });
+    }
   }
 
   // Navigate to content from Drawer
@@ -211,7 +215,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 timerController.getServerTime();
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen(
+                              comeFrom: "home",
+                            )),
                     (route) => false);
               },
               itemBuilder: (BuildContext bc) {
