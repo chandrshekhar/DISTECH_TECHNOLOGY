@@ -28,7 +28,8 @@ class CustomExpansionPanel extends StatelessWidget {
     return ExpansionTile(
         collapsedTextColor: AppColors.primaryIconColor,
         leading: leading,
-        childrenPadding: EdgeInsets.zero,
+        tilePadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+        childrenPadding: const EdgeInsets.only(left: 10),
         trailing: const Icon(
           Icons.add_box,
           size: 18,

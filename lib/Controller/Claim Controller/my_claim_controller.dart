@@ -1,4 +1,5 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,8 @@ class MyClaimController extends GetxController {
   final myClaimSearcController = TextEditingController().obs;
   ApiProvider apiProvider = ApiProvider();
 
+  final timerController = Get.put(TimerController());
+
   getMyClaim() async {
     isClaimingDataLoading(true);
     Map<String, dynamic> reqModel = {
@@ -24,7 +27,8 @@ class MyClaimController extends GetxController {
       "offset": 0,
       "search": "",
       "status": "",
-      "toDate": toDates.value
+      "toDate": toDates.value,
+      "drawSlotId": timerController.slotId.value
     };
     myClaimTicketModel.value = await apiProvider.getMyClaims(reqModel);
     claimsDataList.value = myClaimTicketModel.value.claimsData ?? [];

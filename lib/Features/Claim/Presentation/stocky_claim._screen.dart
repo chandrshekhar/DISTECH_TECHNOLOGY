@@ -32,7 +32,7 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
               Row(
                 children: [
                   Text(
-                    'My Claims By Date',
+                    'CLAIMS BY DATE',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!

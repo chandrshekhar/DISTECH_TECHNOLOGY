@@ -20,6 +20,18 @@ class ProfileController extends GetxController {
 
 //get user data
 
+// drawar expantion
+  RxBool isTickets = false.obs;
+  RxBool isPrize = false.obs;
+
+  setExpansion1(bool v) {
+    isTickets.value = v;
+  }
+
+  setExpansion2(bool v) {
+    isPrize.value = v;
+  }
+
   getUserDetails() async {
     try {
       isLoading(true);

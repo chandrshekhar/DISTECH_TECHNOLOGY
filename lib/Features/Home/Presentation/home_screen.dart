@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_images.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
-import 'package:distech_technology/Features/Home/Models/drawer_item_model.dart';
 import 'package:distech_technology/Features/Home/Widgets/drawer_item.dart';
-import 'package:distech_technology/Features/Inventory/Presentation/inventory_screen.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_history_screen.dart';
@@ -21,6 +20,7 @@ import 'package:distech_technology/Features/Vew%20Prizes/Presentation/all_prize_
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
+import 'package:distech_technology/Widgets/custom_expation_tile.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -48,33 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //all screens which will be visible on home screens
   final List<Widget> screens = [
-    const DashboardScreen(),
-    const ReturnUnsoldTicket(),
-    const SoldTicketScreen(),
-    const ReturnedTicketScreen(),
-    const PurchaseHistoryScreen(),
-    ScanBarCodeScreen(),
-    const NewClaimScreen(),
-    const MyClaimScreen(),
-    const SupportScreen(),
-    AllPrizeScreen(),
-    const InVentoryScreen()
-  ];
-
-  //drawer item selected background color.
-  //by default: dashboard will be selected.
-  List<bool> isHighlighted = [
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
+    const AllPrizeScreen(), //0
+    const DashboardScreen(), //1
+    const ReturnUnsoldTicket(), //2
+    ScanBarCodeScreen(), //3
+    const SoldTicketScreen(), //4
+    const ReturnedTicketScreen(), //5
+    const PurchaseHistoryScreen(), //6
+    const NewClaimScreen(), // 7
+    const MyClaimScreen(), // 8
+    const SupportScreen(), // 10
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -153,10 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedIndex = 9;
           });
-        case 10:
-          setState(() {
-            selectedIndex = 10;
-          });
       }
     });
   }
@@ -230,6 +209,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 timerController.intialSlot.value = value.name.toString();
                 timerController.slotId.value = value.sId.toString();
                 timerController.getServerTime();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    (route) => false);
               },
               itemBuilder: (BuildContext bc) {
                 return List.generate(
@@ -291,48 +274,162 @@ class _HomeScreenState extends State<HomeScreen> {
                       fit: BoxFit.contain,
                       // height: 30,
                     )),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        CustomExpansionPanel(
+                            title: "Dashboard",
+                            onExpansionChanged: (v) {
+                              closeDrawer();
+                              navigate(0);
+                            },
+                            initiallyExpanded: false,
+                            children: const []),
+                        Obx(() => CustomExpansionPanel(
+                                title: "Tickets",
+                                onExpansionChanged: (v) {
+                                  userProfileController.setExpansion1(v);
+                                  userProfileController.setExpansion2(false);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isTickets.value,
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(1);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "My Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(2);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Return Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(3);
+                                      },
+                                      icon: AppIcons.purchaseHistoryIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Verify Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(4);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Sold Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(5);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Returned Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(6);
+                                      },
+                                      icon: AppIcons.purchaseHistoryIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Purchase History"),
+                                ])),
+                        Obx(() => CustomExpansionPanel(
+                                title: "Prize Winning Ticket",
+                                onExpansionChanged: (v) {
+                                  userProfileController.setExpansion2(v);
+                                  userProfileController.setExpansion1(false);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isPrize.value,
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(7);
+                                      },
+                                      icon: AppIcons.newClaimIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "New Claim"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(8);
+                                      },
+                                      icon: AppIcons.myClaimIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "My Claim Request"),
+                                ])),
+                        CustomExpansionPanel(
+                            title: "Support",
+                            onExpansionChanged: (v) {
+                              closeDrawer();
+                              navigate(9);
+                            },
+                            initiallyExpanded: false,
+                            children: const []),
+                      ],
+                    ),
+                  ),
+                ),
                 // SizedBox(
                 //   height: AppSizes.kDefaultPadding,
                 // ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: drawerItemsList.length,
-                      shrinkWrap: false,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            for (var i = 0; i < isHighlighted.length; i++) {
-                              if (index == i) {
-                                isHighlighted[index] = true;
-                              } else {
-                                isHighlighted[i] = false;
-                              }
-                            }
-                            // Close the Drawer first
 
-                            // Then Navigate to the Screens or Containers
-                            closeDrawer();
-                            navigate(index);
-                            // if (index == 5) {
-                            //   scanBarcode();
+                // Expanded(
+                //   child: ListView.builder(
+                //       itemCount: drawerItemsList.length,
+                //       shrinkWrap: false,
+                //       itemBuilder: (context, index) {
+                //         return InkWell(
+                //           onTap: () {
+                //             // for (var i = 0; i < isHighlighted.length; i++) {
+                //             //   if (index == i) {
+                //             //     isHighlighted[index] = true;
+                //             //   } else {
+                //             //     isHighlighted[i] = false;
+                //             //   }
+                //             // }
+                //             // Close the Drawer first
 
-                            //   closeDrawer();
+                //             // Then Navigate to the Screens or Containers
+                //             closeDrawer();
+                //             navigate(index);
+                //             // if (index == 5) {
+                //             //   scanBarcode();
 
-                            //   print("bar code scanner");
-                            // } else {
-                            //   closeDrawer();
-                            //   navigate(index);
-                            // }
-                          },
-                          child: DrawerItem(
-                            drawerItemModel: drawerItemsList[index],
-                            bgColor: isHighlighted[index]
-                                ? AppColors.primary.withOpacity(0.2)
-                                : AppColors.transparent,
-                          ),
-                        );
-                      }),
-                ),
+                //             //   closeDrawer();
+
+                //             //   print("bar code scanner");
+                //             // } else {
+                //             //   closeDrawer();
+                //             //   navigate(index);
+                //             // }
+                //           },
+                //           child: DrawerItem(
+                //             drawerItemModel: drawerItemsList[index],
+                //             bgColor:
+                //                  AppColors.transparent,
+                //           ),
+                //         );
+                //       }),
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: FullButton(

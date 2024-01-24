@@ -13,6 +13,7 @@ import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 
@@ -330,6 +331,37 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return GetMyDashboardModel.withError(error.toString());
+    }
+  }
+  /// get my prize details details ------- ///
+  Future<GetPrizeModel> getPrizeDetails(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.getPrize, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response sold : $response');
+      }
+      return response.statusCode == 200
+          ? GetPrizeModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return GetPrizeModel.withError(error.toString());
     }
   }
 

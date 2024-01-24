@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import 'package:get/get.dart';
@@ -12,15 +15,23 @@ class PurchaseController extends GetxController {
   RxInt limit = 30.obs;
   RxInt purDetLimit = 40.obs;
   RxInt countPurchaesTickets = 0.obs;
+  final timerController = Get.put(TimerController());
   getAllPurchaesTicket(
       {String? search, int? semNumber, String? dateTime}) async {
     Map<String, dynamic> reqModel = dateTime == null || dateTime.isEmpty
         ? {
             "offset": 0,
             "limit": limit.value,
+            "drawSlotId": timerController.slotId.value
           }
-        : {"offset": 0, "limit": limit.value, "date": dateTime};
+        : {
+            "offset": 0,
+            "limit": limit.value,
+            "date": dateTime,
+            "drawSlotId": timerController.slotId.value
+          };
     isPurchaLoading(true);
+    log(reqModel.toString());
     var res = await apiProvider.getAllPurcHistoryTicket(reqModel);
     if (res.errorMsg == null) {
       if (res.purchases!.isNotEmpty) {
@@ -46,7 +57,7 @@ class PurchaseController extends GetxController {
       "orderId": orderID,
       "offset": 0,
       "limit": purDetLimit.value,
-         "drawSlotId": slotId
+      "drawSlotId": timerController.slotId.value
     };
 
     isPurchaseDetailsLoading(true);

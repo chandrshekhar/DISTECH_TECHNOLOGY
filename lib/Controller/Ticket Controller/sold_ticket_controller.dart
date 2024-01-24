@@ -50,7 +50,7 @@ class SoldTicketController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            "drawSlotId": timerController.slotId
+            "drawSlotId": timerController.slotId.value
           }
         : {
             "offset": 0,
@@ -58,7 +58,7 @@ class SoldTicketController extends GetxController {
             "search": search ?? "",
             "SEM": semNumber,
             "date": date,
-            "drawSlotId": timerController.slotId
+            "drawSlotId": timerController.slotId.value
           };
     isAllTicketLoading(true);
     if (kDebugMode) {

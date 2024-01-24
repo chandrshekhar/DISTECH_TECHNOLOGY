@@ -18,7 +18,6 @@ final List<DrawerItemModel> drawerItemsList = [
   DrawerItemModel("My Claim", AppIcons.myClaimIcon),
   DrawerItemModel('Support', AppIcons.supportIcon),
   DrawerItemModel("Prize", AppIcons.filterIcon),
-  DrawerItemModel('Inventory', AppIcons.myProfileIcon),
 ];
 
 final List<DrawerItemModel> drawerItemsListNew = [

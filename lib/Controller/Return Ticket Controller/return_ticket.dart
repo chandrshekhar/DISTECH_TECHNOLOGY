@@ -1,7 +1,6 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 
 import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
@@ -18,8 +17,6 @@ class GetMyReturnController extends GetxController {
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();
 
-
-
   var searchController = TextEditingController().obs;
   var fromLetterController = TextEditingController().obs;
   var toLetterController = TextEditingController().obs;
@@ -30,8 +27,9 @@ class GetMyReturnController extends GetxController {
         ? {
             // "offset": 0,
             // "limit": 1000,
+            "drawSlotId": timerController.slotId.value
           }
-        : {"date": dateTime};
+        : {"date": dateTime, "drawSlotId": timerController.slotId.value};
     isReturnTicketLoading(true);
     var res = await apiProvider.getMyReturn(reqModel);
     if (res.allReturnedTickets != null) {
@@ -82,7 +80,7 @@ class GetMyReturnController extends GetxController {
   // select Date for return unsold ticket0.
 
   RxBool returnFromTicketLoading = false.obs;
-  
+
   // void scanBarCodeForReturnTicket(bool fromTicket, BuildContext context) async {
   //   String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
   //       '#ff6666', 'Cancel', true, ScanMode.BARCODE);
@@ -150,11 +148,6 @@ class GetMyReturnController extends GetxController {
   //   }
   // }
 
-
-
-
-
-
   validateReturnTicket(String userId, String date) async {
     isTicketValidating(true);
     int fromNumber = int.parse(fromNumberController.value.text);
@@ -179,6 +172,7 @@ class GetMyReturnController extends GetxController {
       isTicketValidating(false);
     } else {
       FailedSeriesList reqModel = FailedSeriesList(
+        
           date: date,
           userId: userId,
           fromLetter: fromLetterController.value.text.toString().trim(),

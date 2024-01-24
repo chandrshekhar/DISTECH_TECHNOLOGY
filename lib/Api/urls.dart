@@ -29,6 +29,7 @@ class Urls {
       "$_baseUrl/orders/check-return-series";
   // get dashboard details
   static const String getMyDashboard = "$_baseUrl/users/get-my-dashboard";
+  static const String getPrize = "$_baseUrl/lottery/get-result";
   // get slot
   static const String getSlot = "$_baseUrl/lottery/get-draw-slots";
   static const String serverTime = "$_baseUrl/get-draw-time";
