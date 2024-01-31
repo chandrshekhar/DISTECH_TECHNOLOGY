@@ -13,6 +13,7 @@ class PrizesController extends GetxController {
   DateTime selectedDate = DateTime.now();
   final timerController = Get.put(TimerController());
   RxMap<String, dynamic> userTicketCounts = <String, dynamic>{}.obs;
+  RxBool isPopupShowing = false.obs;
 
   RxBool getMyDashboardLoadfing = false.obs;
   RxBool getPrizeLoading = false.obs;

@@ -17,6 +17,7 @@ class TimerController extends GetxController {
   RxString intialSlot = ''.obs;
 
   Rx<DrawSlotModel> drawModel = DrawSlotModel().obs;
+  RxList<Data> slotList = <Data>[].obs;
   // RxList<String> slotList = <String>[].obs;
 
   @override
@@ -91,6 +92,7 @@ class TimerController extends GetxController {
     var res = await apiProvider.getSlot();
     if (res.success == true) {
       drawModel.value = res;
+      slotList.value = res.data!;
       slotId.value = drawModel.value.data?[0].sId ?? "";
       getServerTime();
 

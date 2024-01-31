@@ -128,6 +128,8 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
             ),
           ),
         ),
+        
+        
         floatingActionButton: Obx(
           () => newClaimController.ticketClaimList.isNotEmpty
               ? FloatingActionButton.extended(
@@ -277,4 +279,6 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
       ),
     );
   }
+
+
 }

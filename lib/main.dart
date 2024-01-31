@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                     showLater: false,
                     showReleaseNotes: false,
                   ),
-                  child:  HomeScreen())
+                  child: HomeScreen())
               : const SplashScreen(),
         ),
       ),

@@ -12,6 +12,8 @@ class CustomExpansionPanel extends StatelessWidget {
   Color? backgroundColor;
   Color? collapsedBackgroundColor;
   Widget? leading;
+  bool? isIconShowing;
+  int? index;
   CustomExpansionPanel(
       {super.key,
       required this.title,
@@ -21,7 +23,9 @@ class CustomExpansionPanel extends StatelessWidget {
       this.titleStyle,
       this.backgroundColor,
       this.collapsedBackgroundColor,
-      this.leading});
+      this.leading,
+      this.isIconShowing = true,
+      this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,12 @@ class CustomExpansionPanel extends StatelessWidget {
         leading: leading,
         tilePadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
         childrenPadding: const EdgeInsets.only(left: 10),
-        trailing: const Icon(
-          Icons.add_box,
-          size: 18,
-        ),
+        trailing: isIconShowing!
+            ? const Icon(
+                Icons.add_box,
+                size: 18,
+              )
+            : const SizedBox(),
         // tilePadding: EdgeInsets.symmetric(horizontal: 0.w),
         collapsedShape: const ContinuousRectangleBorder(
             side: BorderSide.none,

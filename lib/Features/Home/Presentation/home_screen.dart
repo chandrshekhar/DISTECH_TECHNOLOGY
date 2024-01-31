@@ -30,6 +30,8 @@ import 'package:get/get.dart';
 
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
+import '../../Result/Presentation/result_screen.dart';
+import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const PurchaseHistoryScreen(), //6
     const NewClaimScreen(), // 7
     const MyClaimScreen(), // 8
-    const SupportScreen(), // 10
+    const SupportScreen(), // 9
+    const ResultScreen(), //10
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -139,6 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
         case 9:
           setState(() {
             selectedIndex = 9;
+          });
+        case 10:
+          setState(() {
+            selectedIndex = 10;
           });
       }
     });
@@ -286,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         CustomExpansionPanel(
+                            isIconShowing: false,
                             title: "Dashboard",
                             onExpansionChanged: (v) {
                               closeDrawer();
@@ -384,10 +392,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       label: "My Claim Request"),
                                 ])),
                         CustomExpansionPanel(
+                            isIconShowing: false,
                             title: "Support",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(9);
+                            },
+                            initiallyExpanded: false,
+                            children: const []),
+                        CustomExpansionPanel(
+                            isIconShowing: false,
+                            title: "Result",
+                            onExpansionChanged: (v) {
+                              closeDrawer();
+                              navigate(10);
                             },
                             initiallyExpanded: false,
                             children: const []),
@@ -442,10 +460,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: FullButton(
                     label: 'Logout',
                     onPressed: () async {
+                      final getMyDashboardController =
+                          Get.put(PrizesController());
                       await LocalStorageService()
                           .removeToDisk(LocalStorageService.ACCESS_TOKEN_KEY);
                       await LocalStorageService()
                           .removeToDisk(LocalStorageService.USER_NAME);
+
+                      getMyDashboardController.isPopupShowing.value = false;
                       // ignore: use_build_context_synchronously
                       Navigator.pushAndRemoveUntil(
                           context,
