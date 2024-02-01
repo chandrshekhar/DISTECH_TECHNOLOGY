@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             initiallyExpanded: false,
                             children: const []),
                         Obx(() => CustomExpansionPanel(
-                                title: "Tickets",
+                                title: "Inventory",
                                 onExpansionChanged: (v) {
                                   userProfileController.setExpansion1(v);
                                   userProfileController.setExpansion2(false);
@@ -318,24 +318,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
                                       label: "My Tickets"),
-                                  const SizedBox(height: 10),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(2);
-                                      },
-                                      icon: AppIcons.filterIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Return Tickets"),
-                                  const SizedBox(height: 10),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(3);
-                                      },
-                                      icon: AppIcons.purchaseHistoryIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Verify Tickets"),
                                   const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
@@ -365,7 +347,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                       label: "Purchase History"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
-                                title: "Prize Winning Ticket",
+                                title: "Unsold",
+                                onExpansionChanged: (v) {
+                                  userProfileController.setExpansion2(v);
+                                  userProfileController.setExpansion1(false);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isPrize.value,
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(2);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Return Tickets"),
+                                ])),
+                        Obx(() => CustomExpansionPanel(
+                                title: "Verify",
+                                onExpansionChanged: (v) {
+                                  userProfileController.setExpansion2(v);
+                                  userProfileController.setExpansion1(false);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isPrize.value,
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(3);
+                                      },
+                                      icon: AppIcons.purchaseHistoryIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Verify Tickets"),
+                                ])),
+                        Obx(() => CustomExpansionPanel(
+                                title: "Claim",
                                 onExpansionChanged: (v) {
                                   userProfileController.setExpansion2(v);
                                   userProfileController.setExpansion1(false);

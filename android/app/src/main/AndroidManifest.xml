@@ -3,9 +3,12 @@ package="com.app.singham_lottery">
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:label="Singham Lottery"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+      
         <activity
             android:name=".MainActivity"
             android:exported="true"
