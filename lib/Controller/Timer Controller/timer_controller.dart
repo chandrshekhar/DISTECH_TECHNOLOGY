@@ -26,16 +26,18 @@ class TimerController extends GetxController {
     super.onInit();
   }
 
+  Timer? timer;
+
   ApiProvider apiProvider = ApiProvider();
   void startTimer(DateTime dateTime) {
     remainingTime = (dateTime.difference(currentTime.value)).obs;
     // Update the remaining time every second
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
+    timer = Timer.periodic(const Duration(seconds: 1), (timers) async {
       currentTime.value = DateTime.now();
       remainingTime.value = dateTime.difference(currentTime.value);
       if (remainingTime.value.isNegative) {
         countdown.value = "0:00:00";
-        timer.cancel();
+        timers.cancel();
         _startMethodAfterDelay();
       } else {
         int hours = remainingTime.value.inHours;
@@ -75,14 +77,22 @@ class TimerController extends GetxController {
       lastReturnTime.value = convertTo12HourFormat(
           res['lastReturnTime'].toString().substring(0, 5));
       // lastReturnTime.value = res['lastReturnTime'].toString().substring(0, 5);
-      print(lastReturnTime.value);
-      // drawTime.value = res['drawTime'].toString().substring(0, 5);
+      // print(lastReturnTime.value);
+      DateTime utcDateTime = DateTime.parse(res['currentTime']);
+
+      // // Convert to IST (UTC + 5:30)
+      currentTime.value =
+          utcDateTime.add(const Duration(hours: 5, minutes: 30));
+      // String formattedTime = DateFormat('HH:mm:ss').format(istDateTime);
+      // print("serverTimes--> $formattedTime");
+      // // drawTime.value = res['drawTime'].toString().substring(0, 5);
       drawTime.value =
           convertTo12HourFormat(res['drawTime'].toString().substring(0, 5));
       timeParts = res['lastReturnTime'].toString().substring(0, 5).split(':');
       print("target Time--$timeParts");
       var targetTime = DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, int.parse(timeParts[0]), int.parse(timeParts[1]));
+      timer?.cancel();
       startTimer(targetTime);
     }
   }

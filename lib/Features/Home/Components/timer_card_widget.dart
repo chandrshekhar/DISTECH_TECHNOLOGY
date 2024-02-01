@@ -14,15 +14,6 @@ class TimerCardWidget extends StatefulWidget {
 }
 
 class _TimerCardWidgetState extends State<TimerCardWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   final timerController = Get.put(TimerController());
 
