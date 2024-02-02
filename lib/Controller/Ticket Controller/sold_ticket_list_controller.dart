@@ -30,7 +30,7 @@ class SoldTicketListController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            "drawSlotId": timerController.slotId.value
+         
           }
         : {
             "offset": 0,
@@ -38,7 +38,7 @@ class SoldTicketListController extends GetxController {
             "search": search ?? "",
             "SEM": semNumber,
             "date": date,
-            "drawSlotId": timerController.slotId.value
+          
           };
 
     isSoldListLoading(true);

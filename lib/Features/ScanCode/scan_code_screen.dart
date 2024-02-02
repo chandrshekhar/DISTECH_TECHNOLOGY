@@ -1,5 +1,4 @@
 import 'package:distech_technology/Api/api_provider.dart';
-import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,10 +19,11 @@ class ScanBarCodeScreen extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Obx(
             () => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text.rich(
                   TextSpan(
@@ -64,9 +64,73 @@ class ScanBarCodeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           //   Text("Ticket--> ${scanbarcodeController.barcodeValue}"),
 
+          scanbarcodeController.dateFormat.toString().isNotEmpty
+              ? Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  InkWell(
+                    onTap: () {
+                      scanbarcodeController.scanBarcodeNormal();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
+                      height: AppSizes.buttonHeight + 4,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              AppSizes.cardCornerRadius / 2),
+                          border: Border.all(color: AppColors.bg)),
+                      child: Image.asset(
+                        AppIcons.barCode,
+                        // height: 40,
+                        // width: 40,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Text("OR"),
+                  ),
+                  Expanded(
+                      child: Obx(() => SizedBox(
+                            // padding:
+                            //     EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
+                            height: AppSizes.buttonHeight + 4,
+                            child: TextField(
+                              controller:
+                                  scanbarcodeController.barcodeController.value,
+                              decoration: const InputDecoration(
+                                  hintText: "Enter Ticket code"),
+                            ),
+                          ))),
+                  const SizedBox(width: 10),
+                  Obx(() => InkWell(
+                        onTap: () {
+                          if (scanbarcodeController
+                              .barcodeController.value.text.isNotEmpty) {
+                            scanbarcodeController.verifyTicketById();
+                          }
+                        },
+                        child: Container(
+                          padding:
+                              EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
+                          height: AppSizes.buttonHeight + 4,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  AppSizes.cardCornerRadius / 2),
+                              border: Border.all(color: AppColors.bg)),
+                          child: Icon(
+                            Icons.verified,
+                            color: scanbarcodeController
+                                    .barcodeController.value.text.isNotEmpty
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
+                        ),
+                      )),
+                ])
+              : const SizedBox.shrink(),
+          const SizedBox(height: 20),
           Expanded(
             child: Obx(
               () => scanbarcodeController.isTicketScanning.value == true
@@ -292,13 +356,13 @@ class ScanBarCodeScreen extends StatelessWidget {
             ),
           ),
           // const Spacer(),
-          Obx(() => scanbarcodeController.dateFormat.toString().isNotEmpty
-              ? FullButton(
-                  label: "Scan Barcode",
-                  onPressed: () {
-                    scanbarcodeController.scanBarcodeNormal();
-                  })
-              : const Text("Please select date first"))
+          // Obx(() => scanbarcodeController.dateFormat.toString().isNotEmpty
+          //     ? FullButton(
+          //         label: "Scan Barcode",
+          //         onPressed: () {
+
+          //         })
+          //     : const Text("Please select date first"))
         ],
       ),
     );

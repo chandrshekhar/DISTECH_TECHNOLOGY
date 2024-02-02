@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
@@ -33,61 +32,61 @@ class _AllPrizeScreenState extends State<AllPrizeScreen> {
     newClaimController.fromTicketScanValue.value = '';
     newClaimController.toTicketScanValue.value = '';
     newClaimController.getMyCnf();
-    getMyDashboardController.isPopupShowing.value == true
-    
-        ? null
-        : getAlerttDialog();
-    
+    // getMyDashboardController.isPopupShowing.value == true
+
+    //     ? null
+    //     : getAlerttDialog();
+
     super.initState();
   }
 
-  getAlerttDialog() async {
-    await Future.delayed(const Duration(microseconds: 100), () {
-      AwesomeDialog(
-              context: context,
-              dialogType: DialogType.info,
-              animType: AnimType.bottomSlide,
-              dismissOnTouchOutside: false,
-              body: Padding(
-                padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                child: Obx(() => timerController.slotList.isNotEmpty
-                    ? Column(
-                        children: List.generate(
-                          timerController.slotList.length,
-                          (index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: ListTile(
-                              selected: true,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(
-                                      color: AppColors.primary)),
-                              onTap: () {
-                                timerController.intialSlot.value =
-                                    timerController.slotList[index].name ?? "";
-                                timerController.slotId.value =
-                                    timerController.slotList[index].sId ?? "";
-                                timerController.getServerTime();
-                                Navigator.pop(context);
-                              },
-                              title: Text(
-                                timerController.slotList[index].name.toString(),
-                                style: const TextStyle(
-                                    color: AppColors.primary, fontSize: 25),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : const Center(
-                        child: CircularProgressIndicator.adaptive())),
-              ),
-              titleTextStyle: const TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
-          .show();
-      getMyDashboardController.isPopupShowing.value = true;
-    });
-  }
+  // getAlerttDialog() async {
+  //   await Future.delayed(const Duration(microseconds: 100), () {
+  //     AwesomeDialog(
+  //             context: context,
+  //             dialogType: DialogType.info,
+  //             animType: AnimType.bottomSlide,
+  //             dismissOnTouchOutside: false,
+  //             body: Padding(
+  //               padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+  //               child: Obx(() => timerController.slotList.isNotEmpty
+  //                   ? Column(
+  //                       children: List.generate(
+  //                         timerController.slotList.length,
+  //                         (index) => Padding(
+  //                           padding: const EdgeInsets.only(bottom: 20),
+  //                           child: ListTile(
+  //                             selected: true,
+  //                             shape: RoundedRectangleBorder(
+  //                                 borderRadius: BorderRadius.circular(20),
+  //                                 side: const BorderSide(
+  //                                     color: AppColors.primary)),
+  //                             onTap: () {
+  //                               timerController.intialSlot.value =
+  //                                   timerController.slotList[index].name ?? "";
+  //                               timerController.slotId.value =
+  //                                   timerController.slotList[index].sId ?? "";
+  //                               timerController.getServerTime();
+  //                               Navigator.pop(context);
+  //                             },
+  //                             title: Text(
+  //                               timerController.slotList[index].name.toString(),
+  //                               style: const TextStyle(
+  //                                   color: AppColors.primary, fontSize: 25),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     )
+  //                   : const Center(
+  //                       child: CircularProgressIndicator.adaptive())),
+  //             ),
+  //             titleTextStyle: const TextStyle(
+  //                 color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
+  //         .show();
+  //     getMyDashboardController.isPopupShowing.value = true;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +100,7 @@ class _AllPrizeScreenState extends State<AllPrizeScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.3),
-                    child: CircularProgressIndicator.adaptive(),
+                    child: const CircularProgressIndicator.adaptive(),
                   ),
                 )
               : Column(

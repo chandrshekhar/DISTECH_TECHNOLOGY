@@ -50,7 +50,7 @@ class SoldTicketController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            "drawSlotId": timerController.slotId.value
+            
           }
         : {
             "offset": 0,
@@ -58,7 +58,7 @@ class SoldTicketController extends GetxController {
             "search": search ?? "",
             "SEM": semNumber,
             "date": date,
-            "drawSlotId": timerController.slotId.value
+          
           };
     isAllTicketLoading(true);
     if (kDebugMode) {
@@ -106,7 +106,7 @@ class SoldTicketController extends GetxController {
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // String barcodeScanRes = "0VY5WAG8Y";
     var data = await apiProvider.verifyTicket(barcodeScanRes.toString().trim(),
-        formatedDate.value, timerController.slotId.toString());
+        formatedDate.value);
     log("data--> $data");
     if (data['valid'] == true && data['success']) {
       scanedTicket.add(data["ticket"]["ticketId"]);
@@ -165,8 +165,8 @@ class SoldTicketController extends GetxController {
         btnOkOnPress: () async {
           var res = await ApiProvider().soldTciket(
             scanedTicket,
-            formatedDate.value,
-            timerController.slotId.value,
+            formatedDate.value
+         
           );
 
           log("return Res--> $res");

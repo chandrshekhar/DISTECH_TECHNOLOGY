@@ -40,7 +40,6 @@ class PrizesController extends GetxController {
     var reqModel = {
       "date": formatedDate.value,
       "limit": 3,
-      "drawSlotId": timerController.slotId.value
     };
     log(reqModel.toString());
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
@@ -57,7 +56,6 @@ class PrizesController extends GetxController {
     getPrizeLoading(true);
     Map<String, dynamic> reqModel = {
       "date": formatedDate.value,
-      "drawSlotId": timerController.slotId.value
     };
     log(reqModel.toString());
     var res = await ApiProvider().getPrizeDetails(reqModel);

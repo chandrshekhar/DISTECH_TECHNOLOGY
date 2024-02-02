@@ -4,16 +4,22 @@ class ReturnedTicketModel {
   int? returnedCount;
   int? unsoldCount;
   int? remainingReturns;
+  int? pageCount;
   String? errorMsg;
+
   ReturnedTicketModel(
       {this.success,
       this.allReturnedTickets,
       this.returnedCount,
       this.unsoldCount,
-      this.remainingReturns, this.errorMsg});
+      this.remainingReturns,
+      this.pageCount,
+      this.errorMsg});
+
   ReturnedTicketModel.withError(String error) {
     errorMsg = error;
   }
+
   ReturnedTicketModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['allReturnedTickets'] != null) {
@@ -22,83 +28,90 @@ class ReturnedTicketModel {
         allReturnedTickets!.add(new AllReturnedTickets.fromJson(v));
       });
     }
-
     returnedCount = json['returnedCount'];
     unsoldCount = json['unsoldCount'];
     remainingReturns = json['remainingReturns'];
+    pageCount = json['pageCount'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.allReturnedTickets != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (allReturnedTickets != null) {
       data['allReturnedTickets'] =
-          this.allReturnedTickets!.map((v) => v.toJson()).toList();
+          allReturnedTickets!.map((v) => v.toJson()).toList();
     }
-    data['returnedCount'] = this.returnedCount;
-    data['unsoldCount'] = this.unsoldCount;
-    data['remainingReturns'] = this.remainingReturns;
+    data['returnedCount'] = returnedCount;
+    data['unsoldCount'] = unsoldCount;
+    data['remainingReturns'] = remainingReturns;
+    data['pageCount'] = pageCount;
     return data;
   }
 }
 
 class AllReturnedTickets {
   String? sId;
-  String? ticketId;
-  String? ticketLetter;
-  String? ticketNumber;
-  String? barCode;
-  String? qrCode;
-  int? sEM;
-  String? status;
-  String? date;
+  String? uid;
+  String? returnedBy;
+  String? owner;
+  String? fromLetter;
+  String? toLetter;
+  String? fromNumber;
+  String? toNumber;
+  int? count;
+  String? ticketDate;
   String? createdAt;
-  int? iV;
-  Null? currOwner;
+  String? status;
+  bool? isManual;
 
   AllReturnedTickets(
       {this.sId,
-      this.ticketId,
-      this.ticketLetter,
-      this.ticketNumber,
-      this.barCode,
-      this.qrCode,
-      this.sEM,
-      this.status,
-      this.date,
+      this.uid,
+      this.returnedBy,
+      this.owner,
+      this.fromLetter,
+      this.toLetter,
+      this.fromNumber,
+      this.toNumber,
+      this.count,
+      this.ticketDate,
       this.createdAt,
-      this.iV,
-      this.currOwner});
+      this.status,
+      this.isManual});
 
   AllReturnedTickets.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    ticketId = json['ticketId'];
-    ticketLetter = json['ticketLetter'];
-    ticketNumber = json['ticketNumber'];
-    barCode = json['barCode'];
-    qrCode = json['qrCode'];
-    sEM = json['SEM'];
-    status = json['status'];
-    date = json['date'];
+    uid = json['uid'];
+    returnedBy = json['returnedBy'];
+    owner = json['owner'];
+
+    fromLetter = json['fromLetter'];
+    toLetter = json['toLetter'];
+    fromNumber = json['fromNumber'];
+    toNumber = json['toNumber'];
+    count = json['count'];
+    ticketDate = json['ticketDate'];
     createdAt = json['createdAt'];
-    iV = json['__v'];
-    currOwner = json['currOwner'];
+    status = json['status'];
+    isManual = json['isManual'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['ticketId'] = this.ticketId;
-    data['ticketLetter'] = this.ticketLetter;
-    data['ticketNumber'] = this.ticketNumber;
-    data['barCode'] = this.barCode;
-    data['qrCode'] = this.qrCode;
-    data['SEM'] = this.sEM;
-    data['status'] = this.status;
-    data['date'] = this.date;
-    data['createdAt'] = this.createdAt;
-    data['__v'] = this.iV;
-    data['currOwner'] = this.currOwner;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['uid'] = uid;
+    data['returnedBy'] = returnedBy;
+    data['owner'] = owner;
+
+    data['fromLetter'] = fromLetter;
+    data['toLetter'] = toLetter;
+    data['fromNumber'] = fromNumber;
+    data['toNumber'] = toNumber;
+    data['count'] = count;
+    data['ticketDate'] = ticketDate;
+    data['createdAt'] = createdAt;
+    data['status'] = status;
+    data['isManual'] = isManual;
     return data;
   }
 }

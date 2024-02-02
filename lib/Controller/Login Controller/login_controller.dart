@@ -29,7 +29,7 @@ class LoginController extends GetxController {
     try {
       isLoading(true);
       final mData = await apiProvider.loginApiCall(reqModel);
-      print("mudate-- > ${mData.success}");
+      log("mudate-- > ${mData.success}");
       if (mData.success == true) {
         LocalStorageService()
             .saveToDisk(LocalStorageService.ACCESS_TOKEN_KEY, mData.jWT);

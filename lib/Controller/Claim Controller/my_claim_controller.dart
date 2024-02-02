@@ -28,7 +28,7 @@ class MyClaimController extends GetxController {
       "search": "",
       "status": "",
       "toDate": toDates.value,
-      "drawSlotId": timerController.slotId.value
+    
     };
     myClaimTicketModel.value = await apiProvider.getMyClaims(reqModel);
     claimsDataList.value = myClaimTicketModel.value.claimsData ?? [];

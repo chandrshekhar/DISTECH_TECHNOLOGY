@@ -370,7 +370,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     .selectedSoldTicket,
                                                 soldTicketController
                                                     .formatedDate.value,
-                                                timerController.slotId.value);
+                                               );
 
                                         Get.snackbar(
                                             "Successful", res['message'],

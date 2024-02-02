@@ -46,8 +46,12 @@ class _ResultScreenState extends State<ResultScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const Text(
+                            "Prize Winning Ticket",
+                            style: TextStyle(fontSize: 20),
+                          ),
                           InkWell(
                             onTap: () async {
                               await getMyDashboardController
@@ -71,9 +75,9 @@ class _ResultScreenState extends State<ResultScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          // const SizedBox(
+                          //   width: 10,
+                          // ),
                         ],
                       ),
                     ),
@@ -89,7 +93,9 @@ class _ResultScreenState extends State<ResultScreen> {
                           : getMyDashboardController
                                       .getPrizeModel.value.resultList ==
                                   null
-                              ? const SizedBox()
+                              ? const Center(
+                                  child: Text("No data found!"),
+                                )
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -135,7 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontWeight: FontWeight.w400),
                           )),
                     ),
-
                     userLoginController.isLoading == true
                         ? const Center(
                             child: CircularProgressIndicator.adaptive())
@@ -146,35 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 userLoginController.userLogin(context);
                               }
                             })
-                    // BlocConsumer<LoginBloc, LoginState>(
-                    //   listener: (context, state) {
-                    //     if (state is LoginSuccessState) {
-                    //       context.pushReplacement(HomeScreen(
-                    //           username: state.loginResponseModel.user!.fullName
-                    //               .toString()));
-                    //     }
-                    //     if (state is LoginErrorState) {
-                    //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //           behavior: SnackBarBehavior.floating,
-                    //           content: Text(state.errorMsg)));
-                    //     }
-                    //   },
-                    //   builder: (context, state) {
-                    //     if (state is LoginLoadingState) {
-                    //       return const Center(
-                    //           child: CircularProgressIndicator.adaptive());
-                    //     }
-                    //     return FullButton(
-                    //         label: 'Login',
-                    //         onPressed: () {
-                    //           if (_key.currentState!.validate()) {
-                    //             context.read<LoginBloc>().add(UserLoginEvent(
-                    //                 email: _usernameController.text.trim(),
-                    //                 password: _passwordController.text.trim()));
-                    //           }
-                    //         });
-                    //   },
-                    // ),
                   ],
                 ),
               ),

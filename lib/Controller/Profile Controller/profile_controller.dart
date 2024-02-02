@@ -18,19 +18,27 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isUserDataSave = false.obs;
 
+  RxList<bool> isExpansionList =
+      [false, false, false, false, false, false, false].obs;
+
 //get user data
 
 // drawar expantion
-  RxBool isTickets = false.obs;
-  RxBool isPrize = false.obs;
+  // RxBool isTickets = false.obs;
+  // RxBool isPrize = false.obs;
 
-  setExpansion1(bool v) {
-    isTickets.value = v;
-  }
+  // setExpansion(int index) {
+  //   for (int i = 0; i < isExpansionList.length; i++) {
+  //     if (i == index) {
+  //     } else {
+  //       isExpansionList[index] = false;
+  //     }
+  //   }
+  // }
 
-  setExpansion2(bool v) {
-    isPrize.value = v;
-  }
+  // setExpansion2(bool v) {
+  //   isPrize.value = v;
+  // }
 
   getUserDetails() async {
     try {

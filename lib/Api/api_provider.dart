@@ -333,9 +333,9 @@ class ApiProvider {
       return GetMyDashboardModel.withError(error.toString());
     }
   }
+
   /// get my prize details details ------- ///
-  Future<GetPrizeModel> getPrizeDetails(
-      Map<String, dynamic> reqModel) async {
+  Future<GetPrizeModel> getPrizeDetails(Map<String, dynamic> reqModel) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -367,7 +367,7 @@ class ApiProvider {
 
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<String> returnTicketIdList, String? date, String? slotId) async {
+      List<String> returnTicketIdList, String? date) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -378,8 +378,13 @@ class ApiProvider {
     };
 
     Map<String, dynamic> reqModel = (date == null || date.isEmpty)
-        ? {"tickets": returnTicketIdList, "drawSlotId": slotId}
-        : {"tickets": returnTicketIdList, "date": date, "drawSlotId": slotId};
+        ? {
+            "tickets": returnTicketIdList,
+          }
+        : {
+            "tickets": returnTicketIdList,
+            "date": date,
+          };
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -456,40 +461,8 @@ class ApiProvider {
 
   /// ------------ geting slot--------------///
 
-  Future<DrawSlotModel> getSlot() async {
-    Response response;
-    String? authToken;
-    String token = await localStorageService
-            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
-        "";
-
-    try {
-      _dio.options.headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "access-token": token
-      };
-      response = await _dio.get(
-        Urls.getSlot,
-      );
-      if (kDebugMode) {
-        log('--------Response time : $response');
-      }
-      if (response.statusCode == 200) {
-        return DrawSlotModel.fromJson(response.data);
-
-        // print(userServicesList);
-      } else {
-        return DrawSlotModel.witError("Something Went wrong");
-      }
-    } catch (error) {
-      return DrawSlotModel.witError(error.toString());
-    }
-  }
-
   ///------------- get server Time---------------///
-  Future<Map<String, dynamic>> getServerTime(
-      Map<String, dynamic> reqModel) async {
+  Future<Map<String, dynamic>> getServerTime() async {
     Response response;
     String? authToken;
     String token = await localStorageService
@@ -502,7 +475,7 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.post(Urls.serverTime, data: reqModel);
+      response = await _dio.get(Urls.serverTime);
       if (kDebugMode) {
         log('--------Response time : $response');
       }
@@ -587,12 +560,17 @@ class ApiProvider {
 
   /// check ticket avaliabilty
   Future<Map<String, dynamic>> verifyTicket(
-      String barCode, String date, String slotId) async {
+    String barCode,
+    String date,
+  ) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"id": barCode.trim(), 'date': date, "drawSlotId": slotId};
+    Map reqModel = {
+      "id": barCode.trim(),
+      'date': date,
+    };
 
     log("reqModel-- >$reqModel");
     try {
@@ -705,7 +683,7 @@ class ApiProvider {
 
   /// check ticket avaliabilty
   Future<ScanTicketModel> verifyTicketbyID(
-      {String? ticketId, String? date, String? slotId}) async {
+      {String? ticketId, String? date}) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -713,7 +691,6 @@ class ApiProvider {
     Map reqModel = {
       "ticketId": ticketId ?? "".trim(),
       'date': date,
-      "drawSlotId": slotId
     };
     print("req-> $reqModel");
     try {

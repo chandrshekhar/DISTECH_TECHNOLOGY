@@ -25,6 +25,8 @@ class ScanBarcodeController extends GetxController {
   final purchaseController = Get.put(PurchaseController());
   final timerController = Get.put(TimerController());
 
+  final barcodeController = TextEditingController().obs;
+
   //void selectDate() {}
   DateTime selectedDate = DateTime.now();
   Future<void> selectDate(BuildContext context) async {
@@ -41,9 +43,14 @@ class ScanBarcodeController extends GetxController {
       purchaseController.getAllPurchaesTicket(dateTime: formatedDate);
       invalidString.value = "";
       // scanbarcodeController.barcodeValue.value = "NA";
-      print("kk123");
-      scanBarcodeNormal();
+      barcodeController.value.clear();
     }
+  }
+
+  Future<void> verifyTicketById() async {
+    scanTickModel.value = await apiProvider.verifyTicketbyID(
+        ticketId: barcodeController.value.text.trim(), date: dateFormat.value);
+    barcodeController.value.clear();
   }
 
   Future<void> scanBarcodeNormal() async {
@@ -56,14 +63,12 @@ class ScanBarcodeController extends GetxController {
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       barcodeValue.value = barcodeScanRes;
       var data = await apiProvider.verifyTicket(
-          barcodeValue.value.toString().trim(),
-          dateFormat.value,
-          timerController.slotId.toString());
+          barcodeValue.value.toString().trim(), dateFormat.value);
       log("data--> $data");
       if (data['valid'] == true && data['success']) {
         ticketId.value = data["ticket"]["ticketId"];
         scanTickModel.value = await apiProvider.verifyTicketbyID(
-            ticketId: ticketId.value, date: dateFormat.value,slotId:timerController.slotId.value);
+            ticketId: ticketId.value, date: dateFormat.value);
       } else {
         invalidString.value = data['message'];
         scanTickModel.value = ScanTicketModel();

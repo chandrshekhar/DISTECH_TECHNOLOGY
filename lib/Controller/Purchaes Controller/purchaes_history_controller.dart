@@ -22,13 +22,13 @@ class PurchaseController extends GetxController {
         ? {
             "offset": 0,
             "limit": limit.value,
-            "drawSlotId": timerController.slotId.value
+        
           }
         : {
             "offset": 0,
             "limit": limit.value,
             "date": dateTime,
-            "drawSlotId": timerController.slotId.value
+         
           };
     isPurchaLoading(true);
     log(reqModel.toString());
@@ -52,12 +52,12 @@ class PurchaseController extends GetxController {
   }
 
   getAllPurchaesTicketDetails(
-      {String? search, int? semNumber, String? orderID, String? slotId}) async {
+      {String? search, int? semNumber, String? orderID}) async {
     Map<String, dynamic> reqModel = {
       "orderId": orderID,
       "offset": 0,
       "limit": purDetLimit.value,
-      "drawSlotId": timerController.slotId.value
+     
     };
 
     isPurchaseDetailsLoading(true);

@@ -27,9 +27,9 @@ class GetMyReturnController extends GetxController {
         ? {
             // "offset": 0,
             // "limit": 1000,
-            "drawSlotId": timerController.slotId.value
+        
           }
-        : {"date": dateTime, "drawSlotId": timerController.slotId.value};
+        : {"date": dateTime};
     isReturnTicketLoading(true);
     var res = await apiProvider.getMyReturn(reqModel);
     if (res.allReturnedTickets != null) {

@@ -13,16 +13,13 @@ class TimerController extends GetxController {
   List<String> timeParts = RxList<String>();
 
   RxBool gettingSlotLoding = false.obs;
-  RxString slotId = ''.obs;
+  // RxString slotId = ''.obs;
   RxString intialSlot = ''.obs;
-
-  Rx<DrawSlotModel> drawModel = DrawSlotModel().obs;
-  RxList<Data> slotList = <Data>[].obs;
   // RxList<String> slotList = <String>[].obs;
 
   @override
   void onInit() {
-    getSloat();
+    getServerTime();
     super.onInit();
   }
 
@@ -71,154 +68,25 @@ class TimerController extends GetxController {
   }
 
   getServerTime() async {
-    Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
-    var res = await apiProvider.getServerTime(reqModel);
+    // Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
+    var res = await apiProvider.getServerTime();
     if (res['success'] == true) {
       lastReturnTime.value = convertTo12HourFormat(
           res['lastReturnTime'].toString().substring(0, 5));
-      // lastReturnTime.value = res['lastReturnTime'].toString().substring(0, 5);
-      // print(lastReturnTime.value);
-      DateTime utcDateTime = DateTime.parse(res['currentTime']);
-
-      // // Convert to IST (UTC + 5:30)
-      currentTime.value =
-          utcDateTime.add(const Duration(hours: 5, minutes: 30));
-      // String formattedTime = DateFormat('HH:mm:ss').format(istDateTime);
-      // print("serverTimes--> $formattedTime");
-      // // drawTime.value = res['drawTime'].toString().substring(0, 5);
       drawTime.value =
           convertTo12HourFormat(res['drawTime'].toString().substring(0, 5));
       timeParts = res['lastReturnTime'].toString().substring(0, 5).split(':');
-      print("target Time--$timeParts");
+      // print("target Time--$timeParts");
       var targetTime = DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, int.parse(timeParts[0]), int.parse(timeParts[1]));
       timer?.cancel();
       startTimer(targetTime);
     }
   }
-
-  getSloat() async {
-    gettingSlotLoding(true);
-    var res = await apiProvider.getSlot();
-    if (res.success == true) {
-      drawModel.value = res;
-      slotList.value = res.data!;
-      slotId.value = drawModel.value.data?[0].sId ?? "";
-      getServerTime();
-
-      // for (int i = 0; i < drawModel.value.data!.length; i++) {
-      //   slotList.add(drawModel.value.data![i].name.toString());
-      // }
-      intialSlot.value = drawModel.value.data![0].name.toString();
-      gettingSlotLoding(false);
-    } else {
-      gettingSlotLoding(false);
-    }
-  }
 }
 
-class DrawSlotModel {
-  bool? success;
-  List<Data>? data;
-  String? error;
 
-  DrawSlotModel({this.success, this.data});
 
-  DrawSlotModel.witError(String errorMsg) {
-    error = errorMsg;
-  }
 
-  DrawSlotModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    if (json['data'] != null) {
-      data = <Data>[];
-      json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
-      });
-    }
-  }
-}
 
-class Data {
-  String? sId;
-  int? number;
-  String? name;
-  String? drawTime;
-  String? returnTime;
-  String? returnDeleteTime;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  List<Sems>? sems;
 
-  Data(
-      {this.sId,
-      this.number,
-      this.name,
-      this.drawTime,
-      this.returnTime,
-      this.returnDeleteTime,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.sems});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    number = json['number'];
-    name = json['name'];
-    drawTime = json['drawTime'];
-    returnTime = json['returnTime'];
-    returnDeleteTime = json['returnDeleteTime'];
-    status = json['status'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    if (json['sems'] != null) {
-      sems = <Sems>[];
-      json['sems'].forEach((v) {
-        sems!.add(Sems.fromJson(v));
-      });
-    }
-  }
-}
-
-class Sems {
-  String? name;
-  int? count;
-  String? fromLetter;
-  String? toLetter;
-  String? fromNumber;
-  String? toNumber;
-  String? sId;
-
-  Sems(
-      {this.name,
-      this.count,
-      this.fromLetter,
-      this.toLetter,
-      this.fromNumber,
-      this.toNumber,
-      this.sId});
-
-  Sems.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    count = json['count'];
-    fromLetter = json['fromLetter'];
-    toLetter = json['toLetter'];
-    fromNumber = json['fromNumber'];
-    toNumber = json['toNumber'];
-    sId = json['_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['count'] = count;
-    data['fromLetter'] = fromLetter;
-    data['toLetter'] = toLetter;
-    data['fromNumber'] = fromNumber;
-    data['toNumber'] = toNumber;
-    data['_id'] = sId;
-    return data;
-  }
-}

@@ -38,7 +38,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
     purchaseHistoryTicketController.purchaseHistoryDetailsList.clear();
     purchaseHistoryTicketController.purDetLimit.value = 40;
     purchaseHistoryTicketController.getAllPurchaesTicketDetails(
-        orderID: widget.orderID, slotId: timerController.slotId.value);
+        orderID: widget.orderID);
   }
 
   @override

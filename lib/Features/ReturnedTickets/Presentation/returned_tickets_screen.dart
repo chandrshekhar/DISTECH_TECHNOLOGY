@@ -1,8 +1,9 @@
-import 'package:distech_technology/Features/SoldTicket/Widgets/ticket_list_item.dart';
+import 'package:distech_technology/Features/ReturnedTickets/Widgets/return_ticket_card.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -175,9 +176,9 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: Text(
-                                'SL No',
+                                'From Ticket',
                                 textAlign: TextAlign.start,
                                 style: Theme.of(context)
                                     .textTheme
@@ -189,9 +190,22 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                               ),
                             ),
                             Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child: Text(
-                                  'Ticket No',
+                                  'To Ticket',
+                                  textAlign: TextAlign.start,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: AppColors.darkGrey
+                                              .withOpacity(0.8),
+                                          fontWeight: FontWeight.w500),
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  'Count',
                                   textAlign: TextAlign.start,
                                   style: Theme.of(context)
                                       .textTheme
@@ -251,9 +265,18 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                       itemBuilder: ((context, index) {
                                         var item = soldTicketListController
                                             .returnTicketsList[index];
-                                        return TicketListItem(
-                                            ticketId: item.ticketId ?? "",
-                                            itemIndex: index);
+
+                                        return ReturnedTicketListItem(
+                                          itemIndex: index + 1,
+                                          quantity: item.count ?? 0,
+                                          fromTicket:
+                                              "${item.fromLetter}${item.fromNumber}",
+                                          toTicket:
+                                              "${item.toLetter}${item.toNumber}",
+                                        );
+                                        // return TicketListItem(
+                                        //     ticketId: item.ticketId ?? "",
+                                        //     itemIndex: index);
                                       })),
                                 );
                               }

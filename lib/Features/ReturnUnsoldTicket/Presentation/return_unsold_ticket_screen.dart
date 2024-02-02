@@ -86,6 +86,10 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     super.dispose();
   }
 
+  // focus node for moving next field
+  final focus1 = FocusNode();
+  final focus2 = FocusNode();
+  final focus3 = FocusNode();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -282,8 +286,14 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   child: TextField(
                                     textCapitalization:
                                         TextCapitalization.characters,
-                                    onChanged: (v) =>
-                                        getMyreturnController.buttonEnabled(),
+                                    textInputAction: TextInputAction.next,
+                                    autofocus: true,
+                                    onChanged: (v) {
+                                      getMyreturnController.buttonEnabled();
+                                      if (v.toString().length == 2) {
+                                        FocusScope.of(context).nextFocus();
+                                      }
+                                    },
                                     readOnly: timerController.countdown.value ==
                                             "0:00:00" ||
                                         getMyreturnController
@@ -315,8 +325,13 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                   child: TextField(
                                     textCapitalization:
                                         TextCapitalization.characters,
-                                    onChanged: (v) =>
-                                        getMyreturnController.buttonEnabled(),
+                                    textInputAction: TextInputAction.next,
+                                    onChanged: (v) {
+                                      getMyreturnController.buttonEnabled();
+                                      if (v.toString().length == 2) {
+                                        FocusScope.of(context).nextFocus();
+                                      }
+                                    },
                                     readOnly: timerController.countdown.value ==
                                             "0:00:00" ||
                                         getMyreturnController
@@ -347,13 +362,19 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(2),
                                   child: TextField(
-                                    onChanged: (v) =>
-                                        getMyreturnController.buttonEnabled(),
+                                    onChanged: (v) {
+                                      getMyreturnController.buttonEnabled();
+                                      if (v.toString().length == 5) {
+                                        FocusScope.of(context).nextFocus();
+                                      }
+                                    },
                                     readOnly: timerController.countdown.value ==
                                             "0:00:00" ||
                                         getMyreturnController
                                                 .returnCount.value ==
                                             0,
+                                    focusNode: focus2,
+                                    textInputAction: TextInputAction.next,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(5),
                                     ],
@@ -379,8 +400,12 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: TextField(
-                                    onChanged: (v) =>
-                                        getMyreturnController.buttonEnabled(),
+                                    onChanged: (v) {
+                                      getMyreturnController.buttonEnabled();
+                                      if (v.toString().length == 5) {
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                    },
                                     readOnly: timerController.countdown.value ==
                                             "0:00:00" ||
                                         getMyreturnController

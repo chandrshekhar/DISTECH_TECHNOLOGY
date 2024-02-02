@@ -39,7 +39,7 @@ class _PurchaseDetailsListWidgetState extends State<PurchaseDetailsListWidget> {
         onLoading: () async {
           purchaseDetailsController.purDetLimit.value += 40;
           await purchaseDetailsController.getAllPurchaesTicketDetails(
-              orderID: widget.orderId, slotId: timerController.slotId.value);
+              orderID: widget.orderId);
           refreshController.loadComplete();
         },
         footer: const CustomFooterWidget(),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
-import 'package:distech_technology/Commons/app_images.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
@@ -25,7 +24,6 @@ import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/Profile Controller/profile_controller.dart';
@@ -86,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (widget.comeFrom.toString().contains("home")) {
     } else {
       await Future.delayed(const Duration(microseconds: 2000), () {
-        timerController.getSloat();
+        timerController.getServerTime();
+        ();
         userProfileController.getUserDetails();
       });
     }
@@ -208,38 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
           leadingIcon: EvaIcons.menu2Outline,
           leadingIconPressed: () => _key.currentState!.openDrawer(),
           actions: [
-            PopupMenuButton<Data>(
-              icon: SvgPicture.asset(
-                AppImages.calanderImage,
-                color: AppColors.white,
-                width: 25,
-                height: 25,
-              ),
-              position: PopupMenuPosition.under,
-              onSelected: (value) {
-                timerController.intialSlot.value = value.name.toString();
-                timerController.slotId.value = value.sId.toString();
-                timerController.getServerTime();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeScreen(
-                              comeFrom: "home",
-                            )),
-                    (route) => false);
-              },
-              itemBuilder: (BuildContext bc) {
-                return List.generate(
-                    timerController.drawModel.value.data!.length, (index) {
-                  return PopupMenuItem<Data>(
-                    value: timerController.drawModel.value.data![index],
-                    child: Text(timerController
-                        .drawModel.value.data![index].name
-                        .toString()),
-                  );
-                });
-              },
-            ),
             GestureDetector(
               onTap: () => context.push(const ProfileScreen()),
               child: Padding(
@@ -291,6 +258,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
+                      key: Key(
+                          userProfileController.isExpansionList[1].toString()),
                       children: [
                         CustomExpansionPanel(
                             isIconShowing: false,
@@ -298,17 +267,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(0);
+                              // userProfileController.setExpansion(0);
                             },
-                            initiallyExpanded: false,
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[0],
                             children: const []),
                         Obx(() => CustomExpansionPanel(
                                 title: "Inventory",
                                 onExpansionChanged: (v) {
-                                  userProfileController.setExpansion1(v);
-                                  userProfileController.setExpansion2(false);
+                                  // userProfileController.setExpansion(1);
                                 },
                                 initiallyExpanded:
-                                    userProfileController.isTickets.value,
+                                    userProfileController.isExpansionList[1],
                                 children: [
                                   DrawerItem(
                                       onTap: () {
@@ -349,11 +319,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Obx(() => CustomExpansionPanel(
                                 title: "Unsold",
                                 onExpansionChanged: (v) {
-                                  userProfileController.setExpansion2(v);
-                                  userProfileController.setExpansion1(false);
+                                  // userProfileController.setExpansion(2);
                                 },
                                 initiallyExpanded:
-                                    userProfileController.isPrize.value,
+                                    userProfileController.isExpansionList[2],
                                 children: [
                                   DrawerItem(
                                       onTap: () {
@@ -367,11 +336,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Obx(() => CustomExpansionPanel(
                                 title: "Verify",
                                 onExpansionChanged: (v) {
-                                  userProfileController.setExpansion2(v);
-                                  userProfileController.setExpansion1(false);
+                                  // userProfileController.setExpansion(3);
                                 },
                                 initiallyExpanded:
-                                    userProfileController.isPrize.value,
+                                    userProfileController.isExpansionList[3],
                                 children: [
                                   DrawerItem(
                                       onTap: () {
@@ -385,11 +353,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         Obx(() => CustomExpansionPanel(
                                 title: "Claim",
                                 onExpansionChanged: (v) {
-                                  userProfileController.setExpansion2(v);
-                                  userProfileController.setExpansion1(false);
+                                  // userProfileController.setExpansion(4);
                                 },
                                 initiallyExpanded:
-                                    userProfileController.isPrize.value,
+                                    userProfileController.isExpansionList[4],
                                 children: [
                                   DrawerItem(
                                       onTap: () {
@@ -415,8 +382,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(9);
+                              // userProfileController.setExpansion(5);
                             },
-                            initiallyExpanded: false,
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[5],
                             children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
@@ -424,8 +393,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(10);
+                              // userProfileController.setExpansion(6);
                             },
-                            initiallyExpanded: false,
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[6],
                             children: const []),
                       ],
                     ),
@@ -536,46 +507,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: AppColors.primaryDark,
                   ),
                 ),
-                Obx(() => RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text:
-                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.w500),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: timerController.intialSlot.isNotEmpty
-                              ? '< ${timerController.intialSlot} >'
-                              : '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ))),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Text(
-                //       'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n "djghadsfjkhasjkdf',
-                //       textAlign: TextAlign.center,
+                // Obx(() => RichText(
+                //     textAlign: TextAlign.center,
+                //     text: TextSpan(
+                //       text:
+                //           'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
                 //       style: Theme.of(context)
                 //           .textTheme
                 //           .headlineSmall!
                 //           .copyWith(
                 //               color: AppColors.white,
                 //               fontWeight: FontWeight.w500),
-                //     )
-                //   ],
-                // ),
+                //       children: <TextSpan>[
+                //         TextSpan(
+                //           text: timerController.intialSlot.isNotEmpty
+                //               ? '< ${timerController.intialSlot} >'
+                //               : '',
+                //           style: Theme.of(context)
+                //               .textTheme
+                //               .headlineSmall!
+                //               .copyWith(
+                //                   color: Colors.red,
+                //                   fontWeight: FontWeight.w500),
+                //         ),
+                //       ],
+                //     ))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() => Text(
+                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w500),
+                        ))
+                  ],
+                ),
                 Positioned(
                   bottom: 10,
                   left: AppSizes.kDefaultPadding,
