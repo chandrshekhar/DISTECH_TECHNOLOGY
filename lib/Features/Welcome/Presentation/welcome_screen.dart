@@ -4,6 +4,7 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 
@@ -50,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                       height: AppSizes.kDefaultPadding,
                     ),
                     Text(
-                      'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs',
+                      'Welcome to Singham Lotteries, where dreams have a chance to become reality.',
                       // textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: AppColors.white, fontWeight: FontWeight.w300),
