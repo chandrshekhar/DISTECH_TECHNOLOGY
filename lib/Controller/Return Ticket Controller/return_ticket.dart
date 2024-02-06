@@ -1,4 +1,5 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,10 +13,14 @@ class GetMyReturnController extends GetxController {
   RxBool isReturnTicketLoading = false.obs;
   RxBool isTicketValidating = false.obs;
   ApiProvider apiProvider = ApiProvider();
+  var checkBoxForAuthor = {}.obs;
+  RxBool isAllReturnedTicketSelected = false.obs;
   RxList<FailedSeriesList> validateTicketsList = <FailedSeriesList>[].obs;
+  RxList<String> selectedReturnedTicket = <String>[].obs;
 
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();
+  final profileController = Get.put(ProfileController());
 
   var searchController = TextEditingController().obs;
   var fromLetterController = TextEditingController().obs;
@@ -27,7 +32,6 @@ class GetMyReturnController extends GetxController {
         ? {
             // "offset": 0,
             // "limit": 1000,
-        
           }
         : {"date": dateTime};
     isReturnTicketLoading(true);
@@ -146,7 +150,41 @@ class GetMyReturnController extends GetxController {
   //       toTicketScaing(false);
   //     }
   //   }
-  // }
+  // },
+
+  // delete returned ticket
+
+  void deleteReturnedTicket() async {
+    if (selectedReturnedTicket.isNotEmpty) {
+      var res = await apiProvider.deleteMyReturn(reqModel: {
+        "returnIds": selectedReturnedTicket,
+        "userId": profileController.userProfileModel.value.user?.sId ?? ""
+      });
+      if (res['success']) {
+        Get.snackbar("Success", "${res['count']} Return Deleted Successfully",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        getAllReturnTicket();
+        isAllReturnedTicketSelected(false);
+        selectedReturnedTicket.clear();
+      } else {
+        Get.snackbar("Error!", res['error']['message'],
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } else {
+      Get.snackbar("Error!", "No ticket for delete",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
+  void checkedBoxClicked(String sId, bool val) {
+    checkBoxForAuthor[sId] = val;
+    if (val == true) {
+      selectedReturnedTicket.add(sId.toString());
+    } else {
+      selectedReturnedTicket.remove(sId);
+    }
+    update(); // This will trigger UI update
+  }
 
   validateReturnTicket(String userId, String date) async {
     isTicketValidating(true);
@@ -172,7 +210,6 @@ class GetMyReturnController extends GetxController {
       isTicketValidating(false);
     } else {
       FailedSeriesList reqModel = FailedSeriesList(
-        
           date: date,
           userId: userId,
           fromLetter: fromLetterController.value.text.toString().trim(),

@@ -1,5 +1,6 @@
 class Urls {
-  static const String _baseUrl = "http://13.127.33.196:4001/api/v1"; // localApi
+  static const String _baseUrl =
+      "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
   // static const String _baseUrl = "https://api.singhamlottery.in/api/v1";  // production
 
   // static const String _baseUrl =
@@ -24,6 +25,7 @@ class Urls {
   static const String verifyTicketById = "$_baseUrl/tickets/search-ticket";
   static const String contactUs = "$_baseUrl/users/contact-us";
   static const String getMyreturn = "$_baseUrl/orders/get-my-returns";
+  static const String deleteMyReturn = "$_baseUrl/orders/delete-returns";
   static const String getAllPurchaseDetails =
       "$_baseUrl/orders/get-order-tickets";
   static const String validateReturnTicket =

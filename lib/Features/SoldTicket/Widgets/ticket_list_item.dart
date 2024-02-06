@@ -1,29 +1,27 @@
 import 'package:distech_technology/Features/Dashboard/model/all_tickets_model.dart';
-import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
-
 import 'package:flutter/material.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 
 class TicketListItem extends StatelessWidget {
   final String ticketId;
   final int itemIndex;
+  final checkBox;
   const TicketListItem(
-      {Key? key, required this.ticketId, required this.itemIndex})
+      {Key? key, required this.ticketId, required this.itemIndex, required this.checkBox})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-           EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
+      padding: EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding:
-             EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Text(
                 "${itemIndex + 1}",
                 textAlign: TextAlign.start,
@@ -31,18 +29,12 @@ class TicketListItem extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text(
                   ticketId,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
-            // Expanded(
-            //     flex: 1,
-            //     child: Text(
-            //       ticketItemModel.sem.toString(),
-            //       textAlign: TextAlign.end,
-            //       style: Theme.of(context).textTheme.bodyMedium,
-            //     )),
+            Expanded(flex: 1, child: checkBox),
           ],
         ),
       ),
@@ -70,8 +62,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
     return Container(
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding:
-             EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
           children: [
             Expanded(

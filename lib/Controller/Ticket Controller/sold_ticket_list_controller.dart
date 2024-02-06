@@ -1,6 +1,8 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SoldTicketListController extends GetxController {
@@ -12,6 +14,7 @@ class SoldTicketListController extends GetxController {
   RxInt soldTicketCont = 0.obs;
   RxInt limit = 10.obs;
   final timerController = Get.put(TimerController());
+  final  searchController = TextEditingController().obs;
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -30,7 +33,6 @@ class SoldTicketListController extends GetxController {
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-         
           }
         : {
             "offset": 0,
@@ -38,7 +40,6 @@ class SoldTicketListController extends GetxController {
             "search": search ?? "",
             "SEM": semNumber,
             "date": date,
-          
           };
 
     isSoldListLoading(true);
@@ -54,6 +55,25 @@ class SoldTicketListController extends GetxController {
       isSoldListLoading(false);
     }
     isSoldListLoading(false);
+  }
+
+  RxString formatedDate = ''.obs;
+  DateTime selectedDate = DateTime.now();
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(3000, 8),
+    );
+    if (picked != null && picked != selectedDate) {
+      selectedDate = picked;
+      formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      getSoldTicketList(
+        date: formatedDate.value,
+        semNumber: semNumber.value,
+      );
+    }
   }
 
   @override

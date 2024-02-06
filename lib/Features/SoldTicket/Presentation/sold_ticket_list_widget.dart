@@ -51,7 +51,16 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
             itemBuilder: ((context, index) {
               var item = soldTicketListController.soldTicketList[index];
               return TicketListItem(
-                  ticketId: item.ticketId ?? "", itemIndex: index);
+                  checkBox: SizedBox(
+                    height: 10,
+                    width: 10,
+                    child: Checkbox(
+                      value: false,
+                      onChanged: (v) {},
+                    ),
+                  ),
+                  ticketId: item.ticketId ?? "",
+                  itemIndex: index);
             })),
       ),
     );

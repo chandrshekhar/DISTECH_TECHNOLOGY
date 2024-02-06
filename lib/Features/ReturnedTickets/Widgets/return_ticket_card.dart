@@ -6,6 +6,7 @@ class ReturnedTicketListItem extends StatelessWidget {
   final String fromTicket;
   final String toTicket;
   final int quantity;
+  final Widget checkBox;
 
   final int itemIndex;
   const ReturnedTicketListItem(
@@ -13,13 +14,14 @@ class ReturnedTicketListItem extends StatelessWidget {
       required this.fromTicket,
       required this.toTicket,
       required this.quantity,
-      required this.itemIndex})
+      required this.itemIndex,
+      required this.checkBox})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
-      color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
+      color: (itemIndex % 2 != 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
         child: Row(
@@ -33,19 +35,20 @@ class ReturnedTicketListItem extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 2,
                 child: Text(
                   toTicket,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text(
                   quantity.toString(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
+            Expanded(flex: 1, child: checkBox),
           ],
         ),
       ),

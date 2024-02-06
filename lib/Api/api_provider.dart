@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
-import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
 import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
@@ -41,18 +40,11 @@ class ApiProvider {
       if (kDebugMode) {
         log('--------Response Login : $response');
       }
-      return response.statusCode == 200
+      return response.statusCode == 200 && response.data['success']
           ? LoginResponseModel.fromJson(response.data)
-          : throw Exception('Something Went Wrong');
-    } catch (error, stacktrace) {
-      if (kDebugMode) {
-        log('$error');
-      }
-      if (kDebugMode) {
-        log("Exception occurred: $error stackTrace: $stacktrace");
-      }
-      return LoginResponseModel.withError(
-          "You are offline. Please check your internet connection.");
+          : throw "${response.data['error']['message']}";
+    } catch (error) {
+      return LoginResponseModel.withError(error.toString());
     }
   }
 
@@ -770,6 +762,28 @@ class ApiProvider {
         log("Exception occurred: $error stackTrace: $stacktrace");
       }
       return ReturnedTicketModel.withError("Someting went wrong");
+    }
+  }
+
+  /// delete my return
+  Future<Map<String, dynamic>> deleteMyReturn(
+      {Map<String, dynamic>? reqModel}) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    log("selectedReturnReq-- > $reqModel");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.deleteMyReturn, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error) {
+      return {"Status": false, "message": error};
     }
   }
 

@@ -19,7 +19,7 @@ class ReturnedTicketScreen extends StatefulWidget {
 }
 
 class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
-  final soldTicketListController = Get.put(GetMyReturnController());
+  final getMyReturnController = Get.put(GetMyReturnController());
 
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
@@ -36,7 +36,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
       setState(() {
         selectedDate = picked;
         formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-        soldTicketListController.getAllReturnTicket(
+        getMyReturnController.getAllReturnTicket(
           dateTime: formatedDate,
         );
       });
@@ -47,7 +47,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    soldTicketListController.getAllReturnTicket(
+    getMyReturnController.getAllReturnTicket(
       dateTime: formatedDate,
     );
     // soldTicketListController.searchText.value = '';
@@ -71,7 +71,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
-                    'All Returned Tickets (${soldTicketListController.returnTicketsList.length})',
+                    'All Returned Tickets (${getMyReturnController.returnTicketsList.length})',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!
@@ -112,29 +112,6 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                   SizedBox(
                     width: AppSizes.kDefaultPadding,
                   ),
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: GestureDetector(
-                  //     onTap: () {},
-                  //     child: Container(
-                  //       padding: const EdgeInsets.all(
-                  //           AppSizes.kDefaultPadding / 1.5),
-                  //       height: AppSizes.buttonHeight + 4,
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(
-                  //               AppSizes.cardCornerRadius / 2),
-                  //           border: Border.all(color: AppColors.bg)),
-                  //       child: Image.asset(
-                  //         AppIcons.filterIcon,
-                  //         width: 25,
-                  //         height: 25,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
                   Expanded(
                     flex: 1,
                     child: InkWell(
@@ -155,7 +132,30 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    width: AppSizes.kDefaultPadding,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        getMyReturnController.deleteReturnedTicket();
+                      },
+                      child: Container(
+                          padding:
+                              EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
+                          height: AppSizes.buttonHeight + 4,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  AppSizes.cardCornerRadius / 2),
+                              border: Border.all(color: AppColors.bg)),
+                          child: const Icon(
+                            Icons.delete,
+                            color: AppColors.secondary,
+                          )),
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(
@@ -190,7 +190,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                               ),
                             ),
                             Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: Text(
                                   'To Ticket',
                                   textAlign: TextAlign.start,
@@ -203,10 +203,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                           fontWeight: FontWeight.w500),
                                 )),
                             Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: Text(
                                   'Count',
-                                  textAlign: TextAlign.start,
+                                  textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -215,6 +215,43 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                               .withOpacity(0.8),
                                           fontWeight: FontWeight.w500),
                                 )),
+
+                            Expanded(
+                              flex: 1,
+                              child: Transform.scale(
+                                scale: 1,
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                  height: 10,
+                                  width: 20,
+                                  child: Obx(() => Checkbox(
+                                      value: getMyReturnController
+                                          .isAllReturnedTicketSelected.value,
+                                      onChanged: (value) {
+                                        getMyReturnController
+                                            .isAllReturnedTicketSelected
+                                            .value = value!;
+                                        if (value == true) {
+                                          for (var element
+                                              in getMyReturnController
+                                                  .returnTicketsList) {
+                                            getMyReturnController
+                                                .checkedBoxClicked(
+                                                    element.sId!, true);
+                                          }
+                                        } else {
+                                          for (var element
+                                              in getMyReturnController
+                                                  .returnTicketsList) {
+                                            getMyReturnController
+                                                .checkedBoxClicked(
+                                                    element.sId!, false);
+                                          }
+                                        }
+                                      })),
+                                ),
+                              ),
+                            ),
                             // Expanded(
                             //     flex: 2,
                             //     child: Text(
@@ -241,13 +278,13 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                             width: MediaQuery.of(context).size.width,
                             // height: MediaQuery.of(context).size.height * 0.45,
                             child: Obx(() {
-                              if (soldTicketListController
+                              if (getMyReturnController
                                       .isReturnTicketLoading.value ==
                                   true) {
                                 return const Center(
                                   child: CircularProgressIndicator.adaptive(),
                                 );
-                              } else if (soldTicketListController
+                              } else if (getMyReturnController
                                   .returnTicketsList.isEmpty) {
                                 return const Center(
                                     child: Text("No ticket found"));
@@ -260,10 +297,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                   child: ListView.builder(
                                       padding: EdgeInsets.zero,
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: soldTicketListController
+                                      itemCount: getMyReturnController
                                           .returnTicketsList.length,
                                       itemBuilder: ((context, index) {
-                                        var item = soldTicketListController
+                                        var item = getMyReturnController
                                             .returnTicketsList[index];
 
                                         return ReturnedTicketListItem(
@@ -273,6 +310,26 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                               "${item.fromLetter}${item.fromNumber}",
                                           toTicket:
                                               "${item.toLetter}${item.toNumber}",
+                                          checkBox: Transform.scale(
+                                            scale: 1,
+                                            alignment: Alignment.center,
+                                            child: Obx(() => SizedBox(
+                                                  height: 15,
+                                                  child: Checkbox(
+                                                      value: getMyReturnController
+                                                                  .checkBoxForAuthor[
+                                                              item.sId] ??
+                                                          false,
+                                                      // value: false,
+                                                      onChanged: (bool? value) {
+                                                        getMyReturnController
+                                                            .checkedBoxClicked(
+                                                                item.sId
+                                                                    .toString(),
+                                                                value!);
+                                                      }),
+                                                )),
+                                          ),
                                         );
                                         // return TicketListItem(
                                         //     ticketId: item.ticketId ?? "",
