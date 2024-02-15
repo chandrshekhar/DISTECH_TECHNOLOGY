@@ -163,26 +163,26 @@ class SoldTicketController extends GetxController {
         btnOkText: "Sold",
         btnCancelColor: Colors.red,
         btnOkOnPress: () async {
-          var res = await ApiProvider().soldTciket(
-            scanedTicket,
-            formatedDate.value
+          // var res = await ApiProvider().soldTciket(
+          //   scanedTicket,
+          //   formatedDate.value
          
-          );
+          // );
 
-          log("return Res--> $res");
-          if (res['success'] = true) {
-            Get.snackbar("Successful", "${scanedTicket.first} Ticket Sold",
-                backgroundColor: Colors.green,
-                colorText: Colors.white,
-                isDismissible: true,
-                snackPosition: SnackPosition.BOTTOM);
-          } else {
-            Get.snackbar("Error!", res['message'],
-                backgroundColor: Colors.red,
-                colorText: Colors.white,
-                isDismissible: true,
-                snackPosition: SnackPosition.BOTTOM);
-          }
+          // log("return Res--> $res");
+          // if (res['success'] = true) {
+          //   Get.snackbar("Successful", "${scanedTicket.first} Ticket Sold",
+          //       backgroundColor: Colors.green,
+          //       colorText: Colors.white,
+          //       isDismissible: true,
+          //       snackPosition: SnackPosition.BOTTOM);
+          // } else {
+          //   Get.snackbar("Error!", res['message'],
+          //       backgroundColor: Colors.red,
+          //       colorText: Colors.white,
+          //       isDismissible: true,
+          //       snackPosition: SnackPosition.BOTTOM);
+          // }
         },
       ).show();
 

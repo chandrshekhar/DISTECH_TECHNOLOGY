@@ -3,6 +3,7 @@ import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
@@ -136,7 +137,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // getMyReturnController.deleteReturnedTicket();
+                      soldTicketListController.revertSoldTicket();
                     },
                     child: Container(
                         padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
@@ -166,13 +167,15 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppSizes.kDefaultPadding / 2,
+                            vertical: AppSizes.kDefaultPadding),
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
-                                'SL No',
+                                'S.N',
                                 textAlign: TextAlign.start,
                                 style: Theme.of(context)
                                     .textTheme
@@ -184,9 +187,9 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                               ),
                             ),
                             Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child: Text(
-                                  'Ticket No',
+                                  'From Ticket - To Ticket',
                                   textAlign: TextAlign.start,
                                   style: Theme.of(context)
                                       .textTheme
@@ -197,13 +200,39 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                           fontWeight: FontWeight.w500),
                                 )),
                             Expanded(
+                              flex: 1,
+                              child: Text(
+                                'Count',
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color:
+                                            AppColors.darkGrey.withOpacity(0.8),
+                                        fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            Expanded(
                                 flex: 1,
                                 child: SizedBox(
                                   height: 10,
-                                  child: Checkbox(
-                                    value: false,
-                                    onChanged: (value) {},
-                                  ),
+                                  child: Obx(() => Checkbox(
+                                        value: soldTicketListController
+                                            .isAllSoldTicketSelected.value,
+                                        onChanged: (value) {
+                                          soldTicketListController
+                                              .isAllSoldTicketSelected
+                                              .value = value!;
+                                          for (var element
+                                              in soldTicketListController
+                                                  .soldTicketList) {
+                                            soldTicketListController
+                                                .checkedBoxClicked(
+                                                    element.sId!, value);
+                                          }
+                                        },
+                                      )),
                                 )),
                           ],
                         ),

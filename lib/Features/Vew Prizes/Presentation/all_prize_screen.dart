@@ -639,6 +639,8 @@ class _AllPrizeScreenState extends State<AllPrizeScreen> {
     );
   }
 
+
+
   Widget customTicketCard(ClaimModel claimModel) {
     return Container(
       decoration: BoxDecoration(

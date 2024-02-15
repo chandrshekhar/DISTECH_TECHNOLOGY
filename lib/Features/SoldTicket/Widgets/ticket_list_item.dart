@@ -7,9 +7,14 @@ import '../../../Commons/app_sizes.dart';
 class TicketListItem extends StatelessWidget {
   final String ticketId;
   final int itemIndex;
+  final int count;
   final checkBox;
   const TicketListItem(
-      {Key? key, required this.ticketId, required this.itemIndex, required this.checkBox})
+      {Key? key,
+      required this.ticketId,
+      required this.itemIndex,
+      required this.checkBox,
+      required this.count})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -17,11 +22,11 @@ class TicketListItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: AppSizes.kDefaultPadding / 1.5),
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding / 2),
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Text(
                 "${itemIndex + 1}",
                 textAlign: TextAlign.start,
@@ -29,9 +34,15 @@ class TicketListItem extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Text(
                   ticketId,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  count.toString(),
                   style: Theme.of(context).textTheme.bodyMedium,
                 )),
             Expanded(flex: 1, child: checkBox),

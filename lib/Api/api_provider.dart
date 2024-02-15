@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
+import '../Features/Sale Tickets/Models/return_ticket_model.dart';
 import '../Features/ScanCode/Model/scan_ticket_model.dart';
 import '../Features/SoldTicket/Models/sold_ticket_model.dart';
 
@@ -359,33 +360,31 @@ class ApiProvider {
 
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<String> returnTicketIdList, String? date) async {
+      List<SuccessReturnTicketModel> reqModelData) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
     Map<String, dynamic> resData = {
       "success": false,
-      "message": "No Tickets Found"
+      "message": "No Tickets Found",
+      "successList": [],
+      "failedList": []
     };
 
-    Map<String, dynamic> reqModel = (date == null || date.isEmpty)
-        ? {
-            "tickets": returnTicketIdList,
-          }
-        : {
-            "tickets": returnTicketIdList,
-            "date": date,
-          };
+    Map<String, dynamic> reqModel = {"supplyList": reqModelData};
+
+    log("req-sale--> ${jsonEncode(reqModel)}");
+
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.post(Urls.markAsSold, data: reqModel);
+      response = await _dio.post(Urls.markAsSold, data: jsonEncode(reqModel));
       if (kDebugMode) {
-        log('--------Response Login : $response');
+        log('--------Response Login : ${response.statusCode.toString()}');
       }
 
       if (response.statusCode == 200) {
@@ -784,6 +783,56 @@ class ApiProvider {
           : throw Exception('Something Went Wrong');
     } catch (error) {
       return {"Status": false, "message": error};
+    }
+  }
+
+  /// revert my sale
+  Future<Map<String, dynamic>> revertMySales(
+      {Map<String, dynamic>? reqModel}) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    log("selectedReturnReq-- > ${reqModel.toString()}");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.revertMySale, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error) {
+      return {"Status": false, "message": error};
+    }
+  }
+
+  Future<Map<String, dynamic>> validateSaleTicket(
+      Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("req-> $reqModel");
+    try {
+      _dio.options.headers = {"access-token": token};
+      response = await _dio.post(Urls.validateSaleTicket, data: reqModel);
+
+      if (kDebugMode) {
+        log('--------Response valid : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {"success": false, "error": error};
     }
   }
 

@@ -71,7 +71,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
-                    'All Returned Tickets (${getMyReturnController.returnTicketsList.length})',
+                    'All Returned Tickets (${getMyReturnController.returnCount.value})',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!

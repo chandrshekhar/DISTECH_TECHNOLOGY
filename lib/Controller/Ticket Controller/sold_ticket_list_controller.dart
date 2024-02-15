@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Models/sold_ticket_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
@@ -14,9 +17,51 @@ class SoldTicketListController extends GetxController {
   RxInt soldTicketCont = 0.obs;
   RxInt limit = 10.obs;
   final timerController = Get.put(TimerController());
-  final  searchController = TextEditingController().obs;
+  final searchController = TextEditingController().obs;
+  RxList<String> selectedSoldTicket = <String>[].obs;
+  var checkBoxForSoldTicket = {}.obs;
+  RxBool isAllSoldTicketSelected = false.obs;
+
+  final profileController = Get.put(ProfileController());
   searchTextSave(String value) {
     searchText.value = value;
+  }
+
+  void checkedBoxClicked(String sId, bool val) {
+    checkBoxForSoldTicket[sId] = val;
+
+    if (val == true) {
+      selectedSoldTicket.add(sId.toString());
+    } else {
+      selectedSoldTicket.remove(sId);
+    }
+    update(); // This will trigger UI update
+  }
+
+  // revert sold ticket
+  // delete returned ticket
+
+  void revertSoldTicket() async {
+    if (selectedSoldTicket.isNotEmpty) {
+      var res = await apiProvider.revertMySales(reqModel: {
+        "tickets": selectedSoldTicket,
+        "date": formatedDate.value
+      });
+      log("return sale -- >$res");
+      if (res['success']) {
+        Get.snackbar("Success", " Return Deleted Successfully",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        getSoldTicketList();
+        isAllSoldTicketSelected(false);
+        selectedSoldTicket.clear();
+      } else {
+        Get.snackbar("Error!", res['message'],
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } else {
+      Get.snackbar("Error!", "No ticket for revert",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 
   filterSemClear(int value) {

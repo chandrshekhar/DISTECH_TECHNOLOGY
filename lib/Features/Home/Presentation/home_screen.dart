@@ -29,6 +29,7 @@ import 'package:get/get.dart';
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
+import '../../Sale Tickets/Presentation/sale_tickets_screen.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
 
@@ -60,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const MyClaimScreen(), // 8
     const SupportScreen(), // 9
     const ResultScreen(), //10
+    SaleTicketsScreen() // 11
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -145,6 +147,10 @@ class _HomeScreenState extends State<HomeScreen> {
         case 10:
           setState(() {
             selectedIndex = 10;
+          });
+        case 11:
+          setState(() {
+            selectedIndex = 11;
           });
       }
     });
@@ -332,6 +338,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Return Tickets"),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(11);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Sale Tickets"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
                                 title: "Verify",

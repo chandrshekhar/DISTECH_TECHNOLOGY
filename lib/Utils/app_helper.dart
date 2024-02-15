@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
 
 class AppHelper {
@@ -16,6 +17,12 @@ class AppHelper {
   static String formatDate(DateTime date) {
     final formatter = DateFormat('dd/MM/yyyy');
     return formatter.format(date);
+  }
+ scanBarCode() async {
+    String? barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+    return barcodeScanRes;
   }
 }
 
@@ -86,4 +93,6 @@ extension CustomNavigator on BuildContext {
   void pop(Widget page, [result]) async {
     return Navigator.of(this).pop(result);
   }
+
+ 
 }

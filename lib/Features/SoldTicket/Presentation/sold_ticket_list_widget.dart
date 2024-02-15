@@ -54,12 +54,19 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
                   checkBox: SizedBox(
                     height: 10,
                     width: 10,
-                    child: Checkbox(
-                      value: false,
-                      onChanged: (v) {},
-                    ),
+                    child: Obx(() => Checkbox(
+                          value: soldTicketListController
+                                  .checkBoxForSoldTicket[item.sId] ??
+                              false,
+                          onChanged: (v) {
+                            soldTicketListController.checkedBoxClicked(
+                                item.sId!, v!);
+                          },
+                        )),
                   ),
-                  ticketId: item.ticketId ?? "",
+                  count: item.count ?? 0,
+                  ticketId:
+                      "${item.fromLetter}${item.fromNumber} - ${item.toLetter}${item.toNumber}",
                   itemIndex: index);
             })),
       ),

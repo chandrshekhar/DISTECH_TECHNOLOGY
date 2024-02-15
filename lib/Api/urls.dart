@@ -18,7 +18,8 @@ class Urls {
   static const String getUserDetails = "$_baseUrl/users/get-user";
   static const String editProfile = "$_baseUrl/users/edit-account";
   static const String returnTicket = "$_baseUrl/orders/return-tickets";
-  static const String markAsSold = "$_baseUrl/orders/mark-sold";
+  // static const String markAsSold = "$_baseUrl/orders/mark-sold";
+  static const String markAsSold = "$_baseUrl/orders/retailer-create-sale";
   static const String soldTicketList = "$_baseUrl/orders/get-my-sales";
   static const String purchaseHistory = "$_baseUrl/orders/get-my-purchases";
   static const String verifyTickets = "$_baseUrl/verify-ticket";
@@ -26,10 +27,15 @@ class Urls {
   static const String contactUs = "$_baseUrl/users/contact-us";
   static const String getMyreturn = "$_baseUrl/orders/get-my-returns";
   static const String deleteMyReturn = "$_baseUrl/orders/delete-returns";
+  static const String revertMySale = "$_baseUrl/orders/revert-sales";
   static const String getAllPurchaseDetails =
       "$_baseUrl/orders/get-order-tickets";
   static const String validateReturnTicket =
       "$_baseUrl/orders/check-return-series";
+
+  /// validate sale ticket
+  static const String validateSaleTicket =
+      "$_baseUrl/orders/retailer-check-sale-list";
   // get dashboard details
   static const String getMyDashboard = "$_baseUrl/users/get-my-dashboard";
   static const String getPrize = "$_baseUrl/lottery/get-result";
