@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,20 +25,26 @@ class SaleTicketsController extends GetxController {
   RxList<SuccessReturnTicketModel> successReturnTicketList =
       <SuccessReturnTicketModel>[].obs;
 
+  RxBool ticketScannig = false.obs;
+  RxString fromTicketBarcode = ''.obs;
+  RxString toTicketbarcode = ''.obs;
+  RxString fromTickets = ''.obs;
+  RxString toTickets = ''.obs;
+
   ApiProvider apiProvider = ApiProvider();
-
-  // RxMap reqModel = {
-  //   "fromDate": "",
-  //   "toDate": "",
-  //   "fromLetter": "",
-  //   "toLetter": "",
-  //   "fromNumber": "",
-  //   "toNumber": "",
-  //   "stockistRole": "retailer"
-  // }.obs;
-
   void isScanningTicketsMethod(bool val) {
     isScanningTicket.value = val;
+    fromTickets.value = "";
+    toTickets.value = "";
+  }
+
+  void moveNextFieldChar() {
+    toLetterController.value.text = fromLetterController.value.text[0];
+  }
+
+  void moveNumberNext() {
+    toNumberController.value.text =
+        fromNumberController.value.text.toString().substring(0, 3);
   }
 
   void buttonEnabled() {
@@ -52,16 +59,21 @@ class SaleTicketsController extends GetxController {
   }
 
   // check validation
-  validateSalesTickets() async {
+  validateSalesTickets({
+    required int fromNumber,
+    required int toNumber,
+    required String fromLetter1,
+    required String fromLetter2,
+    required String toLetter1,
+    required String toLetter2,
+  }) async {
     isTicketValidating(true);
-    int fromNumber = int.parse(fromNumberController.value.text);
-    int toNumber = int.parse(toNumberController.value.text);
-    String fromLetter1 = fromLetterController.value.text[0];
-    String fromLetter2 = fromLetterController.value.text[1];
-    String toLetter1 = toLetterController.value.text[0];
-    String toLetter2 = toLetterController.value.text[1];
+
     int fromLetter = fromLetter1.codeUnitAt(0) + fromLetter2.codeUnitAt(0);
     int toLetter = toLetter1.codeUnitAt(0) + toLetter2.codeUnitAt(0);
+
+    print("from Numbe--> $fromNumber");
+    print("to Numbe--> $fromNumber");
 
     if (fromNumber < 00000 || toNumber > 99999 || fromNumber > 99999) {
       Get.snackbar("Error", "Invalid Number", backgroundColor: Colors.red);
@@ -78,10 +90,10 @@ class SaleTicketsController extends GetxController {
       Map<String, dynamic> reqModel = {
         "fromDate": fromDateController.value.text,
         "toDate": toDateController.value.text,
-        "fromLetter": fromLetterController.value.text.toString().trim(),
-        "toLetter": toLetterController.value.text.toString().trim(),
-        "fromNumber": fromNumberController.value.text.toString().trim(),
-        "toNumber": toNumberController.value.text.toString().trim(),
+        "fromLetter": fromLetter1 + fromLetter2,
+        "toLetter": toLetter1 + toLetter2,
+        "fromNumber": fromNumber.toString(),
+        "toNumber": toNumber.toString(),
         "stockistRole": "retailer"
       };
 
@@ -93,6 +105,8 @@ class SaleTicketsController extends GetxController {
           Get.snackbar("Ticket", res['successList'][0]['message'],
               backgroundColor: Colors.green);
           // res['successList'];
+          fromTickets.value = "";
+          toTickets.value = "";
           successReturnTicketList.addAll((res['successList'] as List)
               .map((val) => SuccessReturnTicketModel.fromJson(val))
               .toList());
@@ -134,5 +148,35 @@ class SaleTicketsController extends GetxController {
     toLetterController.value.clear();
     fromNumberController.value.clear();
     toNumberController.value.clear();
+  }
+
+  // verify scaned ticket
+  void scanBarCode(bool fromTicket) async {
+    String? barcodeScanRes = await AppHelper().scanBarCode();
+    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+
+    if (fromTicket) {
+      ticketScannig(true);
+      fromTicketBarcode.value = barcodeScanRes ?? "";
+      var res = await apiProvider.verifyTicket(
+          barcodeScanRes!, fromDateController.value.text);
+      if (res['success']) {
+        fromTickets.value = res['ticket']['ticketId'];
+      } else {
+        Get.snackbar("Error", "Invalid Ticket", backgroundColor: Colors.red);
+      }
+      log("From ticket res--->$res ");
+    } else {
+      ticketScannig(true);
+      toTicketbarcode.value = barcodeScanRes ?? "";
+      var res = await apiProvider.verifyTicket(
+          barcodeScanRes ?? "", toDateController.value.text);
+      if (res['success']) {
+        toTickets.value = res['ticket']['ticketId'];
+      } else {
+        Get.snackbar("Error", "Invalid Ticket", backgroundColor: Colors.red);
+      }
+      log("to ticket res--->$res ");
+    }
   }
 }

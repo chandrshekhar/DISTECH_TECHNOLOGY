@@ -4,7 +4,6 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
-import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
@@ -93,9 +92,11 @@ class SaleTicketsScreen extends StatelessWidget {
                         child: const Text("Scan Ticket"))))
               ],
             ),
-            const SizedBox(height: 5),
             Obx(() => saleTicketController.isScanningTicket.value
-                ? scanCode()
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: scanCode(context),
+                  )
                 : manulField(context)),
             const SizedBox(height: 5),
             Obx(() => FullButton(
@@ -153,20 +154,90 @@ class SaleTicketsScreen extends StatelessWidget {
     );
   }
 
-  Widget scanCode() {
-    return ScannerCardWidget(
-      onTap: () {
-        var data = AppHelper().scanBarCode();
-      },
-      title: "From Tickets",
-      subTitle: "jhasdfjha",
+  Widget scanCode(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() => Expanded(
+                  child: ScannerCardWidget(
+                    onTap: () async {
+                      saleTicketController.scanBarCode(true);
+                    },
+                    title: "From Tickets",
+                    subTitle: saleTicketController.fromTickets.value,
+                  ),
+                )),
+            const SizedBox(width: 10),
+            Obx(() => Expanded(
+                  child: ScannerCardWidget(
+                    onTap: () {
+                      saleTicketController.scanBarCode(false);
+                    },
+                    title: "To Tickets",
+                    subTitle: saleTicketController.toTickets.value,
+                  ),
+                )),
+            const SizedBox(width: 5),
+            Obx(
+              () => InkWell(
+                onTap: saleTicketController.fromTickets.value.isNotEmpty &&
+                        saleTicketController.toTickets.value.isNotEmpty
+                    ? () {
+                        saleTicketController.validateSalesTickets(
+                          fromNumber: int.parse(saleTicketController
+                              .fromTickets.value
+                              .substring(2, 7)),
+                          toNumber: int.parse(saleTicketController
+                              .toTickets.value
+                              .substring(2, 7)),
+                          fromLetter1:
+                              saleTicketController.fromTickets.value[0],
+                          fromLetter2:
+                              saleTicketController.fromTickets.value[1],
+                          toLetter1: saleTicketController.toTickets.value[0],
+                          toLetter2: saleTicketController.toTickets.value[1],
+                        );
+                      }
+                    : null,
+                child: Container(
+                    margin: const EdgeInsets.only(right: 2),
+                    width: AppSizes.buttonHeight,
+                    height: MediaQuery.of(context).size.height * 0.055,
+                    decoration: BoxDecoration(
+                        color: saleTicketController
+                                    .fromTickets.value.isNotEmpty &&
+                                saleTicketController.toTickets.value.isNotEmpty
+                            ? AppColors.primary
+                            : AppColors.lightGrey,
+                        borderRadius: BorderRadius.circular(
+                            AppSizes.cardCornerRadius / 2),
+                        border: Border.all(color: AppColors.bg)),
+                    child: saleTicketController.isTicketValidating == true
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: Colors.white,
+                          )),
+              ),
+            )
+          ],
+        ),
+        manulField(context)
+      ],
     );
   }
 
   Widget manulField(BuildContext context) {
     return Container(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.46,
+        maxHeight: saleTicketController.isScanningTicket.value
+            ? MediaQuery.of(context).size.height * 0.40
+            : MediaQuery.of(context).size.height * 0.47,
       ),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -181,7 +252,7 @@ class SaleTicketsScreen extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Text(
                     'F.L.',
                     textAlign: TextAlign.start,
@@ -191,7 +262,7 @@ class SaleTicketsScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Text(
                       'T. L.',
                       textAlign: TextAlign.start,
@@ -229,129 +300,143 @@ class SaleTicketsScreen extends StatelessWidget {
               ],
             ),
           ),
+
           //  const CustomDivider(),
           Obx(
-            () => Row(children: [
-              Expanded(
-                  flex: 1,
-                  child: inputField(
-                    readOnly: false,
-                    context: context,
-                    controller: saleTicketController.fromLetterController.value,
-                    onChanged: (v) {
-                      saleTicketController.buttonEnabled();
-                      if (v.toString().length == 2) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(2),
-                      UpperCaseTextFormatter(),
-                    ],
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.characters,
-                  )),
-              Expanded(
-                  flex: 1,
-                  child: inputField(
-                    controller: saleTicketController.toLetterController.value,
-                    readOnly: false,
-                    context: context,
-                    onChanged: (v) {
-                      saleTicketController.buttonEnabled();
-                      if (v.toString().length == 2) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(2),
-                      UpperCaseTextFormatter(),
-                    ],
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.characters,
-                  )),
-              Obx(() => Expanded(
-                  flex: 2,
-                  child: inputField(
-                    controller: saleTicketController.fromNumberController.value,
-                    focusNode: focus2,
-                    readOnly: false,
-                    context: context,
-                    onChanged: (v) {
-                      saleTicketController.buttonEnabled();
-                      saleTicketController.buttonEnabled();
-                      if (v.toString().length == 5) {
-                        // saleTicketController.fromNumberController.value.text =
-                        //     v.toString().padLeft(5, '0');
-                        // String originalText = saleTicketController
-                        //     .fromNumberController.value.text;
+            () => saleTicketController.isScanningTicket.value
+                ? const SizedBox.shrink()
+                : Row(children: [
+                    Expanded(
+                        flex: 2,
+                        child: inputField(
+                          readOnly: false,
+                          context: context,
+                          controller:
+                              saleTicketController.fromLetterController.value,
+                          onChanged: (v) {
+                            saleTicketController.buttonEnabled();
+                            if (v.toString().length == 2) {
+                              saleTicketController.moveNextFieldChar();
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            UpperCaseTextFormatter(),
+                          ],
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.characters,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: inputField(
+                          controller:
+                              saleTicketController.toLetterController.value,
+                          readOnly: false,
+                          context: context,
+                          onChanged: (v) {
+                            saleTicketController.buttonEnabled();
+                            if (v.toString().length == 2) {
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            UpperCaseTextFormatter(),
+                          ],
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.characters,
+                        )),
+                    Obx(() => Expanded(
+                        flex: 2,
+                        child: inputField(
+                          controller:
+                              saleTicketController.fromNumberController.value,
+                          focusNode: focus2,
+                          readOnly: false,
+                          context: context,
+                          onChanged: (v) {
+                            saleTicketController.buttonEnabled();
 
-                        // // Pad the text to have at least 5 characters, adding '0' on the left if necessary
-                        // String paddedText = originalText.padLeft(5, '0');
-
-                        // // Update the controller's text with the padded text
-                        // saleTicketController.fromNumberController.value.text =
-                        //     paddedText;
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(5),
-                    ],
-                    keyboardType: TextInputType.number,
-                    textCapitalization: TextCapitalization.characters,
-                  ))),
-              Expanded(
-                  flex: 2,
-                  child: inputField(
-                    controller: saleTicketController.toNumberController.value,
-                    readOnly: false,
-                    context: context,
-                    focusNode: focus3,
-                    onChanged: (v) {
-                      saleTicketController.buttonEnabled();
-                      saleTicketController.buttonEnabled();
-                      if (v.toString().length == 5) {
-                        FocusScope.of(context).nextFocus();
-                      }
-                    },
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(5),
-                    ],
-                    keyboardType: TextInputType.number,
-                    textCapitalization: TextCapitalization.characters,
-                  )),
-              Obx(
-                () => InkWell(
-                  onTap: saleTicketController.addButtonEnable.value
-                      ? () {
-                          saleTicketController.validateSalesTickets();
-                          saleTicketController.buttonEnabled();
-                        }
-                      : null,
-                  child: Container(
-                      margin: const EdgeInsets.only(right: 2),
-                      width: AppSizes.buttonHeight,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      decoration: BoxDecoration(
-                          color: saleTicketController.addButtonEnable.value
-                              ? AppColors.primary
-                              : AppColors.lightGrey,
-                          borderRadius: BorderRadius.circular(
-                              AppSizes.cardCornerRadius / 2),
-                          border: Border.all(color: AppColors.bg)),
-                      child: saleTicketController.isTicketValidating == true
-                          ? const Center(
-                              child: CircularProgressIndicator.adaptive(),
-                            )
-                          : const Icon(
-                              Icons.add,
-                              size: 20,
-                              color: Colors.white,
-                            )),
-                ),
-              )
-            ]),
+                            if (v.toString().length == 5) {
+                              saleTicketController.moveNumberNext();
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(5),
+                          ],
+                          keyboardType: TextInputType.number,
+                          textCapitalization: TextCapitalization.characters,
+                        ))),
+                    Obx(
+                      () => Expanded(
+                          flex: 2,
+                          child: inputField(
+                            controller:
+                                saleTicketController.toNumberController.value,
+                            readOnly: false,
+                            context: context,
+                            focusNode: focus3,
+                            onChanged: (v) {
+                              saleTicketController.buttonEnabled();
+                              if (v.toString().length == 5) {
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                            ],
+                            keyboardType: TextInputType.number,
+                            textCapitalization: TextCapitalization.characters,
+                          )),
+                    ),
+                    Obx(
+                      () => InkWell(
+                        onTap: saleTicketController.addButtonEnable.value
+                            ? () {
+                                saleTicketController.validateSalesTickets(
+                                    fromNumber: int.parse(saleTicketController
+                                        .fromNumberController.value.text),
+                                    toNumber: int.parse(saleTicketController
+                                        .toNumberController.value.text),
+                                    fromLetter1: saleTicketController
+                                        .fromLetterController.value.text[0],
+                                    fromLetter2: saleTicketController
+                                        .fromLetterController.value.text[1],
+                                    toLetter1: saleTicketController
+                                        .toLetterController.value.text[0],
+                                    toLetter2:
+                                        saleTicketController.toLetterController.value.text[1]);
+                                saleTicketController.fromTickets.value = "";
+                                saleTicketController.toTickets.value = "";
+                              }
+                            : null,
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 2),
+                            width: 40,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            decoration: BoxDecoration(
+                                color:
+                                    saleTicketController.addButtonEnable.value
+                                        ? AppColors.primary
+                                        : AppColors.lightGrey,
+                                borderRadius: BorderRadius.circular(
+                                    AppSizes.cardCornerRadius / 2),
+                                border: Border.all(color: AppColors.bg)),
+                            child: saleTicketController.isTicketValidating ==
+                                    true
+                                ? const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  )
+                                : const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.white,
+                                  )),
+                      ),
+                    )
+                  ]),
           ),
           const SizedBox(height: 5),
           const CustomDivider(),
@@ -364,80 +449,79 @@ class SaleTicketsScreen extends StatelessWidget {
             } else if (saleTicketController.isTicketValidating.value == true) {
               return const Center(child: CircularProgressIndicator.adaptive());
             } else {
-              return Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount:
-                        saleTicketController.successReturnTicketList.length,
-                    itemBuilder: (context, index) {
-                      var data =
-                          saleTicketController.successReturnTicketList[index];
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: AppSizes.kDefaultPadding / 1.5),
-                        color: (index % 2 == 0)
-                            ? AppColors.white
-                            : AppColors.primaryBg,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: AppSizes.kDefaultPadding),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  data.fromLetter.toString(),
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(color: Colors.blue),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  data.toLetter.toString(),
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(color: Colors.blue),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data.fromNumber.toString(),
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(color: Colors.blue),
-                                ),
-                              ),
-                              Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    data.toNumber.toString(),
-                                    style: const TextStyle(color: Colors.blue),
-                                  )),
-                              InkWell(
-                                onTap: () {
-                                  saleTicketController
-                                      .removeValidateReturnTicket(index);
-                                },
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius: 10,
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              );
+              return addedListWidget();
             }
           })
         ],
       ),
+    );
+  }
+
+  Widget addedListWidget() {
+    return Expanded(
+      child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: saleTicketController.successReturnTicketList.length,
+          itemBuilder: (context, index) {
+            var data = saleTicketController.successReturnTicketList[index];
+            return Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: AppSizes.kDefaultPadding / 1.5),
+              color: (index % 2 == 0) ? AppColors.white : AppColors.primaryBg,
+              child: Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        data.fromLetter.toString(),
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        data.toLetter.toString(),
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        data.fromNumber.toString(),
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                    Expanded(
+                        flex: 2,
+                        child: Text(
+                          data.toNumber.toString(),
+                          style: const TextStyle(color: Colors.blue),
+                        )),
+                    InkWell(
+                      onTap: () {
+                        saleTicketController.removeValidateReturnTicket(index);
+                      },
+                      child: const CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 10,
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 
@@ -453,7 +537,9 @@ class SaleTicketsScreen extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context!).size.height * 0.05,
       margin: const EdgeInsets.all(2),
+      alignment: Alignment.center,
       child: TextField(
+        scrollPadding: EdgeInsets.zero,
         onChanged: onChanged,
         readOnly: readOnly,
         focusNode: focusNode,
@@ -461,6 +547,7 @@ class SaleTicketsScreen extends StatelessWidget {
         controller: controller,
         textCapitalization: textCapitalization!,
         keyboardType: keyboardType,
+        style: const TextStyle(fontSize: 15),
         decoration: const InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1, color: Colors.blueGrey),

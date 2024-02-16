@@ -44,24 +44,27 @@ class SoldTicketListController extends GetxController {
   void revertSoldTicket() async {
     if (selectedSoldTicket.isNotEmpty) {
       var res = await apiProvider.revertMySales(reqModel: {
-        "tickets": selectedSoldTicket,
-        "date": formatedDate.value
+        "selectedIds": selectedSoldTicket,
+        // "date": formatedDate.value
       });
       log("return sale -- >$res");
       if (res['success']) {
-        Get.snackbar("Success", " Return Deleted Successfully",
+        Get.snackbar("Success", "Tickets Reverted Successfully",
             backgroundColor: Colors.green, colorText: Colors.white);
-        getSoldTicketList();
         isAllSoldTicketSelected(false);
         selectedSoldTicket.clear();
       } else {
+        isSoldListLoading(false);
         Get.snackbar("Error!", res['message'],
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } else {
+      isSoldListLoading(false);
       Get.snackbar("Error!", "No ticket for revert",
           backgroundColor: Colors.red, colorText: Colors.white);
+      // getSoldTicketList(date: formatedDate.value);
     }
+    getSoldTicketList(date: formatedDate.value);
   }
 
   filterSemClear(int value) {

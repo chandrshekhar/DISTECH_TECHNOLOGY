@@ -22,6 +22,12 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
       RefreshController(initialRefresh: true);
 
   @override
+  void initState() {
+    soldTicketListController.getSoldTicketList(date: widget.date);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RawScrollbar(
       thumbColor: AppColors.primary,

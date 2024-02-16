@@ -1,5 +1,6 @@
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_list_widget.dart';
+import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -137,7 +138,12 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      soldTicketListController.revertSoldTicket();
+                      if (soldTicketListController
+                          .selectedSoldTicket.isNotEmpty) {
+                        soldTicketListController.revertSoldTicket();
+                      } else {
+                        ToastMessage().printError();
+                      }
                     },
                     child: Container(
                         padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),

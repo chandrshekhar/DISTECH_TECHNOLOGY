@@ -323,6 +323,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                       label: "Purchase History"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
+                                title: "Sale",
+                                onExpansionChanged: (v) {
+                                  // userProfileController.setExpansion(2);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isExpansionList[2],
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(11);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Sale Tickets"),
+                                ])),
+                        Obx(() => CustomExpansionPanel(
                                 title: "Unsold",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(2);
@@ -338,14 +355,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Return Tickets"),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(11);
-                                      },
-                                      icon: AppIcons.filterIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Sale Tickets"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
                                 title: "Verify",

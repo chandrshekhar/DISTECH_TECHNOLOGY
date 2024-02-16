@@ -70,26 +70,26 @@ class _DashboardListWidgetState extends State<DashboardListWidget> {
               isSelectedIndex: widget.isSelected,
               ticketItemModel: soldTicketController.allTicketList[index],
               itemIndex: index,
-              child: Transform.scale(
-                scale: 1.3,
-                alignment: Alignment.center,
-                child: Checkbox(
-                  value: soldTicketController.checkBoxForAuthor[e.sId],
-                  onChanged: (value) {
-                    if (widget.dashBoard == false) {
-                      if (countLimit(value!)) {
-                        soldTicketController.checkedBoxClicked(
-                            e.sId.toString(), value);
-                        setState(() {});
-                      }
-                    } else {
-                      soldTicketController.checkedBoxClicked(
-                          e.sId.toString(), value!);
-                      setState(() {});
-                    }
-                  },
-                ),
-              ),
+              // child: Transform.scale(
+              //   scale: 1.3,
+              //   alignment: Alignment.center,
+              //   child: Checkbox(
+              //     value: soldTicketController.checkBoxForAuthor[e.sId],
+              //     onChanged: (value) {
+              //       if (widget.dashBoard == false) {
+              //         if (countLimit(value!)) {
+              //           soldTicketController.checkedBoxClicked(
+              //               e.sId.toString(), value);
+              //           setState(() {});
+              //         }
+              //       } else {
+              //         soldTicketController.checkedBoxClicked(
+              //             e.sId.toString(), value!);
+              //         setState(() {});
+              //       }
+              //     },
+              //   ),
+              // ),
             );
           },
         ));

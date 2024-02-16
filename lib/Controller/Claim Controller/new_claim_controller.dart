@@ -11,6 +11,7 @@ import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
 import 'package:distech_technology/Utils/Toast/app_toast.dart';
+import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -33,15 +34,14 @@ class NewClaimController extends GetxController {
   RxString barCode1 = "".obs;
   RxString barCode2 = "".obs;
   void scanBarCode(bool fromTicket, BuildContext context) async {
-    String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    String? barcodeScanRes = await AppHelper().scanBarCode();
     print("bar code eresnsuydg ${barcodeScanRes.toString()}");
 
     if (fromTicket) {
       fromTicketScaning(true);
-      barCode1.value = barcodeScanRes;
+      barCode1.value = barcodeScanRes??"";
       claimFromTicketModel.value =
-          await apiProvider.verifyFromTicket(barcodeScanRes, dateFormat.value);
+          await apiProvider.verifyFromTicket(barcodeScanRes??"", dateFormat.value);
       if (claimFromTicketModel.value.success == false) {
         // ignore: use_build_context_synchronously
         AwesomeDialog(
@@ -68,9 +68,9 @@ class NewClaimController extends GetxController {
       }
     } else {
       toTicketScaing(true);
-      barCode2.value = barcodeScanRes;
+      barCode2.value = barcodeScanRes??"";
       claimToTicketModel.value =
-          await apiProvider.verifyToTicket(barcodeScanRes, dateFormat.value);
+          await apiProvider.verifyToTicket(barcodeScanRes??"", dateFormat.value);
 
       if (claimToTicketModel.value.success == false) {
         toTicketScaing(false);

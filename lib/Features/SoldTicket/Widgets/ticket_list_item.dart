@@ -58,12 +58,10 @@ class TicketListItemWithCheckbox extends StatelessWidget {
   final int itemIndex;
   bool isSelectedIndex;
   Tickets ticketItemModel;
-  Widget child;
 
   TicketListItemWithCheckbox(
       {Key? key,
       required this.ticketItemModel,
-      required this.child,
       required this.itemIndex,
       this.isSelectedIndex = false})
       : super(key: key);
@@ -73,7 +71,9 @@ class TicketListItemWithCheckbox extends StatelessWidget {
     return Container(
       color: (itemIndex % 2 == 0) ? AppColors.white : AppColors.primaryBg,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
+        padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.kDefaultPadding,
+            vertical: AppSizes.kDefaultPadding / 2),
         child: Row(
           children: [
             Expanded(
@@ -100,9 +100,8 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             //     )),
             Expanded(
                 flex: 1,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: child,
+                child: Text(
+                  ticketItemModel.barCode.toString(),
                 )),
           ],
         ),

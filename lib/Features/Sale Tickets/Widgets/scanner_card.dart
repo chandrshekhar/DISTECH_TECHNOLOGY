@@ -18,27 +18,27 @@ class ScannerCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AppSizes.cardCornerRadius),
+      padding: EdgeInsets.all(AppSizes.cardCornerRadius / 2),
       margin: const EdgeInsets.only(bottom: 7),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSizes.cardCornerRadius / 2),
           border: Border.all(color: AppColors.bg)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text.rich(
             TextSpan(
               children: [
                 TextSpan(
-                    text: '$title ',
+                    text: '$title  \n',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                     )),
                 TextSpan(
                   text: subTitle.isNotEmpty ? "($subTitle)" : '',
                   style: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 16),
+                      fontWeight: FontWeight.w300, fontSize: 14),
                 ),
               ],
             ),
@@ -47,8 +47,8 @@ class ScannerCardWidget extends StatelessWidget {
             onTap: onTap,
             child: Image.asset(
               icon ?? "assets/icons/barcode-scanner.png",
-              width: 25,
-              height: 25,
+              width: 20,
+              height: 20,
             ),
           ),
         ],

@@ -168,7 +168,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               const SizedBox(height: 10),
-
               Row(
                 children: [
                   Expanded(
@@ -199,20 +198,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Obx(() => Text(
-                        '${soldTicketController.selectedSoldTicket.length.toString()} item Selected',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500),
-                      )),
-                ],
-              ),
+              // const SizedBox(
+              //   height: 15,
+              // ),
+              // Row(
+              //   children: [
+              //     const Spacer(),
+              //     Obx(() => Text(
+              //           '${soldTicketController.selectedSoldTicket.length.toString()} item Selected',
+              //           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              //               color: AppColors.primary,
+              //               fontWeight: FontWeight.w500),
+              //         )),
+              //   ],
+              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -221,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Container(
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.37,
+                      maxHeight: MediaQuery.of(context).size.height * 0.5,
                     ),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -236,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppSizes.kDefaultPadding,
-                                vertical: 5),
+                                vertical: AppSizes.kDefaultPadding / 2),
                             child: Row(
                               children: [
                                 Expanded(
@@ -267,37 +266,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               fontWeight: FontWeight.w500),
                                     )),
                                 Expanded(
-                                  flex: 1,
-                                  child: Transform.scale(
-                                    scale: 1.3,
-                                    child: Obx(() => Checkbox(
-                                          value: soldTicketController
-                                              .isAllSelect.value,
-                                          onChanged: (value) {
-                                            soldTicketController
-                                                .isAllSelect.value = value!;
-                                            if (value == true) {
-                                              for (var element
-                                                  in soldTicketController
-                                                      .allTicketList) {
-                                                soldTicketController
-                                                    .checkedBoxClicked(
-                                                        element.sId!, true);
-                                              }
-                                            } else {
-                                              for (var element
-                                                  in soldTicketController
-                                                      .allTicketList) {
-                                                soldTicketController
-                                                    .checkedBoxClicked(
-                                                        element.sId!, false);
-                                              }
-                                            }
-                                            setState(() {});
-                                          },
-                                        )),
-                                  ),
-                                ),
+                                    flex: 1,
+                                    child: Text(
+                                      'Bar Code',
+                                      textAlign: TextAlign.start,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: AppColors.darkGrey
+                                                  .withOpacity(0.8),
+                                              fontWeight: FontWeight.w500),
+                                    )),
+
+                                // Expanded(
+                                //   flex: 1,
+                                //   child: Transform.scale(
+                                //     scale: 1.3,
+                                //     child: Obx(() => Checkbox(
+                                //           value: soldTicketController
+                                //               .isAllSelect.value,
+                                //           onChanged: (value) {
+                                //             soldTicketController
+                                //                 .isAllSelect.value = value!;
+                                //             if (value == true) {
+                                //               for (var element
+                                //                   in soldTicketController
+                                //                       .allTicketList) {
+                                //                 soldTicketController
+                                //                     .checkedBoxClicked(
+                                //                         element.sId!, true);
+                                //               }
+                                //             } else {
+                                //               for (var element
+                                //                   in soldTicketController
+                                //                       .allTicketList) {
+                                //                 soldTicketController
+                                //                     .checkedBoxClicked(
+                                //                         element.sId!, false);
+                                //               }
+                                //             }
+                                //             setState(() {});
+                                //           },
+                                //         )),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -306,7 +319,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             alignment: Alignment.center,
                             constraints: BoxConstraints(
                               maxHeight:
-                                  MediaQuery.of(context).size.height * 0.27,
+                                  MediaQuery.of(context).size.height * 0.45,
                             ),
                             width: MediaQuery.of(context).size.width,
                             child: Obx(() => soldTicketController
