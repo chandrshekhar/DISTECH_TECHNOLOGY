@@ -267,6 +267,9 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   ),
                 ),
               )
+           
+           
+           
             ],
           ),
         ),

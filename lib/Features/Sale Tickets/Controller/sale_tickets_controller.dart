@@ -92,8 +92,8 @@ class SaleTicketsController extends GetxController {
         "toDate": toDateController.value.text,
         "fromLetter": fromLetter1 + fromLetter2,
         "toLetter": toLetter1 + toLetter2,
-        "fromNumber": fromNumber.toString(),
-        "toNumber": toNumber.toString(),
+        "fromNumber": fromNumber.toString().padLeft(5, '0'),
+        "toNumber": toNumber.toString().padLeft(5, '0'),
         "stockistRole": "retailer"
       };
 

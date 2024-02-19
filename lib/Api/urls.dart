@@ -1,8 +1,8 @@
 class Urls {
-  // static const String _baseUrl =
-  //     "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
   static const String _baseUrl =
-      "https://api.singhamlottery.in/api/v1"; // production
+      "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
+  // static const String _baseUrl =
+  //     "https://api.singhamlottery.in/api/v1"; // production
 
   // static const String _baseUrl =
   //     "https://devapi.singhamlottery.in/api/v1"; //dev api

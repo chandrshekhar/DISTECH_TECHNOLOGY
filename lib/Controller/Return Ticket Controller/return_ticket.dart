@@ -38,7 +38,7 @@ class GetMyReturnController extends GetxController {
     var res = await apiProvider.getMyReturn(reqModel);
     if (res.allReturnedTickets != null) {
       isReturnTicketLoading(false);
-      returnCount.value = res.remainingReturns!;
+      returnCount.value = res.returnedCount!;
       returnTicketsList.value = res.allReturnedTickets!;
     } else {
       returnTicketsList.value = [];

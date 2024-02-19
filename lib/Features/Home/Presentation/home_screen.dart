@@ -5,6 +5,7 @@ import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
+import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_main.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
 import 'package:distech_technology/Features/Home/Widgets/drawer_item.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //all screens which will be visible on home screens
   final List<Widget> screens = [
-    const AllPrizeScreen(), //0
+    const DashboardMainScreen(), //0
     const DashboardScreen(), //1
     const ReturnUnsoldTicket(), //2
     ScanBarCodeScreen(), //3

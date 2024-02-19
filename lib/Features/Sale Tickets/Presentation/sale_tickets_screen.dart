@@ -4,10 +4,12 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
+import 'package:distech_technology/Features/Sale%20Tickets/Widgets/add_ticket_list-widget.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
+import 'package:distech_technology/Widgets/heade_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -247,60 +249,7 @@ class SaleTicketsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    'F.L.',
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.darkGrey.withOpacity(0.8),
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Text(
-                      'T. L.',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.darkGrey.withOpacity(0.8),
-                          fontWeight: FontWeight.w500),
-                    )),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    'From No.',
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.darkGrey.withOpacity(0.8),
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    '     To No.',
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.darkGrey.withOpacity(0.8),
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Text(
-                  'Add',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: AppColors.darkGrey.withOpacity(0.8),
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-          ),
-
+          const HeaderListWidget(),
           //  const CustomDivider(),
           Obx(
             () => saleTicketController.isScanningTicket.value
@@ -396,18 +345,22 @@ class SaleTicketsScreen extends StatelessWidget {
                         onTap: saleTicketController.addButtonEnable.value
                             ? () {
                                 saleTicketController.validateSalesTickets(
-                                    fromNumber: int.parse(saleTicketController
-                                        .fromNumberController.value.text),
-                                    toNumber: int.parse(saleTicketController
-                                        .toNumberController.value.text),
+                                    fromNumber: int.parse(
+                                        saleTicketController
+                                            .fromNumberController.value.text,
+                                        radix: 10),
+                                    toNumber: int.parse(
+                                      saleTicketController
+                                          .toNumberController.value.text,
+                                    ),
                                     fromLetter1: saleTicketController
                                         .fromLetterController.value.text[0],
                                     fromLetter2: saleTicketController
                                         .fromLetterController.value.text[1],
                                     toLetter1: saleTicketController
                                         .toLetterController.value.text[0],
-                                    toLetter2:
-                                        saleTicketController.toLetterController.value.text[1]);
+                                    toLetter2: saleTicketController
+                                        .toLetterController.value.text[1]);
                                 saleTicketController.fromTickets.value = "";
                                 saleTicketController.toTickets.value = "";
                               }
@@ -449,79 +402,11 @@ class SaleTicketsScreen extends StatelessWidget {
             } else if (saleTicketController.isTicketValidating.value == true) {
               return const Center(child: CircularProgressIndicator.adaptive());
             } else {
-              return addedListWidget();
+              return Expanded(child: AddedTicketListWidget());
             }
           })
         ],
       ),
-    );
-  }
-
-  Widget addedListWidget() {
-    return Expanded(
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: saleTicketController.successReturnTicketList.length,
-          itemBuilder: (context, index) {
-            var data = saleTicketController.successReturnTicketList[index];
-            return Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: AppSizes.kDefaultPadding / 1.5),
-              color: (index % 2 == 0) ? AppColors.white : AppColors.primaryBg,
-              child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        data.fromLetter.toString(),
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        data.toLetter.toString(),
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        data.fromNumber.toString(),
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: Text(
-                          data.toNumber.toString(),
-                          style: const TextStyle(color: Colors.blue),
-                        )),
-                    InkWell(
-                      onTap: () {
-                        saleTicketController.removeValidateReturnTicket(index);
-                      },
-                      child: const CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 10,
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
     );
   }
 
