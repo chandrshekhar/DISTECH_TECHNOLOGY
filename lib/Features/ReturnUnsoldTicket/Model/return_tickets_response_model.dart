@@ -90,6 +90,7 @@ class FailedSeriesList {
   bool? success;
   String? date;
   String? userId;
+  String? drawSlotId;
 
   FailedSeriesList(
       {this.fromLetter,
@@ -98,7 +99,8 @@ class FailedSeriesList {
       this.toNumber,
       this.success,
       this.date,
-      this.userId});
+      this.userId,
+      this.drawSlotId});
 
   FailedSeriesList.fromJson(Map<String, dynamic> json) {
     fromLetter = json['fromLetter'];
@@ -107,6 +109,7 @@ class FailedSeriesList {
     toNumber = json['toNumber'];
     success = json['success'];
     date = json['date'];
+    drawSlotId = json['drawSlotId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +121,7 @@ class FailedSeriesList {
     data['success'] = success;
     data['date'] = date;
     data['userId'] = userId;
+    data['drawSlotId'] = drawSlotId;
     return data;
   }
 }

@@ -113,6 +113,7 @@ class TicketsCount {
 	int? unsold;
 	int? sold;
 	int? returned;
+  int? total;
 
 	TicketsCount({this.unsold, this.sold, this.returned});
 
@@ -120,6 +121,7 @@ class TicketsCount {
 		unsold = json['Unsold'];
 		sold = json['Sold'];
 		returned = json['Returned'];
+    total=json['Total'];
 	}
 
 	Map<String, dynamic> toJson() {

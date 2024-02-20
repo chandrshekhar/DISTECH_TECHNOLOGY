@@ -39,9 +39,9 @@ class NewClaimController extends GetxController {
 
     if (fromTicket) {
       fromTicketScaning(true);
-      barCode1.value = barcodeScanRes??"";
-      claimFromTicketModel.value =
-          await apiProvider.verifyFromTicket(barcodeScanRes??"", dateFormat.value);
+      barCode1.value = barcodeScanRes ?? "";
+      claimFromTicketModel.value = await apiProvider.verifyFromTicket(
+          barcodeScanRes ?? "", dateFormat.value);
       if (claimFromTicketModel.value.success == false) {
         // ignore: use_build_context_synchronously
         AwesomeDialog(
@@ -68,9 +68,9 @@ class NewClaimController extends GetxController {
       }
     } else {
       toTicketScaing(true);
-      barCode2.value = barcodeScanRes??"";
-      claimToTicketModel.value =
-          await apiProvider.verifyToTicket(barcodeScanRes??"", dateFormat.value);
+      barCode2.value = barcodeScanRes ?? "";
+      claimToTicketModel.value = await apiProvider.verifyToTicket(
+          barcodeScanRes ?? "", dateFormat.value);
 
       if (claimToTicketModel.value.success == false) {
         toTicketScaing(false);
@@ -98,9 +98,6 @@ class NewClaimController extends GetxController {
       }
     }
   }
-
-
-
 
   void getMyCnf() async {
     var data = await apiProvider.getMyCnf();

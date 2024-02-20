@@ -1,12 +1,10 @@
 import 'dart:developer';
-
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import '../Timer Controller/timer_controller.dart';
 
@@ -26,11 +24,9 @@ class GetMyReturnController extends GetxController {
   RxList<String> selectedReturnedTicket = <String>[].obs;
   RxList<String> selectedListForReturn = <String>[].obs;
   RxBool isAllTicketSelected = false.obs;
-
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();
   final profileController = Get.put(ProfileController());
-
   var searchController = TextEditingController().obs;
   var fromLetterController = TextEditingController().obs;
   var toLetterController = TextEditingController().obs;
@@ -44,13 +40,13 @@ class GetMyReturnController extends GetxController {
     Map<String, dynamic> reqModel = (dateTime == null || dateTime.isEmpty)
         ? {
             "offset": 0,
-            "limit": 500,
+            "limit": 1000,
             "drawSlotId": timerController.slotId.value,
             "search": search ?? "",
           }
         : {
             "offset": 0,
-            "limit": 500,
+            "limit": 1000,
             "drawSlotId": timerController.slotId.value,
             "search": search ?? "",
             "date": dateTime
@@ -242,7 +238,7 @@ class GetMyReturnController extends GetxController {
     update(); // This will trigger UI update
   }
 
-  validateReturnTicket(String userId, String date) async {
+  validateReturnTicket(String userId, String date, String slotId) async {
     isTicketValidating(true);
     int fromNumber = int.parse(fromNumberController.value.text);
     int toNumber = int.parse(toNumberController.value.text);
@@ -266,6 +262,7 @@ class GetMyReturnController extends GetxController {
       isTicketValidating(false);
     } else {
       FailedSeriesList reqModel = FailedSeriesList(
+          drawSlotId: slotId,
           date: date,
           userId: userId,
           fromLetter: fromLetterController.value.text.toString().trim(),

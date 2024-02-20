@@ -76,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
+                                    fontWeight: FontWeight.bold, fontSize: 18),
                             children: <TextSpan>[
                               TextSpan(
                                 text: 'Available Tickets to Sell ',

@@ -70,16 +70,19 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                         size: 20,
                       ),
                       onChanged: (value) async {
-                        if (value.toString().isNotEmpty) {
-                          soldTicketListController.searchTextSave(value);
-                        } else {
-                          soldTicketListController.searchText("");
+                        if (soldTicketListController
+                            .soldTicketList.isNotEmpty) {
+                          if (value.toString().isNotEmpty) {
+                            soldTicketListController.searchTextSave(value);
+                          } else {
+                            soldTicketListController.searchText("");
+                          }
+                          soldTicketListController.getSoldTicketList(
+                              date: soldTicketListController.formatedDate.value,
+                              search: soldTicketListController.searchText.value,
+                              semNumber:
+                                  soldTicketListController.semNumber.value);
                         }
-                        soldTicketListController.getSoldTicketList(
-                            date: soldTicketListController.formatedDate.value,
-                            search: soldTicketListController.searchText.value,
-                            semNumber:
-                                soldTicketListController.semNumber.value);
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -141,8 +144,6 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                       if (soldTicketListController
                           .selectedSoldTicket.isNotEmpty) {
                         soldTicketListController.revertSoldTicket();
-                      } else {
-                        ToastMessage().printError();
                       }
                     },
                     child: Container(
@@ -227,15 +228,18 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                         value: soldTicketListController
                                             .isAllSoldTicketSelected.value,
                                         onChanged: (value) {
-                                          soldTicketListController
-                                              .isAllSoldTicketSelected
-                                              .value = value!;
-                                          for (var element
-                                              in soldTicketListController
-                                                  .soldTicketList) {
+                                          if (soldTicketListController
+                                              .soldTicketList.isNotEmpty) {
                                             soldTicketListController
-                                                .checkedBoxClicked(
-                                                    element.sId!, value);
+                                                .isAllSoldTicketSelected
+                                                .value = value!;
+                                            for (var element
+                                                in soldTicketListController
+                                                    .soldTicketList) {
+                                              soldTicketListController
+                                                  .checkedBoxClicked(
+                                                      element.sId!, value);
+                                            }
                                           }
                                         },
                                       )),
@@ -267,9 +271,6 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   ),
                 ),
               )
-           
-           
-           
             ],
           ),
         ),

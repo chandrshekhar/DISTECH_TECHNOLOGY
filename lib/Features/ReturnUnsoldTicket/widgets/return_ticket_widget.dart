@@ -80,15 +80,17 @@ class _ReturnTicketListWidgetState extends State<ReturnTicketListWidget> {
                                   .checkBoxForselectTicket[e.sId] ??
                               false,
                           onChanged: (v) {
-                            getMyreturnController.checkedBoxClickedOnReturn(
-                                e.sId!, v!);
-                            if (v == true) {
-                              getMyreturnController.selectedListForReturn
-                                  .add(e.sId!);
-                            } else {
-                              getMyreturnController.selectedListForReturn
-                                  .remove(e.sId);
-                              ;
+                            if (timerController.countdown.value != "0:00:00") {
+                              getMyreturnController.checkedBoxClickedOnReturn(
+                                  e.sId!, v!);
+                              if (v == true) {
+                                getMyreturnController.selectedListForReturn
+                                    .add(e.sId!);
+                              } else {
+                                getMyreturnController.selectedListForReturn
+                                    .remove(e.sId);
+                                ;
+                              }
                             }
                           },
                         )),

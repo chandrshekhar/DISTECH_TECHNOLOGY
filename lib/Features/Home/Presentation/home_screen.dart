@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //all screens which will be visible on home screens
   final List<Widget> screens = [
-    const DashboardMainScreen(), //0
+    DashboardMainScreen(), //0
     const DashboardScreen(), //1
     const ReturnUnsoldTicket(), //2
     ScanBarCodeScreen(), //3
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void callProfile() async {
     if (widget.comeFrom.toString().contains("home")) {
     } else {
-      await Future.delayed(const Duration(microseconds: 2000), () {
+      await Future.delayed(const Duration(microseconds: 1000), () {
         timerController.getSloat();
         ();
         userProfileController.getUserDetails();
@@ -219,17 +219,60 @@ class _HomeScreenState extends State<HomeScreen> {
           leadingIcon: EvaIcons.menu2Outline,
           leadingIconPressed: () => _key.currentState!.openDrawer(),
           actions: [
-            // PopupMenuButton<String>(
-            //   child: const Icon(Icons.timer),
-            //   onSelected: (value) {
-            //     // Handle the selected option
-            //     print('Selected: $value');
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return List.generate( timerController.drawModel.value.data!.length, (index) => Text(""));
-            //   },
-            // ),
-            const SizedBox(width: 10),
+            PopupMenuButton<String>(
+                position: PopupMenuPosition.under,
+                onSelected: (val) {
+                  switch (val) {
+                    case '0':
+                      {
+                        timerController.slotId.value =
+                            timerController.drawModel.value.data?[0].sId ?? "";
+                        timerController.getServerTime();
+                        timerController.intialSlot.value =
+                            timerController.drawModel.value.data?[0].name ?? "";
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => HomeScreen(
+                                      comeFrom: "home",
+                                    )));
+                      }
+                      break;
+                    case '1':
+                      {
+                        timerController.slotId.value =
+                            timerController.drawModel.value.data?[1].sId ?? "";
+                        timerController.getServerTime();
+                        timerController.intialSlot.value =
+                            timerController.drawModel.value.data?[1].name ?? "";
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => HomeScreen(
+                                      comeFrom: "home",
+                                    )));
+                      }
+
+                      break;
+                  }
+                },
+                icon: const Icon(Icons.expand_circle_down_outlined,
+                    color: Colors.white, size: 36), // Icon for the button
+                itemBuilder: (BuildContext context) {
+                  return List.generate(
+                      timerController.drawModel.value.data!.length,
+                      (index) => PopupMenuItem<String>(
+                          value: index.toString(),
+                          child: Text(
+                              timerController
+                                      .drawModel.value.data?[index].name ??
+                                  "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColors.primary))));
+                }),
+            const SizedBox(width: 5),
             GestureDetector(
               onTap: () => context.push(const ProfileScreen()),
               child: Padding(

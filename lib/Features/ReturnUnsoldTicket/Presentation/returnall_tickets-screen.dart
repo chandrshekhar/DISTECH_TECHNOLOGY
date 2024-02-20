@@ -140,27 +140,34 @@ class _ReturnAllTicketsScreenState extends State<ReturnAllTicketsScreen> {
                                     value: getMyreturnController
                                         .isAllTicketSelected.value,
                                     onChanged: (value) {
-                                      getMyreturnController
-                                          .isAllTicketSelected.value = value!;
-                                      if (value == true) {
-                                        for (var element in soldTicketController
-                                            .allTicketList) {
-                                          getMyreturnController
-                                              .checkedBoxClickedOnReturn(
-                                                  element.sId!, true);
-                                          getMyreturnController
-                                              .selectedListForReturn
-                                              .add(element.sId!);
-                                        }
-                                      } else {
-                                        for (var element in soldTicketController
-                                            .allTicketList) {
-                                          getMyreturnController
-                                              .checkedBoxClickedOnReturn(
-                                                  element.sId!, false);
-                                          getMyreturnController
-                                              .selectedListForReturn
-                                              .clear();
+                                      if (timerController.countdown.value !=
+                                              "0:00:00" &&
+                                          soldTicketController
+                                              .allTicketList.isNotEmpty) {
+                                        getMyreturnController
+                                            .isAllTicketSelected.value = value!;
+                                        if (value == true) {
+                                          for (var element
+                                              in soldTicketController
+                                                  .allTicketList) {
+                                            getMyreturnController
+                                                .checkedBoxClickedOnReturn(
+                                                    element.sId!, true);
+                                            getMyreturnController
+                                                .selectedListForReturn
+                                                .add(element.sId!);
+                                          }
+                                        } else {
+                                          for (var element
+                                              in soldTicketController
+                                                  .allTicketList) {
+                                            getMyreturnController
+                                                .checkedBoxClickedOnReturn(
+                                                    element.sId!, false);
+                                            getMyreturnController
+                                                .selectedListForReturn
+                                                .clear();
+                                          }
                                         }
                                       }
                                     },
@@ -208,7 +215,8 @@ class _ReturnAllTicketsScreenState extends State<ReturnAllTicketsScreen> {
                                   .selectedListForReturn.isNotEmpty) {
                                 var res = await ApiProvider().retunTicketList(
                                     getMyreturnController.selectedListForReturn,
-                                    getMyreturnController.formatedDate.value, timerController.slotId.value);
+                                    getMyreturnController.formatedDate.value,
+                                    timerController.slotId.value);
                                 if (res['success'] == true) {
                                   await getMyreturnController
                                       .getAllReturnTicket(

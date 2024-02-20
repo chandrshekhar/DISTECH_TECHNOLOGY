@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   //Variable Declarations
   final userLoginController = Get.put(LoginController());
@@ -65,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 10,
                     ),
                     Text(
-                        'Enter your register mail id for the verification process. We will send 6 digit code',
+                        'Enter your register mail id and password for the verification process and login.',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: AppColors.darkGrey.withOpacity(0.8),
                             //color: AppColors.primary,

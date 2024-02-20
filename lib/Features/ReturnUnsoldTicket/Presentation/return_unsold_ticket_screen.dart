@@ -438,7 +438,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                           getMyreturnController
                                               .validateReturnTicket(
                                                   "${profileController.userProfileModel.value.user!.sId}",
-                                                  formatedDate ?? "");
+                                                  formatedDate ?? "",timerController.slotId.value);
                                           getMyreturnController.buttonEnabled();
                                         }
                                       : null,
@@ -593,7 +593,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                 .validateTicketsList,
                                             formatedDate!,
                                             profileController.userProfileModel
-                                                .value.user!.sId!);
+                                                .value.user!.sId!,timerController.slotId.value);
                                     if (res.success) {
                                       await getMyreturnController
                                           .getAllReturnTicket(

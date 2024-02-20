@@ -42,10 +42,10 @@ class PrizesController extends GetxController {
       "date": formatedDate.value,
       "limit": 5,
     };
-    print("req pandey--> $reqModel");
+    // print("req pandey--> $reqModel");
     log(reqModel.toString());
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
-    print("dashboard-- > ${res.toString()}");
+    // print("dashboard-- > ${res.toString()}");
     if (res.success == true) {
       getModeldashBoard.value = res;
 

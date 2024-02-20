@@ -47,7 +47,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   void initState() {
     // searchedList = ticketItemList;
     super.initState();
-    purchaesController.limit.value = 30;
+    purchaesController.limit.value = 100;
     purchaesController.getAllPurchaesTicket();
   }
 

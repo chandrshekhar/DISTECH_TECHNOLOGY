@@ -20,7 +20,9 @@ import '../../Sale Tickets/Widgets/scanner_card.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 
 class DashboardMainScreen extends StatefulWidget {
-  const DashboardMainScreen({super.key});
+  const DashboardMainScreen({
+    super.key,
+  });
 
   @override
   State<DashboardMainScreen> createState() => _DashboardMainScreenState();
@@ -28,7 +30,6 @@ class DashboardMainScreen extends StatefulWidget {
 
 class _DashboardMainScreenState extends State<DashboardMainScreen> {
   ScrollController? controller = ScrollController();
-
   final soldTicketController = Get.put(SoldTicketController());
   final getMyDashboardController = Get.put(PrizesController());
   final timerController = Get.put(TimerController());
@@ -39,6 +40,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
     getMyDashboardController.isPopupShowing.value == true
         ? null
         : getAlerttDialog();
+    getMyDashboardController.getMydashboard();
     super.initState();
   }
 
@@ -180,9 +182,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         imagePath: AppIcons.soldTicket),
                     priceCard(
                         value: getMyDashboardController.getModeldashBoard.value
-                                .userTicketCounts?.ticketsCount?.sold
-                                .toString()
-                                .toString() ??
+                                .userTicketCounts?.ticketsCount?.total.toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
                         title: "Purchase Tickets",

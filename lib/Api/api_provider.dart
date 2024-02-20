@@ -15,6 +15,7 @@ import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.
 import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../Controller/Timer Controller/timer_controller.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
@@ -212,9 +213,10 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
+      log("req - pur--> $reqModel");
       response = await _dio.post(Urls.purchaseHistory, data: reqModel);
       if (kDebugMode) {
-        log('--------Response sold : $response');
+        log('--------Response purchase histor : $response');
       }
       return response.statusCode == 200
           ? PurchaesModel.fromJson(response.data)
@@ -458,7 +460,8 @@ class ApiProvider {
   Future<ReturnTicketsResponseModel> retunTicketUnsold(
       List<FailedSeriesList> returnTicketIdList,
       String date,
-      String userId) async {
+      String userId,
+      String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -471,7 +474,8 @@ class ApiProvider {
     Map<String, dynamic> reqModel = {
       "userId": userId,
       "returnList": returnTicketIdList,
-      "date": date
+      "date": date,
+      "drawSlotId": slotId,
     };
     try {
       _dio.options.headers = {

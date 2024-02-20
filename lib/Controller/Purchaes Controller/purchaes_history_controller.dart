@@ -12,7 +12,7 @@ class PurchaseController extends GetxController {
   RxBool isPurchaseDetailsLoading = false.obs;
   RxBool isPurchaLoading = false.obs;
   ApiProvider apiProvider = ApiProvider();
-  RxInt limit = 30.obs;
+  RxInt limit = 100.obs;
   RxInt purDetLimit = 40.obs;
   RxInt countPurchaesTickets = 0.obs;
   final timerController = Get.put(TimerController());
