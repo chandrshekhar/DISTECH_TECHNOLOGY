@@ -16,6 +16,7 @@ import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart'
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
 
+import '../Controller/Timer Controller/timer_controller.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
 import '../Features/Sale Tickets/Models/return_ticket_model.dart';
@@ -311,7 +312,7 @@ class ApiProvider {
       };
       response = await _dio.post(Urls.getMyDashboard, data: reqModel);
       if (kDebugMode) {
-        log('--------Response sold : $response');
+        log('--------Response dashboard : $response');
       }
       return response.statusCode == 200
           ? GetMyDashboardModel.fromJson(response.data)
@@ -360,7 +361,7 @@ class ApiProvider {
 
   /// ----------  sold  Ticket --------------///
   Future<Map<String, dynamic>> soldTciket(
-      List<SuccessReturnTicketModel> reqModelData) async {
+      List<SuccessReturnTicketModel> reqModelData, String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -372,7 +373,10 @@ class ApiProvider {
       "failedList": []
     };
 
-    Map<String, dynamic> reqModel = {"supplyList": reqModelData};
+    Map<String, dynamic> reqModel = {
+      "drawSlotId": slotId,
+      "supplyList": reqModelData
+    };
 
     log("req-sale--> ${jsonEncode(reqModel)}");
 
@@ -384,7 +388,7 @@ class ApiProvider {
       };
       response = await _dio.post(Urls.markAsSold, data: jsonEncode(reqModel));
       if (kDebugMode) {
-        log('--------Response Login : ${response.statusCode.toString()}');
+        log('--------Response sold : ${response.statusCode.toString()}');
       }
 
       if (response.statusCode == 200) {
@@ -404,6 +408,53 @@ class ApiProvider {
     }
   }
 
+  /// return ticket in list
+  Future<Map<String, dynamic>> retunTicketList(
+      List<String> returnTicketIdList, String date, String slotId) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    Map<String, dynamic> resData = {
+      "success": false,
+      "message": "No Tickets Found"
+    };
+
+    Map<String, dynamic> reqModel = {
+      "drawSlotId": slotId,
+      "tickets": returnTicketIdList,
+      "date": date
+    };
+    log("Req Model--- > $reqModel");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.post(Urls.returnTicket, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response returnTicket : $response');
+      }
+
+      if (response.statusCode == 200) {
+        resData = response.data;
+        return resData;
+      } else {
+        return resData;
+      }
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return resData;
+    }
+  }
+
+  // return ticket in searie
   Future<ReturnTicketsResponseModel> retunTicketUnsold(
       List<FailedSeriesList> returnTicketIdList,
       String date,
@@ -451,9 +502,42 @@ class ApiProvider {
   }
 
   /// ------------ geting slot--------------///
+  ///  /// ------------ geting slot--------------///
+
+  Future<DrawSlotModel> getSlot() async {
+    Response response;
+    String? authToken;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    print("token-> $token");
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      response = await _dio.get(
+        Urls.getSlot,
+      );
+      if (kDebugMode) {
+        log('--------Response slot : $response');
+      }
+      if (response.statusCode == 200) {
+        return DrawSlotModel.fromJson(response.data);
+
+        // print(userServicesList);
+      } else {
+        return DrawSlotModel.withError("Something Went wrong");
+      }
+    } catch (error) {
+      return DrawSlotModel.withError(error.toString());
+    }
+  }
 
   ///------------- get server Time---------------///
-  Future<Map<String, dynamic>> getServerTime() async {
+  Future<Map<String, dynamic>> getServerTime(
+      Map<String, dynamic> reqModel) async {
     Response response;
     String? authToken;
     String token = await localStorageService
@@ -466,7 +550,7 @@ class ApiProvider {
         'Content-Type': 'application/json',
         "access-token": token
       };
-      response = await _dio.get(Urls.serverTime);
+      response = await _dio.post(Urls.serverTime, data: reqModel);
       if (kDebugMode) {
         log('--------Response time : $response');
       }
@@ -674,12 +758,13 @@ class ApiProvider {
 
   /// check ticket avaliabilty
   Future<ScanTicketModel> verifyTicketbyID(
-      {String? ticketId, String? date}) async {
+      {String? ticketId, String? date, String? slotId}) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
     Map reqModel = {
+      "drawSlotId": slotId,
       "ticketId": ticketId ?? "".trim(),
       'date': date,
     };

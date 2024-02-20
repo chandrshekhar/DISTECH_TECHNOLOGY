@@ -41,7 +41,7 @@ class User {
   List<String>? creators;
   String? entryDate;
   int? returnPercentage;
-
+  String? userName;
   User(
       {this.forgetPassword,
       this.sId,
@@ -61,7 +61,8 @@ class User {
       this.status,
       this.creators,
       this.entryDate,
-      this.returnPercentage});
+      this.returnPercentage,
+      this.userName});
 
   User.fromJson(Map<String, dynamic> json) {
     forgetPassword = json['forgetPassword'];
@@ -83,6 +84,7 @@ class User {
     creators = json['creators'].cast<String>();
     entryDate = json['entryDate'];
     returnPercentage = json['returnPercentage'];
+    userName = json['userName'];
   }
 
   // Map<String, dynamic> toJson() {

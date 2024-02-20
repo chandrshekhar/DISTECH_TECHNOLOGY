@@ -16,7 +16,6 @@ import 'package:distech_technology/Features/ReturnedTickets/Presentation/returne
 import 'package:distech_technology/Features/ScanCode/scan_code_screen.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_screen.dart';
 import 'package:distech_technology/Features/Support/Presentation/support_screen.dart';
-import 'package:distech_technology/Features/Vew%20Prizes/Presentation/all_prize_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
@@ -30,6 +29,7 @@ import 'package:get/get.dart';
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
+import '../../ReturnUnsoldTicket/Presentation/returnall_tickets-screen.dart';
 import '../../Sale Tickets/Presentation/sale_tickets_screen.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
@@ -62,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const MyClaimScreen(), // 8
     const SupportScreen(), // 9
     const ResultScreen(), //10
-    SaleTicketsScreen() // 11
+    SaleTicketsScreen(), // 11
+    const ReturnAllTicketsScreen() // 12
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (widget.comeFrom.toString().contains("home")) {
     } else {
       await Future.delayed(const Duration(microseconds: 2000), () {
-        timerController.getServerTime();
+        timerController.getSloat();
         ();
         userProfileController.getUserDetails();
       });
@@ -153,6 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedIndex = 11;
           });
+        case 12:
+          setState(() {
+            selectedIndex = 12;
+          });
       }
     });
   }
@@ -214,6 +219,17 @@ class _HomeScreenState extends State<HomeScreen> {
           leadingIcon: EvaIcons.menu2Outline,
           leadingIconPressed: () => _key.currentState!.openDrawer(),
           actions: [
+            // PopupMenuButton<String>(
+            //   child: const Icon(Icons.timer),
+            //   onSelected: (value) {
+            //     // Handle the selected option
+            //     print('Selected: $value');
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return List.generate( timerController.drawModel.value.data!.length, (index) => Text(""));
+            //   },
+            // ),
+            const SizedBox(width: 10),
             GestureDetector(
               onTap: () => context.push(const ProfileScreen()),
               child: Padding(
@@ -356,6 +372,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Return Tickets"),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(12);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Return All Tickets"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
                                 title: "Verify",
@@ -531,46 +555,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: AppColors.primaryDark,
                   ),
                 ),
-                // Obx(() => RichText(
-                //     textAlign: TextAlign.center,
-                //     text: TextSpan(
-                //       text:
-                //           'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
-                //       style: Theme.of(context)
-                //           .textTheme
-                //           .headlineSmall!
-                //           .copyWith(
-                //               color: AppColors.white,
-                //               fontWeight: FontWeight.w500),
-                //       children: <TextSpan>[
-                //         TextSpan(
-                //           text: timerController.intialSlot.isNotEmpty
-                //               ? '< ${timerController.intialSlot} >'
-                //               : '',
-                //           style: Theme.of(context)
-                //               .textTheme
-                //               .headlineSmall!
-                //               .copyWith(
-                //                   color: Colors.red,
-                //                   fontWeight: FontWeight.w500),
-                //         ),
-                //       ],
-                //     ))),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(() => Text(
-                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}',
-                          textAlign: TextAlign.center,
+                Obx(() => RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text:
+                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w500),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: timerController.intialSlot.isNotEmpty
+                              ? '< ${timerController.intialSlot} >'
+                              : '',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
                               .copyWith(
-                                  color: AppColors.white,
+                                  color: Colors.red,
                                   fontWeight: FontWeight.w500),
-                        ))
-                  ],
-                ),
+                        ),
+                      ],
+                    ))),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Obx(() => Text(
+                //           'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}',
+                //           textAlign: TextAlign.center,
+                //           style: Theme.of(context)
+                //               .textTheme
+                //               .headlineSmall!
+                //               .copyWith(
+                //                   color: AppColors.white,
+                //                   fontWeight: FontWeight.w500),
+                //         ))
+                //   ],
+                // ),
                 Positioned(
                   bottom: 10,
                   left: AppSizes.kDefaultPadding,

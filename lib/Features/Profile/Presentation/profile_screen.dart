@@ -78,30 +78,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: ListView(
                           children: [
                             ProfileItemWidget(
+                                title: 'User Id',
+                                value: profileController.userProfileModel.value
+                                        .user?.userName ??
+                                    "NA"),
+                            ProfileItemWidget(
                                 title: 'Full Name',
                                 value: profileController.userProfileModel.value
                                         .user?.fullName ??
-                                    ""),
+                                    "NA"),
                             //const ProfileItemWidget(title: 'Last Name', value: 'Paul'),
                             ProfileItemWidget(
                                 title: 'Aadhaar ID',
                                 value: profileController.userProfileModel.value
                                         .user?.aadhaarId ??
-                                    ""),
+                                    "NA"),
                             ProfileItemWidget(
                                 title: 'Pan Number',
                                 value: profileController.userProfileModel.value
                                         .user?.panNumber ??
-                                    ""),
+                                    "NA"),
                             ProfileItemWidget(
                                 title: 'Address 1',
-                                value:
-                                    '${profileController.userProfileModel.value.user?.address1}\n${profileController.userProfileModel.value.user?.address2}'),
+                                value: profileController.userProfileModel.value
+                                                .user!.address1 !=
+                                            null &&
+                                        profileController.userProfileModel.value
+                                            .user!.address1!.isEmpty
+                                    ? 'NA'
+                                    : '${profileController.userProfileModel.value.user?.address1}\n${profileController.userProfileModel.value.user?.address2}'),
                             ProfileItemWidget(
                                 title: 'PIN Code',
                                 value: profileController
                                         .userProfileModel.value.user?.pinCode ??
-                                    ""),
+                                    "NA"),
                             SizedBox(
                               height: AppSizes.kDefaultPadding,
                             ),
@@ -125,22 +135,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 title: 'Mobile Number',
                                 value: profileController.userProfileModel.value
                                         .user?.mobileNumber ??
-                                    ""),
+                                    "NA"),
                             ProfileItemWidget(
                                 title: 'Email ID',
                                 value: profileController
                                         .userProfileModel.value.user?.email ??
-                                    ""),
+                                    "NA"),
                             ProfileItemWidget(
                                 title: 'Trade License Number',
                                 value: profileController.userProfileModel.value
                                         .user?.tradeLicenseNumber ??
-                                    ""),
+                                    "NA"),
                             ProfileItemWidget(
                                 title: 'GST Number',
                                 value: profileController.userProfileModel.value
                                         .user?.gstNumber ??
-                                    ""),
+                                    "NA"),
                           ],
                         ),
                       ),

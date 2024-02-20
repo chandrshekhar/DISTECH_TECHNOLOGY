@@ -77,12 +77,14 @@ class SoldTicketListController extends GetxController {
     }
     Map<String, dynamic> reqModel = (date == null || date.isEmpty)
         ? {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
           }
         : {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
@@ -93,7 +95,7 @@ class SoldTicketListController extends GetxController {
     isSoldListLoading(true);
     var res = await apiProvider.getAllSoldTicket(reqModel);
 
-    if (res.sales!.isNotEmpty) {
+    if (res.sales != null && res.sales!.isNotEmpty) {
       isSoldListLoading(false);
       soldTicketList.value = res.sales!;
       soldTicketCont.value = res.count!;
@@ -122,11 +124,5 @@ class SoldTicketListController extends GetxController {
         semNumber: semNumber.value,
       );
     }
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    getSoldTicketList();
   }
 }

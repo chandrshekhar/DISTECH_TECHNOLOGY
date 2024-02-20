@@ -85,7 +85,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text(
                   ticketItemModel.ticketId.toString(),
                   textAlign: TextAlign.start,
@@ -101,7 +101,7 @@ class TicketListItemWithCheckbox extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Text(
-                  ticketItemModel.barCode.toString(),
+                  ticketItemModel.status.toString(),
                 )),
           ],
         ),

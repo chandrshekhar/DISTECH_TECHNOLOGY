@@ -13,13 +13,14 @@ class TimerController extends GetxController {
   List<String> timeParts = RxList<String>();
 
   RxBool gettingSlotLoding = false.obs;
-  // RxString slotId = ''.obs;
+  RxString slotId = ''.obs;
   RxString intialSlot = ''.obs;
   // RxList<String> slotList = <String>[].obs;
+  Rx<DrawSlotModel> drawModel = DrawSlotModel().obs;
 
   @override
   void onInit() {
-    getServerTime();
+    getSloat();
     super.onInit();
   }
 
@@ -68,8 +69,8 @@ class TimerController extends GetxController {
   }
 
   getServerTime() async {
-    // Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
-    var res = await apiProvider.getServerTime();
+    Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
+    var res = await apiProvider.getServerTime(reqModel);
     if (res['success'] == true) {
       lastReturnTime.value = convertTo12HourFormat(
           res['lastReturnTime'].toString().substring(0, 5));
@@ -83,10 +84,106 @@ class TimerController extends GetxController {
       startTimer(targetTime);
     }
   }
+
+  getSloat() async {
+    gettingSlotLoding(true);
+    var res = await apiProvider.getSlot();
+    if (res.success == true) {
+      drawModel.value = res;
+      // slotId.value = drawModel.value.data?[0].sId ?? "";
+      getServerTime();
+      // intialSlot.value = drawModel.value.data![0].name.toString();
+      gettingSlotLoding(false);
+    } else {
+      gettingSlotLoding(false);
+    }
+  }
 }
 
+class DrawSlotModel {
+  bool? success;
+  List<Data>? data;
+  String? error;
 
+  DrawSlotModel.withError(String err) {
+    error = err;
+  }
 
+  DrawSlotModel({this.success, this.data});
 
+  DrawSlotModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(Data.fromJson(v));
+      });
+    }
+  }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 
+class Data {
+  String? sId;
+  String? name;
+  String? drawTime;
+  String? returnTime;
+  String? returnDeleteTime;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? number;
+  int? targetTime;
+  bool? isClosest;
+
+  Data(
+      {this.sId,
+      this.name,
+      this.drawTime,
+      this.returnTime,
+      this.returnDeleteTime,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.number,
+      this.targetTime,
+      this.isClosest});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    drawTime = json['drawTime'];
+    returnTime = json['returnTime'];
+    returnDeleteTime = json['returnDeleteTime'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    number = json['number'];
+    targetTime = json['targetTime'];
+    isClosest = json['isClosest'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
+    data['drawTime'] = drawTime;
+    data['returnTime'] = returnTime;
+    data['returnDeleteTime'] = returnDeleteTime;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['number'] = number;
+    data['targetTime'] = targetTime;
+    data['isClosest'] = isClosest;
+    return data;
+  }
+}

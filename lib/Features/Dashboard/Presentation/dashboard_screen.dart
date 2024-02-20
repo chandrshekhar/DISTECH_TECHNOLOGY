@@ -20,27 +20,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  //Variable Declarations
-  // DateTime selectedDate = DateTime.now();
-  // String formatedDate = '';
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: selectedDate,
-  //     firstDate: DateTime(2015, 8),
-  //     lastDate: DateTime(3000, 8),
-  //   );
-  //   if (picked != null && picked != selectedDate) {
-  //     setState(() {
-  //       selectedDate = picked;
-  //       formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-  //       soldTicketController.getAllTicket(
-  //           date: formatedDate,
-  //           semNumber: soldTicketController.semNumber.value);
-  //     });
-  //   }
-  // }
-
   final TextEditingController _searchController = TextEditingController();
   bool isSelected = false;
   final soldTicketController = Get.put(SoldTicketController());
@@ -82,90 +61,117 @@ class _DashboardScreenState extends State<DashboardScreen> {
               // SizedBox(
               //   height: AppSizes.kDefaultPadding,
               // ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      'My All Ticket (${soldTicketController.allticketCount.value})',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontWeight: FontWeight.w400, fontSize: 18),
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 3,
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text:
+                                '${soldTicketController.allticketCount.value}\n',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Available Tickets to Sell ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        )
+                        // child: Text(
+                        //   '${soldTicketController.allticketCount.value}\nAvailable Tickets to Sell ',
+                        //   textAlign: TextAlign.center,
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .headlineSmall!
+                        //       .copyWith(
+                        //           fontWeight: FontWeight.w400, fontSize: 15),
+                        // ),
+                        ),
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       if (soldTicketController.formatedDate.isNotEmpty) {
+                    //         soldTicketController.scanBarcodeNormal(context);
+                    //       } else {
+                    //         Get.snackbar("Error!", "Please select date",
+                    //             backgroundColor: Colors.red,
+                    //             colorText: Colors.white,
+                    //             isDismissible: true,
+                    //             snackPosition: SnackPosition.BOTTOM);
+                    //       }
+                    //     },
+                    //     child: Container(
+                    //       padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
+                    //       height: AppSizes.buttonHeight,
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(
+                    //               AppSizes.cardCornerRadius / 2),
+                    //           border: Border.all(color: AppColors.bg)),
+                    //       child: Image.asset(
+                    //         AppIcons.barCode,
+                    //         width: 25,
+                    //         height: 25,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(
+                      width: 10,
                     ),
-                  ),
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: InkWell(
-                  //     onTap: () {
-                  //       if (soldTicketController.formatedDate.isNotEmpty) {
-                  //         soldTicketController.scanBarcodeNormal(context);
-                  //       } else {
-                  //         Get.snackbar("Error!", "Please select date",
-                  //             backgroundColor: Colors.red,
-                  //             colorText: Colors.white,
-                  //             isDismissible: true,
-                  //             snackPosition: SnackPosition.BOTTOM);
-                  //       }
-                  //     },
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
-                  //       height: AppSizes.buttonHeight,
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(
-                  //               AppSizes.cardCornerRadius / 2),
-                  //           border: Border.all(color: AppColors.bg)),
-                  //       child: Image.asset(
-                  //         AppIcons.barCode,
-                  //         width: 25,
-                  //         height: 25,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        soldTicketController.selectDate(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
-                        height: AppSizes.buttonHeight,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          soldTicketController.selectDate(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(AppSizes.kDefaultPadding / 2),
+                          height: AppSizes.buttonHeight,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  AppSizes.cardCornerRadius / 2),
+                              border: Border.all(color: AppColors.bg)),
+                          child: Image.asset(
+                            AppIcons.calenderIcon,
+                            width: 25,
+                            height: 25,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: AppDropDown(
-                        onChanged: (value) async {
-                          soldTicketController.limit.value = value;
-                          soldTicketController.dropDownValue.value = value;
-                          await soldTicketController.getAllTicket(
-                              date: soldTicketController.formatedDate.value,
-                              search: soldTicketController.searchText.value,
-                              semNumber: soldTicketController.semNumber.value);
-                        },
-                        list: soldTicketController.selectedValueList),
-                  )
-                ],
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: AppDropDown(
+                          onChanged: (value) async {
+                            soldTicketController.limit.value = value;
+                            soldTicketController.dropDownValue.value = value;
+                            await soldTicketController.getAllTicket(
+                                date: soldTicketController.formatedDate.value,
+                                search: soldTicketController.searchText.value,
+                                semNumber:
+                                    soldTicketController.semNumber.value);
+                          },
+                          list: soldTicketController.selectedValueList),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -253,7 +259,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                    flex: 1,
+                                    flex: 2,
                                     child: Text(
                                       'Ticket No',
                                       textAlign: TextAlign.start,
@@ -266,18 +272,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               fontWeight: FontWeight.w500),
                                     )),
                                 Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      'Bar Code',
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
+                                  flex: 1,
+                                  child: Text(
+                                    'Status',
+                                    textAlign: TextAlign.start,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                            color: AppColors.darkGrey
+                                                .withOpacity(0.8),
+                                            fontWeight: FontWeight.w500),
+                                  ),
+                                ),
 
                                 // Expanded(
                                 //   flex: 1,
@@ -345,80 +352,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  // SafeArea(
-                  //   child: Column(
-                  //     children: [
-                  //       SizedBox(
-                  //         height: AppSizes.kDefaultPadding * 1.2,
-                  //       ),
-                  //       Obx(() => FullButton(
-                  //             label: 'Mark sold',
-                  //             bgColor: soldTicketController
-                  //                     .selectedSoldTicket.isEmpty
-                  //                 ? AppColors.lightGrey
-                  //                 : AppColors.primary,
-                  //             onPressed: soldTicketController
-                  //                     .selectedSoldTicket.isEmpty
-                  //                 ? () {}
-                  //                 : () async {
-                  //                     if (soldTicketController
-                  //                         .selectedSoldTicket.isNotEmpty) {
-                  //                       var res =
-                  //                           await ApiProvider().soldTciket(
-                  //                         soldTicketController
-                  //                             .selectedSoldTicket,
-                  //                         soldTicketController
-                  //                             .formatedDate.value,
-                  //                       );
-                  //                       if (res['success']) {
-                  //                         Get.snackbar(
-                  //                             "Successful", res['message'],
-                  //                             backgroundColor: AppColors.white,
-                  //                             colorText: Colors.green,
-                  //                             isDismissible: true,
-                  //                             snackPosition:
-                  //                                 SnackPosition.BOTTOM);
-                  //                       } else {
-                  //                         Get.snackbar("Error!", res['message'],
-                  //                             backgroundColor: AppColors.white,
-                  //                             colorText: Colors.red,
-                  //                             isDismissible: true,
-                  //                             snackPosition:
-                  //                                 SnackPosition.BOTTOM);
-                  //                       }
-
-                  //                       await soldTicketController.getAllTicket(
-                  //                         date: soldTicketController
-                  //                             .formatedDate.value,
-                  //                       );
-                  //                       soldTicketController.limit.value =
-                  //                           soldTicketController.limit.value;
-                  //                       soldTicketController.selectedSoldTicket
-                  //                           .clear();
-                  //                     } else {
-                  //                       Get.snackbar("Not response",
-                  //                           "Your are not selected any ticket for mark as sold",
-                  //                           backgroundColor: AppColors.black,
-                  //                           colorText: Colors.white,
-                  //                           isDismissible: true,
-                  //                           snackPosition:
-                  //                               SnackPosition.BOTTOM);
-                  //                     }
-                  //                   },
-                  //           )),
-                  //       SizedBox(
-                  //         height: AppSizes.kDefaultPadding * 1.2,
-                  //       ),
-                  //       // Text(
-                  //       //   "** Once you mark as a sold it can't be modified later",
-                  //       //   style: Theme.of(context)
-                  //       //       .textTheme
-                  //       //       .bodyMedium!
-                  //       //       .copyWith(color: AppColors.secondary),
-                  //       // )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ],

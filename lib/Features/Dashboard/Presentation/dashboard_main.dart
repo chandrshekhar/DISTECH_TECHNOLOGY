@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
@@ -16,6 +17,7 @@ import 'package:get/get.dart';
 
 import '../../../Controller/Timer Controller/timer_controller.dart';
 import '../../Sale Tickets/Widgets/scanner_card.dart';
+import '../../Vew Prizes/Controller/prize_controller.dart';
 
 class DashboardMainScreen extends StatefulWidget {
   const DashboardMainScreen({super.key});
@@ -28,71 +30,74 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
   ScrollController? controller = ScrollController();
 
   final soldTicketController = Get.put(SoldTicketController());
-
-  // final getMyDashboardController = Get.put(PrizesController());
-
+  final getMyDashboardController = Get.put(PrizesController());
   final timerController = Get.put(TimerController());
   final soldTicketListController = Get.put(SoldTicketListController());
   final saleTicketController = Get.put(SaleTicketsController());
   @override
   void initState() {
-    // getMyDashboardController.isPopupShowing.value == true
-
-    //     ? null
-    //     : getAlerttDialog();
-
-    soldTicketController.getAllTicket();
-    soldTicketListController.getSoldTicketList();
+    getMyDashboardController.isPopupShowing.value == true
+        ? null
+        : getAlerttDialog();
     super.initState();
   }
 
-  // getAlerttDialog() async {
-  //   await Future.delayed(const Duration(microseconds: 100), () {
-  //     AwesomeDialog(
-  //             context: context,
-  //             dialogType: DialogType.info,
-  //             animType: AnimType.bottomSlide,
-  //             dismissOnTouchOutside: false,
-  //             body: Padding(
-  //               padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-  //               child: Obx(() => timerController.slotList.isNotEmpty
-  //                   ? Column(
-  //                       children: List.generate(
-  //                         timerController.slotList.length,
-  //                         (index) => Padding(
-  //                           padding: const EdgeInsets.only(bottom: 20),
-  //                           child: ListTile(
-  //                             selected: true,
-  //                             shape: RoundedRectangleBorder(
-  //                                 borderRadius: BorderRadius.circular(20),
-  //                                 side: const BorderSide(
-  //                                     color: AppColors.primary)),
-  //                             onTap: () {
-  //                               timerController.intialSlot.value =
-  //                                   timerController.slotList[index].name ?? "";
-  //                               timerController.slotId.value =
-  //                                   timerController.slotList[index].sId ?? "";
-  //                               timerController.getServerTime();
-  //                               Navigator.pop(context);
-  //                             },
-  //                             title: Text(
-  //                               timerController.slotList[index].name.toString(),
-  //                               style: const TextStyle(
-  //                                   color: AppColors.primary, fontSize: 25),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     )
-  //                   : const Center(
-  //                       child: CircularProgressIndicator.adaptive())),
-  //             ),
-  //             titleTextStyle: const TextStyle(
-  //                 color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
-  //         .show();
-  //     getMyDashboardController.isPopupShowing.value = true;
-  //   });
-  // }
+  getAlerttDialog() async {
+    await Future.delayed(const Duration(microseconds: 1000), () {
+      AwesomeDialog(
+              context: context,
+              dialogType: DialogType.info,
+              animType: AnimType.bottomSlide,
+              dismissOnTouchOutside: false,
+              body: Padding(
+                padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                child: Obx(() => timerController.drawModel.value.data != null &&
+                        timerController.drawModel.value.data!.isNotEmpty
+                    ? Column(
+                        children: List.generate(
+                          timerController.drawModel.value.data!.length,
+                          (index) => Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: ListTile(
+                              selected: true,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: const BorderSide(
+                                      color: AppColors.primary)),
+                              onTap: () {
+                                timerController.intialSlot.value =
+                                    timerController.drawModel.value.data?[index]
+                                            .name ??
+                                        "";
+                                timerController.slotId.value = timerController
+                                        .drawModel.value.data?[index].sId ??
+                                    "";
+                                timerController.getServerTime();
+                                soldTicketController.getAllTicket();
+                                soldTicketListController.getSoldTicketList();
+                                getMyDashboardController.getMydashboard();
+                                Navigator.pop(context);
+                              },
+                              title: Text(
+                                timerController
+                                        .drawModel.value.data?[index].name ??
+                                    "".toString(),
+                                style: const TextStyle(
+                                    color: AppColors.primary, fontSize: 25),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator.adaptive())),
+              ),
+              titleTextStyle: const TextStyle(
+                  color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
+          .show();
+      getMyDashboardController.isPopupShowing.value = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,23 +120,23 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: Text(
-                              'Total (${soldTicketController.allticketCount})',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18),
-                            ),
-                          ),
+                          // Expanded(
+                          //   child: Text(
+                          //     'Total (${soldTicketController.allticketCount})',
+                          //     style: Theme.of(context)
+                          //         .textTheme
+                          //         .headlineSmall!
+                          //         .copyWith(
+                          //             fontWeight: FontWeight.w400,
+                          //             fontSize: 18),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () async {
-                              soldTicketController.getAllTicket();
-                              soldTicketListController.getSoldTicketList();
+                              getMyDashboardController
+                                  .selectDateForCheckPrizes(context);
                             },
                             child: Container(
                               padding:
@@ -156,7 +161,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                       ),
                     ),
                     priceCard(
-                        value: soldTicketListController.soldTicketCont
+                        value: getMyDashboardController.getModeldashBoard.value
+                                .userTicketCounts?.ticketsCount?.sold
                                 .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
@@ -164,17 +170,20 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         color: const Color(0xFF29C57F),
                         imagePath: AppIcons.prize),
                     priceCard(
-                        value:
-                            "${soldTicketController.allticketCount.value - soldTicketListController.soldTicketCont.value}"
-                                    .toString() ??
-                                "0",
+                        value: getMyDashboardController.getModeldashBoard.value
+                                .userTicketCounts?.ticketsCount?.returned
+                                .toString() ??
+                            "0",
                         date: soldTicketController.formatedDate.toString(),
                         title: "Unsold Tickets",
                         color: const Color(0xFFFF2E17),
                         imagePath: AppIcons.soldTicket),
                     priceCard(
-                        value: soldTicketController.allticketCount.value
-                            .toString(),
+                        value: getMyDashboardController.getModeldashBoard.value
+                                .userTicketCounts?.ticketsCount?.sold
+                                .toString()
+                                .toString() ??
+                            "0",
                         date: soldTicketController.formatedDate.toString(),
                         title: "Purchase Tickets",
                         color: const Color(0xFFFFBF1C),
@@ -225,7 +234,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                       .successReturnTicketList.isNotEmpty) {
                                     var res = await ApiProvider().soldTciket(
                                         saleTicketController
-                                            .successReturnTicketList);
+                                            .successReturnTicketList,
+                                        timerController.slotId.value);
                                     log("pandey---> ${res.toString()}");
                                     if (res['success'] &&
                                         res['successList'].length > 0) {
@@ -308,6 +318,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         saleTicketController.toTickets.value.isNotEmpty
                     ? () {
                         saleTicketController.validateSalesTickets(
+                          slotId: timerController.slotId.value,
                           fromNumber: int.parse(saleTicketController
                               .fromTickets.value
                               .substring(2, 7)),

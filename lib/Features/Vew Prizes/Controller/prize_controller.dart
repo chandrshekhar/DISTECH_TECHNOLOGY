@@ -38,11 +38,14 @@ class PrizesController extends GetxController {
   Future<void> getMydashboard() async {
     getMyDashboardLoadfing(true);
     var reqModel = {
+      "drawSlotId": timerController.slotId.value,
       "date": formatedDate.value,
-      "limit": 3,
+      "limit": 5,
     };
+    print("req pandey--> $reqModel");
     log(reqModel.toString());
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
+    print("dashboard-- > ${res.toString()}");
     if (res.success == true) {
       getModeldashBoard.value = res;
 
@@ -55,6 +58,7 @@ class PrizesController extends GetxController {
   Future<void> getPrize() async {
     getPrizeLoading(true);
     Map<String, dynamic> reqModel = {
+      "drawSlotId": timerController.slotId.value,
       "date": formatedDate.value,
     };
     log(reqModel.toString());
@@ -65,11 +69,5 @@ class PrizesController extends GetxController {
       getPrizeLoading(false);
     }
     getPrizeLoading(false);
-  }
-
-  @override
-  void onInit() {
-    getMydashboard();
-    super.onInit();
   }
 }

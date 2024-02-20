@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:distech_technology/Features/ReturnedTickets/Widgets/return_ticket_card.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -51,7 +53,6 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
       dateTime: formatedDate,
     );
     // soldTicketListController.searchText.value = '';
-    // soldTicketListController.semNumber.value = 0;
   }
 
   @override
@@ -71,7 +72,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                 height: AppSizes.kDefaultPadding,
               ),
               Obx(() => Text(
-                    'All Returned Tickets (${getMyReturnController.returnCount.value})',
+                    'All Returned Tickets (${getMyReturnController.totalReturn.value})',
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!
@@ -93,16 +94,17 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                         size: 20,
                       ),
                       onChanged: (value) async {
-                        // if (value.toString().isNotEmpty) {
-                        //   soldTicketListController.searchTextSave(value);
-                        // } else {
-                        //   soldTicketListController.searchText("");
-                        // }
-                        // soldTicketListController.getSoldTicketList(
-                        //     date: formatedDate,
-                        //     search: soldTicketListController.searchText.value,
-                        //     semNumber:
-                        //         soldTicketListController.semNumber.value);
+                        Timer(const Duration(milliseconds: 5000), () {
+                          if (value.toString().isNotEmpty) {
+                            getMyReturnController.searchTextSave(value);
+                          } else {
+                            getMyReturnController.searchText("");
+                          }
+                          getMyReturnController.getAllReturnTicket(
+                            dateTime: formatedDate,
+                            search: getMyReturnController.searchText.value,
+                          );
+                        });
                       },
                       maxLines: 1,
                       minLines: 1,

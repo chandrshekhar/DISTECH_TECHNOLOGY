@@ -471,9 +471,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               )
                             ]),
                           ),
-                        
-                        
-                        
+
                           const SizedBox(height: 5),
                           const CustomDivider(),
                           const SizedBox(
@@ -572,7 +570,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                               );
                             }
                           })
-                       
                         ],
                       ),
                     ),

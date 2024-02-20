@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,14 +12,20 @@ import '../Timer Controller/timer_controller.dart';
 
 class GetMyReturnController extends GetxController {
   RxInt returnCount = 0.obs;
+  RxInt totalReturn = 0.obs;
+  RxString searchText = ''.obs;
   RxList<AllReturnedTickets> returnTicketsList = <AllReturnedTickets>[].obs;
   RxBool isReturnTicketLoading = false.obs;
   RxBool isTicketValidating = false.obs;
+  RxString formatedDate = ''.obs;
   ApiProvider apiProvider = ApiProvider();
   var checkBoxForAuthor = {}.obs;
+  var checkBoxForselectTicket = {}.obs;
   RxBool isAllReturnedTicketSelected = false.obs;
   RxList<FailedSeriesList> validateTicketsList = <FailedSeriesList>[].obs;
   RxList<String> selectedReturnedTicket = <String>[].obs;
+  RxList<String> selectedListForReturn = <String>[].obs;
+  RxBool isAllTicketSelected = false.obs;
 
   RxBool addButtonEnable = false.obs;
   final TimerController timerController = Get.find();
@@ -27,18 +36,32 @@ class GetMyReturnController extends GetxController {
   var toLetterController = TextEditingController().obs;
   var fromNumberController = TextEditingController().obs;
   var toNumberController = TextEditingController().obs;
-  getAllReturnTicket({String? dateTime}) async {
+  searchTextSave(String value) {
+    searchText.value = value;
+  }
+
+  getAllReturnTicket({String? dateTime, String? search}) async {
     Map<String, dynamic> reqModel = (dateTime == null || dateTime.isEmpty)
         ? {
-            // "offset": 0,
-            // "limit": 1000,
+            "offset": 0,
+            "limit": 500,
+            "drawSlotId": timerController.slotId.value,
+            "search": search ?? "",
           }
-        : {"date": dateTime};
+        : {
+            "offset": 0,
+            "limit": 500,
+            "drawSlotId": timerController.slotId.value,
+            "search": search ?? "",
+            "date": dateTime
+          };
     isReturnTicketLoading(true);
+    log("Returned ticket-=-> $reqModel");
     var res = await apiProvider.getMyReturn(reqModel);
     if (res.allReturnedTickets != null) {
       isReturnTicketLoading(false);
-      returnCount.value = res.returnedCount!;
+      returnCount.value = res.remainingReturns!;
+      totalReturn.value = res.returnedCount ?? 0;
       returnTicketsList.value = res.allReturnedTickets!;
     } else {
       returnTicketsList.value = [];
@@ -154,6 +177,29 @@ class GetMyReturnController extends GetxController {
 
   // delete returned ticket
 
+  void ReturnTicketInList() async {
+    if (selectedReturnedTicket.isNotEmpty) {
+      var res = await apiProvider.deleteMyReturn(reqModel: {
+        "drawSlotId": timerController.slotId.value,
+        "returnIds": selectedReturnedTicket,
+        "userId": profileController.userProfileModel.value.user?.sId ?? ""
+      });
+      if (res['success']) {
+        Get.snackbar("Success", "${res['count']} Return Deleted Successfully",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        getAllReturnTicket();
+        isAllReturnedTicketSelected(false);
+        selectedReturnedTicket.clear();
+      } else {
+        Get.snackbar("Error!", res['error']['message'],
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } else {
+      Get.snackbar("Error!", "No ticket for delete",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
   void deleteReturnedTicket() async {
     if (selectedReturnedTicket.isNotEmpty) {
       var res = await apiProvider.deleteMyReturn(reqModel: {
@@ -182,6 +228,16 @@ class GetMyReturnController extends GetxController {
       selectedReturnedTicket.add(sId.toString());
     } else {
       selectedReturnedTicket.remove(sId);
+    }
+    update(); // This will trigger UI update
+  }
+
+  void checkedBoxClickedOnReturn(String sId, bool val) {
+    checkBoxForselectTicket[sId] = val;
+    if (val == true) {
+      selectedListForReturn.add(sId.toString());
+    } else {
+      selectedListForReturn.remove(sId);
     }
     update(); // This will trigger UI update
   }
@@ -237,6 +293,36 @@ class GetMyReturnController extends GetxController {
       clearText();
       isTicketValidating(false);
       buttonEnabled();
+    }
+  }
+
+//void selectDate() {}
+  // DateTime selectedDate = DateTime.now();
+
+  Future<void> selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              // primary: MyColors.primary,
+              primary: Theme.of(context).colorScheme.primary,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            //.dialogBackgroundColor:Colors.blue[900],
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
     }
   }
 }

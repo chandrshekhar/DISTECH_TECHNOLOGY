@@ -66,6 +66,7 @@ class SaleTicketsController extends GetxController {
     required String fromLetter2,
     required String toLetter1,
     required String toLetter2,
+    required String slotId,
   }) async {
     isTicketValidating(true);
 
@@ -88,6 +89,7 @@ class SaleTicketsController extends GetxController {
       isTicketValidating(false);
     } else {
       Map<String, dynamic> reqModel = {
+         "drawSlotId": slotId,
         "fromDate": fromDateController.value.text,
         "toDate": toDateController.value.text,
         "fromLetter": fromLetter1 + fromLetter2,

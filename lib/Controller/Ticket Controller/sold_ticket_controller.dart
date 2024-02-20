@@ -46,24 +46,25 @@ class SoldTicketController extends GetxController {
 
     Map<String, dynamic> reqModel = (date == null || date.isEmpty)
         ? {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
-            
           }
         : {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "search": search ?? "",
             "SEM": semNumber,
             "date": date,
-          
           };
     isAllTicketLoading(true);
     if (kDebugMode) {
       print(reqModel);
     }
+    print("req--> Model  $reqModel");
     var res = await apiProvider.getAllTicket(reqModel);
 
     // ignore: prefer_for_elements_to_map_fromiterable
@@ -105,8 +106,8 @@ class SoldTicketController extends GetxController {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // String barcodeScanRes = "0VY5WAG8Y";
-    var data = await apiProvider.verifyTicket(barcodeScanRes.toString().trim(),
-        formatedDate.value);
+    var data = await apiProvider.verifyTicket(
+        barcodeScanRes.toString().trim(), formatedDate.value);
     log("data--> $data");
     if (data['valid'] == true && data['success']) {
       scanedTicket.add(data["ticket"]["ticketId"]);
@@ -166,7 +167,7 @@ class SoldTicketController extends GetxController {
           // var res = await ApiProvider().soldTciket(
           //   scanedTicket,
           //   formatedDate.value
-         
+
           // );
 
           // log("return Res--> $res");
@@ -216,7 +217,6 @@ class SoldTicketController extends GetxController {
           date: formatedDate.value,
           search: searchText.value,
           semNumber: semNumber.value);
-      print("date--> $formatedDate");
     }
   }
 

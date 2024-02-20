@@ -20,15 +20,15 @@ class PurchaseController extends GetxController {
       {String? search, int? semNumber, String? dateTime}) async {
     Map<String, dynamic> reqModel = dateTime == null || dateTime.isEmpty
         ? {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
-        
           }
         : {
+            "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "date": dateTime,
-         
           };
     isPurchaLoading(true);
     log(reqModel.toString());
@@ -57,7 +57,6 @@ class PurchaseController extends GetxController {
       "orderId": orderID,
       "offset": 0,
       "limit": purDetLimit.value,
-     
     };
 
     isPurchaseDetailsLoading(true);

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Widgets/add_ticket_list-widget.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
@@ -23,6 +24,7 @@ class SaleTicketsScreen extends StatelessWidget {
 
   final saleTicketController = Get.put(SaleTicketsController());
   final soldTicketController = Get.put(SoldTicketController());
+  final timerController = Get.put(TimerController());
 
   // focus node for moving next field
   final focus1 = FocusNode();
@@ -113,7 +115,8 @@ class SaleTicketsScreen extends StatelessWidget {
                           if (saleTicketController
                               .successReturnTicketList.isNotEmpty) {
                             var res = await ApiProvider().soldTciket(
-                                saleTicketController.successReturnTicketList);
+                                saleTicketController.successReturnTicketList,
+                                timerController.slotId.value);
                             log("pandey---> ${res.toString()}");
                             if (res['success'] &&
                                 res['successList'].length > 0) {
@@ -188,6 +191,7 @@ class SaleTicketsScreen extends StatelessWidget {
                         saleTicketController.toTickets.value.isNotEmpty
                     ? () {
                         saleTicketController.validateSalesTickets(
+                          slotId: timerController.slotId.value,
                           fromNumber: int.parse(saleTicketController
                               .fromTickets.value
                               .substring(2, 7)),
@@ -345,6 +349,7 @@ class SaleTicketsScreen extends StatelessWidget {
                         onTap: saleTicketController.addButtonEnable.value
                             ? () {
                                 saleTicketController.validateSalesTickets(
+                                  slotId: timerController.slotId.value,
                                     fromNumber: int.parse(
                                         saleTicketController
                                             .fromNumberController.value.text,
