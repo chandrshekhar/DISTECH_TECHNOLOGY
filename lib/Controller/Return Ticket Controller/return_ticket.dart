@@ -36,6 +36,15 @@ class GetMyReturnController extends GetxController {
     searchText.value = value;
   }
 
+  void moveNextFieldChar() {
+    toLetterController.value.text = fromLetterController.value.text[0];
+  }
+
+  void moveNumberNext() {
+    toNumberController.value.text =
+        fromNumberController.value.text.toString().substring(0, 3);
+  }
+
   getAllReturnTicket({String? dateTime, String? search}) async {
     Map<String, dynamic> reqModel = (dateTime == null || dateTime.isEmpty)
         ? {

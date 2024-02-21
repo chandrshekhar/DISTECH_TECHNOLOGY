@@ -49,7 +49,7 @@ class PrizesController extends GetxController {
     if (res.success == true) {
       getModeldashBoard.value = res;
 
-      await getPrize();
+      // await getPrize();
       getMyDashboardLoadfing(false);
     }
     getMyDashboardLoadfing(false);

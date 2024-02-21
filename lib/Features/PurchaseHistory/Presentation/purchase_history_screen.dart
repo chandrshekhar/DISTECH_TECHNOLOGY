@@ -96,7 +96,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         size: 20,
                       ),
                       onChanged: (value) {
-                        // filterSearch(value!);
+                        if (value.toString().isNotEmpty) {
+                          purchaesController.getAllPurchaesTicket(search: value);
+                        }
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -206,19 +208,25 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                               ),
                               width: MediaQuery.of(context).size.width,
                               child: Obx(() => purchaesController
-                                      .puchaseList.isNotEmpty
-                                  ? PurchesHistoryTicketWidget(
-                                      date: dateFormat,
+                                      .isPurchaLoading.value
+                                  ? const Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive(),
                                     )
-                                  : purchaesController.isPurchaLoading.value ==
-                                          true
-                                      ? const Center(
-                                          child: CircularProgressIndicator
-                                              .adaptive(),
+                                  : purchaesController.puchaseList.isNotEmpty
+                                      ? PurchesHistoryTicketWidget(
+                                          date: dateFormat,
                                         )
-                                      : const Center(
-                                          child: Text("No tickets found"),
-                                        ))))
+                                      : purchaesController
+                                                  .isPurchaLoading.value ==
+                                              true
+                                          ? const Center(
+                                              child: CircularProgressIndicator
+                                                  .adaptive(),
+                                            )
+                                          : const Center(
+                                              child: Text("No tickets found"),
+                                            ))))
                     ],
                   ),
                 ),

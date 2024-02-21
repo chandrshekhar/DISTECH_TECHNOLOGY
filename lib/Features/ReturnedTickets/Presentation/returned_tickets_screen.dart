@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:distech_technology/Features/ReturnedTickets/Widgets/return_ticket_card.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';

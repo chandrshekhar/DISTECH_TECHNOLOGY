@@ -68,15 +68,15 @@ class SoldTicketController extends GetxController {
     var res = await apiProvider.getAllTicket(reqModel);
 
     // ignore: prefer_for_elements_to_map_fromiterable
-    var cba = Map.fromIterable(res.tickets!, key: (v) {
-      return v.sId;
-    }, value: (v) {
-      return false;
-    });
+    // var cba = Map.fromIterable(res.tickets!, key: (v) {
+    //   return v.sId;
+    // }, value: (v) {
+    //   return false;
+    // });
     allTicketList.value = res.tickets!;
     allticketCount.value = res.count!;
-    checkBoxForAuthor.value = cba;
-    isAllSelect.value = false;
+    // checkBoxForAuthor.value = cba;
+    // isAllSelect.value = false;
     isAllTicketLoading(false);
   }
 

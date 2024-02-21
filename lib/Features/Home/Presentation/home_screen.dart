@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const SupportScreen(), // 9
     const ResultScreen(), //10
     SaleTicketsScreen(), // 11
-    const ReturnAllTicketsScreen() // 12
+    // const ReturnAllTicketsScreen() // 12
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -154,10 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedIndex = 11;
           });
-        case 12:
-          setState(() {
-            selectedIndex = 12;
-          });
+      
       }
     });
   }
@@ -415,14 +412,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Return Tickets"),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(12);
-                                      },
-                                      icon: AppIcons.filterIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Return All Tickets"),
+                                  // DrawerItem(
+                                  //     onTap: () {
+                                  //       closeDrawer();
+                                  //       navigate(12);
+                                  //     },
+                                  //     icon: AppIcons.filterIcon,
+                                  //     bgColor: AppColors.transparent,
+                                  //     label: "Return All Tickets"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
                                 title: "Verify",

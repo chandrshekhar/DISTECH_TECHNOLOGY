@@ -291,6 +291,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     onChanged: (v) {
                                       getMyreturnController.buttonEnabled();
                                       if (v.toString().length == 2) {
+                                        getMyreturnController
+                                            .moveNextFieldChar();
                                         FocusScope.of(context).nextFocus();
                                       }
                                     },
@@ -365,6 +367,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                     onChanged: (v) {
                                       getMyreturnController.buttonEnabled();
                                       if (v.toString().length == 5) {
+                                        getMyreturnController.moveNumberNext();
                                         FocusScope.of(context).nextFocus();
                                       }
                                     },
@@ -438,7 +441,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                           getMyreturnController
                                               .validateReturnTicket(
                                                   "${profileController.userProfileModel.value.user!.sId}",
-                                                  formatedDate ?? "",timerController.slotId.value);
+                                                  formatedDate ?? "",
+                                                  timerController.slotId.value);
                                           getMyreturnController.buttonEnabled();
                                         }
                                       : null,
@@ -593,7 +597,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                                 .validateTicketsList,
                                             formatedDate!,
                                             profileController.userProfileModel
-                                                .value.user!.sId!,timerController.slotId.value);
+                                                .value.user!.sId!,
+                                            timerController.slotId.value);
                                     if (res.success) {
                                       await getMyreturnController
                                           .getAllReturnTicket(

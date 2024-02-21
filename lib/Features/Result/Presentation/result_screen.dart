@@ -56,7 +56,7 @@ class _ResultScreenState extends State<ResultScreen> {
                             onTap: () async {
                               await getMyDashboardController
                                   .selectDateForCheckPrizes(context);
-                              await getMyDashboardController.getMydashboard();
+                              // await getMyDashboardController.getMydashboard();
                               await getMyDashboardController.getPrize();
                             },
                             child: Container(

@@ -14,7 +14,6 @@ import 'package:distech_technology/Widgets/heade_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../Controller/Timer Controller/timer_controller.dart';
 import '../../Sale Tickets/Widgets/scanner_card.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';

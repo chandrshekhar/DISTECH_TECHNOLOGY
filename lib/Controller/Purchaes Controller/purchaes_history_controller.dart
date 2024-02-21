@@ -23,18 +23,20 @@ class PurchaseController extends GetxController {
             "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
+            "search": search ?? ""
           }
         : {
             "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
             "date": dateTime,
+            "search": search ?? ""
           };
     isPurchaLoading(true);
     log(reqModel.toString());
     var res = await apiProvider.getAllPurcHistoryTicket(reqModel);
     if (res.errorMsg == null) {
-      if (res.purchases!.isNotEmpty) {
+      if (res.purchases != null && res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
         countPurchaesTickets.value = res.count!;

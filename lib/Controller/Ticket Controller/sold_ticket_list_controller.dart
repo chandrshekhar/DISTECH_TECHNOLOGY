@@ -100,7 +100,7 @@ class SoldTicketListController extends GetxController {
       soldTicketList.value = res.sales!;
       soldTicketCont.value = res.count!;
     } else {
-      soldTicketList.value = res.sales!;
+      soldTicketList.value = res.sales ?? [];
       soldTicketCont.value = 0;
       isSoldListLoading(false);
     }
