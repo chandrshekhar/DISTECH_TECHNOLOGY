@@ -34,9 +34,10 @@ class ScanBarCodeScreen extends StatelessWidget {
                             fontSize: 20,
                           )),
                       TextSpan(
-                        text: scanbarcodeController.dateFormat.isEmpty
+                        text: scanbarcodeController
+                                .dateFormatValidateTicket.isEmpty
                             ? ""
-                            : '(${scanbarcodeController.dateFormat})',
+                            : '(${scanbarcodeController.dateFormatValidateTicket})',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
@@ -67,7 +68,8 @@ class ScanBarCodeScreen extends StatelessWidget {
           const SizedBox(height: 10),
           //   Text("Ticket--> ${scanbarcodeController.barcodeValue}"),
 
-          scanbarcodeController.dateFormat.toString().isNotEmpty
+          Obx(() => scanbarcodeController
+                  .dateFormatValidateTicket.value.isNotEmpty
               ? Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                   InkWell(
                     onTap: () {
@@ -105,12 +107,15 @@ class ScanBarCodeScreen extends StatelessWidget {
                           ))),
                   const SizedBox(width: 10),
                   Obx(() => InkWell(
-                        onTap: () {
-                          if (scanbarcodeController
-                              .barcodeController.value.text.isNotEmpty) {
-                            scanbarcodeController.verifyTicketById();
-                          }
-                        },
+                        onTap: scanbarcodeController
+                                .barcodeController.value.text.isEmpty
+                            ? null
+                            : () {
+                                if (scanbarcodeController
+                                    .barcodeController.value.text.isNotEmpty) {
+                                  scanbarcodeController.verifyTicketById();
+                                }
+                              },
                         child: Container(
                           padding:
                               EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
@@ -129,7 +134,7 @@ class ScanBarCodeScreen extends StatelessWidget {
                         ),
                       )),
                 ])
-              : const SizedBox.shrink(),
+              : const SizedBox.shrink()),
           const SizedBox(height: 20),
           Expanded(
             child: Obx(

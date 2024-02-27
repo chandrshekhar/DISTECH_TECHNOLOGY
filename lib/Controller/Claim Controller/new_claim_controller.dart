@@ -33,7 +33,7 @@ class NewClaimController extends GetxController {
   Rx<ClaimToTicketModel> claimToTicketModel = ClaimToTicketModel().obs;
   RxString barCode1 = "".obs;
   RxString barCode2 = "".obs;
-  void scanBarCode(bool fromTicket, BuildContext context) async {
+  void scanBarCode(bool fromTicket, BuildContext context, String slodId) async {
     String? barcodeScanRes = await AppHelper().scanBarCode();
     print("bar code eresnsuydg ${barcodeScanRes.toString()}");
 
@@ -41,7 +41,7 @@ class NewClaimController extends GetxController {
       fromTicketScaning(true);
       barCode1.value = barcodeScanRes ?? "";
       claimFromTicketModel.value = await apiProvider.verifyFromTicket(
-          barcodeScanRes ?? "", dateFormat.value);
+          barcodeScanRes ?? "", dateFormat.value, slodId);
       if (claimFromTicketModel.value.success == false) {
         // ignore: use_build_context_synchronously
         AwesomeDialog(
@@ -70,7 +70,7 @@ class NewClaimController extends GetxController {
       toTicketScaing(true);
       barCode2.value = barcodeScanRes ?? "";
       claimToTicketModel.value = await apiProvider.verifyToTicket(
-          barcodeScanRes ?? "", dateFormat.value);
+          barcodeScanRes ?? "", dateFormat.value, slodId);
 
       if (claimToTicketModel.value.success == false) {
         toTicketScaing(false);
@@ -125,6 +125,7 @@ class NewClaimController extends GetxController {
 
   RxInt totalCliamTicket = 0.obs;
   RxInt totalAmount = 0.obs;
+  RxString drawSlotId = ''.obs;
   RxList<ClaimModel> ticketClaimList = <ClaimModel>[].obs;
   handleAdd(BuildContext context) {
     print("FromTicket--> ${claimFromTicketModel.value.ticket!.prize!.name}");
@@ -156,7 +157,9 @@ class NewClaimController extends GetxController {
       );
       totalAmount.value = totalCliamTicket.value *
           claimFromTicketModel.value.ticket!.prize!.prizeAmount!;
+      drawSlotId.value = claimFromTicketModel.value.ticket?.drawSlotId ?? "";
       ticketClaimList.add(ClaimModel(
+          drawSlotId: drawSlotId.value,
           fromTicket: claimFromTicketModel.value.ticket!.ticketLetter!,
           toTicket: claimToTicketModel.value.ticket!.ticketLetter!,
           totalAmount: totalAmount.value,
@@ -209,6 +212,7 @@ class NewClaimController extends GetxController {
     var reqModel = {
       "ticketList": ticketClaimList
           .map((element) => {
+                "drawSlotId": element.drawSlotId,
                 "date": element.ticketDate,
                 "fromTicket": createSignature(element.fromTickeCode),
                 "toTicket": createSignature(element.toTicketCode)
@@ -253,7 +257,6 @@ class NewClaimController extends GetxController {
       }
 
       ticketClaimList.clear();
-
       log("res--> ${resp.toString()}");
     }
   }
@@ -289,6 +292,7 @@ class ClaimModel {
   String fromTickeCode;
   String toTicketCode;
   String ticketDate;
+  String drawSlotId;
 
   ClaimModel(
       {required this.fromTicket,
@@ -297,5 +301,6 @@ class ClaimModel {
       required this.totalTicket,
       required this.fromTickeCode,
       required this.toTicketCode,
-      required this.ticketDate});
+      required this.ticketDate,
+      required this.drawSlotId});
 }

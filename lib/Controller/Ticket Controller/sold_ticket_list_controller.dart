@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
@@ -98,7 +97,7 @@ class SoldTicketListController extends GetxController {
     if (res.sales != null && res.sales!.isNotEmpty) {
       isSoldListLoading(false);
       soldTicketList.value = res.sales!;
-      soldTicketCont.value = res.count!;
+      soldTicketCont.value = res.totalCount!;
     } else {
       soldTicketList.value = res.sales ?? [];
       soldTicketCont.value = 0;

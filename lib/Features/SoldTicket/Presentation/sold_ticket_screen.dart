@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_list_widget.dart';
 import 'package:distech_technology/Utils/Toast/app_toast.dart';
@@ -77,11 +79,15 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                           } else {
                             soldTicketListController.searchText("");
                           }
-                          soldTicketListController.getSoldTicketList(
-                              date: soldTicketListController.formatedDate.value,
-                              search: soldTicketListController.searchText.value,
-                              semNumber:
-                                  soldTicketListController.semNumber.value);
+                          Timer(const Duration(milliseconds: 1000), () {
+                            soldTicketListController.getSoldTicketList(
+                                date:
+                                    soldTicketListController.formatedDate.value,
+                                search:
+                                    soldTicketListController.searchText.value,
+                                semNumber:
+                                    soldTicketListController.semNumber.value);
+                          });
                         }
                       },
                       maxLines: 1,

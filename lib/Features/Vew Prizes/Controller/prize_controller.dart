@@ -39,11 +39,12 @@ class PrizesController extends GetxController {
     getMyDashboardLoadfing(true);
     var reqModel = {
       "drawSlotId": timerController.slotId.value,
-      "date": formatedDate.value,
+      "date": formatedDate.value.isEmpty
+          ? formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd")
+          : formatedDate.value,
       "limit": 5,
     };
     // print("req pandey--> $reqModel");
-    log(reqModel.toString());
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
     // print("dashboard-- > ${res.toString()}");
     if (res.success == true) {

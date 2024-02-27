@@ -1,3 +1,4 @@
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class NewClaimScreen extends StatefulWidget {
 
 class _NewClaimScreenState extends State<NewClaimScreen> {
   final newClaimController = Get.put(NewClaimController());
+
+  final timerController = Get.put(TimerController());
   @override
   void initState() {
     // TODO: implement initState
@@ -80,7 +83,7 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                           message: "Please select date",
                           messageColor: Colors.white);
                     } else {
-                      newClaimController.scanBarCode(true, context);
+                      newClaimController.scanBarCode(true, context, timerController.slotId.value);
                     }
                   },
                 ),
@@ -91,7 +94,7 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                           title: "To Tickets",
                           subTitle: newClaimController.toTicketScanValue.value,
                           onTap: () {
-                            newClaimController.scanBarCode(false, context);
+                            newClaimController.scanBarCode(false, context, timerController.slotId.value);
                           })
                       : const SizedBox.shrink(),
                 ),

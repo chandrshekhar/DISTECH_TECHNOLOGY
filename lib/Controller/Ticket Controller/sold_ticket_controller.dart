@@ -107,7 +107,7 @@ class SoldTicketController extends GetxController {
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // String barcodeScanRes = "0VY5WAG8Y";
     var data = await apiProvider.verifyTicket(
-        barcodeScanRes.toString().trim(), formatedDate.value);
+        barcodeScanRes.toString().trim(), formatedDate.value,timerController.slotId.value);
     log("data--> $data");
     if (data['valid'] == true && data['success']) {
       scanedTicket.add(data["ticket"]["ticketId"]);

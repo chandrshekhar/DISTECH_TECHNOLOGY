@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_list.dart';
@@ -192,10 +194,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         } else {
                           soldTicketController.searchText("");
                         }
-                        soldTicketController.getAllTicket(
-                            search: soldTicketController.searchText.value,
-                            semNumber: soldTicketController.semNumber.value,
-                            date: soldTicketController.formatedDate.value);
+                        Timer(const Duration(milliseconds: 1000), () {
+                          soldTicketController.getAllTicket(
+                              search: soldTicketController.searchText.value,
+                              semNumber: soldTicketController.semNumber.value,
+                              date: soldTicketController.formatedDate.value);
+                        });
                       },
                       maxLines: 1,
                       minLines: 1,

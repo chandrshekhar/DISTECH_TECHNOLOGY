@@ -1,11 +1,11 @@
 class Urls {
   // static const String _baseUrl =
   //     "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
-  static const String _baseUrl =
-      "https://api.singhamlottery.in/api/v1"; // production
-
   // static const String _baseUrl =
-  //     "https://devapi.singhamlottery.in/api/v1"; //dev api
+  //     "https://api.singhamlottery.in/api/v1"; // production
+
+  static const String _baseUrl =
+      "https://devapi.singhamlottery.in/api/v1"; //dev api
   static const String encKey1 =
       "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
   static const String encKey2 =
@@ -49,4 +49,8 @@ class Urls {
   static const String getMyclaims = "$_baseUrl/users/get-my-claims-date";
   static const String claimTicket =
       "$_baseUrl/lottery/claim-ticket-series-request-list";
+
+
+/// billing 
+ static const String myBills = '';
 }

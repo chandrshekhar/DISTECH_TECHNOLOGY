@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/app_strate_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Features/Bills/Presentation/my_bills_screen.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_main.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
@@ -27,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/Profile Controller/profile_controller.dart';
+import '../../Bills/Presentation/view_bills_screen.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
 import '../../ReturnUnsoldTicket/Presentation/returnall_tickets-screen.dart';
@@ -63,11 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
     const SupportScreen(), // 9
     const ResultScreen(), //10
     SaleTicketsScreen(), // 11
-    // const ReturnAllTicketsScreen() // 12
+    const MyBillsScreen() // 12
   ];
 
   final userProfileController = Get.put(ProfileController());
   final timerController = Get.put(TimerController());
+  late AppStateController appStateController;
 
   //Close Drawer if open
   void closeDrawer() {
@@ -81,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    appStateController = Get.put(AppStateController());
     callProfile();
   }
 
@@ -154,7 +159,10 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedIndex = 11;
           });
-      
+        case 12:
+          setState(() {
+            selectedIndex = 12;
+          });
       }
     });
   }
@@ -464,6 +472,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bgColor: AppColors.transparent,
                                       label: "My Claim Request"),
                                 ])),
+                        Obx(() => CustomExpansionPanel(
+                                title: "Billing",
+                                onExpansionChanged: (v) {
+                                  // userProfileController.setExpansion(2);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isExpansionList[2],
+                                children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(12);
+                                      },
+                                      icon: AppIcons.filterIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "My Bills"),
+                                ])),
                         CustomExpansionPanel(
                             isIconShowing: false,
                             title: "Support",
@@ -569,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: AppColors.darkGrey.withOpacity(0.7),
                                   ))),
                       Text(
-                        'App V0.1.1',
+                        'App V0.3.13',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: AppColors.darkGrey.withOpacity(0.7)),
                       )

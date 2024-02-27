@@ -39,7 +39,7 @@ class PurchaseController extends GetxController {
       if (res.purchases != null && res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
-        countPurchaesTickets.value = res.count!;
+        countPurchaesTickets.value = res.totalQuantity??0;
       } else {
         countPurchaesTickets.value = 0;
         puchaseList.clear();

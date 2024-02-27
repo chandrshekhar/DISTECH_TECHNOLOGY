@@ -641,6 +641,7 @@ class ApiProvider {
   Future<Map<String, dynamic>> verifyTicket(
     String barCode,
     String date,
+    String slotId
   ) async {
     Response response;
     String token = await localStorageService
@@ -649,6 +650,7 @@ class ApiProvider {
     Map reqModel = {
       "id": barCode.trim(),
       'date': date,
+      "drawSlotId":slotId
     };
 
     log("reqModel-- >$reqModel");
@@ -673,12 +675,12 @@ class ApiProvider {
   }
 
   /// verify ticket avaliabilty
-  Future<ClaimToTicketModel> verifyToTicket(String barCode, String date) async {
+  Future<ClaimToTicketModel> verifyToTicket(String barCode, String date,String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"barCode": barCode.trim(), 'date': date};
+    Map reqModel = {"barCode": barCode.trim(), 'date': date,"drawSlotId":slotId};
 
     log("reqModel-- >$reqModel");
     try {
@@ -703,12 +705,12 @@ class ApiProvider {
 
   /// verify ticket fromTickey
   Future<ClaimFromTicketModel> verifyFromTicket(
-      String barCode, String date) async {
+      String barCode, String date, String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"barCode": barCode.trim(), 'date': date};
+    Map reqModel = {"barCode": barCode.trim(), 'date': date,"drawSlotId":slotId};
 
     log("reqModel-- >$reqModel");
     try {

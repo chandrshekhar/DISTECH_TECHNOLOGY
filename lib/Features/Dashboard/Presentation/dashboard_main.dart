@@ -74,8 +74,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                         .drawModel.value.data?[index].sId ??
                                     "";
                                 timerController.getServerTime();
-                                soldTicketController.getAllTicket();
-                                soldTicketListController.getSoldTicketList();
+                                // soldTicketController.getAllTicket();
+                                // soldTicketListController.getSoldTicketList();
                                 getMyDashboardController.getMydashboard();
                                 Navigator.pop(context);
                               },

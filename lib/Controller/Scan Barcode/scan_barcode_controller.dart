@@ -20,7 +20,7 @@ class ScanBarcodeController extends GetxController {
   RxString barcodeValue = "NA".obs;
   RxString invalidString = ''.obs;
   RxString ticketId = ''.obs;
-  RxString dateFormat = ''.obs;
+  RxString dateFormatValidateTicket = ''.obs;
   RxString select = "Please Scan".obs;
   final purchaseController = Get.put(PurchaseController());
   final timerController = Get.put(TimerController());
@@ -39,7 +39,7 @@ class ScanBarcodeController extends GetxController {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-      dateFormat.value = formatedDate;
+      dateFormatValidateTicket.value = formatedDate;
       purchaseController.getAllPurchaesTicket(dateTime: formatedDate);
       invalidString.value = "";
       // scanbarcodeController.barcodeValue.value = "NA";
@@ -49,7 +49,9 @@ class ScanBarcodeController extends GetxController {
 
   Future<void> verifyTicketById() async {
     scanTickModel.value = await apiProvider.verifyTicketbyID(
-        ticketId: barcodeController.value.text.trim(), date: dateFormat.value);
+        ticketId: barcodeController.value.text.trim(),
+        date: dateFormatValidateTicket.value,
+        slotId: timerController.slotId.value);
     barcodeController.value.clear();
   }
 
@@ -57,18 +59,23 @@ class ScanBarcodeController extends GetxController {
     invalidString.value = "";
     barcodeValue.value = "NA";
     ticketId.value = "";
+
     try {
       isTicketScanning(true);
       String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
       barcodeValue.value = barcodeScanRes;
       var data = await apiProvider.verifyTicket(
-          barcodeValue.value.toString().trim(), dateFormat.value);
+          barcodeValue.value.toString().trim(),
+          dateFormatValidateTicket.value,
+          timerController.slotId.value);
       log("data--> $data");
       if (data['valid'] == true && data['success']) {
         ticketId.value = data["ticket"]["ticketId"];
         scanTickModel.value = await apiProvider.verifyTicketbyID(
-            ticketId: ticketId.value, date: dateFormat.value);
+            ticketId: ticketId.value,
+            date: dateFormatValidateTicket.value,
+            slotId: timerController.slotId.value);
       } else {
         invalidString.value = data['message'];
         scanTickModel.value = ScanTicketModel();

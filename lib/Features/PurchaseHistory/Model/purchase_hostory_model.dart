@@ -3,13 +3,14 @@ class PurchaesModel {
   List<Purchases>? purchases;
   int? count;
   String? errorMsg;
+  int? totalQuantity;
 
-  PurchaesModel({
-    this.success,
-    this.purchases,
-    this.count,
-    this.errorMsg,
-  });
+  PurchaesModel(
+      {this.success,
+      this.purchases,
+      this.count,
+      this.errorMsg,
+      this.totalQuantity});
   PurchaesModel.withError(String errorMsg) {
     errorMsg = errorMsg;
   }
@@ -23,6 +24,7 @@ class PurchaesModel {
       });
     }
     count = json['count'];
+    totalQuantity = json['totalQuantity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +34,7 @@ class PurchaesModel {
       data['purchases'] = purchases!.map((v) => v.toJson()).toList();
     }
     data['count'] = count;
+    data['totalQuantity'] = totalQuantity;
     return data;
   }
 }
@@ -79,7 +82,7 @@ class Purchases {
     data['qrCode'] = qrCode;
     data['createdAt'] = createdAt;
     data['fromTicket'] = fromTicket;
-     data['fromNumber'] = fromNumber;
+    data['fromNumber'] = fromNumber;
     data['toNumber'] = toNumber;
     data['toTicket'] = toTicket;
     data['count'] = count;

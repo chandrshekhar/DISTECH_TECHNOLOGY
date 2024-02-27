@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class SaleTicketsController extends GetxController {
   RxString toTicketbarcode = ''.obs;
   RxString fromTickets = ''.obs;
   RxString toTickets = ''.obs;
+
+
+  final timerController =Get.put(TimerController());
 
   ApiProvider apiProvider = ApiProvider();
   void isScanningTicketsMethod(bool val) {
@@ -89,7 +93,7 @@ class SaleTicketsController extends GetxController {
       isTicketValidating(false);
     } else {
       Map<String, dynamic> reqModel = {
-         "drawSlotId": slotId,
+        "drawSlotId": slotId,
         "fromDate": fromDateController.value.text,
         "toDate": toDateController.value.text,
         "fromLetter": fromLetter1 + fromLetter2,
@@ -102,7 +106,7 @@ class SaleTicketsController extends GetxController {
       var res = await apiProvider.validateSaleTicket(reqModel);
       if (res['success']) {
         isTicketValidating(false);
-        log("data--> ${res.toString()}");
+
         if (res['successList'].length > 0) {
           Get.snackbar("Ticket", res['successList'][0]['message'],
               backgroundColor: Colors.green);
@@ -161,7 +165,7 @@ class SaleTicketsController extends GetxController {
       ticketScannig(true);
       fromTicketBarcode.value = barcodeScanRes ?? "";
       var res = await apiProvider.verifyTicket(
-          barcodeScanRes!, fromDateController.value.text);
+          barcodeScanRes!, fromDateController.value.text,timerController.slotId.value);
       if (res['success']) {
         fromTickets.value = res['ticket']['ticketId'];
       } else {
@@ -172,7 +176,7 @@ class SaleTicketsController extends GetxController {
       ticketScannig(true);
       toTicketbarcode.value = barcodeScanRes ?? "";
       var res = await apiProvider.verifyTicket(
-          barcodeScanRes ?? "", toDateController.value.text);
+          barcodeScanRes ?? "", toDateController.value.text,timerController.slotId.value);
       if (res['success']) {
         toTickets.value = res['ticket']['ticketId'];
       } else {

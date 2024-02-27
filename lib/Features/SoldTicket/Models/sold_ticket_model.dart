@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 class SoldTicketModel {
   bool? success;
   List<Sales>? sales;
   int? count;
+  int? totalCount;
   String? error;
 
-  SoldTicketModel({this.success, this.sales, this.count, this.error});
+  SoldTicketModel(
+      {this.success, this.sales, this.count, this.error, this.totalCount});
 
   SoldTicketModel.withError(String err) {
     error = err;
@@ -19,6 +23,7 @@ class SoldTicketModel {
       });
     }
     count = json['count'];
+    totalCount = json['totalQuantity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +33,7 @@ class SoldTicketModel {
       data['sales'] = sales!.map((v) => v.toJson()).toList();
     }
     data['count'] = count;
+    data['totalQuantity'] = totalCount;
     return data;
   }
 }
