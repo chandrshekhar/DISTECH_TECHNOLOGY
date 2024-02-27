@@ -1,3 +1,5 @@
+import 'package:base32/base32.dart';
+
 class Urls {
   // static const String _baseUrl =
   //     "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
@@ -52,5 +54,5 @@ class Urls {
 
 
 /// billing 
- static const String myBills = '';
+ static const String myBills = "$_baseUrl/orders/view-user-bill/";
 }

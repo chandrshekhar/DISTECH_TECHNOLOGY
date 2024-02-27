@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Features/Bills/Controller/my_bislls_controller.dart';
 import 'package:distech_technology/Features/Bills/Presentation/view_bills_screen.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,133 +54,170 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
               const Text("MY BILLS",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
               const SizedBox(height: 20),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                controller: scrollController,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    margin: const EdgeInsets.only(bottom: 5),
-                    decoration: BoxDecoration(
-                        color: AppColors.lightGrey.withOpacity(0.5)),
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "SL",
-                                )),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "TOTAL REMAINING AMOUNT",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: AppColors.black,
-                                      ),
-                                )),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ViewBillsScreen()));
-                              },
-                              child: const Icon(
-                                Icons.visibility,
-                                size: 20,
-                              ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Text(index.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.primaryDark
-                                                .withOpacity(0.5)))),
-                            Expanded(
-                                flex: 3,
-                                child: Text("1234567",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.primaryDark
-                                                .withOpacity(0.5)))),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Text(
-                                  "DATE",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: AppColors.black,
-                                      ),
-                                )),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "TOTAL PAYABLE AMOUNT",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: AppColors.black,
-                                      ),
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Text("23/2/2023",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.primaryDark
-                                                .withOpacity(0.5)))),
-                            Expanded(
-                                flex: 3,
-                                child: Text("000000",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.primaryDark
-                                                .withOpacity(0.5)))),
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                },
+              Obx(
+                () => myBillController.isBillLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : myBillController.billList.isEmpty
+                        ? const Center(
+                            child: Text("No bill on date"),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: myBillController.billList.length,
+                            controller: scrollController,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                margin: const EdgeInsets.only(bottom: 5),
+                                decoration: BoxDecoration(
+                                    color:
+                                        AppColors.lightGrey.withOpacity(0.5)),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "SL",
+                                            )),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "TOTAL REMAINING AMOUNT",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    color: AppColors.black,
+                                                  ),
+                                            )),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ViewBillsScreen(
+                                                          bills:
+                                                              myBillController
+                                                                      .billList[
+                                                                  index],
+                                                          
+                                                        )));
+                                          },
+                                          child: const Icon(
+                                            Icons.visibility,
+                                            size: 20,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                                "${index + 1}".toString(),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryDark
+                                                            .withOpacity(
+                                                                0.5)))),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                                "${myBillController.billList[index].remainingAmount ?? 0}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryDark
+                                                            .withOpacity(
+                                                                0.5)))),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              "DATE",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    color: AppColors.black,
+                                                  ),
+                                            )),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "TOTAL PAYABLE AMOUNT",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    color: AppColors.black,
+                                                  ),
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                                formatDate(
+                                                    date: DateTime.parse(
+                                                        "${myBillController.billList[index].supply!.fromDate}"),
+                                                    formatType: "yyyy/MM/dd"),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryDark
+                                                            .withOpacity(
+                                                                0.5)))),
+                                        Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                                "${myBillController.billList[index].totalPayable ?? 0000}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryDark
+                                                            .withOpacity(
+                                                                0.5)))),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
               )
             ],
           ),

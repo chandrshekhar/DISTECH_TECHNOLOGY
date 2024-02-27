@@ -102,8 +102,8 @@ class NewClaimController extends GetxController {
   void getMyCnf() async {
     var data = await apiProvider.getMyCnf();
     if (data['success'] == true) {
-      fullName.value = data['cnfStockist']['fullName'];
-      userName.value = data['userName'];
+      fullName.value = data['cnfStockist']['fullName']??"";
+      userName.value = data['userName']??"";
     }
   }
 

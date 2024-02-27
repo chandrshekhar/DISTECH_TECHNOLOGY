@@ -1,14 +1,18 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
+import 'package:distech_technology/Features/Bills/Models/my_bills_model.dart';
+import 'package:distech_technology/Features/Profile/model/profile_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ViewBillsScreen extends StatefulWidget {
-  const ViewBillsScreen({super.key});
+class ViewBillsScreen extends StatelessWidget {
+  ViewBillsScreen({super.key, required this.bills});
 
-  @override
-  State<ViewBillsScreen> createState() => _ViewBillsScreenState();
-}
+  Bills? bills;
 
-class _ViewBillsScreenState extends State<ViewBillsScreen> {
+  final profileController = Get.put(ProfileController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,19 +28,21 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text("Mr Chp Pandey",
-                    style: TextStyle(
+                Text(
+                    profileController.userProfileModel.value.user?.fullName ??
+                        "",
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
-                const Text(
-                  "pandey211998@gmail.com",
-                  style: TextStyle(
+                Text(
+                  profileController.userProfileModel.value.user?.email ?? "",
+                  style: const TextStyle(
                       fontSize: 15, fontWeight: FontWeight.w400, height: 1.3),
                 ),
-                const Text(
-                  "Kolkata sector v, Kolkata, 700120",
-                  style: TextStyle(
+                Text(
+                  "${profileController.userProfileModel.value.user?.address1 ?? ""}, ${profileController.userProfileModel.value.user?.address2 ?? ""}",
+                  style: const TextStyle(
                       fontSize: 15, fontWeight: FontWeight.w400, height: 1.3),
                 ),
                 const SizedBox(height: 20),
@@ -44,7 +50,6 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      boxShadow: [],
                       color: AppColors.white.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
@@ -59,14 +64,20 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                       ),
                       cardRowWidget(
                           key: "DATE RANGE : ",
-                          value: "2024-02-23  2024-02-23"),
-                      cardRowWidget(key: "TOTAL TICKETS : ", value: "500"),
-                      cardRowWidget(key: "RATE : ", value: "1133"),
-                      cardRowWidget(key: "AMOUNT : ", value: "566500.00"),
-                      const Row(
+                          value:
+                              "${formatDate(date: DateTime.parse(bills?.supply?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/ ${formatDate(date: DateTime.parse(bills?.supply?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
+                      cardRowWidget(
+                          key: "TOTAL TICKETS : ",
+                          value: "${bills?.supply?.totalTickets ?? 0}"),
+                      cardRowWidget(
+                          key: "RATE : ", value: "₹${bills?.purchaseRate}"),
+                      cardRowWidget(
+                          key: "AMOUNT : ",
+                          value: "₹${bills?.supply?.totalPrice}"),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "SUPPLY",
                             style: TextStyle(
                                 fontSize: 15,
@@ -74,8 +85,8 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                                 height: 1.3),
                           ),
                           Text(
-                            "₹5,66,500.00",
-                            style: TextStyle(
+                            "₹${bills?.supply?.totalPrice}",
+                            style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                                 height: 1.3),
@@ -104,14 +115,20 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                       ),
                       cardRowWidget(
                           key: "DATE RANGE : ",
-                          value: "2024-02-23  2024-02-23"),
-                      cardRowWidget(key: "TOTAL TICKETS : ", value: "500"),
-                      cardRowWidget(key: "RATE : ", value: "1133"),
-                      cardRowWidget(key: "AMOUNT : ", value: "566500.00"),
-                      const Row(
+                          value:
+                              "${formatDate(date: DateTime.parse(bills?.unsold?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/ ${formatDate(date: DateTime.parse(bills?.unsold?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
+                      cardRowWidget(
+                          key: "TOTAL TICKETS : ",
+                          value: "${bills?.unsold?.totalTickets ?? 0}"),
+                      cardRowWidget(
+                          key: "RATE : ", value: "₹ ${bills?.purchaseRate ?? 0}"),
+                      cardRowWidget(
+                          key: "AMOUNT : ",
+                          value: "₹ ${bills?.unsold?.totalPrice ?? 0}"),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "SUPPLY - UNSOLD = ",
                             style: TextStyle(
                                 fontSize: 15,
@@ -119,8 +136,8 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                                 height: 1.3),
                           ),
                           Text(
-                            "₹5,66,500.00",
-                            style: TextStyle(
+                            "₹${((bills?.supply?.totalPrice ?? 0) - (bills?.unsold?.totalPrice ?? 0)).toString()}",
+                            style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                                 height: 1.3),
@@ -152,12 +169,14 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                           value: "2024-02-23  2024-02-23"),
                       cardRowWidget(key: "TOTAL TICKETS : ", value: "500"),
                       // cardRowWidget(key: "RATE : ", value: "1133"),
-                      cardRowWidget(key: "AMOUNT : ", value: "566500.00"),
+                      cardRowWidget(
+                          key: "AMOUNT : ",
+                          value:"₹${(bills?.voucher?.totalPrice ?? 0).toString()}"),
                       const SizedBox(height: 5),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "SUPPLY - (UNSOLD + VOUCHER) = ",
                             style: TextStyle(
                                 fontSize: 15,
@@ -166,8 +185,8 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                           ),
                           Expanded(
                             child: Text(
-                              "₹5,66,500.00",
-                              style: TextStyle(
+                              "₹${((bills?.supply?.totalPrice ?? 0) - ((bills?.unsold?.totalPrice ?? 0) + (bills!.voucher!.totalPrice ?? 0) ?? 0)).toString()}",
+                              style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   height: 1.3),
@@ -198,15 +217,19 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                       cardRowWidget(
                           key: "DATE RANGE : ",
                           value: "2024-02-23  2024-02-23"),
-                      cardRowWidget(key: "TOTAL TICKETS : ", value: "500"),
+                      cardRowWidget(
+                          key: "TOTAL TICKETS : ",
+                          value: (bills?.pwt?.totalTickets ?? 0).toString()),
                       // cardRowWidget(key: "RATE : ", value: "1133"),
-                      cardRowWidget(key: "AMOUNT : ", value: "566500.00"),
+                      cardRowWidget(
+                          key: "AMOUNT : ",
+                          value:"₹ ${(bills?.pwt?.totalPrice ?? 0).toString()}"),
                       const SizedBox(height: 5),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "SUPPLY - (PWT+UNSOLD+VOUCHER) = ",
                             style: TextStyle(
                                 fontSize: 15,
@@ -215,8 +238,8 @@ class _ViewBillsScreenState extends State<ViewBillsScreen> {
                           ),
                           Expanded(
                             child: Text(
-                              "Remaining: ₹5,66,500.00",
-                              style: TextStyle(
+                              "\nRemaining: ₹${((bills?.supply?.totalPrice ?? 0) - ((bills?.unsold?.totalPrice ?? 0) + (bills!.pwt!.totalPrice ?? 0) + (bills!.voucher!.totalPrice ?? 0) ?? 0)).toString()}",
+                              style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   height: 1.3),

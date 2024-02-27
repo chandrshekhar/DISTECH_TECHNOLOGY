@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
+import 'package:distech_technology/Features/Bills/Models/my_bills_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_from_ticket_model.dart';
 import 'package:distech_technology/Features/Claim/Model/claim_to_tickets_model.dart';
 import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
@@ -264,7 +265,39 @@ class ApiProvider {
           "You are offline. Please check your internet connection.");
     }
   }
+  /// 
+  /// 
+    Future<MyBillModel> getMyBills(Map<String, dynamic> reqModel) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
 
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token
+      };
+      log("req --> $reqModel");
+      response = await _dio.post(Urls.myBills, data: reqModel);
+      if (kDebugMode) {
+        log('--------Response bills : $response');
+      }
+      return response.statusCode == 200
+          ? MyBillModel.fromJson(response.data)
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return MyBillModel.withError(
+          "You are offline. Please check your internet connection.");
+    }
+  }
   /// get purchase details ------- ///
   Future<PurchaseHistoryTicketDetailsModel> getAllPurcHistoryTicketDetails(
       Map<String, dynamic> reqModel) async {
