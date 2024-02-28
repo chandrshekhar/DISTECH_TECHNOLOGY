@@ -1,7 +1,13 @@
+import 'dart:developer';
+
+import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppStateController extends GetxController with WidgetsBindingObserver {
+  ApiProvider apiProvider = ApiProvider();
+
   @override
   void onInit() async {
     super.onInit();
@@ -15,25 +21,19 @@ class AppStateController extends GetxController with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("sate--> $state");
-    switch (state) {
-      case AppLifecycleState.resumed:
-        {
-          print("resumed");
-        }
-        break;
-      case AppLifecycleState.inactive:
-        print("inactive");
-        break;
-      case AppLifecycleState.paused:
-        print("paused");
-        break;
-      case AppLifecycleState.detached:
-        print("ditech");
+    if (state == AppLifecycleState.resumed) {
+      await callAppState(Urls.setActiveState);
+      log('App active, calling API...');
+    } else if (state == AppLifecycleState.paused) {
+      log('App inactive, calling API...');
+      await callAppState(Urls.setInactiveState);
+    }
+  }
 
-        break;
-      case AppLifecycleState.hidden:
-        print("hidded");
+  Future<void> callAppState(String url) async {
+    var res = await apiProvider.updateUserCount(url: url);
+    if (res['success'] == true) {
+      log("status--> ${res.toString()}");
     }
   }
 }

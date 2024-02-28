@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Bills/Models/my_bills_model.dart';
@@ -16,8 +15,7 @@ import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.
 import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/scheduler.dart';
-
+import 'package:flutter_user_agentx/flutter_user_agent.dart';
 import '../Controller/Timer Controller/timer_controller.dart';
 import '../Features/PurchaseHistory/Model/purchase_hostory_model.dart';
 import '../Features/ReturnedTickets/model/returned_ticket_model.dart';
@@ -265,9 +263,10 @@ class ApiProvider {
           "You are offline. Please check your internet connection.");
     }
   }
-  /// 
-  /// 
-    Future<MyBillModel> getMyBills(Map<String, dynamic> reqModel) async {
+
+  ///
+  ///
+  Future<MyBillModel> getMyBills(Map<String, dynamic> reqModel) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
@@ -298,6 +297,7 @@ class ApiProvider {
           "You are offline. Please check your internet connection.");
     }
   }
+
   /// get purchase details ------- ///
   Future<PurchaseHistoryTicketDetailsModel> getAllPurcHistoryTicketDetails(
       Map<String, dynamic> reqModel) async {
@@ -572,6 +572,42 @@ class ApiProvider {
     }
   }
 
+  /// update user count
+  ///------------- get server Time---------------///
+  Future<Map<String, dynamic>> updateUserCount({required String url}) async {
+    Response response;
+    String token = await localStorageService
+            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+        "";
+    String userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+
+    print("user agent--> $userAgent");
+
+    try {
+      _dio.options.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "access-token": token,
+        'User-Agent': userAgent.toLowerCase(),
+      };
+      response = await _dio.get(url);
+      if (kDebugMode) {
+        log('--------Response App State : $response');
+      }
+      return response.statusCode == 200
+          ? response.data
+          : throw Exception('Something Went Wrong');
+    } catch (error, stacktrace) {
+      if (kDebugMode) {
+        log('$error');
+      }
+      if (kDebugMode) {
+        log("Exception occurred: $error stackTrace: $stacktrace");
+      }
+      return {};
+    }
+  }
+
   ///------------- get server Time---------------///
   Future<Map<String, dynamic>> getServerTime(
       Map<String, dynamic> reqModel) async {
@@ -672,19 +708,12 @@ class ApiProvider {
 
   /// check ticket avaliabilty
   Future<Map<String, dynamic>> verifyTicket(
-    String barCode,
-    String date,
-    String slotId
-  ) async {
+      String barCode, String date, String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {
-      "id": barCode.trim(),
-      'date': date,
-      "drawSlotId":slotId
-    };
+    Map reqModel = {"id": barCode.trim(), 'date': date, "drawSlotId": slotId};
 
     log("reqModel-- >$reqModel");
     try {
@@ -708,12 +737,17 @@ class ApiProvider {
   }
 
   /// verify ticket avaliabilty
-  Future<ClaimToTicketModel> verifyToTicket(String barCode, String date,String slotId) async {
+  Future<ClaimToTicketModel> verifyToTicket(
+      String barCode, String date, String slotId) async {
     Response response;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"barCode": barCode.trim(), 'date': date,"drawSlotId":slotId};
+    Map reqModel = {
+      "barCode": barCode.trim(),
+      'date': date,
+      "drawSlotId": slotId
+    };
 
     log("reqModel-- >$reqModel");
     try {
@@ -743,7 +777,11 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    Map reqModel = {"barCode": barCode.trim(), 'date': date,"drawSlotId":slotId};
+    Map reqModel = {
+      "barCode": barCode.trim(),
+      'date': date,
+      "drawSlotId": slotId
+    };
 
     log("reqModel-- >$reqModel");
     try {

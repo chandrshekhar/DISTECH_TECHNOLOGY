@@ -55,4 +55,9 @@ class Urls {
 
 /// billing 
  static const String myBills = "$_baseUrl/orders/view-user-bill/";
+
+
+ /// set online off line
+  static const String setInactiveState = "$_baseUrl/users/unmount-user-online-counts";
+  static const String setActiveState = "$_baseUrl/users/set-active-status";
 }

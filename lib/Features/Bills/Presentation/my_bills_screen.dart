@@ -61,7 +61,7 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
                       )
                     : myBillController.billList.isEmpty
                         ? const Center(
-                            child: Text("No bill on date"),
+                            child: Text("No Bill On Date"), 
                           )
                         : ListView.builder(
                             shrinkWrap: true,
@@ -108,7 +108,6 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
                                                               myBillController
                                                                       .billList[
                                                                   index],
-                                                          
                                                         )));
                                           },
                                           child: const Icon(

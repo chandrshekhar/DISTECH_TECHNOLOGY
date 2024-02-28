@@ -16,7 +16,7 @@ class ViewBillsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.lightGrey.withOpacity(0.1),
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text("View Bills"),
       ),
@@ -50,7 +50,7 @@ class ViewBillsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.lightGrey.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +65,7 @@ class ViewBillsScreen extends StatelessWidget {
                       cardRowWidget(
                           key: "DATE RANGE : ",
                           value:
-                              "${formatDate(date: DateTime.parse(bills?.supply?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/ ${formatDate(date: DateTime.parse(bills?.supply?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
+                              "${formatDate(date: DateTime.parse(bills?.supply?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/${formatDate(date: DateTime.parse(bills?.supply?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
                       cardRowWidget(
                           key: "TOTAL TICKETS : ",
                           value: "${bills?.supply?.totalTickets ?? 0}"),
@@ -101,7 +101,7 @@ class ViewBillsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.lightGrey.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,12 +116,13 @@ class ViewBillsScreen extends StatelessWidget {
                       cardRowWidget(
                           key: "DATE RANGE : ",
                           value:
-                              "${formatDate(date: DateTime.parse(bills?.unsold?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/ ${formatDate(date: DateTime.parse(bills?.unsold?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
+                              "${formatDate(date: DateTime.parse(bills?.unsold?.fromDate ?? ''), formatType: 'yyy-MM-dd')}/${formatDate(date: DateTime.parse(bills?.unsold?.toDate ?? ''), formatType: 'yyy-MM-dd')}"),
                       cardRowWidget(
                           key: "TOTAL TICKETS : ",
                           value: "${bills?.unsold?.totalTickets ?? 0}"),
                       cardRowWidget(
-                          key: "RATE : ", value: "₹ ${bills?.purchaseRate ?? 0}"),
+                          key: "RATE : ",
+                          value: "₹ ${bills?.purchaseRate ?? 0}"),
                       cardRowWidget(
                           key: "AMOUNT : ",
                           value: "₹ ${bills?.unsold?.totalPrice ?? 0}"),
@@ -152,7 +153,7 @@ class ViewBillsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.lightGrey.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,13 +166,13 @@ class ViewBillsScreen extends StatelessWidget {
                             height: 1),
                       ),
                       cardRowWidget(
-                          key: "DATE RANGE : ",
-                          value: "2024-02-23  2024-02-23"),
+                          key: "DATE RANGE : ", value: "2024-02-23/2024-02-23"),
                       cardRowWidget(key: "TOTAL TICKETS : ", value: "500"),
                       // cardRowWidget(key: "RATE : ", value: "1133"),
                       cardRowWidget(
                           key: "AMOUNT : ",
-                          value:"₹${(bills?.voucher?.totalPrice ?? 0).toString()}"),
+                          value:
+                              "₹${(bills?.voucher?.totalPrice ?? 0).toString()}"),
                       const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,7 +203,7 @@ class ViewBillsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.9),
+                      color: AppColors.lightGrey.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,41 +216,82 @@ class ViewBillsScreen extends StatelessWidget {
                             height: 1),
                       ),
                       cardRowWidget(
-                          key: "DATE RANGE : ",
-                          value: "2024-02-23  2024-02-23"),
+                          key: "DATE RANGE : ", value: "2024-02-23/2024-02-23"),
                       cardRowWidget(
                           key: "TOTAL TICKETS : ",
                           value: (bills?.pwt?.totalTickets ?? 0).toString()),
-                      // cardRowWidget(key: "RATE : ", value: "1133"),
+                      // cardRowWidget(
+                      //     key: "RATE : ",
+                      //     value: "₹ ${bills?.purchaseRate ?? 0}"),
                       cardRowWidget(
                           key: "AMOUNT : ",
-                          value:"₹ ${(bills?.pwt?.totalPrice ?? 0).toString()}"),
+                          value:
+                              "₹ ${(bills?.pwt?.totalPrice ?? 0).toString()}"),
                       const SizedBox(height: 5),
+                      const Text(
+                        "SUPPLY - (PWT+UNSOLD+VOUCHER) = ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "Remaining: ₹${((bills?.supply?.totalPrice ?? 0) - ((bills?.unsold?.totalPrice ?? 0) + (bills!.pwt!.totalPrice ?? 0) + (bills!.voucher!.totalPrice ?? 0) ?? 0)).toString()}",
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              height: 1.4),
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            "SUPPLY - (PWT+UNSOLD+VOUCHER) = ",
+                            "TOTAL REAMING = ",
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                height: 1.3),
+                                height: 1.6),
                           ),
-                          Expanded(
+                          Align(
+                            alignment: Alignment.centerRight,
                             child: Text(
-                              "\nRemaining: ₹${((bills?.supply?.totalPrice ?? 0) - ((bills?.unsold?.totalPrice ?? 0) + (bills!.pwt!.totalPrice ?? 0) + (bills!.voucher!.totalPrice ?? 0) ?? 0)).toString()}",
+                              "₹${((bills?.supply?.totalPrice ?? 0) - ((bills?.unsold?.totalPrice ?? 0) + (bills!.pwt!.totalPrice ?? 0) + (bills!.voucher!.totalPrice ?? 0) ?? 0)).toString()}",
                               style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.3),
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
-                      ),
+                      )
                     ],
                   ),
-                )
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGrey.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      cardRowWidget(key: "PREVIOUS REMAINING", value: ""),
+                      cardRowWidget(
+                          key: "AMOUNT =",
+                          value: "₹ ${bills?.remainingAmount ?? 0}"),
+                      const SizedBox(height: 5),
+                      cardRowWidget(
+                          key: "TOTAL PAYABLE AMOUNT =",
+                          value: "₹ ${bills?.totalPayable ?? 0}"),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

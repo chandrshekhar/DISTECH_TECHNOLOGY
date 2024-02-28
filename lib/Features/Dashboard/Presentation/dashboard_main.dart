@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
+import 'package:distech_technology/Controller/Timer%20Controller/app_strate_controller.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Widgets/add_ticket_list-widget.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
@@ -34,6 +36,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
   final timerController = Get.put(TimerController());
   final soldTicketListController = Get.put(SoldTicketListController());
   final saleTicketController = Get.put(SaleTicketsController());
+  final appStateController = Get.put(AppStateController());
   @override
   void initState() {
     getMyDashboardController.isPopupShowing.value == true
@@ -77,6 +80,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                 // soldTicketController.getAllTicket();
                                 // soldTicketListController.getSoldTicketList();
                                 getMyDashboardController.getMydashboard();
+                                appStateController
+                                    .callAppState(Urls.setActiveState);
                                 Navigator.pop(context);
                               },
                               title: Text(
@@ -181,7 +186,8 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         imagePath: AppIcons.soldTicket),
                     priceCard(
                         value: getMyDashboardController.getModeldashBoard.value
-                                .userTicketCounts?.ticketsCount?.total.toString() ??
+                                .userTicketCounts?.ticketsCount?.total
+                                .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
                         title: "Purchase Tickets",
