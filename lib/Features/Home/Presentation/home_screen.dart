@@ -594,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: AppColors.darkGrey.withOpacity(0.7),
                                   ))),
                       Text(
-                        'App V0.3.13',
+                        'App V0.3.15',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: AppColors.darkGrey.withOpacity(0.7)),
                       )
