@@ -4,6 +4,7 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Model/pwt_list_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,18 @@ class PrizesController extends GetxController {
 
   var getModeldashBoard = GetMyDashboardModel().obs;
   var getPrizeModel = GetPrizeModel().obs;
+
+  /// pwt
+  RxBool isPwtLoading = false.obs;
+  var getpwtList = PwtListModel().obs;
+  final pwtDateController = TextEditingController(
+      text: formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd"));
+
+  RxString pwtStatus = "Sold".obs;
+
+  void setPwtStatus({String? status}) {
+    pwtStatus.value = status ?? "Sold";
+  }
 
   Future<void> selectDateForCheckPrizes(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -70,5 +83,26 @@ class PrizesController extends GetxController {
       getPrizeLoading(false);
     }
     getPrizeLoading(false);
+  }
+
+  Future<void> getPwtList() async {
+    isPwtLoading(true);
+    Map<String, dynamic> reqModel = {
+      "date": pwtDateController.value.text,
+      "drawSlotId": timerController.slotId.value,
+      "status": pwtStatus
+          .value, // "Returned"  for unsold data // "Sold" for sold data
+      "limit": 10,
+      "offset": 0,
+      "search": ""
+    };
+    log(reqModel.toString());
+    var res = await ApiProvider().getPwtList(reqModel);
+
+    if (res.success == true) {
+      getpwtList.value = res;
+      isPwtLoading(false);
+    }
+    isPwtLoading(false);
   }
 }

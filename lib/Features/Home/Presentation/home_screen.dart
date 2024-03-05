@@ -18,6 +18,7 @@ import 'package:distech_technology/Features/ReturnedTickets/Presentation/returne
 import 'package:distech_technology/Features/ScanCode/scan_code_screen.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_screen.dart';
 import 'package:distech_technology/Features/Support/Presentation/support_screen.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_sold_unsold_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
@@ -29,10 +30,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/Profile Controller/profile_controller.dart';
-import '../../Bills/Presentation/view_bills_screen.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
-import '../../ReturnUnsoldTicket/Presentation/returnall_tickets-screen.dart';
 import '../../Sale Tickets/Presentation/sale_tickets_screen.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
@@ -54,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //all screens which will be visible on home screens
   final List<Widget> screens = [
-    DashboardMainScreen(), //0
+    const DashboardMainScreen(), //0
     const DashboardScreen(), //1
     const ReturnUnsoldTicket(), //2
     ScanBarCodeScreen(), //3
@@ -66,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const SupportScreen(), // 9
     const ResultScreen(), //10
     SaleTicketsScreen(), // 11
-    const MyBillsScreen() // 12
+    const MyBillsScreen(), // 12
+    const PwtSoldUnsoldScreen()
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -162,6 +162,10 @@ class _HomeScreenState extends State<HomeScreen> {
         case 12:
           setState(() {
             selectedIndex = 12;
+          });
+        case 13:
+          setState(() {
+            selectedIndex = 13;
           });
       }
     });
@@ -368,6 +372,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Sold Tickets"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(13);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Prize Tickets"),
                                   const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {

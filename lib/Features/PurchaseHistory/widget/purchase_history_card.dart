@@ -47,5 +47,6 @@ class PurchaseHistoryTicketListItem extends StatelessWidget {
         ),
       ),
     );
+  
   }
 }
