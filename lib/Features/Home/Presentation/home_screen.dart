@@ -472,23 +472,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bgColor: AppColors.transparent,
                                       label: "My Claim Request"),
                                 ])),
-                        Obx(() => CustomExpansionPanel(
-                                title: "Billing",
-                                onExpansionChanged: (v) {
-                                  // userProfileController.setExpansion(2);
-                                },
-                                initiallyExpanded:
-                                    userProfileController.isExpansionList[2],
-                                children: [
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(12);
-                                      },
-                                      icon: AppIcons.filterIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "My Bills"),
-                                ])),
+                        // Obx(() => CustomExpansionPanel(
+                        //         title: "Billing",
+                        //         onExpansionChanged: (v) {
+                        //           // userProfileController.setExpansion(2);
+                        //         },
+                        //         initiallyExpanded:
+                        //             userProfileController.isExpansionList[2],
+                        //         children: [
+                        //           DrawerItem(
+                        //               onTap: () {
+                        //                 closeDrawer();
+                        //                 navigate(12);
+                        //               },
+                        //               icon: AppIcons.filterIcon,
+                        //               bgColor: AppColors.transparent,
+                        //               label: "My Bills"),
+                        //         ])),
                         CustomExpansionPanel(
                             isIconShowing: false,
                             title: "Support",
