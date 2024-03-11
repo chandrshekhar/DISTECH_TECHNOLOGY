@@ -32,7 +32,7 @@ class ApiProvider {
   Future<LoginResponseModel> loginApiCall(Map<String, dynamic> reqModel) async {
     Response response;
     if (kDebugMode) {
-      print("login reqModel--> $reqModel");
+      log("login reqModel--> $reqModel");
     }
     try {
       _dio.options.headers = {
@@ -575,11 +575,10 @@ class ApiProvider {
 
   Future<DrawSlotModel> getSlot() async {
     Response response;
-    String? authToken;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("token-> $token");
+    log("token-> $token");
     try {
       _dio.options.headers = {
         'Accept': 'application/json',
@@ -594,8 +593,6 @@ class ApiProvider {
       }
       if (response.statusCode == 200) {
         return DrawSlotModel.fromJson(response.data);
-
-        // print(userServicesList);
       } else {
         return DrawSlotModel.withError("Something Went wrong");
       }
@@ -613,7 +610,7 @@ class ApiProvider {
         "";
     String userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
 
-    print("user agent--> $userAgent");
+    log("user agent--> $userAgent");
 
     try {
       _dio.options.headers = {
@@ -644,7 +641,6 @@ class ApiProvider {
   Future<Map<String, dynamic>> getServerTime(
       Map<String, dynamic> reqModel) async {
     Response response;
-    String? authToken;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
@@ -676,7 +672,6 @@ class ApiProvider {
   ///--------- get User Details -----///
   Future<UserProfileModel> getUserDetails() async {
     Response response;
-    String? authToken;
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
@@ -877,7 +872,7 @@ class ApiProvider {
       "ticketId": ticketId ?? "".trim(),
       'date': date,
     };
-    print("req-> $reqModel");
+    log("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.verifyTicketById, data: reqModel);
@@ -885,7 +880,7 @@ class ApiProvider {
       log('--------Response : $response');
 
       //  Map resData = {};
-      print(response.statusCode);
+      log(" data--> ${response.statusCode}");
 
       return response.statusCode == 200
           ? ScanTicketModel.fromJson(response.data)
@@ -1008,7 +1003,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("req-> $reqModel");
+    log("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.validateSaleTicket, data: reqModel);
@@ -1036,7 +1031,7 @@ class ApiProvider {
     String token = await localStorageService
             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
         "";
-    print("req-> $reqModel");
+    log("req-> $reqModel");
     try {
       _dio.options.headers = {"access-token": token};
       response = await _dio.post(Urls.validateReturnTicket, data: reqModel);

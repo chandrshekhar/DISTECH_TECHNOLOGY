@@ -25,7 +25,7 @@ class ReturnedTicketModel {
     if (json['allReturnedTickets'] != null) {
       allReturnedTickets = <AllReturnedTickets>[];
       json['allReturnedTickets'].forEach((v) {
-        allReturnedTickets!.add(new AllReturnedTickets.fromJson(v));
+        allReturnedTickets!.add(AllReturnedTickets.fromJson(v));
       });
     }
     returnedCount = json['returnedCount'];

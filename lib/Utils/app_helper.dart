@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,7 @@ class AppHelper {
   Future<String?> scanBarCode() async {
     String? barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+    log("bar code eresnsuydg ${barcodeScanRes.toString()}");
     return barcodeScanRes;
   }
 }

@@ -7,10 +7,8 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: false,
-      primarySwatch: AppColors.generateMaterialColor(AppColors.primary),
       dividerColor: AppColors.grey,
       brightness: Brightness.light,
-      backgroundColor: AppColors.white,
       cardColor: AppColors.white,
       primaryColor: AppColors.primary,
       hintColor: AppColors.darkGrey,
@@ -76,47 +74,47 @@ class AppTheme {
       ),
       // Text Theme
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline1,
             fontWeight: FontWeight.w900),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline2,
             fontWeight: FontWeight.w700),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline3,
             fontWeight: FontWeight.w700),
-        headline4: TextStyle(
+        headlineMedium: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline4,
             fontWeight: FontWeight.w700),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline5,
             fontWeight: FontWeight.w600),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.headline6,
             fontWeight: FontWeight.w500),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
             color: AppColors.black,
             fontSize: AppSizes.bodyText1,
             fontWeight: FontWeight.w500),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
             color: AppColors.darkGrey,
             fontSize: AppSizes.bodyText2,
             fontWeight: FontWeight.w400),
-        caption: TextStyle(
+        bodySmall: TextStyle(
             color: AppColors.darkGrey,
             fontSize: AppSizes.caption,
             fontWeight: FontWeight.w400),
-        button: TextStyle(
+        labelLarge: TextStyle(
             color: AppColors.white,
             fontSize: AppSizes.button,
             fontWeight: FontWeight.w600),
-      ),
+      ), colorScheme: ColorScheme.fromSwatch(primarySwatch: AppColors.generateMaterialColor(AppColors.primary)).copyWith(background: AppColors.white),
       //fontFamily: FontFamily.poppinsRegular,
     );
   }

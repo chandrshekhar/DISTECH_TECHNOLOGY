@@ -211,7 +211,7 @@ class Pwt {
 class PreviousBills {
   int? totalPrice;
   int? totalBills;
-  List<Null>? ids;
+  List<void>? ids;
 
   PreviousBills({this.totalPrice, this.totalBills, this.ids});
 

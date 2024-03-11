@@ -89,7 +89,6 @@ class _ReturnTicketListWidgetState extends State<ReturnTicketListWidget> {
                               } else {
                                 getMyreturnController.selectedListForReturn
                                     .remove(e.sId);
-                                ;
                               }
                             }
                           },

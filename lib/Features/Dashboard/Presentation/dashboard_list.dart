@@ -42,6 +42,7 @@ class _DashboardListWidgetState extends State<DashboardListWidget> {
   final soldTicketController = Get.put(SoldTicketController());
   @override
   Widget build(BuildContext context) {
+  
     return SmartRefresher(
         controller: refreshController,
         enablePullDown: false,

@@ -23,10 +23,10 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final ValueChanged? onChanged;
-  void Function()? onTap;
-  double? height;
+  final Function()? onTap;
+  final double?  height;
 
-  CustomTextField(
+  const CustomTextField(
       {Key? key,
       required this.controller,
       this.hintText = '',

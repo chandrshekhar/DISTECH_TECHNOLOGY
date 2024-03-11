@@ -14,7 +14,6 @@ import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 
 import '../../Commons/app_colors.dart';

@@ -10,7 +10,7 @@ String? errorMsg;
     if (json['tickets'] != null) {
       tickets = <Tickets>[];
       json['tickets'].forEach((v) {
-        tickets!.add(new Tickets.fromJson(v));
+        tickets!.add(Tickets.fromJson(v));
       });
     }
     count = json['count'];
@@ -23,12 +23,12 @@ String? errorMsg;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.tickets != null) {
-      data['tickets'] = this.tickets!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (tickets != null) {
+      data['tickets'] = tickets!.map((v) => v.toJson()).toList();
     }
-    data['count'] = this.count;
+    data['count'] = count;
     return data;
   }
 }
@@ -71,7 +71,7 @@ class Tickets {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data =  <String, dynamic>{};
     data['_id'] = sId;
     data['ticketId'] =ticketId;
     data['ticketLetter'] = ticketLetter;

@@ -1,5 +1,4 @@
 import 'package:distech_technology/Api/api_provider.dart';
-import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

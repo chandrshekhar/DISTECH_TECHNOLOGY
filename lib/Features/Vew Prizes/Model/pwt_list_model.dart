@@ -92,7 +92,7 @@ class Stockist {
   WalletBalance? walletBalance;
   bool? acceptedTermsAndConditions;
   bool? isLocked;
-  Null? lockUntil;
+  // void lockUntil;
   String? role;
   int? loginAttempts;
 
@@ -121,7 +121,7 @@ class Stockist {
       this.walletBalance,
       this.acceptedTermsAndConditions,
       this.isLocked,
-      this.lockUntil,
+      // this.lockUntil,
       this.role,
       this.loginAttempts});
 
@@ -152,7 +152,7 @@ class Stockist {
         : null;
     acceptedTermsAndConditions = json['acceptedTermsAndConditions'];
     isLocked = json['isLocked'];
-    lockUntil = json['lockUntil'];
+    // lockUntil = json['lockUntil'];
     role = json['role'];
     loginAttempts = json['loginAttempts'];
   }
@@ -185,7 +185,7 @@ class Stockist {
     }
     data['acceptedTermsAndConditions'] = acceptedTermsAndConditions;
     data['isLocked'] = isLocked;
-    data['lockUntil'] = lockUntil;
+    // data['lockUntil'] = lockUntil;
     data['role'] = role;
     data['loginAttempts'] = loginAttempts;
     return data;

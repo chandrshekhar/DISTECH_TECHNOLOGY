@@ -5,11 +5,11 @@ import '../Commons/app_colors.dart';
 import '../Commons/app_sizes.dart';
 
 class CustomChip extends StatelessWidget {
-  bool? isSelected;
+ final bool? isSelected;
   final String label;
   final VoidCallback onTap;
 
-  CustomChip(
+  const CustomChip(
       {Key? key,
       this.isSelected = false,
       required this.label,
