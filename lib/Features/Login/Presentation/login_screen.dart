@@ -5,6 +5,7 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
   //Variable Declarations
   final userLoginController = Get.put(LoginController());
@@ -72,12 +74,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    CustomTextField(
-                      isBorder: false,
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        size: 20,
+                    TextFormField(
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        hintText: 'Username',
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          size: 20,
+                        ),
+                        contentPadding:
+                            EdgeInsets.all(AppSizes.kDefaultPadding),
                       ),
+                      inputFormatters: const [
+                        // UpperCaseTextFormatter(),
+                      ],
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Please enter username';
@@ -85,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       controller: userLoginController.userNameController.value,
-                      hintText: 'Username',
                     ),
                     const SizedBox(
                       height: 15,

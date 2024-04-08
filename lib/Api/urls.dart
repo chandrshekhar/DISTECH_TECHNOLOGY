@@ -5,7 +5,7 @@ class Urls {
   //     "https://api.singhamlottery.in/api/v1"; // production
 
   static const String _baseUrl =
-      "https://devapi.singhamlottery.in/api/v1"; //dev api
+      "https://progapi.singhamlottery.in/api/v1"; //dev api
   static const String encKey1 =
       "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
   static const String encKey2 =

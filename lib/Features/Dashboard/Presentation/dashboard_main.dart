@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
@@ -10,12 +7,10 @@ import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_co
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/app_strate_controller.dart';
 import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
-import 'package:distech_technology/Features/Sale%20Tickets/Widgets/add_ticket_list-widget.dart';
-import 'package:distech_technology/Widgets/full_button.dart';
-import 'package:distech_technology/Widgets/heade_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import '../../../Controller/Timer Controller/timer_controller.dart';
 import '../../Sale Tickets/Widgets/scanner_card.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
@@ -37,12 +32,14 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
   final soldTicketListController = Get.put(SoldTicketListController());
   final saleTicketController = Get.put(SaleTicketsController());
   final appStateController = Get.put(AppStateController());
+  final prizeController = Get.put(PrizesController());
   @override
   void initState() {
     getMyDashboardController.isPopupShowing.value == true
         ? null
         : getAlerttDialog();
     getMyDashboardController.getMydashboard();
+
     super.initState();
   }
 
@@ -53,6 +50,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
               dialogType: DialogType.info,
               animType: AnimType.bottomSlide,
               dismissOnTouchOutside: false,
+              title: "Select Draw Slot",
               body: Padding(
                 padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
                 child: Obx(() => timerController.drawModel.value.data != null &&
@@ -107,6 +105,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // prizeController.selectDateForCheckPrizes(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
@@ -128,17 +127,17 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // Expanded(
-                          //   child: Text(
-                          //     'Total (${soldTicketController.allticketCount})',
-                          //     style: Theme.of(context)
-                          //         .textTheme
-                          //         .headlineSmall!
-                          //         .copyWith(
-                          //             fontWeight: FontWeight.w400,
-                          //             fontSize: 18),
-                          //   ),
-                          // ),
+                          Expanded(
+                            child: Text(
+                              'Selected Date (${prizeController.formatedDate.value})',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18),
+                            ),
+                          ),
                           InkWell(
                             onTap: () async {
                               getMyDashboardController
@@ -190,100 +189,100 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                 .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
-                        title: "Purchase Tickets",
+                        title: "Purchased Tickets",
                         color: const Color(0xFFFFBF1C),
                         imagePath: AppIcons.soldTicket),
-                    Text(
-                      'Scan and Sale',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
-                              height: 2),
-                    ),
-                    const SizedBox(height: 10),
-                    scanCode(context),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            AppSizes.cardCornerRadius / 2),
-                        border: Border.all(color: AppColors.bg),
-                      ),
-                      child: Container(
-                        color: AppColors.primaryBg,
-                        child: Column(
-                          children: [
-                            const HeaderListWidget(),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.36,
-                              child: AddedTicketListWidget(),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Obx(() => FullButton(
-                          label: 'Mark sold',
-                          bgColor: saleTicketController
-                                  .successReturnTicketList.isEmpty
-                              ? AppColors.lightGrey
-                              : AppColors.primary,
-                          onPressed: saleTicketController
-                                  .successReturnTicketList.isEmpty
-                              ? () {}
-                              : () async {
-                                  if (saleTicketController
-                                      .successReturnTicketList.isNotEmpty) {
-                                    var res = await ApiProvider().soldTciket(
-                                        saleTicketController
-                                            .successReturnTicketList,
-                                        timerController.slotId.value);
-                                    log("pandey---> ${res.toString()}");
-                                    if (res['success'] &&
-                                        res['successList'].length > 0) {
-                                      Get.snackbar(
-                                          "Successful",
-                                          res['successList'][0]['message']
-                                              .toString(),
-                                          backgroundColor: AppColors.white,
-                                          colorText: Colors.green,
-                                          isDismissible: true,
-                                          snackPosition: SnackPosition.TOP);
-                                      saleTicketController
-                                          .successReturnTicketList
-                                          .clear();
-                                    } else {
-                                      Get.snackbar(
-                                          "Error!",
-                                          res['failedList'][0]["message"]
-                                              .toString(),
-                                          backgroundColor: AppColors.white,
-                                          colorText: Colors.red,
-                                          isDismissible: true,
-                                          snackPosition: SnackPosition.TOP);
-                                    }
+                    // Text(
+                    //   'Scan and Sale',
+                    //   style: Theme.of(context)
+                    //       .textTheme
+                    //       .headlineSmall!
+                    //       .copyWith(
+                    //           fontWeight: FontWeight.w400,
+                    //           fontSize: 18,
+                    //           height: 2),
+                    // ),
+                    // const SizedBox(height: 10),
+                    // scanCode(context),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(
+                    //         AppSizes.cardCornerRadius / 2),
+                    //     border: Border.all(color: AppColors.bg),
+                    //   ),
+                    //   child: Container(
+                    //     color: AppColors.primaryBg,
+                    //     child: Column(
+                    //       children: [
+                    //         const HeaderListWidget(),
+                    //         SizedBox(
+                    //           width: MediaQuery.of(context).size.width,
+                    //           height: MediaQuery.of(context).size.height * 0.36,
+                    //           child: AddedTicketListWidget(),
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // Obx(() => FullButton(
+                    //       label: 'Mark sold',
+                    //       bgColor: saleTicketController
+                    //               .successReturnTicketList.isEmpty
+                    //           ? AppColors.lightGrey
+                    //           : AppColors.primary,
+                    //       onPressed: saleTicketController
+                    //               .successReturnTicketList.isEmpty
+                    //           ? () {}
+                    //           : () async {
+                    //               if (saleTicketController
+                    //                   .successReturnTicketList.isNotEmpty) {
+                    //                 var res = await ApiProvider().soldTciket(
+                    //                     saleTicketController
+                    //                         .successReturnTicketList,
+                    //                     timerController.slotId.value);
+                    //                 log("pandey---> ${res.toString()}");
+                    //                 if (res['success'] &&
+                    //                     res['successList'].length > 0) {
+                    //                   Get.snackbar(
+                    //                       "Successful",
+                    //                       res['successList'][0]['message']
+                    //                           .toString(),
+                    //                       backgroundColor: AppColors.white,
+                    //                       colorText: Colors.green,
+                    //                       isDismissible: true,
+                    //                       snackPosition: SnackPosition.TOP);
+                    //                   saleTicketController
+                    //                       .successReturnTicketList
+                    //                       .clear();
+                    //                 } else {
+                    //                   Get.snackbar(
+                    //                       "Error!",
+                    //                       res['failedList'][0]["message"]
+                    //                           .toString(),
+                    //                       backgroundColor: AppColors.white,
+                    //                       colorText: Colors.red,
+                    //                       isDismissible: true,
+                    //                       snackPosition: SnackPosition.TOP);
+                    //                 }
 
-                                    await soldTicketController.getAllTicket(
-                                      date: soldTicketController
-                                          .formatedDate.value,
-                                    );
-                                    soldTicketController.limit.value =
-                                        soldTicketController.limit.value;
-                                    soldTicketController.selectedSoldTicket
-                                        .clear();
-                                  } else {
-                                    Get.snackbar("Not response",
-                                        "Your are not selected any ticket for mark as sold",
-                                        backgroundColor: AppColors.black,
-                                        colorText: Colors.white,
-                                        isDismissible: true,
-                                        snackPosition: SnackPosition.BOTTOM);
-                                  }
-                                },
-                        )),
+                    //                 await soldTicketController.getAllTicket(
+                    //                   date: soldTicketController
+                    //                       .formatedDate.value,
+                    //                 );
+                    //                 soldTicketController.limit.value =
+                    //                     soldTicketController.limit.value;
+                    //                 soldTicketController.selectedSoldTicket
+                    //                     .clear();
+                    //               } else {
+                    //                 Get.snackbar("Not response",
+                    //                     "Your are not selected any ticket for mark as sold",
+                    //                     backgroundColor: AppColors.black,
+                    //                     colorText: Colors.white,
+                    //                     isDismissible: true,
+                    //                     snackPosition: SnackPosition.BOTTOM);
+                    //               }
+                    //             },
+                    //     )),
                   ],
                 ),
         ),

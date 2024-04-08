@@ -1,4 +1,3 @@
-
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Features/Bills/Controller/my_bislls_controller.dart';
 import 'package:distech_technology/Features/Bills/Presentation/view_bills_screen.dart';
@@ -60,7 +59,7 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
                       )
                     : myBillController.billList.isEmpty
                         ? const Center(
-                            child: Text("No Bill On Date"), 
+                            child: Text("No Bill On Date"),
                           )
                         : ListView.builder(
                             shrinkWrap: true,

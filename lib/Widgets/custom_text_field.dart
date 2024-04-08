@@ -24,9 +24,10 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final ValueChanged? onChanged;
   final Function()? onTap;
-  final double?  height;
+  final double? height;
+  TextCapitalization? textCapitalization;
 
-  const CustomTextField(
+  CustomTextField(
       {Key? key,
       required this.controller,
       this.hintText = '',
@@ -48,7 +49,8 @@ class CustomTextField extends StatelessWidget {
       this.textSize,
       this.focusNode,
       this.onTap,
-      this.height})
+      this.height,
+      this.textCapitalization})
       : super(key: key);
 
   @override
@@ -56,6 +58,8 @@ class CustomTextField extends StatelessWidget {
     return SizedBox(
       height: height,
       child: TextFormField(
+          textCapitalization:
+              textCapitalization ?? TextCapitalization.characters,
           onTap: onTap,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           readOnly: readOnly ?? false,

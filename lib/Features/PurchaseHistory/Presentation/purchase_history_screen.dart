@@ -5,11 +5,12 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
+import '../../../Utils/app_helper.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
-import '../../../Utils/app_helper.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
   const PurchaseHistoryScreen({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                 height: 10,
               ),
               Obx(() => Text(
-                    "Purchase History (${purchaesController.countPurchaesTickets})",
+                    "Purchased Tickets (${purchaesController.countPurchaesTickets})",
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall!
@@ -97,7 +98,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                       ),
                       onChanged: (value) {
                         if (value.toString().isNotEmpty) {
-                          purchaesController.getAllPurchaesTicket(search: value);
+                          purchaesController.getAllPurchaesTicket(
+                              search: value);
                         }
                       },
                       maxLines: 1,
@@ -135,7 +137,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                 height: 10,
               ),
               Text(
-                'Purchase History on ${AppHelper.formatDate(selectedDate.toLocal())}',
+                'Purchased Tickets on ${AppHelper.formatDate(selectedDate.toLocal())}',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(

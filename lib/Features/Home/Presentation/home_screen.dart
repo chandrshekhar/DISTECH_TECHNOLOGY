@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
@@ -7,7 +8,6 @@ import 'package:distech_technology/Controller/Timer%20Controller/timer_controlle
 import 'package:distech_technology/Features/Bills/Presentation/my_bills_screen.dart';
 import 'package:distech_technology/Features/Claim/Presentation/my_claim-screen.dart';
 import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_main.dart';
-import 'package:distech_technology/Features/Dashboard/Presentation/dashboard_screen.dart';
 import 'package:distech_technology/Features/Home/Widgets/drawer_item.dart';
 import 'package:distech_technology/Features/Login/Presentation/login_screen.dart';
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
@@ -17,7 +17,8 @@ import 'package:distech_technology/Features/ReturnedTickets/Presentation/returne
 import 'package:distech_technology/Features/ScanCode/scan_code_screen.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_screen.dart';
 import 'package:distech_technology/Features/Support/Presentation/support_screen.dart';
-import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_sold_unsold_screen.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_sold_ticket.dart';
+import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_unsold_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
@@ -30,7 +31,6 @@ import 'package:get/get.dart';
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
-import '../../Sale Tickets/Presentation/sale_tickets_screen.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
 
@@ -52,19 +52,18 @@ class _HomeScreenState extends State<HomeScreen> {
   //all screens which will be visible on home screens
   final List<Widget> screens = [
     const DashboardMainScreen(), //0
-    const DashboardScreen(), //1
-    const ReturnUnsoldTicket(), //2
-    ScanBarCodeScreen(), //3
-    const SoldTicketScreen(), //4
-    const ReturnedTicketScreen(), //5
-    const PurchaseHistoryScreen(), //6
+    const SoldTicketScreen(), //1
+    const ReturnedTicketScreen(), //2
+    const PurchaseHistoryScreen(), //3
+    const ReturnUnsoldTicket(), //4
+    const PwtUnsoldScreen(), //5
+    const PwtSoldScreen(), //6
     const NewClaimScreen(), // 7
     const MyClaimScreen(), // 8
-    const SupportScreen(), // 9
+    ScanBarCodeScreen(), //9
     const ResultScreen(), //10
-    SaleTicketsScreen(), // 11
-    const MyBillsScreen(), // 12
-    const PwtSoldUnsoldScreen()
+    const MyBillsScreen(), // 11
+    const SupportScreen(), // 12
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -165,6 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedIndex = 13;
           });
+        case 14:
+          setState(
+            () {
+              selectedIndex = 14;
+            },
+          );
       }
     });
   }
@@ -346,13 +351,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 userProfileController.isExpansionList[0],
                             children: const []),
                         Obx(() => CustomExpansionPanel(
-                                title: "Inventory",
+                                title: "Tickets",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(1);
                                 },
                                 initiallyExpanded:
                                     userProfileController.isExpansionList[1],
                                 children: [
+                                  // DrawerItem(
+                                  //     onTap: () {
+                                  //       closeDrawer();
+                                  //       navigate(1);
+                                  //     },
+                                  //     icon: AppIcons.ticketIcon,
+                                  //     bgColor: AppColors.transparent,
+                                  //     label: "My Tickets"),
+                                  // const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
@@ -360,30 +374,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "My Tickets"),
-                                  const SizedBox(height: 10),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(4);
-                                      },
-                                      icon: AppIcons.ticketIcon,
-                                      bgColor: AppColors.transparent,
                                       label: "Sold Tickets"),
                                   const SizedBox(height: 10),
+                                  // DrawerItem(
+                                  //     onTap: () {
+                                  //       closeDrawer();
+                                  //       navigate(13);
+                                  //     },
+                                  //     icon: AppIcons.ticketIcon,
+                                  //     bgColor: AppColors.transparent,
+                                  //     label: "Prize Tickets"),
+                                  // const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
-                                        navigate(13);
-                                      },
-                                      icon: AppIcons.ticketIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Prize Tickets"),
-                                  const SizedBox(height: 10),
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(5);
+                                        navigate(2);
                                       },
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
@@ -392,29 +397,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
-                                        navigate(6);
+                                        navigate(3);
                                       },
                                       icon: AppIcons.purchaseHistoryIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Purchase History"),
+                                      label: "Purchased Tickets"),
                                 ])),
-                        Obx(() => CustomExpansionPanel(
-                                title: "Sale",
-                                onExpansionChanged: (v) {
-                                  // userProfileController.setExpansion(2);
-                                },
-                                initiallyExpanded:
-                                    userProfileController.isExpansionList[2],
-                                children: [
-                                  DrawerItem(
-                                      onTap: () {
-                                        closeDrawer();
-                                        navigate(11);
-                                      },
-                                      icon: AppIcons.filterIcon,
-                                      bgColor: AppColors.transparent,
-                                      label: "Sale Tickets"),
-                                ])),
+                        // Obx(() => CustomExpansionPanel(
+                        //         title: "Sale",
+                        //         onExpansionChanged: (v) {
+                        //           // userProfileController.setExpansion(2);
+                        //         },
+                        //         initiallyExpanded:
+                        //             userProfileController.isExpansionList[2],
+                        //         children: [
+                        //           DrawerItem(
+                        //               onTap: () {
+                        //                 closeDrawer();
+                        //                 navigate(11);
+                        //               },
+                        //               icon: AppIcons.filterIcon,
+                        //               bgColor: AppColors.transparent,
+                        //               label: "Sale Tickets"),
+                        //         ])),
                         Obx(() => CustomExpansionPanel(
                                 title: "Unsold",
                                 onExpansionChanged: (v) {
@@ -426,45 +431,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
-                                        navigate(2);
+                                        navigate(4);
                                       },
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
                                       label: "Return Tickets"),
-                                  // DrawerItem(
-                                  //     onTap: () {
-                                  //       closeDrawer();
-                                  //       navigate(12);
-                                  //     },
-                                  //     icon: AppIcons.filterIcon,
-                                  //     bgColor: AppColors.transparent,
-                                  //     label: "Return All Tickets"),
-                                ])),
-                        Obx(() => CustomExpansionPanel(
-                                title: "Verify",
-                                onExpansionChanged: (v) {
-                                  // userProfileController.setExpansion(3);
-                                },
-                                initiallyExpanded:
-                                    userProfileController.isExpansionList[3],
-                                children: [
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
-                                        navigate(3);
+                                        navigate(5);
                                       },
-                                      icon: AppIcons.purchaseHistoryIcon,
+                                      icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Verify Tickets"),
+                                      label: "Unsold PWT"),
                                 ])),
+
                         Obx(() => CustomExpansionPanel(
-                                title: "Claim",
+                                title: "PWT",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(4);
                                 },
                                 initiallyExpanded:
                                     userProfileController.isExpansionList[4],
                                 children: [
+                                  DrawerItem(
+                                      onTap: () {
+                                        closeDrawer();
+                                        navigate(6);
+                                      },
+                                      icon: AppIcons.newClaimIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "Sold PWT"),
+                                  const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
@@ -483,33 +481,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bgColor: AppColors.transparent,
                                       label: "My Claim Request"),
                                 ])),
-                        // Obx(() => CustomExpansionPanel(
-                        //         title: "Billing",
-                        //         onExpansionChanged: (v) {
-                        //           // userProfileController.setExpansion(2);
-                        //         },
-                        //         initiallyExpanded:
-                        //             userProfileController.isExpansionList[2],
-                        //         children: [
-                        //           DrawerItem(
-                        //               onTap: () {
-                        //                 closeDrawer();
-                        //                 navigate(12);
-                        //               },
-                        //               icon: AppIcons.filterIcon,
-                        //               bgColor: AppColors.transparent,
-                        //               label: "My Bills"),
-                        //         ])),
+
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "Support",
+                            title: "Verify Tickets",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(9);
-                              // userProfileController.setExpansion(5);
                             },
                             initiallyExpanded:
-                                userProfileController.isExpansionList[5],
+                                userProfileController.isExpansionList[0],
                             children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
@@ -521,6 +502,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             initiallyExpanded:
                                 userProfileController.isExpansionList[6],
+                            children: const []),
+                        CustomExpansionPanel(
+                            isIconShowing: false,
+                            title: "My Bill",
+                            onExpansionChanged: (v) {
+                              closeDrawer();
+                              navigate(11);
+                              // userProfileController.setExpansion(6);
+                            },
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[6],
+                            children: const []),
+                        CustomExpansionPanel(
+                            isIconShowing: false,
+                            title: "Support",
+                            onExpansionChanged: (v) {
+                              closeDrawer();
+                              navigate(12);
+                              // userProfileController.setExpansion(5);
+                            },
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[5],
                             children: const []),
                       ],
                     ),

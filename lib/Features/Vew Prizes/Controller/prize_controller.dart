@@ -28,11 +28,11 @@ class PrizesController extends GetxController {
   final pwtDateController = TextEditingController(
       text: formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd"));
 
-  RxString pwtStatus = "Sold".obs;
-
-  void setPwtStatus({String? status}) {
-    pwtStatus.value = status ?? "Sold";
-  }
+//   RxString pwtStatus = "Sold".obs;
+//
+//   void setPwtStatus({String? status}) {
+//     pwtStatus.value = status ?? "Sold";
+//   }
 
   Future<void> selectDateForCheckPrizes(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -85,13 +85,13 @@ class PrizesController extends GetxController {
     getPrizeLoading(false);
   }
 
-  Future<void> getPwtList() async {
+  Future<void> getPwtList({required String pwtStatus}) async {
     isPwtLoading(true);
     Map<String, dynamic> reqModel = {
       "date": pwtDateController.value.text,
       "drawSlotId": timerController.slotId.value,
-      "status": pwtStatus
-          .value, // "Returned"  for unsold data // "Sold" for sold data
+      "status":
+          pwtStatus, // "Returned"  for unsold data // "Sold" for sold data
       "limit": 10,
       "offset": 0,
       "search": ""
