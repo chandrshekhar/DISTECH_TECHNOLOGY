@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PrizesController extends GetxController {
-  RxString formatedDate = ''.obs;
+  RxString formatedDate =
+      formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy").obs;
   DateTime selectedDate = DateTime.now();
   final timerController = Get.put(TimerController());
   RxMap<String, dynamic> userTicketCounts = <String, dynamic>{}.obs;
@@ -24,15 +25,10 @@ class PrizesController extends GetxController {
 
   /// pwt
   RxBool isPwtLoading = false.obs;
-  var getpwtList = PwtListModel().obs;
+  Rx<PwtListModel> getpwtList = PwtListModel().obs;
   final pwtDateController = TextEditingController(
-      text: formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd"));
-
-//   RxString pwtStatus = "Sold".obs;
-//
-//   void setPwtStatus({String? status}) {
-//     pwtStatus.value = status ?? "Sold";
-//   }
+          text: formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy"))
+      .obs;
 
   Future<void> selectDateForCheckPrizes(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -43,7 +39,8 @@ class PrizesController extends GetxController {
     );
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
-      formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      formatedDate.value = formatDate(date: picked, formatType: "dd-MM-yyyy");
+      pwtDateController.value.text = formateDateddMMyyyy(selectedDate);
       await getMydashboard();
     }
   }

@@ -1,14 +1,11 @@
-import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purches_list_pagination_widget.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
-import '../../../Utils/app_helper.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 
@@ -22,9 +19,10 @@ class PurchaseHistoryScreen extends StatefulWidget {
 class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
+  final dateEditngController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now()));
   final purchaesController = Get.put(PurchaseController());
   DateTime selectedDate = DateTime.now();
-  String dateFormat = '';
 
   // Open date picker dialog and select date from calender view
   Future<void> _selectDate(BuildContext context) async {
@@ -37,9 +35,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
-        purchaesController.getAllPurchaesTicket(dateTime: formatedDate);
-        dateFormat = formatedDate;
+        purchaesController.getAllPurchaesTicket(dateTime: selectedDate);
+        dateEditngController.text = formateDateddMMyyyy(selectedDate);
       });
     }
   }
@@ -74,13 +71,32 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Obx(() => Text(
-                    "Purchased Tickets (${purchaesController.countPurchaesTickets})",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.w400),
-                  )),
+              Row(
+                children: [
+                  Obx(() => Expanded(
+                        child: Text(
+                          "Purchased Tickets (${purchaesController.countPurchaesTickets})",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: CustomTextField(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        readOnly: true,
+                        onTap: () async {
+                          _selectDate(context);
+                        },
+                        controller: dateEditngController,
+                        suffixIcon: const Icon(Icons.date_range),
+                      )),
+                ],
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -90,6 +106,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                     flex: 5,
                     child: CustomTextField(
                       controller: _searchController,
+                      height: MediaQuery.of(context).size.height * 0.06,
                       hintText: 'Search',
                       prefixIcon: const Icon(
                         EvaIcons.searchOutline,
@@ -107,38 +124,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                       isBorder: false,
                     ),
                   ),
-                  SizedBox(
-                    width: AppSizes.kDefaultPadding / 1.5,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                    ),
-                  )
                 ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Purchased Tickets on ${AppHelper.formatDate(selectedDate.toLocal())}',
-                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(
                 height: 10,
@@ -217,7 +203,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                     )
                                   : purchaesController.puchaseList.isNotEmpty
                                       ? PurchesHistoryTicketWidget(
-                                          date: dateFormat,
+                                          date: selectedDate,
                                         )
                                       : purchaesController
                                                   .isPurchaLoading.value ==

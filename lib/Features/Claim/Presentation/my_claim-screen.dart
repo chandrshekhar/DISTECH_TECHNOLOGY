@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Commons/app_colors.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../../Dashboard/Presentation/drop_down.dart';
@@ -31,24 +30,27 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
             children: [
               Row(
                 children: [
-                  Text(
-                    'My Claims By Date',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.w400),
+                  Expanded(
+                    child: Text(
+                      'My Claims',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(fontWeight: FontWeight.w400, fontSize: 17),
+                    ),
                   ),
-                  const Spacer(),
-                  AppDropDown(
-                      onChanged: (value) async {
-                        // soldTicketController.limit.value = value;
-                        // soldTicketController.dropDownValue.value = value;
-                        // await soldTicketController.getAllTicket(
-                        //     date: formatedDate,
-                        //     search: soldTicketController.searchText.value,
-                        //     semNumber: soldTicketController.semNumber.value);
-                      },
-                      list: myClaimController.selectDropDownLimit)
+                  Expanded(
+                      flex: 2,
+                      child: CustomTextField(
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        readOnly: true,
+                        onTap: () async {
+                          myClaimController.selectDate(context);
+                        },
+                        controller:
+                            myClaimController.dateEditingController.value,
+                        suffixIcon: const Icon(Icons.date_range),
+                      )),
                 ],
               ),
               SizedBox(
@@ -59,6 +61,7 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
                   Expanded(
                     flex: 5,
                     child: CustomTextField(
+                      height: MediaQuery.of(context).size.height * 0.065,
                       controller:
                           myClaimController.myClaimSearcController.value,
                       hintText: 'Search',
@@ -79,60 +82,16 @@ class _MyClaimScreenState extends State<MyClaimScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: InkWell(
-                  //     onTap: () {
-                  //       showDialog(
-                  //           context: context,
-                  //           builder: (context) {
-                  //             return AlertDialog(
-                  //               content: FilterDialog(
-                  //                 selectedDate: formatedDate,
-                  //               ),
-                  //             );
-                  //           });
-                  //     },
-                  //     child: Container(
-                  //       padding: const EdgeInsets.all(
-                  //           AppSizes.kDefaultPadding / 1.5),
-                  //       height: AppSizes.buttonHeight + 4,
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(
-                  //               AppSizes.cardCornerRadius / 2),
-                  //           border: Border.all(color: AppColors.bg)),
-                  //       child: Image.asset(
-                  //         AppIcons.filterIcon,
-                  //         width: 25,
-                  //         height: 25,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        myClaimController.selectDate(context);
+                  AppDropDown(
+                      onChanged: (value) async {
+                        // soldTicketController.limit.value = value;
+                        // soldTicketController.dropDownValue.value = value;
+                        // await soldTicketController.getAllTicket(
+                        //     date: formatedDate,
+                        //     search: soldTicketController.searchText.value,
+                        //     semNumber: soldTicketController.semNumber.value);
                       },
-                      child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
-                    ),
-                  )
+                      list: myClaimController.selectDropDownLimit),
                 ],
               ),
               SizedBox(height: AppSizes.kDefaultPadding / 2),

@@ -3,6 +3,7 @@ import 'package:distech_technology/Controller/Profile%20Controller/profile_contr
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
+import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../Api/api_provider.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
@@ -30,6 +30,9 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
   String? formatedDate =
       formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd");
 
+  final dateEditingController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now()));
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -40,7 +43,8 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        dateEditingController.text = formateDateddMMyyyy(selectedDate);
+        formatedDate = formatDate(date: selectedDate, formatType: "yyyy-MM-dd");
         soldTicketzcontroller.getAllTicket(
             date: formatedDate,
             semNumber: soldTicketzcontroller.semNumber.value,
@@ -102,9 +106,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
           padding: EdgeInsets.all(AppSizes.kDefaultPadding),
           child: Column(
             children: [
-              // SizedBox(
-              //   height: AppSizes.kDefaultPadding,
-              // ),
               Container(
                 height: AppSizes.buttonHeight,
                 decoration: BoxDecoration(
@@ -116,7 +117,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      flex: 6,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: AppSizes.kDefaultPadding / 2),
@@ -131,7 +131,6 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                       ),
                     ),
                     Expanded(
-                      flex: 2,
                       child: Container(
                         alignment: Alignment.center,
                         height: AppSizes.buttonHeight,
@@ -158,34 +157,26 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                         }),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 2,
-                      child: InkWell(
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                        child: Container(
-                          padding:
-                              EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                          height: AppSizes.buttonHeight + 4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  AppSizes.cardCornerRadius / 2),
-                              border: Border.all(color: AppColors.bg)),
-                          child: Image.asset(
-                            AppIcons.calenderIcon,
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  const Expanded(child: Text('')),
+                  Expanded(
+                      child: CustomTextField(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    readOnly: true,
+                    onTap: () async {
+                      _selectDate(context);
+                    },
+                    controller: dateEditingController,
+                    suffixIcon: const Icon(Icons.date_range),
+                  )),
+                ],
+              ),
+              const SizedBox(height: 5),
               Column(
                 children: [
                   Container(

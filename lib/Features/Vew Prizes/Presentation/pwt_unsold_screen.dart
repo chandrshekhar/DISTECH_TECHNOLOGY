@@ -8,7 +8,9 @@ import '../Controller/prize_controller.dart';
 import '../Widgets/pwt_tickets-table.dart';
 
 class PwtUnsoldScreen extends StatefulWidget {
-  const PwtUnsoldScreen({super.key});
+  PwtUnsoldScreen({super.key, this.isComminFromDashboard = false});
+
+  bool isComminFromDashboard;
 
   @override
   State<PwtUnsoldScreen> createState() => _PwtSoldUnsoldScreenState();
@@ -26,40 +28,59 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.05,
-            vertical: MediaQuery.of(context).size.width * 0.03),
-        child: Column(
-          children: [
-            CustomTextField(
-              height: MediaQuery.of(context).size.height * 0.05,
-              readOnly: true,
-              onTap: () async {
-                prizeController.pwtDateController.text =
-                    await selectDate(context) ?? "";
-                prizeController.getPwtList(pwtStatus: "Returned");
-              },
-              controller: prizeController.pwtDateController,
-              prefixIcon: const Icon(Icons.date_range),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          widget.isComminFromDashboard
+              ? AppBar(
+                  title: const Text("PWT Unsold"),
+                )
+              : const SizedBox.shrink(),
+          const SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: Text(
+                    "PWT Unsold",
+                    style: TextStyle(fontSize: 18, color: AppColors.secondary),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  flex: 1,
+                  child: CustomTextField(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    readOnly: true,
+                    onTap: () async {
+                      prizeController.pwtDateController.value.text =
+                          await selectDate(context) ?? "";
+                      prizeController.getPwtList(pwtStatus: "Returned");
+                    },
+                    controller: prizeController.pwtDateController.value,
+                    suffixIcon: const Icon(Icons.date_range),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width * 0.02,
-            ),
-            const Text(
-              "PWT Unsold",
-              style: TextStyle(fontSize: 18, color: AppColors.lightGrey),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.width * 0.02,
-            ),
-            Expanded(
-              child: PwtDataTable(
-                prizesController: prizeController,
-              ),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.width * 0.02,
+          ),
+          Expanded(
+            child: Obx(() => prizeController.isPwtLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  )
+                : prizeController.getpwtList.value.tickets!.isNotEmpty
+                    ? PwtDataTable(
+                        prizesController: prizeController,
+                      )
+                    : const Center(child: Text("No Record found"))),
+          ),
+        ],
       ),
     );
   }

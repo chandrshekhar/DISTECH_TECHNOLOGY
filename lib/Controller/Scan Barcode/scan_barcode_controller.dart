@@ -26,6 +26,8 @@ class ScanBarcodeController extends GetxController {
   final timerController = Get.put(TimerController());
 
   final barcodeController = TextEditingController().obs;
+  final dateEditingController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
 
   //void selectDate() {}
   DateTime selectedDate = DateTime.now();
@@ -40,9 +42,10 @@ class ScanBarcodeController extends GetxController {
       selectedDate = picked;
       var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
       dateFormatValidateTicket.value = formatedDate;
-      purchaseController.getAllPurchaesTicket(dateTime: formatedDate);
+      purchaseController.getAllPurchaesTicket(dateTime: selectedDate);
       invalidString.value = "";
       // scanbarcodeController.barcodeValue.value = "NA";
+      dateEditingController.value.text = formateDateddMMyyyy(selectedDate);
       barcodeController.value.clear();
     }
   }

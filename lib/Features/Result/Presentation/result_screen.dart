@@ -1,39 +1,26 @@
 import 'package:distech_technology/Commons/app_colors.dart';
-import 'package:distech_technology/Commons/app_icons.dart';
-import 'package:distech_technology/Commons/app_sizes.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Controller/prize_controller.dart';
+import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../Controller/Timer Controller/timer_controller.dart';
 
-class ResultScreen extends StatefulWidget {
-  const ResultScreen({super.key});
+class ResultScreen extends StatelessWidget {
+  ResultScreen({super.key, this.isComminFromDashboard = false});
 
-  @override
-  State<ResultScreen> createState() => _ResultScreenState();
-}
-
-class _ResultScreenState extends State<ResultScreen> {
+  bool isComminFromDashboard;
   ScrollController? controller = ScrollController();
 
   final soldTicketController = Get.put(SoldTicketController());
-
   final getMyDashboardController = Get.put(PrizesController());
-
   final timerController = Get.put(TimerController());
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         controller: controller,
         child: Obx(
           () => getMyDashboardController.getMyDashboardLoadfing.value == true
@@ -43,38 +30,45 @@ class _ResultScreenState extends State<ResultScreen> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    isComminFromDashboard
+                        ? AppBar(
+                            title: const Text("PWT Unsold"),
+                          )
+                        : const SizedBox.shrink(),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: EdgeInsets.symmetric(
+                          vertical: isComminFromDashboard ? 20 : 8,
+                          horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Prize Winning Ticket",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              await getMyDashboardController
-                                  .selectDateForCheckPrizes(context);
-                              // await getMyDashboardController.getMydashboard();
-                              await getMyDashboardController.getPrize();
-                            },
-                            child: Container(
-                              padding:
-                                  EdgeInsets.all(AppSizes.kDefaultPadding / 2),
-                              height: AppSizes.buttonHeight,
-                              // width: AppSizes.button * 3,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      AppSizes.cardCornerRadius / 2),
-                                  border: Border.all(color: AppColors.bg)),
-                              child: Image.asset(
-                                AppIcons.calenderIcon,
-                                width: 25,
-                                height: 25,
-                              ),
+                          Expanded(
+                            child: Text(
+                              isComminFromDashboard
+                                  ? "Selected Date"
+                                  : "Prize Winning Ticket",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16),
                             ),
                           ),
+                          Expanded(
+                              child: CustomTextField(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            readOnly: true,
+                            onTap: () async {
+                              getMyDashboardController
+                                  .selectDateForCheckPrizes(context);
+                              await getMyDashboardController.getPrize();
+                            },
+                            controller: getMyDashboardController
+                                .pwtDateController.value,
+                            suffixIcon: const Icon(Icons.date_range),
+                          )),
+
                           // const SizedBox(
                           //   width: 10,
                           // ),
@@ -93,8 +87,14 @@ class _ResultScreenState extends State<ResultScreen> {
                           : getMyDashboardController
                                       .getPrizeModel.value.resultList ==
                                   null
-                              ? const Center(
-                                  child: Text("No data found!"),
+                              ? Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.3),
+                                    child: const Text("No data found!"),
+                                  ),
                                 )
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

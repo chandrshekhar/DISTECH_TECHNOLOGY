@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:distech_technology/Features/ReturnedTickets/Widgets/return_ticket_card.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
@@ -23,7 +24,9 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
 
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
-  String formatedDate = '';
+  final dateEditingController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now()));
+  // String formatedDate = '';
   DateTime selectedDate = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -35,9 +38,10 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+        dateEditingController.text =
+            formatDate(date: selectedDate, formatType: "dd-MM-yyyy");
         getMyReturnController.getAllReturnTicket(
-          dateTime: formatedDate,
+          dateTime: formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
         );
       });
     }
@@ -48,8 +52,7 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
     // TODO: implement initState
     super.initState();
     getMyReturnController.getAllReturnTicket(
-      dateTime: formatedDate,
-    );
+        dateTime: formatDate(date: selectedDate, formatType: "yyyy-MM-dd"));
     // soldTicketListController.searchText.value = '';
   }
 
@@ -69,13 +72,33 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
               SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
-              Obx(() => Text(
-                    'All Returned Tickets (${getMyReturnController.totalReturn.value})',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.w400),
-                  )),
+              Row(
+                children: [
+                  Obx(() => Expanded(
+                        flex: 1,
+                        child: Text(
+                          'All Returned Tickets (${getMyReturnController.totalReturn.value})',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: CustomTextField(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        readOnly: true,
+                        onTap: () async {
+                          _selectDate(context);
+                        },
+                        controller: dateEditingController,
+                        suffixIcon: const Icon(Icons.date_range),
+                      )),
+                ],
+              ),
               SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
@@ -99,7 +122,8 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                             getMyReturnController.searchText("");
                           }
                           getMyReturnController.getAllReturnTicket(
-                            dateTime: formatedDate,
+                            dateTime: formatDate(
+                                date: selectedDate, formatType: "yyyy-MM-dd"),
                             search: getMyReturnController.searchText.value,
                           );
                         });
@@ -107,30 +131,6 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                       maxLines: 1,
                       minLines: 1,
                       isBorder: false,
-                    ),
-                  ),
-                  SizedBox(
-                    width: AppSizes.kDefaultPadding,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        _selectDate(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
                     ),
                   ),
                   SizedBox(

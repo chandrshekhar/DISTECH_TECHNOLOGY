@@ -1,13 +1,10 @@
 import 'dart:async';
-
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_list_widget.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Commons/app_colors.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_text_field.dart';
 
@@ -47,13 +44,20 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
               SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
-              Obx(() => Text(
-                    'All Sold Ticket (${soldTicketListController.soldTicketCont})',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(fontWeight: FontWeight.w400),
-                  )),
+              Row(
+                children: [
+                  Obx(() => Expanded(
+                        flex: 1,
+                        child: Text(
+                          'All Sold Ticket (${soldTicketListController.soldTicketCont})',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(fontWeight: FontWeight.w400),
+                        ),
+                      )),
+                ],
+              ),
               SizedBox(
                 height: AppSizes.kDefaultPadding,
               ),
@@ -92,53 +96,6 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                       maxLines: 1,
                       minLines: 1,
                       isBorder: false,
-                    ),
-                  ),
-                  SizedBox(
-                    width: AppSizes.kDefaultPadding,
-                  ),
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: GestureDetector(
-                  //     onTap: () {},
-                  //     child: Container(
-                  //       padding: const EdgeInsets.all(
-                  //           AppSizes.kDefaultPadding / 1.5),
-                  //       height: AppSizes.buttonHeight + 4,
-                  //       decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(
-                  //               AppSizes.cardCornerRadius / 2),
-                  //           border: Border.all(color: AppColors.bg)),
-                  //       child: Image.asset(
-                  //         AppIcons.filterIcon,
-                  //         width: 25,
-                  //         height: 25,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        soldTicketListController.selectDate(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                        height: AppSizes.buttonHeight + 4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                AppSizes.cardCornerRadius / 2),
-                            border: Border.all(color: AppColors.bg)),
-                        child: Image.asset(
-                          AppIcons.calenderIcon,
-                          width: 25,
-                          height: 25,
-                        ),
-                      ),
                     ),
                   ),
                   SizedBox(

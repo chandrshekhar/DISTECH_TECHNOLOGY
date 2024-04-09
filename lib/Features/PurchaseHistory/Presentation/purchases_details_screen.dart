@@ -2,6 +2,7 @@ import 'package:distech_technology/Controller/Timer%20Controller/timer_controlle
 import 'package:distech_technology/Features/Profile/Presentation/profile_screen.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchase_detils_list_widget.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import '../../../Widgets/custom_text_field.dart';
 
 class PurchaesDetailsScreen extends StatefulWidget {
   final String orderID;
-  final String dateTime;
+  final DateTime dateTime;
   const PurchaesDetailsScreen(
       {Key? key, required this.orderID, required this.dateTime})
       : super(key: key);
@@ -51,7 +52,7 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Purchase Detail ${widget.dateTime}",
+        title: "Purchase Detail ${formateDateddMMyyyy(widget.dateTime)}",
         autoImplyLeading: false,
         leadingIcon: EvaIcons.arrowIosBack,
         leadingIconPressed: () => Navigator.pop(context),

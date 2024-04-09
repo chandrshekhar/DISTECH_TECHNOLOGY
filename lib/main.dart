@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         title: 'singham lottery',
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
-        home: SafeArea(                           
+        home: SafeArea(
           child: (jwtToken != "")
               ? UpgradeAlert(
 

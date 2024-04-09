@@ -20,6 +20,7 @@ import 'package:distech_technology/Features/Support/Presentation/support_screen.
 import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_sold_ticket.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Presentation/pwt_unsold_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_expation_tile.dart';
@@ -28,6 +29,7 @@ import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
@@ -56,12 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
     const ReturnedTicketScreen(), //2
     const PurchaseHistoryScreen(), //3
     const ReturnUnsoldTicket(), //4
-    const PwtUnsoldScreen(), //5
-    const PwtSoldScreen(), //6
+    PwtUnsoldScreen(), //5
+    PwtSoldScreen(), //6
     const NewClaimScreen(), // 7
     const MyClaimScreen(), // 8
     ScanBarCodeScreen(), //9
-    const ResultScreen(), //10
+    ResultScreen(), //10
     const MyBillsScreen(), // 11
     const SupportScreen(), // 12
   ];
@@ -276,13 +278,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       (index) => PopupMenuItem<String>(
                           value: index.toString(),
                           child: Text(
-                              timerController
-                                      .drawModel.value.data?[index].name ??
-                                  "",
+                              "${timerController.drawModel.value.data?[index].name} (${formatTime(timerController.drawModel.value.data?[index].drawTime ?? "")})",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
-                                  .copyWith(color: AppColors.primary))));
+                                  .copyWith(
+                                      color: AppColors.primary,
+                                      fontSize: 15))));
                 }),
             const SizedBox(width: 5),
             GestureDetector(

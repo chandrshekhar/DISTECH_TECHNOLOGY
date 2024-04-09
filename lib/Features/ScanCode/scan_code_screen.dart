@@ -1,4 +1,5 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,42 +26,28 @@ class ScanBarCodeScreen extends StatelessWidget {
             () => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                          text: 'Selected Date\n',
-                          style: TextStyle(
-                            fontSize: 20,
-                          )),
-                      TextSpan(
-                        text: scanbarcodeController
-                                .dateFormatValidateTicket.isEmpty
-                            ? ""
-                            : '(${scanbarcodeController.dateFormatValidateTicket})',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Selected Date',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    scanbarcodeController.selectDate(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                    height: AppSizes.buttonHeight + 4,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            AppSizes.cardCornerRadius / 2),
-                        border: Border.all(color: AppColors.bg)),
-                    child: Image.asset(
-                      AppIcons.calenderIcon,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                ),
+                Expanded(
+                    flex: 1,
+                    child: CustomTextField(
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      readOnly: true,
+                      onTap: () async {
+                        scanbarcodeController.selectDate(context);
+                      },
+                      controller:
+                          scanbarcodeController.dateEditingController.value,
+                      suffixIcon: const Icon(Icons.date_range),
+                    )),
               ],
             ),
           ),

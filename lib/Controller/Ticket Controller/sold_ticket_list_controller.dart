@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
@@ -17,6 +18,8 @@ class SoldTicketListController extends GetxController {
   RxInt limit = 10.obs;
   final timerController = Get.put(TimerController());
   final searchController = TextEditingController().obs;
+  final dateEditingController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
   RxList<String> selectedSoldTicket = <String>[].obs;
   var checkBoxForSoldTicket = {}.obs;
   RxBool isAllSoldTicketSelected = false.obs;
@@ -118,6 +121,7 @@ class SoldTicketListController extends GetxController {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      dateEditingController.value.text = formateDateddMMyyyy(picked);
       getSoldTicketList(
         date: formatedDate.value,
         semNumber: semNumber.value,

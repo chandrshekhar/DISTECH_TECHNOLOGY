@@ -1,10 +1,10 @@
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Commons/app_colors.dart';
-import '../../../Commons/app_icons.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Claim Controller/new_claim_controller.dart';
 
@@ -40,33 +40,21 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                 Row(
                   children: [
                     Expanded(
-                      flex: 5,
                       child: Text(
                         "All claims you scan will be registered under ${newClaimController.fullName}",
                       ),
                     ),
                     Expanded(
-                      // flex: 1,
-                      child: InkWell(
-                        onTap: () {
-                          newClaimController.selectDate(context);
-                        },
-                        child: Container(
-                          padding:
-                              EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
-                          height: AppSizes.buttonHeight + 4,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  AppSizes.cardCornerRadius / 2),
-                              border: Border.all(color: AppColors.bg)),
-                          child: Image.asset(
-                            AppIcons.calenderIcon,
-                            width: 25,
-                            height: 25,
-                          ),
-                        ),
-                      ),
-                    )
+                        child: CustomTextField(
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      readOnly: true,
+                      onTap: () async {
+                        newClaimController.selectDate(context);
+                      },
+                      controller:
+                          newClaimController.dateEditingController.value,
+                      suffixIcon: const Icon(Icons.date_range),
+                    )),
                   ],
                 ),
 
@@ -83,7 +71,8 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                           message: "Please select date",
                           messageColor: Colors.white);
                     } else {
-                      newClaimController.scanBarCode(true, context, timerController.slotId.value);
+                      newClaimController.scanBarCode(
+                          true, context, timerController.slotId.value);
                     }
                   },
                 ),
@@ -94,7 +83,8 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                           title: "To Tickets",
                           subTitle: newClaimController.toTicketScanValue.value,
                           onTap: () {
-                            newClaimController.scanBarCode(false, context, timerController.slotId.value);
+                            newClaimController.scanBarCode(
+                                false, context, timerController.slotId.value);
                           })
                       : const SizedBox.shrink(),
                 ),
@@ -131,8 +121,6 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
             ),
           ),
         ),
-        
-        
         floatingActionButton: Obx(
           () => newClaimController.ticketClaimList.isNotEmpty
               ? FloatingActionButton.extended(
@@ -282,6 +270,4 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
       ),
     );
   }
-
-
 }

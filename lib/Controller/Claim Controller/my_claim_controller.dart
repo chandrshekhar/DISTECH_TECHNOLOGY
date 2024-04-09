@@ -15,6 +15,10 @@ class MyClaimController extends GetxController {
   RxBool isClaimingDataLoading = false.obs;
   Rx<MyClaimTicketModel> myClaimTicketModel = MyClaimTicketModel().obs;
   final myClaimSearcController = TextEditingController().obs;
+  var dateEditingController = TextEditingController(
+          text:
+              "${formateDateddMMyyyy(DateTime.now())} - ${formateDateddMMyyyy(DateTime.now())}")
+      .obs;
   ApiProvider apiProvider = ApiProvider();
 
   final timerController = Get.put(TimerController());
@@ -28,7 +32,6 @@ class MyClaimController extends GetxController {
       "search": "",
       "status": "",
       "toDate": toDates.value,
-    
     };
     myClaimTicketModel.value = await apiProvider.getMyClaims(reqModel);
     claimsDataList.value = myClaimTicketModel.value.claimsData ?? [];
@@ -73,6 +76,8 @@ class MyClaimController extends GetxController {
       dateFormat.value = formatedDate;
       toDates.value = toDate;
       fromDates.value = formatedDate;
+      dateEditingController.value.text =
+          "${formateDateddMMyyyy(picked.start)} - ${formateDateddMMyyyy(picked.end)}";
       getMyClaim();
     }
   }

@@ -14,9 +14,23 @@ Future<String?> selectDate(BuildContext context) async {
     lastDate: DateTime(3000, 8),
   );
   if (picked != null) {
-    String? formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+    String? formatedDate = formatDate(date: picked, formatType: "dd-MM-yyyy");
     return formatedDate;
   } else {
     return null;
   }
+}
+
+String formatTime(String time24Hour) {
+  // Parse the input time in 24-hour format
+  DateTime parsedTime = DateFormat('HH:mm:ss').parse(time24Hour);
+
+  // Format the time in 12-hour format with AM/PM
+  String time12Hour = DateFormat('h:mm a').format(parsedTime);
+
+  return time12Hour;
+}
+
+String formateDateddMMyyyy(DateTime date) {
+  return formatDate(date: date, formatType: "dd-MM-yyyy");
 }

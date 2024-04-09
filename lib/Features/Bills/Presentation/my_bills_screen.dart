@@ -21,7 +21,7 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
   @override
   Widget build(BuildContext context) {
     myBillController.textEditController.value.text =
-        "${myBillController.startDate.value} - ${myBillController.endDate.value}";
+        "${formatDate(date: myBillController.startDate.value, formatType: "dd-MM-yyyy")} - ${formatDate(date: myBillController.endDate.value, formatType: "dd-MM-yyyy")}";
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -30,36 +30,41 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Selected Date",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400)),
               const SizedBox(height: 10),
               Row(
                 children: [
+                  const Expanded(
+                    flex: 0,
+                    child: Text("MY BILLS ",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600)),
+                  ),
                   Expanded(
+                      flex: 3,
                       child: CustomTextField(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    readOnly: true,
-                    onTap: () async {
-                      myBillController.textEditController.value.text =
-                          await myBillController.selectDate(context) ?? "";
-                    },
-                    controller: myBillController.textEditController.value,
-                    prefixIcon: const Icon(Icons.date_range),
-                  )),
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        readOnly: true,
+                        onTap: () async {
+                          myBillController.textEditController.value.text =
+                              await myBillController.selectDate(context) ?? "";
+                        },
+                        controller: myBillController.textEditController.value,
+                        suffixIcon: const Icon(Icons.date_range),
+                      )),
                 ],
               ),
-              const SizedBox(height: 20),
-              const Text("MY BILLS",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 20),
               Obx(
                 () => myBillController.isBillLoading.value
                     ? const Center(
                         child: CircularProgressIndicator.adaptive(),
                       )
                     : myBillController.billList.isEmpty
-                        ? const Center(
-                            child: Text("No Bill On Date"),
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: MediaQuery.of(context).size.height * 0.3),
+                            child: const Center(
+                              child: Text("No Bill On Date"),
+                            ),
                           )
                         : ListView.builder(
                             shrinkWrap: true,

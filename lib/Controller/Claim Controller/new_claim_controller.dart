@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:base32/base32.dart';
 import 'package:crypto/crypto.dart';
@@ -15,7 +14,6 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
 import '../../Commons/app_colors.dart';
 import '../../Utils/date_time_format.dart';
 
@@ -32,6 +30,9 @@ class NewClaimController extends GetxController {
   Rx<ClaimToTicketModel> claimToTicketModel = ClaimToTicketModel().obs;
   RxString barCode1 = "".obs;
   RxString barCode2 = "".obs;
+  final dateEditingController =
+      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
+
   void scanBarCode(bool fromTicket, BuildContext context, String slodId) async {
     String? barcodeScanRes = await AppHelper().scanBarCode();
     print("bar code eresnsuydg ${barcodeScanRes.toString()}");
@@ -101,8 +102,8 @@ class NewClaimController extends GetxController {
   void getMyCnf() async {
     var data = await apiProvider.getMyCnf();
     if (data['success'] == true) {
-      fullName.value = data['cnfStockist']['fullName']??"";
-      userName.value = data['userName']??"";
+      fullName.value = data['cnfStockist']['fullName'] ?? "";
+      userName.value = data['userName'] ?? "";
     }
   }
 
@@ -117,8 +118,10 @@ class NewClaimController extends GetxController {
     );
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
-      var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      var formatedDate =
+          formatDate(date: selectedDate, formatType: "yyyy-MM-dd");
       dateFormat.value = formatedDate;
+      dateEditingController.value.text = formateDateddMMyyyy(selectedDate);
     }
   }
 

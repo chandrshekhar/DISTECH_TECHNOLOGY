@@ -9,12 +9,12 @@ class MyBillsController extends GetxController {
   RxString fromDateController = ''.obs;
   RxString toDateController = ''.obs;
   RxBool isBillLoading = false.obs;
-  Rx<String> startDate =
-      formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd").obs;
-  Rx<String> endDate =
-      formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd").obs;
-  final textEditController = TextEditingController().obs;
-  // Rx<MyBillModel> myBillModel = MyBillModel().obs;
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> endDate = DateTime.now().obs;
+  final textEditController = TextEditingController(
+          text:
+              "${formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy")} - ${formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy")}")
+      .obs;
 
   RxList<Bills> billList = <Bills>[].obs;
 
@@ -25,8 +25,8 @@ class MyBillsController extends GetxController {
   getMyBills() async {
     isBillLoading(true);
     Map<String, dynamic> reqModel = {
-      "fromDate": startDate.value,
-      "toDate": endDate.value,
+      "fromDate": formatDate(date: startDate.value, formatType: "yyyy-MM-dd"),
+      "toDate": formatDate(date: endDate.value, formatType: "yyyy-MM-dd"),
       "stockistId": profileController.userProfileModel.value.user?.sId,
       "limit": 100,
       "offset": 0,
@@ -51,11 +51,10 @@ class MyBillsController extends GetxController {
         initialDateRange:
             DateTimeRange(start: DateTime.now(), end: DateTime.now()));
     if (picked != null) {
-      startDate.value =
-          formatDate(date: picked.start, formatType: "yyyy-MM-dd");
-      endDate.value = formatDate(date: picked.end, formatType: "yyyy-MM-dd");
+      startDate.value = picked.start;
+      endDate.value = picked.end;
       await getMyBills();
-      return "$startDate - $endDate";
+      return "${formatDate(date: startDate.value, formatType: "dd-MM-yyyy")} - ${formatDate(date: endDate.value, formatType: "dd-MM-yyyy")}";
     } else {
       return null;
     }

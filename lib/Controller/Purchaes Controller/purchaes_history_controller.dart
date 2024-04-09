@@ -4,6 +4,7 @@ import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_hostory_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:get/get.dart';
 
 class PurchaseController extends GetxController {
@@ -17,8 +18,8 @@ class PurchaseController extends GetxController {
   RxInt countPurchaesTickets = 0.obs;
   final timerController = Get.put(TimerController());
   getAllPurchaesTicket(
-      {String? search, int? semNumber, String? dateTime}) async {
-    Map<String, dynamic> reqModel = dateTime == null || dateTime.isEmpty
+      {String? search, int? semNumber, DateTime? dateTime}) async {
+    Map<String, dynamic> reqModel = dateTime == null
         ? {
             "drawSlotId": timerController.slotId.value,
             "offset": 0,
@@ -29,7 +30,7 @@ class PurchaseController extends GetxController {
             "drawSlotId": timerController.slotId.value,
             "offset": 0,
             "limit": limit.value,
-            "date": dateTime,
+            "date": formatDate(date: dateTime, formatType: "yyyy-MM-dd"),
             "search": search ?? ""
           };
     isPurchaLoading(true);
@@ -39,7 +40,7 @@ class PurchaseController extends GetxController {
       if (res.purchases != null && res.purchases!.isNotEmpty) {
         isPurchaLoading(false);
         puchaseList.value = res.purchases!;
-        countPurchaesTickets.value = res.totalQuantity??0;
+        countPurchaesTickets.value = res.totalQuantity ?? 0;
       } else {
         countPurchaesTickets.value = 0;
         puchaseList.clear();

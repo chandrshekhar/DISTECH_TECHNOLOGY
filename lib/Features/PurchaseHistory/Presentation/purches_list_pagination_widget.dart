@@ -9,7 +9,7 @@ import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart
 import '../widget/purchase_history_card.dart';
 
 class PurchesHistoryTicketWidget extends StatefulWidget {
-  final String date;
+  final DateTime date;
 
   const PurchesHistoryTicketWidget({super.key, required this.date});
 
