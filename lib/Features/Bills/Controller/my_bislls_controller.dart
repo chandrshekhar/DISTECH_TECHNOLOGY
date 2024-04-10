@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/Bills/Models/my_bills_model.dart';
@@ -31,6 +33,7 @@ class MyBillsController extends GetxController {
       "limit": 100,
       "offset": 0,
     };
+    log("getMybill->  $reqModel");
     var res = await apiProvider.getMyBills(reqModel);
     if (res.success == true && res.bills!.isNotEmpty) {
       billList.clear();

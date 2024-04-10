@@ -6,7 +6,7 @@ String formatDate({required DateTime date, required String formatType}) {
   return formatter.format(date);
 }
 
-Future<String?> selectDate(BuildContext context) async {
+Future<DateTime?> selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
     context: context,
     initialDate: DateTime.now(),
@@ -14,8 +14,8 @@ Future<String?> selectDate(BuildContext context) async {
     lastDate: DateTime(3000, 8),
   );
   if (picked != null) {
-    String? formatedDate = formatDate(date: picked, formatType: "dd-MM-yyyy");
-    return formatedDate;
+    // String? formatedDate = formatDate(date: picked, formatType: "dd-MM-yyyy");
+    return picked;
   } else {
     return null;
   }

@@ -9,10 +9,8 @@ import '../../../Controller/Timer Controller/timer_controller.dart';
 
 class ResultScreen extends StatelessWidget {
   ResultScreen({super.key, this.isComminFromDashboard = false});
-
   bool isComminFromDashboard;
   ScrollController? controller = ScrollController();
-
   final soldTicketController = Get.put(SoldTicketController());
   final getMyDashboardController = Get.put(PrizesController());
   final timerController = Get.put(TimerController());
@@ -32,7 +30,7 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     isComminFromDashboard
                         ? AppBar(
-                            title: const Text("PWT Unsold"),
+                            title: const Text("Result"),
                           )
                         : const SizedBox.shrink(),
                     Padding(
@@ -46,7 +44,7 @@ class ResultScreen extends StatelessWidget {
                             child: Text(
                               isComminFromDashboard
                                   ? "Selected Date"
-                                  : "Prize Winning Ticket",
+                                  : "Result",
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!
@@ -60,18 +58,14 @@ class ResultScreen extends StatelessWidget {
                             height: MediaQuery.of(context).size.height * 0.06,
                             readOnly: true,
                             onTap: () async {
-                              getMyDashboardController
+                              await getMyDashboardController
                                   .selectDateForCheckPrizes(context);
-                              await getMyDashboardController.getPrize();
+                            
                             },
                             controller: getMyDashboardController
                                 .pwtDateController.value,
                             suffixIcon: const Icon(Icons.date_range),
                           )),
-
-                          // const SizedBox(
-                          //   width: 10,
-                          // ),
                         ],
                       ),
                     ),
@@ -96,231 +90,242 @@ class ResultScreen extends StatelessWidget {
                                     child: const Text("No data found!"),
                                   ),
                                 )
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.all(5),
-                                      alignment: Alignment.center,
-                                      decoration:
-                                          BoxDecoration(border: Border.all()),
-                                      child: Text(
-                                        "Result for Draw held on ${getMyDashboardController.getPrizeModel.value.date ?? ""} Price 10/-",
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      "1st Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.firstPrize ?? "0"}",
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Container(
-                                        alignment: Alignment.center,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 5),
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
                                         width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.lightGrey
-                                                .withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: Text(getMyDashboardController
+                                        padding: const EdgeInsets.all(5),
+                                        alignment: Alignment.center,
+                                        decoration:
+                                            BoxDecoration(border: Border.all()),
+                                        child: Text(
+                                          "Result for Draw held on ${getMyDashboardController.getPrizeModel.value.date ?? ""} Price 10/-",
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "1st Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.firstPrize ?? "0"}",
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.lightGrey
+                                                  .withOpacity(0.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Text(getMyDashboardController
+                                                  .getPrizeModel
+                                                  .value
+                                                  .resultList
+                                                  ?.result
+                                                  ?.firstPrize?[0] ??
+                                              "0")),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 2),
+                                        child: Text(
+                                          "2nd Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.secondPrize ?? "0"}",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      GridView.count(
+                                          crossAxisCount: 5,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 2,
+                                          controller: controller,
+                                          children: List.generate(
+                                            getMyDashboardController
                                                 .getPrizeModel
                                                 .value
-                                                .resultList
-                                                ?.result
-                                                ?.firstPrize?[0] ??
-                                            "0")),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 5, bottom: 2),
-                                      child: Text(
-                                        "2nd Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.secondPrize ?? "0"}",
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
+                                                .resultList!
+                                                .result!
+                                                .secondPrize!
+                                                .length,
+                                            (i) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.lightGrey
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                margin: const EdgeInsets.all(1),
+                                                child: Center(
+                                                  child: Text(
+                                                      getMyDashboardController
+                                                                  .getPrizeModel
+                                                                  .value
+                                                                  .resultList!
+                                                                  .result!
+                                                                  .secondPrize?[
+                                                              i] ??
+                                                          ""),
+                                                ),
+                                              );
+                                            },
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 2),
+                                        child: Text(
+                                          "3nd Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.thirdPrize ?? "0"}",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    GridView.count(
-                                        crossAxisCount: 5,
-                                        shrinkWrap: true,
-                                        childAspectRatio: 2,
-                                        controller: controller,
-                                        children: List.generate(
-                                          getMyDashboardController
-                                              .getPrizeModel
-                                              .value
-                                              .resultList!
-                                              .result!
-                                              .secondPrize!
-                                              .length,
-                                          (i) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.lightGrey
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              margin: const EdgeInsets.all(1),
-                                              child: Center(
-                                                child: Text(
-                                                    getMyDashboardController
-                                                            .getPrizeModel
-                                                            .value
-                                                            .resultList!
-                                                            .result!
-                                                            .secondPrize?[i] ??
-                                                        ""),
-                                              ),
-                                            );
-                                          },
-                                        )),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 2),
-                                      child: Text(
-                                        "3nd Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.thirdPrize ?? "0"}",
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
+                                      GridView.count(
+                                          crossAxisCount: 5,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 2,
+                                          controller: controller,
+                                          children: List.generate(
+                                            getMyDashboardController
+                                                .getPrizeModel
+                                                .value
+                                                .resultList!
+                                                .result!
+                                                .thirdPrize!
+                                                .length,
+                                            (j) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.lightGrey
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                margin: const EdgeInsets.all(1),
+                                                child: Center(
+                                                  child: Text(
+                                                      getMyDashboardController
+                                                              .getPrizeModel
+                                                              .value
+                                                              .resultList!
+                                                              .result!
+                                                              .thirdPrize?[j] ??
+                                                          ""),
+                                                ),
+                                              );
+                                            },
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 2),
+                                        child: Text(
+                                          "4th Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.fourthPrize ?? "0"}",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    GridView.count(
-                                        crossAxisCount: 5,
-                                        shrinkWrap: true,
-                                        childAspectRatio: 2,
-                                        controller: controller,
-                                        children: List.generate(
-                                          getMyDashboardController
-                                              .getPrizeModel
-                                              .value
-                                              .resultList!
-                                              .result!
-                                              .thirdPrize!
-                                              .length,
-                                          (j) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.lightGrey
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              margin: const EdgeInsets.all(1),
-                                              child: Center(
-                                                child: Text(
-                                                    getMyDashboardController
-                                                            .getPrizeModel
-                                                            .value
-                                                            .resultList!
-                                                            .result!
-                                                            .thirdPrize?[j] ??
-                                                        ""),
-                                              ),
-                                            );
-                                          },
-                                        )),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 2),
-                                      child: Text(
-                                        "4th Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.fourthPrize ?? "0"}",
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
+                                      GridView.count(
+                                          crossAxisCount: 5,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 2,
+                                          controller: controller,
+                                          children: List.generate(
+                                            getMyDashboardController
+                                                .getPrizeModel
+                                                .value
+                                                .resultList!
+                                                .result!
+                                                .fourthPrize!
+                                                .length,
+                                            (k) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.lightGrey
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                margin: const EdgeInsets.all(1),
+                                                child: Center(
+                                                  child: Text(
+                                                      getMyDashboardController
+                                                                  .getPrizeModel
+                                                                  .value
+                                                                  .resultList!
+                                                                  .result!
+                                                                  .fourthPrize?[
+                                                              k] ??
+                                                          ""),
+                                                ),
+                                              );
+                                            },
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 2),
+                                        child: Text(
+                                          "5th Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.fifthPrize ?? "0"}",
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    GridView.count(
-                                        crossAxisCount: 5,
-                                        shrinkWrap: true,
-                                        childAspectRatio: 2,
-                                        controller: controller,
-                                        children: List.generate(
-                                          getMyDashboardController
-                                              .getPrizeModel
-                                              .value
-                                              .resultList!
-                                              .result!
-                                              .fourthPrize!
-                                              .length,
-                                          (k) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.lightGrey
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              margin: const EdgeInsets.all(1),
-                                              child: Center(
-                                                child: Text(
-                                                    getMyDashboardController
-                                                            .getPrizeModel
-                                                            .value
-                                                            .resultList!
-                                                            .result!
-                                                            .fourthPrize?[k] ??
-                                                        ""),
-                                              ),
-                                            );
-                                          },
-                                        )),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 2),
-                                      child: Text(
-                                        "5th Prize ₹${getMyDashboardController.getPrizeModel.value.prizes?.winningPrize?.fifthPrize ?? "0"}",
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    GridView.count(
-                                        crossAxisCount: 5,
-                                        shrinkWrap: true,
-                                        childAspectRatio: 2,
-                                        controller: controller,
-                                        children: List.generate(
-                                          getMyDashboardController
-                                              .getPrizeModel
-                                              .value
-                                              .resultList!
-                                              .result!
-                                              .fifthPrize!
-                                              .length,
-                                          (l) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.lightGrey
-                                                      .withOpacity(0.5),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              margin: const EdgeInsets.all(1),
-                                              child: Center(
-                                                child: Text(
-                                                    getMyDashboardController
-                                                            .getPrizeModel
-                                                            .value
-                                                            .resultList!
-                                                            .result!
-                                                            .fifthPrize?[l] ??
-                                                        ""),
-                                              ),
-                                            );
-                                          },
-                                        )),
-                                  ],
+                                      GridView.count(
+                                          crossAxisCount: 5,
+                                          shrinkWrap: true,
+                                          childAspectRatio: 2,
+                                          controller: controller,
+                                          children: List.generate(
+                                            getMyDashboardController
+                                                .getPrizeModel
+                                                .value
+                                                .resultList!
+                                                .result!
+                                                .fifthPrize!
+                                                .length,
+                                            (l) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.lightGrey
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                margin: const EdgeInsets.all(1),
+                                                child: Center(
+                                                  child: Text(
+                                                      getMyDashboardController
+                                                              .getPrizeModel
+                                                              .value
+                                                              .resultList!
+                                                              .result!
+                                                              .fifthPrize?[l] ??
+                                                          ""),
+                                                ),
+                                              );
+                                            },
+                                          )),
+                                    ],
+                                  ),
                                 ),
                     ),
                     const SizedBox(

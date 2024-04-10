@@ -39,9 +39,10 @@ class PrizesController extends GetxController {
     );
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
-      formatedDate.value = formatDate(date: picked, formatType: "dd-MM-yyyy");
+      // formatedDate.value = formatDate(date: picked, formatType: "dd-MM-yyyy");
       pwtDateController.value.text = formateDateddMMyyyy(selectedDate);
       await getMydashboard();
+      await getPrize();
     }
   }
 
@@ -51,10 +52,10 @@ class PrizesController extends GetxController {
       "drawSlotId": timerController.slotId.value,
       "date": formatedDate.value.isEmpty
           ? formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd")
-          : formatedDate.value,
+          : formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
       "limit": 5,
     };
-    // print("req pandey--> $reqModel");
+    print("req pandey--> $reqModel");
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
     // print("dashboard-- > ${res.toString()}");
     if (res.success == true) {
@@ -70,9 +71,9 @@ class PrizesController extends GetxController {
     getPrizeLoading(true);
     Map<String, dynamic> reqModel = {
       "drawSlotId": timerController.slotId.value,
-      "date": formatedDate.value,
+      "date": formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
     };
-    log(reqModel.toString());
+    log("getPrize --> " + reqModel.toString());
     var res = await ApiProvider().getPrizeDetails(reqModel);
 
     if (res.success == true) {
@@ -82,10 +83,11 @@ class PrizesController extends GetxController {
     getPrizeLoading(false);
   }
 
-  Future<void> getPwtList({required String pwtStatus}) async {
+  Future<void> getPwtList(
+      {required String pwtStatus, required DateTime date}) async {
     isPwtLoading(true);
     Map<String, dynamic> reqModel = {
-      "date": pwtDateController.value.text,
+      "date": formatDate(date: date, formatType: "yyyy-MM-dd"),
       "drawSlotId": timerController.slotId.value,
       "status":
           pwtStatus, // "Returned"  for unsold data // "Sold" for sold data
@@ -101,5 +103,12 @@ class PrizesController extends GetxController {
       isPwtLoading(false);
     }
     isPwtLoading(false);
+  }
+
+  @override
+  void onInit() async {
+    // TODO: implement onInit
+    await getPrize();
+    super.onInit();
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
@@ -7,7 +6,6 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Utils/storage/local_storage.dart';
 
 class LoginController extends GetxController {

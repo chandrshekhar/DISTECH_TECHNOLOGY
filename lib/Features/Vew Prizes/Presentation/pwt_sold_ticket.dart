@@ -21,7 +21,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtSoldScreen> {
 
   @override
   void initState() {
-    prizeController.getPwtList(pwtStatus: "Returned");
+    prizeController.getPwtList(pwtStatus: "Sold",date: DateTime.now());
     super.initState();
   }
 
@@ -62,9 +62,12 @@ class _PwtSoldUnsoldScreenState extends State<PwtSoldScreen> {
                     height: MediaQuery.of(context).size.height * 0.06,
                     readOnly: true,
                     onTap: () async {
-                      prizeController.pwtDateController.value.text =
-                          await selectDate(context) ?? "";
-                      prizeController.getPwtList(pwtStatus: "Returned");
+                      var date = await selectDate(context);
+                      prizeController.pwtDateController.value.text = formatDate(
+                          date: date ?? DateTime.now(),
+                          formatType: "dd-MM-yyyy");
+                      prizeController.getPwtList(
+                          pwtStatus: "Sold", date: date ?? DateTime.now());
                     },
                     controller: prizeController.pwtDateController.value,
                     suffixIcon: const Icon(Icons.date_range),

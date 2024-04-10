@@ -1,7 +1,6 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../Controller/prize_controller.dart';
@@ -21,7 +20,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
 
   @override
   void initState() {
-    prizeController.getPwtList(pwtStatus: "Returned");
+    prizeController.getPwtList(pwtStatus: "Returned", date: DateTime.now());
     super.initState();
   }
 
@@ -55,9 +54,11 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
                     height: MediaQuery.of(context).size.height * 0.06,
                     readOnly: true,
                     onTap: () async {
+                      var selectedDate = await selectDate(context);
                       prizeController.pwtDateController.value.text =
-                          await selectDate(context) ?? "";
-                      prizeController.getPwtList(pwtStatus: "Returned");
+                          formateDateddMMyyyy(selectedDate!);
+                      prizeController.getPwtList(
+                          pwtStatus: "Returned", date: selectedDate);
                     },
                     controller: prizeController.pwtDateController.value,
                     suffixIcon: const Icon(Icons.date_range),

@@ -19,6 +19,12 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
   final scrollController = ScrollController();
 
   @override
+  void initState() {
+    myBillController.getMyBills();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     myBillController.textEditController.value.text =
         "${formatDate(date: myBillController.startDate.value, formatType: "dd-MM-yyyy")} - ${formatDate(date: myBillController.endDate.value, formatType: "dd-MM-yyyy")}";
@@ -53,6 +59,7 @@ class _MyBillsScreenState extends State<MyBillsScreen> {
                       )),
                 ],
               ),
+              const SizedBox(height: 10),
               Obx(
                 () => myBillController.isBillLoading.value
                     ? const Center(
