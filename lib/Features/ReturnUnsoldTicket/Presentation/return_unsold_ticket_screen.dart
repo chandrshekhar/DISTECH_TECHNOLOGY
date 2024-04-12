@@ -4,17 +4,17 @@ import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_co
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
-import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../Api/api_provider.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Controller/Return Ticket Controller/return_ticket.dart';
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
+import '../../../Widgets/heade_row_widget.dart';
+import '../../Sale Tickets/Widgets/scanner_card.dart';
 
 class ReturnUnsoldTicket extends StatefulWidget {
   const ReturnUnsoldTicket({Key? key}) : super(key: key);
@@ -107,7 +107,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
           child: Column(
             children: [
               Container(
-                height: AppSizes.buttonHeight,
+                height: MediaQuery.of(context).size.height * 0.06,
                 decoration: BoxDecoration(
                   color: AppColors.primaryBg,
                   borderRadius:
@@ -160,7 +160,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                   ],
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   const Expanded(child: Text('')),
@@ -177,471 +177,518 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                 ],
               ),
               const SizedBox(height: 5),
-              Column(
+              Row(
                 children: [
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.46,
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(AppSizes.cardCornerRadius / 2),
-                      border: Border.all(color: AppColors.bg),
-                    ),
-                    child: Container(
-                      color: AppColors.primaryBg,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    'F.L.',
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.darkGrey
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      'T. L.',
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color: AppColors.darkGrey
-                                                  .withOpacity(0.8),
-                                              fontWeight: FontWeight.w500),
-                                    )),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'From No.',
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.darkGrey
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    '     To No.',
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                            color: AppColors.darkGrey
-                                                .withOpacity(0.8),
-                                            fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                                Text(
-                                  'Add',
-                                  textAlign: TextAlign.start,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          color: AppColors.darkGrey
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //  const CustomDivider(),
-                          Obx(
-                            () => Row(children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: TextField(
-                                    textCapitalization:
-                                        TextCapitalization.characters,
-                                    textInputAction: TextInputAction.next,
-                                    autofocus: true,
-                                    onChanged: (v) {
-                                      getMyreturnController.buttonEnabled();
-                                      if (v.toString().length == 2) {
-                                        getMyreturnController
-                                            .moveNextFieldChar();
-                                        FocusScope.of(context).nextFocus();
-                                      }
-                                    },
-                                    readOnly: timerController.countdown.value ==
-                                            "0:00:00" ||
-                                        getMyreturnController
-                                                .returnCount.value ==
-                                            0,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(2),
-                                      UpperCaseTextFormatter(),
-                                    ],
-                                    keyboardType: TextInputType.name,
-                                    controller: getMyreturnController
-                                        .fromLetterController.value,
-                                    decoration: const InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.blueGrey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: TextField(
-                                    textCapitalization:
-                                        TextCapitalization.characters,
-                                    textInputAction: TextInputAction.next,
-                                    onChanged: (v) {
-                                      getMyreturnController.buttonEnabled();
-                                      if (v.toString().length == 2) {
-                                        FocusScope.of(context).nextFocus();
-                                      }
-                                    },
-                                    readOnly: timerController.countdown.value ==
-                                            "0:00:00" ||
-                                        getMyreturnController
-                                                .returnCount.value ==
-                                            0,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(2),
-                                      UpperCaseTextFormatter()
-                                    ],
-                                    keyboardType: TextInputType.name,
-                                    controller: getMyreturnController
-                                        .toLetterController.value,
-                                    decoration: const InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.blueGrey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: TextField(
-                                    onChanged: (v) {
-                                      getMyreturnController.buttonEnabled();
-                                      if (v.toString().length == 5) {
-                                        getMyreturnController.moveNumberNext();
-                                        FocusScope.of(context).nextFocus();
-                                      }
-                                    },
-                                    readOnly: timerController.countdown.value ==
-                                            "0:00:00" ||
-                                        getMyreturnController
-                                                .returnCount.value ==
-                                            0,
-                                    focusNode: focus2,
-                                    textInputAction: TextInputAction.next,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(5),
-                                    ],
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(),
-                                    controller: getMyreturnController
-                                        .fromNumberController.value,
-                                    decoration: const InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.blueGrey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: TextField(
-                                    onChanged: (v) {
-                                      getMyreturnController.buttonEnabled();
-                                      if (v.toString().length == 5) {
-                                        FocusScope.of(context).unfocus();
-                                      }
-                                    },
-                                    readOnly: timerController.countdown.value ==
-                                            "0:00:00" ||
-                                        getMyreturnController
-                                                .returnCount.value ==
-                                            0,
-                                    inputFormatters: [
-                                      LengthLimitingTextInputFormatter(5),
-                                    ],
-                                    controller: getMyreturnController
-                                        .toNumberController.value,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.blueGrey),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Obx(
-                                () => InkWell(
-                                  onTap: getMyreturnController
-                                          .addButtonEnable.value
-                                      ? () {
-                                          getMyreturnController
-                                              .validateReturnTicket(
-                                                  "${profileController.userProfileModel.value.user!.sId}",
-                                                  formatedDate ?? "",
-                                                  timerController.slotId.value);
-                                          getMyreturnController.buttonEnabled();
-                                        }
-                                      : null,
-                                  child: Container(
-                                      margin: const EdgeInsets.only(right: 2),
-                                      width: AppSizes.buttonHeight,
-                                      height: AppSizes.buttonHeight + 8,
-                                      decoration: BoxDecoration(
-                                          color: getMyreturnController
-                                                  .addButtonEnable.value
-                                              ? AppColors.primary
-                                              : AppColors.lightGrey,
-                                          borderRadius: BorderRadius.circular(
-                                              AppSizes.cardCornerRadius / 2),
-                                          border:
-                                              Border.all(color: AppColors.bg)),
-                                      child: getMyreturnController
-                                                  .isTicketValidating ==
-                                              true
-                                          ? const Center(
-                                              child: CircularProgressIndicator
-                                                  .adaptive(),
-                                            )
-                                          : const Icon(
-                                              Icons.add,
-                                              size: 20,
-                                              color: Colors.white,
-                                            )),
-                                ),
-                              )
-                            ]),
-                          ),
-
-                          const SizedBox(height: 5),
-                          const CustomDivider(),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Obx(() {
-                            if (getMyreturnController
-                                .validateTicketsList.isEmpty) {
-                              return const Text("No Ticket for Return");
-                            } else if (getMyreturnController
-                                    .isReturnTicketLoading.value ==
-                                true) {
-                              return const Center(
-                                  child: CircularProgressIndicator.adaptive());
-                            } else if (timerController.countdown.value ==
-                                "0:00:00") {
-                              return const Text("Return Time is Over");
-                            } else {
-                              return Expanded(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: getMyreturnController
-                                        .validateTicketsList.length,
-                                    itemBuilder: (context, index) {
-                                      var data = getMyreturnController
-                                          .validateTicketsList[index];
-
-                                      return Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                AppSizes.kDefaultPadding / 1.5),
-                                        color: (index % 2 == 0)
-                                            ? AppColors.white
-                                            : AppColors.primaryBg,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  AppSizes.kDefaultPadding),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Text(
-                                                  data.fromLetter.toString(),
-                                                  textAlign: TextAlign.start,
-                                                  style: const TextStyle(
-                                                      color: Colors.blue),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: Text(
-                                                  data.toLetter.toString(),
-                                                  textAlign: TextAlign.start,
-                                                  style: const TextStyle(
-                                                      color: Colors.blue),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(
-                                                  data.fromNumber.toString(),
-                                                  textAlign: TextAlign.start,
-                                                  style: const TextStyle(
-                                                      color: Colors.blue),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: Text(
-                                                    data.toNumber.toString(),
-                                                    style: const TextStyle(
-                                                        color: Colors.blue),
-                                                  )),
-                                              InkWell(
-                                                onTap: () {
-                                                  getMyreturnController
-                                                      .removeValidateReturnTicket(
-                                                          index);
-                                                },
-                                                child: const CircleAvatar(
-                                                  backgroundColor: Colors.red,
-                                                  radius: 10,
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: Colors.white,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              );
-                            }
-                          })
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: AppSizes.kDefaultPadding * 2,
-                  ),
-                  SafeArea(
-                    child: Obx(() => FullButton(
-                          label: 'Return Unsold',
-                          onPressed: (getMyreturnController
-                                      .validateTicketsList.isEmpty ||
-                                  timerController.countdown.value == "0:00:00")
-                              ? () {}
-                              : () async {
-                                  if (getMyreturnController
-                                      .validateTicketsList.isNotEmpty) {
-                                    var res = await ApiProvider()
-                                        .retunTicketUnsold(
-                                            getMyreturnController
-                                                .validateTicketsList,
-                                            formatedDate!,
-                                            profileController.userProfileModel
-                                                .value.user!.sId!,
-                                            timerController.slotId.value);
-                                    if (res.success) {
-                                      await getMyreturnController
-                                          .getAllReturnTicket(
-                                              dateTime: formatedDate);
-                                      Get.snackbar(
-                                          "Successful", "Ticket Return Success",
-                                          backgroundColor: AppColors.white,
-                                          colorText: Colors.green,
-                                          isDismissible: true,
-                                          snackPosition: SnackPosition.TOP);
-                                      getMyreturnController.clearText();
-                                      getMyreturnController.validateTicketsList
-                                          .clear();
-                                      getMyreturnController.validateTicketsList
-                                          .value = res.failedSeriesList!;
-                                      if (res.failedSeriesList!.isNotEmpty) {
-                                        // ignore: use_build_context_synchronously
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return modelBottomSheet(res
-                                                .failedSeriesList!); // Your custom widget with ListView.builder
-                                          },
-                                        );
-                                      }
-
-                                      // soldTicketzcontroller
-                                      //     .selectedSoldTicket
-                                      //     .clear();
-
-                                      await soldTicketzcontroller.getAllTicket(
-                                          date: formatedDate);
-                                    } else {
-                                      Get.snackbar(
-                                          "Error", res.error.toString(),
-                                          backgroundColor: AppColors.black,
-                                          colorText: Colors.white,
-                                          isDismissible: true,
-                                          snackPosition: SnackPosition.TOP);
-                                    }
-                                  }
-                                },
-                          bgColor: (getMyreturnController
-                                      .validateTicketsList.isEmpty ||
-                                  timerController.countdown.value == "0:00:00")
-                              ? AppColors.lightGrey
-                              : AppColors.secondary,
-                        )),
-                  ),
+                  Obx(() => Expanded(
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                              getMyreturnController.isScanningTicket.value
+                                  ? AppColors.lightGrey
+                                  : AppColors.primary,
+                            )),
+                            onPressed: () {
+                              getMyreturnController
+                                  .isScanningTicketsMethod(false);
+                            },
+                            child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                                alignment: Alignment.center,
+                                child: const Text("Manul Entry"))),
+                      )),
+                  const SizedBox(width: 10),
+                  Expanded(
+                      child: Obx(() => ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                            !getMyreturnController.isScanningTicket.value
+                                ? AppColors.lightGrey
+                                : AppColors.primary,
+                          )),
+                          onPressed: () {
+                            getMyreturnController.isScanningTicketsMethod(true);
+                          },
+                          child: Container(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              alignment: Alignment.center,
+                              child: const Text("Scan Ticket")))))
                 ],
               ),
+              const SizedBox(height: 5),
+              Obx(() => getMyreturnController.isScanningTicket.value
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: scanCode(context),
+                    )
+                  : manulField(context)),
+//               const SizedBox(height: 5),
+//               Column(
+//                 children: [
+//                   Container(
+//                     constraints: BoxConstraints(
+//                       maxHeight: MediaQuery.of(context).size.height * 0.46,
+//                     ),
+//                     width: MediaQuery.of(context).size.width,
+//                     decoration: BoxDecoration(
+//                       borderRadius:
+//                           BorderRadius.circular(AppSizes.cardCornerRadius / 2),
+//                       border: Border.all(color: AppColors.bg),
+//                     ),
+//                     child: Container(
+//                       color: AppColors.primaryBg,
+//                       child: Column(
+//                         children: [
+//                           Padding(
+//                             padding: const EdgeInsets.symmetric(
+//                                 horizontal: 12, vertical: 10),
+//                             child: Row(
+//                               children: [
+//                                 Expanded(
+//                                   flex: 1,
+//                                   child: Text(
+//                                     'F.L.',
+//                                     textAlign: TextAlign.start,
+//                                     style: Theme.of(context)
+//                                         .textTheme
+//                                         .bodyMedium!
+//                                         .copyWith(
+//                                             color: AppColors.darkGrey
+//                                                 .withOpacity(0.8),
+//                                             fontWeight: FontWeight.w500),
+//                                   ),
+//                                 ),
+//                                 Expanded(
+//                                     flex: 1,
+//                                     child: Text(
+//                                       'T. L.',
+//                                       textAlign: TextAlign.start,
+//                                       style: Theme.of(context)
+//                                           .textTheme
+//                                           .bodyMedium!
+//                                           .copyWith(
+//                                               color: AppColors.darkGrey
+//                                                   .withOpacity(0.8),
+//                                               fontWeight: FontWeight.w500),
+//                                     )),
+//                                 Expanded(
+//                                   flex: 2,
+//                                   child: Text(
+//                                     'From No.',
+//                                     textAlign: TextAlign.start,
+//                                     style: Theme.of(context)
+//                                         .textTheme
+//                                         .bodyMedium!
+//                                         .copyWith(
+//                                             color: AppColors.darkGrey
+//                                                 .withOpacity(0.8),
+//                                             fontWeight: FontWeight.w500),
+//                                   ),
+//                                 ),
+//                                 Expanded(
+//                                   flex: 2,
+//                                   child: Text(
+//                                     '     To No.',
+//                                     textAlign: TextAlign.start,
+//                                     style: Theme.of(context)
+//                                         .textTheme
+//                                         .bodyMedium!
+//                                         .copyWith(
+//                                             color: AppColors.darkGrey
+//                                                 .withOpacity(0.8),
+//                                             fontWeight: FontWeight.w500),
+//                                   ),
+//                                 ),
+//                                 Text(
+//                                   'Add',
+//                                   textAlign: TextAlign.start,
+//                                   style: Theme.of(context)
+//                                       .textTheme
+//                                       .bodyMedium!
+//                                       .copyWith(
+//                                           color: AppColors.darkGrey
+//                                               .withOpacity(0.8),
+//                                           fontWeight: FontWeight.w500),
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                           //  const CustomDivider(),
+//                           Obx(
+//                             () => Row(children: [
+//                               Expanded(
+//                                 flex: 1,
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(2),
+//                                   child: TextField(
+//                                     textCapitalization:
+//                                         TextCapitalization.characters,
+//                                     textInputAction: TextInputAction.next,
+//                                     autofocus: true,
+//                                     onChanged: (v) {
+//                                       getMyreturnController.buttonEnabled();
+//                                       if (v.toString().length == 2) {
+//                                         getMyreturnController
+//                                             .moveNextFieldChar();
+//                                         FocusScope.of(context).nextFocus();
+//                                       }
+//                                     },
+//                                     readOnly: timerController.countdown.value ==
+//                                             "0:00:00" ||
+//                                         getMyreturnController
+//                                                 .returnCount.value ==
+//                                             0,
+//                                     inputFormatters: [
+//                                       LengthLimitingTextInputFormatter(2),
+//                                       UpperCaseTextFormatter(),
+//                                     ],
+//                                     keyboardType: TextInputType.name,
+//                                     controller: getMyreturnController
+//                                         .fromLetterController.value,
+//                                     decoration: const InputDecoration(
+//                                       enabledBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.blueGrey),
+//                                       ),
+//                                       focusedBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.black),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(2.0),
+//                                   child: TextField(
+//                                     textCapitalization:
+//                                         TextCapitalization.characters,
+//                                     textInputAction: TextInputAction.next,
+//                                     onChanged: (v) {
+//                                       getMyreturnController.buttonEnabled();
+//                                       if (v.toString().length == 2) {
+//                                         FocusScope.of(context).nextFocus();
+//                                       }
+//                                     },
+//                                     readOnly: timerController.countdown.value ==
+//                                             "0:00:00" ||
+//                                         getMyreturnController
+//                                                 .returnCount.value ==
+//                                             0,
+//                                     inputFormatters: [
+//                                       LengthLimitingTextInputFormatter(2),
+//                                       UpperCaseTextFormatter()
+//                                     ],
+//                                     keyboardType: TextInputType.name,
+//                                     controller: getMyreturnController
+//                                         .toLetterController.value,
+//                                     decoration: const InputDecoration(
+//                                       enabledBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.blueGrey),
+//                                       ),
+//                                       focusedBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.black),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 flex: 2,
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(2),
+//                                   child: TextField(
+//                                     onChanged: (v) {
+//                                       getMyreturnController.buttonEnabled();
+//                                       if (v.toString().length == 5) {
+//                                         getMyreturnController.moveNumberNext();
+//                                         FocusScope.of(context).nextFocus();
+//                                       }
+//                                     },
+//                                     readOnly: timerController.countdown.value ==
+//                                             "0:00:00" ||
+//                                         getMyreturnController
+//                                                 .returnCount.value ==
+//                                             0,
+//                                     focusNode: focus2,
+//                                     textInputAction: TextInputAction.next,
+//                                     inputFormatters: [
+//                                       LengthLimitingTextInputFormatter(5),
+//                                     ],
+//                                     keyboardType:
+//                                         const TextInputType.numberWithOptions(),
+//                                     controller: getMyreturnController
+//                                         .fromNumberController.value,
+//                                     decoration: const InputDecoration(
+//                                       enabledBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.blueGrey),
+//                                       ),
+//                                       focusedBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.black),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 flex: 2,
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.all(2.0),
+//                                   child: TextField(
+//                                     onChanged: (v) {
+//                                       getMyreturnController.buttonEnabled();
+//                                       if (v.toString().length == 5) {
+//                                         FocusScope.of(context).unfocus();
+//                                       }
+//                                     },
+//                                     readOnly: timerController.countdown.value ==
+//                                             "0:00:00" ||
+//                                         getMyreturnController
+//                                                 .returnCount.value ==
+//                                             0,
+//                                     inputFormatters: [
+//                                       LengthLimitingTextInputFormatter(5),
+//                                     ],
+//                                     controller: getMyreturnController
+//                                         .toNumberController.value,
+//                                     keyboardType: TextInputType.number,
+//                                     decoration: const InputDecoration(
+//                                       enabledBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.blueGrey),
+//                                       ),
+//                                       focusedBorder: OutlineInputBorder(
+//                                         borderSide: BorderSide(
+//                                             width: 1, color: Colors.black),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                               Obx(
+//                                 () => InkWell(
+//                                   onTap: getMyreturnController
+//                                           .addButtonEnable.value
+//                                       ? () {
+//                                           getMyreturnController
+//                                               .validateReturnTicket(
+//                                                   "${profileController.userProfileModel.value.user!.sId}",
+//                                                   formatedDate ?? "",
+//                                                   timerController.slotId.value);
+//                                           getMyreturnController.buttonEnabled();
+//                                         }
+//                                       : null,
+//                                   child: Container(
+//                                       margin: const EdgeInsets.only(right: 2),
+//                                       width: AppSizes.buttonHeight,
+//                                       height: AppSizes.buttonHeight + 8,
+//                                       decoration: BoxDecoration(
+//                                           color: getMyreturnController
+//                                                   .addButtonEnable.value
+//                                               ? AppColors.primary
+//                                               : AppColors.lightGrey,
+//                                           borderRadius: BorderRadius.circular(
+//                                               AppSizes.cardCornerRadius / 2),
+//                                           border:
+//                                               Border.all(color: AppColors.bg)),
+//                                       child: getMyreturnController
+//                                                   .isTicketValidating ==
+//                                               true
+//                                           ? const Center(
+//                                               child: CircularProgressIndicator
+//                                                   .adaptive(),
+//                                             )
+//                                           : const Icon(
+//                                               Icons.add,
+//                                               size: 20,
+//                                               color: Colors.white,
+//                                             )),
+//                                 ),
+//                               )
+//                             ]),
+//                           ),
+//
+//                           const SizedBox(height: 5),
+//                           const CustomDivider(),
+//                           const SizedBox(
+//                             height: 5,
+//                           ),
+//                           Obx(() {
+//                             if (getMyreturnController
+//                                 .validateTicketsList.isEmpty) {
+//                               return const Text("No Ticket for Return");
+//                             } else if (getMyreturnController
+//                                     .isReturnTicketLoading.value ==
+//                                 true) {
+//                               return const Center(
+//                                   child: CircularProgressIndicator.adaptive());
+//                             } else if (timerController.countdown.value ==
+//                                 "0:00:00") {
+//                               return const Text("Return Time is Over");
+//                             } else {
+//                               return Expanded(
+//                                 child: ListView.builder(
+//                                     shrinkWrap: true,
+//                                     itemCount: getMyreturnController
+//                                         .validateTicketsList.length,
+//                                     itemBuilder: (context, index) {
+//                                       var data = getMyreturnController
+//                                           .validateTicketsList[index];
+//
+//                                       return Container(
+//                                         padding: EdgeInsets.symmetric(
+//                                             vertical:
+//                                                 AppSizes.kDefaultPadding / 1.5),
+//                                         color: (index % 2 == 0)
+//                                             ? AppColors.white
+//                                             : AppColors.primaryBg,
+//                                         child: Padding(
+//                                           padding: EdgeInsets.symmetric(
+//                                               horizontal:
+//                                                   AppSizes.kDefaultPadding),
+//                                           child: Row(
+//                                             children: [
+//                                               Expanded(
+//                                                 flex: 1,
+//                                                 child: Text(
+//                                                   data.fromLetter.toString(),
+//                                                   textAlign: TextAlign.start,
+//                                                   style: const TextStyle(
+//                                                       color: Colors.blue),
+//                                                 ),
+//                                               ),
+//                                               Expanded(
+//                                                 flex: 1,
+//                                                 child: Text(
+//                                                   data.toLetter.toString(),
+//                                                   textAlign: TextAlign.start,
+//                                                   style: const TextStyle(
+//                                                       color: Colors.blue),
+//                                                 ),
+//                                               ),
+//                                               Expanded(
+//                                                 flex: 2,
+//                                                 child: Text(
+//                                                   data.fromNumber.toString(),
+//                                                   textAlign: TextAlign.start,
+//                                                   style: const TextStyle(
+//                                                       color: Colors.blue),
+//                                                 ),
+//                                               ),
+//                                               Expanded(
+//                                                   flex: 2,
+//                                                   child: Text(
+//                                                     data.toNumber.toString(),
+//                                                     style: const TextStyle(
+//                                                         color: Colors.blue),
+//                                                   )),
+//                                               InkWell(
+//                                                 onTap: () {
+//                                                   getMyreturnController
+//                                                       .removeValidateReturnTicket(
+//                                                           index);
+//                                                 },
+//                                                 child: const CircleAvatar(
+//                                                   backgroundColor: Colors.red,
+//                                                   radius: 10,
+//                                                   child: Icon(
+//                                                     Icons.close,
+//                                                     color: Colors.white,
+//                                                     size: 15,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ),
+//                                       );
+//                                     }),
+//                               );
+//                             }
+//                           })
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     height: AppSizes.kDefaultPadding * 2,
+//                   ),
+//                   SafeArea(
+//                     child: Obx(() => FullButton(
+//                           label: 'Return Unsold',
+//                           onPressed: (getMyreturnController
+//                                       .validateTicketsList.isEmpty ||
+//                                   timerController.countdown.value == "0:00:00")
+//                               ? () {}
+//                               : () async {
+//                                   if (getMyreturnController
+//                                       .validateTicketsList.isNotEmpty) {
+//                                     var res = await ApiProvider()
+//                                         .retunTicketUnsold(
+//                                             getMyreturnController
+//                                                 .validateTicketsList,
+//                                             formatedDate!,
+//                                             profileController.userProfileModel
+//                                                 .value.user!.sId!,
+//                                             timerController.slotId.value);
+//                                     if (res.success) {
+//                                       await getMyreturnController
+//                                           .getAllReturnTicket(
+//                                               dateTime: formatedDate);
+//                                       Get.snackbar(
+//                                           "Successful", "Ticket Return Success",
+//                                           backgroundColor: AppColors.white,
+//                                           colorText: Colors.green,
+//                                           isDismissible: true,
+//                                           snackPosition: SnackPosition.TOP);
+//                                       getMyreturnController.clearText();
+//                                       getMyreturnController.validateTicketsList
+//                                           .clear();
+//                                       getMyreturnController.validateTicketsList
+//                                           .value = res.failedSeriesList!;
+//                                       if (res.failedSeriesList!.isNotEmpty) {
+//                                         // ignore: use_build_context_synchronously
+//                                         showModalBottomSheet(
+//                                           isScrollControlled: true,
+//                                           context: context,
+//                                           builder: (BuildContext context) {
+//                                             return modelBottomSheet(res
+//                                                 .failedSeriesList!); // Your custom widget with ListView.builder
+//                                           },
+//                                         );
+//                                       }
+//
+//                                       // soldTicketzcontroller
+//                                       //     .selectedSoldTicket
+//                                       //     .clear();
+//
+//                                       await soldTicketzcontroller.getAllTicket(
+//                                           date: formatedDate);
+//                                     } else {
+//                                       Get.snackbar(
+//                                           "Error", res.error.toString(),
+//                                           backgroundColor: AppColors.black,
+//                                           colorText: Colors.white,
+//                                           isDismissible: true,
+//                                           snackPosition: SnackPosition.TOP);
+//                                     }
+//                                   }
+//                                 },
+//                           bgColor: (getMyreturnController
+//                                       .validateTicketsList.isEmpty ||
+//                                   timerController.countdown.value == "0:00:00")
+//                               ? AppColors.lightGrey
+//                               : AppColors.secondary,
+//                         )),
+//                   ),
+//                 ],
+//               ),
+//
             ],
           ),
         ),
@@ -748,6 +795,396 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                 }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget scanCode(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() => Expanded(
+                  child: ScannerCardWidget(
+                    onTap: () async {
+                      getMyreturnController.scanBarCode(true);
+                    },
+                    title: "From Tickets",
+                    subTitle: getMyreturnController.fromTickets.value,
+                  ),
+                )),
+            const SizedBox(width: 10),
+            Obx(() => Expanded(
+                  child: ScannerCardWidget(
+                    onTap: () {
+                      getMyreturnController.scanBarCode(false);
+                    },
+                    title: "To Tickets",
+                    subTitle: getMyreturnController.toTickets.value,
+                  ),
+                )),
+            const SizedBox(width: 5),
+
+            /// scanner  entry
+            Obx(
+              () => InkWell(
+                onTap: getMyreturnController.fromTickets.value.isNotEmpty &&
+                        getMyreturnController.toTickets.value.isNotEmpty
+                    ? () {
+                        getMyreturnController.validateReturnTicket(
+                          userId: profileController
+                                  .userProfileModel.value.user!.sId ??
+                              "",
+                          date: formatedDate ?? "",
+                          slotId: timerController.slotId.value,
+                          fromNumber: int.parse(getMyreturnController
+                              .fromTickets.value
+                              .substring(2, 7)),
+                          toNumber: int.parse(getMyreturnController
+                              .toTickets.value
+                              .substring(2, 7)),
+                          fromLetter1:
+                              getMyreturnController.fromTickets.value[0],
+                          fromLetter2:
+                              getMyreturnController.fromTickets.value[1],
+                          toLetter1: getMyreturnController.toTickets.value[0],
+                          toLetter2: getMyreturnController.toTickets.value[1],
+                        );
+                      }
+                    : null,
+                child: Container(
+                    margin: const EdgeInsets.only(right: 2),
+                    width: AppSizes.buttonHeight,
+                    height: MediaQuery.of(context).size.height * 0.055,
+                    decoration: BoxDecoration(
+                        color: getMyreturnController
+                                    .fromTickets.value.isNotEmpty &&
+                                getMyreturnController.toTickets.value.isNotEmpty
+                            ? AppColors.primary
+                            : AppColors.lightGrey,
+                        borderRadius: BorderRadius.circular(
+                            AppSizes.cardCornerRadius / 2),
+                        border: Border.all(color: AppColors.bg)),
+                    child: getMyreturnController.isTicketValidating.value
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: Colors.white,
+                          )),
+              ),
+            )
+          ],
+        ),
+        manulField(context)
+      ],
+    );
+  }
+
+  Widget manulField(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: getMyreturnController.isScanningTicket.value
+            ? MediaQuery.of(context).size.height * 0.40
+            : MediaQuery.of(context).size.height * 0.47,
+      ),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: AppColors.primaryBg,
+        borderRadius: BorderRadius.circular(AppSizes.cardCornerRadius / 2),
+        border: Border.all(color: AppColors.bg),
+      ),
+      child: Column(
+        children: [
+          const HeaderListWidget(),
+          //  const CustomDivider(),
+          Obx(
+            () => getMyreturnController.isScanningTicket.value
+                ? const SizedBox.shrink()
+                : Row(children: [
+                    Expanded(
+                        flex: 2,
+                        child: inputField(
+                          readOnly:
+                              timerController.countdown.value == "0:00:00" ||
+                                  getMyreturnController.returnCount.value == 0,
+                          context: context,
+                          controller:
+                              getMyreturnController.fromLetterController.value,
+                          onChanged: (v) {
+                            getMyreturnController.buttonEnabled();
+                            if (v.toString().length == 2) {
+                              getMyreturnController.moveNextFieldChar();
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            UpperCaseTextFormatter(),
+                          ],
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.characters,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: inputField(
+                          controller:
+                              getMyreturnController.toLetterController.value,
+                          readOnly:
+                              timerController.countdown.value == "0:00:00" ||
+                                  getMyreturnController.returnCount.value == 0,
+                          context: context,
+                          onChanged: (v) {
+                            getMyreturnController.buttonEnabled();
+                            if (v.toString().length == 2) {
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            UpperCaseTextFormatter(),
+                          ],
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.characters,
+                        )),
+                    Obx(() => Expanded(
+                        flex: 2,
+                        child: inputField(
+                          controller:
+                              getMyreturnController.fromNumberController.value,
+                          focusNode: focus2,
+                          readOnly:
+                              timerController.countdown.value == "0:00:00" ||
+                                  getMyreturnController.returnCount.value == 0,
+                          context: context,
+                          onChanged: (v) {
+                            getMyreturnController.buttonEnabled();
+
+                            if (v.toString().length == 5) {
+                              getMyreturnController.moveNumberNext();
+                              FocusScope.of(context).nextFocus();
+                            }
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(5),
+                          ],
+                          keyboardType: TextInputType.number,
+                          textCapitalization: TextCapitalization.characters,
+                        ))),
+                    Obx(
+                      () => Expanded(
+                          flex: 2,
+                          child: inputField(
+                            controller:
+                                getMyreturnController.toNumberController.value,
+                            readOnly: timerController.countdown.value ==
+                                    "0:00:00" ||
+                                getMyreturnController.returnCount.value == 0,
+                            context: context,
+                            focusNode: focus3,
+                            onChanged: (v) {
+                              getMyreturnController.buttonEnabled();
+                              if (v.toString().length == 5) {
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(5),
+                            ],
+                            keyboardType: TextInputType.number,
+                            textCapitalization: TextCapitalization.characters,
+                          )),
+                    ),
+
+                    /// manual entry
+                    Obx(
+                      () => InkWell(
+                        onTap: getMyreturnController.addButtonEnable.value
+                            ? () {
+                                getMyreturnController.validateReturnTicket(
+                                    userId: profileController
+                                            .userProfileModel.value.user!.sId ??
+                                        '',
+                                    date: formatedDate ?? "",
+                                    slotId: timerController.slotId.value,
+                                    fromNumber: int.parse(
+                                        getMyreturnController
+                                            .fromNumberController.value.text,
+                                        radix: 10),
+                                    toNumber: int.parse(
+                                      getMyreturnController
+                                          .toNumberController.value.text,
+                                    ),
+                                    fromLetter1: getMyreturnController
+                                        .fromLetterController.value.text[0],
+                                    fromLetter2: getMyreturnController
+                                        .fromLetterController.value.text[1],
+                                    toLetter1: getMyreturnController
+                                        .toLetterController.value.text[0],
+                                    toLetter2: getMyreturnController.toLetterController.value.text[1]);
+                                getMyreturnController.fromTickets.value = "";
+                                getMyreturnController.toTickets.value = "";
+                              }
+                            : null,
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 2),
+                            width: 40,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            decoration: BoxDecoration(
+                                color:
+                                    getMyreturnController.addButtonEnable.value
+                                        ? AppColors.primary
+                                        : AppColors.lightGrey,
+                                borderRadius: BorderRadius.circular(
+                                    AppSizes.cardCornerRadius / 2),
+                                border: Border.all(color: AppColors.bg)),
+                            child: getMyreturnController.isTicketValidating ==
+                                    true
+                                ? const Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  )
+                                : const Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.white,
+                                  )),
+                      ),
+                    )
+                  ]),
+          ),
+          const SizedBox(height: 5),
+          const CustomDivider(),
+          const SizedBox(
+            height: 5,
+          ),
+          Obx(() {
+            if (getMyreturnController.validateTicketsList.isEmpty) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.17),
+                child: const Text("No Ticket for Return"),
+              );
+            } else if (getMyreturnController.isReturnTicketLoading.value ==
+                true) {
+              return const Center(child: CircularProgressIndicator.adaptive());
+            } else if (timerController.countdown.value == "0:00:00") {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.17),
+                child: const Text("Return Time is Over"),
+              );
+            } else {
+              return Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: getMyreturnController.validateTicketsList.length,
+                    itemBuilder: (context, index) {
+                      var data =
+                          getMyreturnController.validateTicketsList[index];
+
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: AppSizes.kDefaultPadding / 1.5),
+                        color: (index % 2 == 0)
+                            ? AppColors.white
+                            : AppColors.primaryBg,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppSizes.kDefaultPadding),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  data.fromLetter.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  data.toLetter.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data.fromNumber.toString(),
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    data.toNumber.toString(),
+                                    style: const TextStyle(color: Colors.blue),
+                                  )),
+                              InkWell(
+                                onTap: () {
+                                  getMyreturnController
+                                      .removeValidateReturnTicket(index);
+                                },
+                                child: const CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  radius: 10,
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              );
+            }
+          })
+        ],
+      ),
+    );
+  }
+
+  Widget inputField(
+      {BuildContext? context,
+      List<TextInputFormatter>? inputFormatters,
+      TextEditingController? controller,
+      TextInputType? keyboardType,
+      void Function(String)? onChanged,
+      bool readOnly = false,
+      TextCapitalization? textCapitalization,
+      FocusNode? focusNode}) {
+    return Container(
+      height: MediaQuery.of(context!).size.height * 0.05,
+      margin: const EdgeInsets.all(2),
+      alignment: Alignment.center,
+      child: TextField(
+        scrollPadding: EdgeInsets.zero,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        focusNode: focusNode,
+        inputFormatters: inputFormatters,
+        controller: controller,
+        textCapitalization: textCapitalization!,
+        keyboardType: keyboardType,
+        style: const TextStyle(fontSize: 15),
+        decoration: const InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.blueGrey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.black),
+          ),
+        ),
       ),
     );
   }

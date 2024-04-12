@@ -32,8 +32,7 @@ class SaleTicketsController extends GetxController {
   RxString fromTickets = ''.obs;
   RxString toTickets = ''.obs;
 
-
-  final timerController =Get.put(TimerController());
+  final timerController = Get.put(TimerController());
 
   ApiProvider apiProvider = ApiProvider();
   void isScanningTicketsMethod(bool val) {
@@ -145,6 +144,10 @@ class SaleTicketsController extends GetxController {
     }
   }
 
+
+
+
+
   void removeValidateReturnTicket(int index) {
     successReturnTicketList.removeAt(index);
   }
@@ -164,8 +167,8 @@ class SaleTicketsController extends GetxController {
     if (fromTicket) {
       ticketScannig(true);
       fromTicketBarcode.value = barcodeScanRes ?? "";
-      var res = await apiProvider.verifyTicket(
-          barcodeScanRes!, fromDateController.value.text,timerController.slotId.value);
+      var res = await apiProvider.verifyTicket(barcodeScanRes!,
+          fromDateController.value.text, timerController.slotId.value);
       if (res['success']) {
         fromTickets.value = res['ticket']['ticketId'];
       } else {
@@ -175,8 +178,8 @@ class SaleTicketsController extends GetxController {
     } else {
       ticketScannig(true);
       toTicketbarcode.value = barcodeScanRes ?? "";
-      var res = await apiProvider.verifyTicket(
-          barcodeScanRes ?? "", toDateController.value.text,timerController.slotId.value);
+      var res = await apiProvider.verifyTicket(barcodeScanRes ?? "",
+          toDateController.value.text, timerController.slotId.value);
       if (res['success']) {
         toTickets.value = res['ticket']['ticketId'];
       } else {

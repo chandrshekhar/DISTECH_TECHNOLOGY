@@ -45,8 +45,8 @@
 //                   height: MediaQuery.of(context).size.height * 0.05,
 //                   readOnly: true,
 //                   onTap: () async {
-//                     saleTicketController.fromDateController.value.text =
-//                         await selectDate(context) ?? "";
+//                     // saleTicketController.fromDateController.value.text =
+//                     //     await selectDate(context) ?? "";
 //                   },
 //                   controller: saleTicketController.fromDateController.value,
 //                   suffixIcon: const Icon(Icons.date_range),
@@ -58,8 +58,8 @@
 //                   readOnly: true,
 //                   controller: saleTicketController.toDateController.value,
 //                   onTap: () async {
-//                     saleTicketController.toDateController.value.text =
-//                         await selectDate(context) ?? "";
+//                     // saleTicketController.toDateController.value.text =
+//                     //     await selectDate(context) ?? "";
 //                   },
 //                   suffixIcon: const Icon(Icons.date_range),
 //                 )),
@@ -96,6 +96,9 @@
 //                         child: const Text("Scan Ticket"))))
 //               ],
 //             ),
+//           
+//           
+//           
 //             Obx(() => saleTicketController.isScanningTicket.value
 //                 ? Padding(
 //                     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -449,4 +452,8 @@
 //       ),
 //     );
 //   }
+// 
+// 
+// 
+// 
 // }

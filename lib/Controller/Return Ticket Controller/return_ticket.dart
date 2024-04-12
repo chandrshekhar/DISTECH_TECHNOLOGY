@@ -1,10 +1,13 @@
 import 'dart:developer';
+
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
+import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import '../Timer Controller/timer_controller.dart';
 
@@ -32,6 +35,22 @@ class GetMyReturnController extends GetxController {
   var toLetterController = TextEditingController().obs;
   var fromNumberController = TextEditingController().obs;
   var toNumberController = TextEditingController().obs;
+  RxBool isScanningTicket = false.obs;
+  final fromDateController = TextEditingController(
+          text: formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd"))
+      .obs;
+  RxBool ticketScannig = false.obs;
+  RxString fromTicketBarcode = ''.obs;
+  RxString toTicketbarcode = ''.obs;
+  RxString fromTickets = ''.obs;
+  RxString toTickets = ''.obs;
+
+  void isScanningTicketsMethod(bool val) {
+    isScanningTicket.value = val;
+    fromTickets.value = "";
+    toTickets.value = "";
+  }
+
   searchTextSave(String value) {
     searchText.value = value;
   }
@@ -113,73 +132,6 @@ class GetMyReturnController extends GetxController {
 
   RxBool returnFromTicketLoading = false.obs;
 
-  // void scanBarCodeForReturnTicket(bool fromTicket, BuildContext context) async {
-  //   String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-  //       '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-  //   print("bar code eresnsuydg ${barcodeScanRes.toString()}");
-
-  //   if (fromTicket) {
-  //     returnFromTicketLoading(true);
-  //     barCode1.value = barcodeScanRes;
-  //     claimFromTicketModel.value =
-  //         await apiProvider.verifyFromTicket(barcodeScanRes, dateFormat.value);
-  //     if (claimFromTicketModel.value.success == false) {
-  //       // ignore: use_build_context_synchronously
-  //       AwesomeDialog(
-  //               btnOkColor: AppColors.primary,
-  //               context: context,
-  //               dialogType: DialogType.error,
-  //               animType: AnimType.bottomSlide,
-  //               dismissOnTouchOutside: true,
-  //               title: "Error!",
-  //               btnOkOnPress: () {},
-  //               desc:
-  //                   "${claimFromTicketModel.value.message}\n${dateFormat.value}\n",
-  //               btnOkText: "Ok",
-  //               titleTextStyle: const TextStyle(
-  //                   color: Colors.red,
-  //                   fontWeight: FontWeight.w600,
-  //                   fontSize: 16))
-  //           .show();
-  //       fromTicketScaning(false);
-  //     } else {
-  //       fromTicketScanValue.value =
-  //           claimFromTicketModel.value.ticket!.ticketId ?? "";
-  //       fromTicketScaning(false);
-  //     }
-  //   } else {
-  //     toTicketScaing(true);
-  //     barCode2.value = barcodeScanRes;
-  //     claimToTicketModel.value =
-  //         await apiProvider.verifyToTicket(barcodeScanRes, dateFormat.value);
-
-  //     if (claimToTicketModel.value.success == false) {
-  //       toTicketScaing(false);
-  //       // ignore: use_build_context_synchronously
-  //       AwesomeDialog(
-  //               btnOkColor: AppColors.primary,
-  //               context: context,
-  //               dialogType: DialogType.error,
-  //               animType: AnimType.bottomSlide,
-  //               dismissOnTouchOutside: true,
-  //               title: "Error!",
-  //               btnOkOnPress: () {},
-  //               desc:
-  //                   "${claimToTicketModel.value.message}\n${dateFormat.value}\n",
-  //               btnOkText: "Ok",
-  //               titleTextStyle: const TextStyle(
-  //                   color: Colors.red,
-  //                   fontWeight: FontWeight.w600,
-  //                   fontSize: 16))
-  //           .show();
-  //     } else {
-  //       toTicketScanValue.value =
-  //           claimToTicketModel.value.ticket!.ticketId ?? "";
-  //       toTicketScaing(false);
-  //     }
-  //   }
-  // },
-
   // delete returned ticket
 
   void ReturnTicketInList() async {
@@ -247,14 +199,24 @@ class GetMyReturnController extends GetxController {
     update(); // This will trigger UI update
   }
 
-  validateReturnTicket(String userId, String date, String slotId) async {
+  validateReturnTicket({
+    required String userId,
+    required String date,
+    required String slotId,
+    required int fromNumber,
+    required int toNumber,
+    required String fromLetter1,
+    required String fromLetter2,
+    required String toLetter1,
+    required String toLetter2,
+  }) async {
     isTicketValidating(true);
-    int fromNumber = int.parse(fromNumberController.value.text);
-    int toNumber = int.parse(toNumberController.value.text);
-    String fromLetter1 = fromLetterController.value.text[0];
-    String fromLetter2 = fromLetterController.value.text[1];
-    String toLetter1 = toLetterController.value.text[0];
-    String toLetter2 = toLetterController.value.text[1];
+    // int fromNumber = int.parse(fromNumberController.value.text);
+    // int toNumber = int.parse(toNumberController.value.text);
+    // String fromLetter1 = fromLetterController.value.text[0];
+    // String fromLetter2 = fromLetterController.value.text[1];
+    // String toLetter1 = toLetterController.value.text[0];
+    // String toLetter2 = toLetterController.value.text[1];
     int fromLetter = fromLetter1.codeUnitAt(0) + fromLetter2.codeUnitAt(0);
     int toLetter = toLetter1.codeUnitAt(0) + toLetter2.codeUnitAt(0);
 
@@ -302,6 +264,35 @@ class GetMyReturnController extends GetxController {
     }
   }
 
+// verify scaned ticket
+  void scanBarCode(bool fromTicket) async {
+    String? barcodeScanRes = await AppHelper().scanBarCode();
+    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+
+    if (fromTicket) {
+      ticketScannig(true);
+      fromTicketBarcode.value = barcodeScanRes ?? "";
+      var res = await apiProvider.verifyTicket(barcodeScanRes!,
+          fromDateController.value.text, timerController.slotId.value);
+      if (res['success']) {
+        fromTickets.value = res['ticket']['ticketId'];
+      } else {
+        Get.snackbar("Error", "Invalid Ticket", backgroundColor: Colors.red);
+      }
+      log("From ticket res--->$res ");
+    } else {
+      ticketScannig(true);
+      toTicketbarcode.value = barcodeScanRes ?? "";
+      var res = await apiProvider.verifyTicket(barcodeScanRes ?? "",
+          fromDateController.value.text, timerController.slotId.value);
+      if (res['success']) {
+        toTickets.value = res['ticket']['ticketId'];
+      } else {
+        Get.snackbar("Error", "Invalid Ticket", backgroundColor: Colors.red);
+      }
+      log("to ticket res--->$res ");
+    }
+  }
 //void selectDate() {}
   // DateTime selectedDate = DateTime.now();
 

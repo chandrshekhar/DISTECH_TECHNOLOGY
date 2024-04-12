@@ -13,11 +13,14 @@ void main() async {
   await Upgrader.clearSavedSettings();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   /// app oriantation
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
+
       /// status bar background color
       statusBarIconBrightness: Brightness.light,
+
       /// status bar icon and background color
       statusBarBrightness: Brightness.dark));
   final String jwtToken = await LocalStorageService()
@@ -45,6 +48,7 @@ class MyApp extends StatelessWidget {
         home: SafeArea(
           child: (jwtToken != "")
               ? UpgradeAlert(
+
                   /// get update when upload new build in google play store and app store
                   upgrader: Upgrader(
                     // debugDisplayAlways: true,

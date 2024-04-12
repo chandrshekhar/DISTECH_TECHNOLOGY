@@ -29,7 +29,6 @@ import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
@@ -66,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ResultScreen(), //10
     const MyBillsScreen(), // 11
     const SupportScreen(), // 12
+    // SaleTicketsScreen() // 13
   ];
 
   final userProfileController = Get.put(ProfileController());
@@ -416,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         //           DrawerItem(
                         //               onTap: () {
                         //                 closeDrawer();
-                        //                 navigate(11);
+                        //                 navigate(13);
                         //               },
                         //               icon: AppIcons.filterIcon,
                         //               bgColor: AppColors.transparent,
@@ -447,7 +447,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bgColor: AppColors.transparent,
                                       label: "Unsold PWT"),
                                 ])),
-
                         Obx(() => CustomExpansionPanel(
                                 title: "PWT",
                                 onExpansionChanged: (v) {
@@ -483,7 +482,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       bgColor: AppColors.transparent,
                                       label: "My Claim Request"),
                                 ])),
-
                         CustomExpansionPanel(
                             isIconShowing: false,
                             title: "Verify Tickets",
