@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:distech_technology/Features/ReturnedTickets/Widgets/return_ticket_card.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,14 +78,14 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                   Obx(() => Expanded(
                         flex: 1,
                         child: Text(
-                          'All Returned Tickets (${getMyReturnController.totalReturn.value})',
+                          '${context.tr("allReturnedTickets")} (${getMyReturnController.totalReturn.value})',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
                               .copyWith(
                                   fontWeight: FontWeight.w400, fontSize: 16),
                           textAlign: TextAlign.center,
-                        ),
+                        ).tr(),
                       )),
                   Expanded(
                       flex: 1,
@@ -286,8 +287,8 @@ class _ReturnedTicketScreenState extends State<ReturnedTicketScreen> {
                                 );
                               } else if (getMyReturnController
                                   .returnTicketsList.isEmpty) {
-                                return const Center(
-                                    child: Text("No ticket found"));
+                                return Center(
+                                    child: const Text("noTicketsFound").tr());
                               } else {
                                 return RawScrollbar(
                                   thumbColor: AppColors.primary,

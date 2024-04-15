@@ -32,7 +32,7 @@ class InfoBannerScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: AppSizes.kDefaultPadding,
-                    ),
+                    ), 
                     Image.asset(
                       AppImages.appLogo,
                       width: MediaQuery.of(context).size.width * 0.6,

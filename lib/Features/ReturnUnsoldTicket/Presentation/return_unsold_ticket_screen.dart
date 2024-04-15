@@ -4,6 +4,7 @@ import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_co
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -195,7 +196,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.05,
                                 alignment: Alignment.center,
-                                child: const Text("Manul Entry"))),
+                                child: const Text("manualEntry").tr())),
                       )),
                   const SizedBox(width: 10),
                   Expanded(
@@ -212,7 +213,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
                           child: Container(
                               height: MediaQuery.of(context).size.height * 0.05,
                               alignment: Alignment.center,
-                              child: const Text("Scan Ticket")))))
+                              child: const Text("scanTicket").tr()))))
                 ],
               ),
               const SizedBox(height: 5),
@@ -1065,7 +1066,7 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
               return Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.17),
-                child: const Text("No Ticket for Return"),
+                child: const Text("noTicketReturn").tr(),
               );
             } else if (getMyreturnController.isReturnTicketLoading.value ==
                 true) {

@@ -26,9 +26,11 @@ import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_expation_tile.dart';
 import 'package:distech_technology/Widgets/custom_shape_clipper.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
 import '../../Result/Presentation/result_screen.dart';
@@ -343,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "Dashboard",
+                            title: "dashboard",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(0);
@@ -353,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 userProfileController.isExpansionList[0],
                             children: const []),
                         Obx(() => CustomExpansionPanel(
-                                title: "Tickets",
+                                title: "tickets",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(1);
                                 },
@@ -376,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Sold Tickets"),
+                                      label: "soldTickets"),
                                   const SizedBox(height: 10),
                                   // DrawerItem(
                                   //     onTap: () {
@@ -394,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.ticketIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Returned Tickets"),
+                                      label: "returnedTickets"),
                                   const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
@@ -403,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.purchaseHistoryIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Purchased Tickets"),
+                                      label: "purchasedTicket"),
                                 ])),
                         // Obx(() => CustomExpansionPanel(
                         //         title: "Sale",
@@ -423,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         //               label: "Sale Tickets"),
                         //         ])),
                         Obx(() => CustomExpansionPanel(
-                                title: "Unsold",
+                                title: "unsold",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(2);
                                 },
@@ -437,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Return Tickets"),
+                                      label: "returnTickets"),
                                   DrawerItem(
                                       onTap: () {
                                         closeDrawer();
@@ -445,10 +447,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.filterIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Unsold PWT"),
+                                      label: "unsoldPWT"),
                                 ])),
                         Obx(() => CustomExpansionPanel(
-                                title: "PWT",
+                                title: "pwt",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(4);
                                 },
@@ -462,7 +464,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.newClaimIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "Sold PWT"),
+                                      label: "soldPWT"),
                                   const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
@@ -471,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.newClaimIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "New Claim"),
+                                      label: "newClaim"),
                                   const SizedBox(height: 10),
                                   DrawerItem(
                                       onTap: () {
@@ -480,11 +482,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       icon: AppIcons.myClaimIcon,
                                       bgColor: AppColors.transparent,
-                                      label: "My Claim Request"),
+                                      label: "myClaimRequest"),
                                 ])),
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "Verify Tickets",
+                            title: "verifyTickets",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(9);
@@ -494,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "Result",
+                            title: "result",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(10);
@@ -505,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "My Bill",
+                            title: "myBill",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(11);
@@ -516,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
-                            title: "Support",
+                            title: "support",
                             onExpansionChanged: (v) {
                               closeDrawer();
                               navigate(12);
@@ -525,6 +527,66 @@ class _HomeScreenState extends State<HomeScreen> {
                             initiallyExpanded:
                                 userProfileController.isExpansionList[5],
                             children: const []),
+                        Obx(() => CustomExpansionPanel(
+                                title: "language",
+                                onExpansionChanged: (v) {
+                                  // userProfileController.setExpansion(1);
+                                },
+                                initiallyExpanded:
+                                    userProfileController.isExpansionList[1],
+                                children: [
+                                  // DrawerItem(
+                                  //     onTap: () {
+                                  //       closeDrawer();
+                                  //       navigate(1);
+                                  //     },
+                                  //     icon: AppIcons.ticketIcon,
+                                  //     bgColor: AppColors.transparent,
+                                  //     label: "My Tickets"),
+                                  // const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        // closeDrawer();
+                                        const newLocale = Locale('hi', 'IN');
+                                        context.setLocale(newLocale);
+                                        Get.updateLocale(newLocale);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "hindi"),
+                                  const SizedBox(height: 10),
+                                  // DrawerItem(
+                                  //     onTap: () {
+                                  //       closeDrawer();
+                                  //       navigate(13);
+                                  //     },
+                                  //     icon: AppIcons.ticketIcon,
+                                  //     bgColor: AppColors.transparent,
+                                  //     label: "Prize Tickets"),
+                                  // const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () async {
+                                        // closeDrawer();
+                                        const newLocale = Locale('en', 'US');
+                                        await context.setLocale(
+                                            newLocale); // change `easy_localization` locale
+                                        Get.updateLocale(newLocale);
+                                      },
+                                      icon: AppIcons.ticketIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "english"),
+                                  const SizedBox(height: 10),
+                                  DrawerItem(
+                                      onTap: () {
+                                        // closeDrawer();
+                                        const newLocale = Locale('bn', 'BD');
+                                        context.setLocale(newLocale);
+                                        Get.updateLocale(newLocale);
+                                      },
+                                      icon: AppIcons.purchaseHistoryIcon,
+                                      bgColor: AppColors.transparent,
+                                      label: "bengali"),
+                                ])),
                       ],
                     ),
                   ),
@@ -574,7 +636,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: FullButton(
-                    label: 'Logout',
+                    label: 'logout',
                     onPressed: () async {
                       final getMyDashboardController =
                           Get.put(PrizesController());
@@ -600,13 +662,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                          child: Text('Developed By Excellis',
+                          child: Text('developedBy',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(
                                     color: AppColors.darkGrey.withOpacity(0.7),
-                                  ))),
+                                  )).tr()),
                       Text(
                         'App V0.3.15',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -638,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text:
-                          'Hi, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
+                          '${context.tr("hii")}, ${userProfileController.userProfileModel.value.user?.fullName ?? ""}\n',
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!

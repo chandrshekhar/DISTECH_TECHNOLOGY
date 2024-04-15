@@ -2,9 +2,11 @@ import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Controller/prize_controller.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
 import '../../../Controller/Timer Controller/timer_controller.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -30,7 +32,7 @@ class ResultScreen extends StatelessWidget {
                   children: [
                     isComminFromDashboard
                         ? AppBar(
-                            title: const Text("Result"),
+                            title: const Text("result").tr(),
                           )
                         : const SizedBox.shrink(),
                     Padding(
@@ -42,16 +44,14 @@ class ResultScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              isComminFromDashboard
-                                  ? "Selected Date"
-                                  : "Result",
+                              isComminFromDashboard ? "selectedDate" : "sesult",
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 16),
-                            ),
+                            ).tr(),
                           ),
                           Expanded(
                               child: CustomTextField(
@@ -60,7 +60,6 @@ class ResultScreen extends StatelessWidget {
                             onTap: () async {
                               await getMyDashboardController
                                   .selectDateForCheckPrizes(context);
-                            
                             },
                             controller: getMyDashboardController
                                 .pwtDateController.value,
@@ -87,7 +86,7 @@ class ResultScreen extends StatelessWidget {
                                         top:
                                             MediaQuery.of(context).size.height *
                                                 0.3),
-                                    child: const Text("No data found!"),
+                                    child: const Text("noTicketsFound").tr(),
                                   ),
                                 )
                               : Padding(

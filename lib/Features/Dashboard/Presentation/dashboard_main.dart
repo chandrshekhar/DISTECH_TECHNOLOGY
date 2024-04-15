@@ -10,6 +10,7 @@ import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_ticke
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -62,12 +63,12 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
               ? Column(
                   children: [
                     const Text(
-                      "Select Draw Slot",
+                      "selectedDate",
                       style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.w600,
                           fontSize: 16),
-                    ),
+                    ).tr(),
                     const SizedBox(height: 10),
                     Column(
                       children: List.generate(
@@ -139,14 +140,14 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              'Selected Date',
+                              'selectedDate',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18),
-                            ),
+                            ).tr(),
                           ),
                           Expanded(
                             flex: 1,
@@ -171,7 +172,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                 .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
-                        title: "Sold Tickets",
+                        title: "soldTickets",
                         color: const Color(0xFF29C57F),
                         imagePath: AppIcons.prize),
                     priceCard(
@@ -180,7 +181,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                 .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
-                        title: "Unsold Tickets",
+                        title: "unsoldTickets",
                         color: const Color(0xFFFF2E17),
                         imagePath: AppIcons.soldTicket),
                     priceCard(
@@ -189,7 +190,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                                 .toString() ??
                             "0",
                         date: soldTicketController.formatedDate.toString(),
-                        title: "Purchased Tickets",
+                        title: "purchasedTickets",
                         color: const Color(0xFFFFBF1C),
                         imagePath: AppIcons.soldTicket),
                     // scanCode(context),
@@ -218,7 +219,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                       children: [
                         Expanded(
                           child: FullButton(
-                              label: "View My Prize",
+                              label: "viewMyPrize",
                               bgColor: AppColors.primary,
                               onPressed: () {
                                 Navigator.push(
@@ -232,7 +233,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: FullButton(
-                            label: 'Result',
+                            label: 'result',
                             bgColor: AppColors.primary,
                             onPressed: () async {
                               Navigator.push(
@@ -284,12 +285,12 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "$title   ${date ?? ""}",
+                "$title",
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: Colors.white),
-              ),
+              ).tr(),
               const SizedBox(height: 5),
               Text(
                 value,

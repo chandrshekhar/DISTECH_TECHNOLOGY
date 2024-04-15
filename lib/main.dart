@@ -3,6 +3,7 @@ import 'package:distech_technology/Features/Home/Presentation/home_screen.dart';
 import 'package:distech_technology/Features/Splash/Presentation/splash_screen.dart';
 import 'package:distech_technology/Utils/storage/local_storage.dart';
 import 'package:distech_technology/Widgets/dismissable_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:upgrader/upgrader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Upgrader.clearSavedSettings();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -29,7 +31,16 @@ void main() async {
   final String userName =
       await LocalStorageService().getFromDisk(LocalStorageService.USER_NAME) ??
           "";
-  runApp(MyApp(jwtToken: jwtToken, userName: userName));
+  runApp(EasyLocalization(
+      supportedLocales: const [
+        Locale('hi', 'IN'),
+        Locale('en', 'US'),
+        Locale('bn', 'BD')
+      ],
+      startLocale: const Locale('en', 'US'), // Default starting locale
+      path: "assets/translations",
+      fallbackLocale: const Locale('en', 'US'),
+      child: MyApp(jwtToken: jwtToken, userName: userName)));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +56,9 @@ class MyApp extends StatelessWidget {
         title: 'singham lottery',
         theme: AppTheme.lightTheme,
         themeMode: ThemeMode.light,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         home: SafeArea(
           child: (jwtToken != "")
               ? UpgradeAlert(

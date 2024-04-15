@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Commons/app_colors.dart';
@@ -21,8 +22,8 @@ class ProfileItemWidget extends StatelessWidget {
               .textTheme
               .bodyMedium!
               .copyWith(color: AppColors.darkGrey.withOpacity(0.8)),
-        ),
-         SizedBox(
+        ).tr(),
+        SizedBox(
           height: AppSizes.kDefaultPadding / 3,
         ),
         Text(
@@ -34,7 +35,7 @@ class ProfileItemWidget extends StatelessWidget {
               .headlineSmall!
               .copyWith(fontWeight: FontWeight.w400),
         ),
-         SizedBox(
+        SizedBox(
           height: AppSizes.kDefaultPadding,
         ),
       ],

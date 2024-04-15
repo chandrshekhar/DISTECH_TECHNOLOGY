@@ -47,6 +47,7 @@ dependencies:
   #user agent
   flutter_user_agentx: ^1.2.4
   horizontal_data_table: ^4.3.1
+  easy_localization: ^3.0.5
 
 dev_dependencies:
   change_app_package_name: ^1.1.0
@@ -79,6 +80,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/translations/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

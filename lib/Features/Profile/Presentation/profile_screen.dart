@@ -6,6 +6,7 @@ import 'package:distech_technology/Features/Profile/Widgets/profile_item_widget.
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const CustomAppBar(
-          title: 'My Profile',
+          title: 'myProfile',
         ),
         body: Obx(
           () => Column(
@@ -78,28 +79,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: ListView(
                           children: [
                             ProfileItemWidget(
-                                title: 'User Id',
+                                title: 'userId',
                                 value: profileController.userProfileModel.value
                                         .user?.userName ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'Full Name',
+                                title: 'fullName',
                                 value: profileController.userProfileModel.value
                                         .user?.fullName ??
                                     "NA"),
                             //const ProfileItemWidget(title: 'Last Name', value: 'Paul'),
                             ProfileItemWidget(
-                                title: 'Aadhaar ID',
+                                title: 'adharId',
                                 value: profileController.userProfileModel.value
                                         .user?.aadhaarId ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'Pan Number',
+                                title: 'panNumber',
                                 value: profileController.userProfileModel.value
                                         .user?.panNumber ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'Address 1',
+                                title: 'address1',
                                 value: profileController.userProfileModel.value
                                                 .user!.address1 !=
                                             null &&
@@ -108,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? 'NA'
                                     : '${profileController.userProfileModel.value.user?.address1}\n${profileController.userProfileModel.value.user?.address2}'),
                             ProfileItemWidget(
-                                title: 'PIN Code',
+                                title: 'pinCode',
                                 value: profileController
                                         .userProfileModel.value.user?.pinCode ??
                                     "NA"),
@@ -116,14 +117,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: AppSizes.kDefaultPadding,
                             ),
                             Text(
-                              'Other Information'.toUpperCase(),
+                              'otherInformation'.toUpperCase(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
                                   .copyWith(
                                       color:
                                           AppColors.darkGrey.withOpacity(0.8)),
-                            ),
+                            ).tr(),
                             SizedBox(
                               height: AppSizes.kDefaultPadding / 2,
                             ),
@@ -132,22 +133,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: AppSizes.kDefaultPadding,
                             ),
                             ProfileItemWidget(
-                                title: 'Mobile Number',
+                                title: 'mobileNumber',
                                 value: profileController.userProfileModel.value
                                         .user?.mobileNumber ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'Email ID',
+                                title: 'emailId',
                                 value: profileController
                                         .userProfileModel.value.user?.email ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'Trade License Number',
+                                title: 'tradeLicenseNumber',
                                 value: profileController.userProfileModel.value
                                         .user?.tradeLicenseNumber ??
                                     "NA"),
                             ProfileItemWidget(
-                                title: 'GST Number',
+                                title: 'gstNumber',
                                 value: profileController.userProfileModel.value
                                         .user?.gstNumber ??
                                     "NA"),

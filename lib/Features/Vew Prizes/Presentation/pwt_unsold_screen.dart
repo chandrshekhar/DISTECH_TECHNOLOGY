@@ -1,6 +1,8 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_text_field.dart';
 import '../Controller/prize_controller.dart';
@@ -32,7 +34,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
         children: [
           widget.isComminFromDashboard
               ? AppBar(
-                  title: const Text("PWT Unsold"),
+                  title: Text("PWT ${context.tr('unsold')}"),
                 )
               : const SizedBox.shrink(),
           const SizedBox(height: 15),
@@ -40,11 +42,12 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   flex: 1,
                   child: Text(
-                    "PWT Unsold",
-                    style: TextStyle(fontSize: 18, color: AppColors.secondary),
+                    "PWT ${context.tr('unsold')}",
+                    style: const TextStyle(
+                        fontSize: 18, color: AppColors.secondary),
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -79,7 +82,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
                     ? PwtDataTable(
                         prizesController: prizeController,
                       )
-                    : const Center(child: Text("No Record found"))),
+                    : Center(child: const Text("noTicketsFound").tr())),
           ),
         ],
       ),

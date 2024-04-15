@@ -1,4 +1,5 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +22,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtSoldScreen> {
 
   @override
   void initState() {
-    prizeController.getPwtList(pwtStatus: "Sold",date: DateTime.now());
+    prizeController.getPwtList(pwtStatus: "Sold", date: DateTime.now());
     super.initState();
   }
 
@@ -45,13 +46,13 @@ class _PwtSoldUnsoldScreenState extends State<PwtSoldScreen> {
                   flex: 1,
                   child: widget.isComminFromDashboard
                       ? const Text(
-                          'Selected Date',
+                          'selectedDate',
                           style: TextStyle(
                               fontSize: 18, color: AppColors.secondary),
-                        )
-                      : const Text(
-                          "Sold PWT",
-                          style: TextStyle(
+                        ).tr()
+                      : Text(
+                          "${context.tr("sold")} PWT",
+                          style: const TextStyle(
                               fontSize: 18, color: AppColors.secondary),
                         ),
                 ),
@@ -88,7 +89,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtSoldScreen> {
                     ? PwtDataTable(
                         prizesController: prizeController,
                       )
-                    : const Center(child: Text("No Record found"))),
+                    : Center(child: const Text("noTicketsFound").tr())),
           ),
         ],
       ),

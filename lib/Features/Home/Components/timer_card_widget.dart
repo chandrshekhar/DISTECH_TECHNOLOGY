@@ -1,4 +1,5 @@
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,6 @@ class TimerCardWidget extends StatefulWidget {
 }
 
 class _TimerCardWidgetState extends State<TimerCardWidget> {
-
   final timerController = Get.put(TimerController());
 
   @override
@@ -25,10 +25,10 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
       children: [
         Column(
           children: [
-            Text('Last Return Time',
+            Text('lastReturnTime',
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: AppColors.secondary.withOpacity(0.9),
-                    )),
+                    )).tr(),
             const SizedBox(
               height: 1,
             ),
@@ -63,12 +63,12 @@ class _TimerCardWidgetState extends State<TimerCardWidget> {
         Column(
           children: [
             Text(
-              'Draw Time',
+              'drawTime',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.9),
                   fontWeight: FontWeight.w400,
                   fontSize: 15),
-            ),
+            ).tr(),
             const SizedBox(
               height: 1,
             ),

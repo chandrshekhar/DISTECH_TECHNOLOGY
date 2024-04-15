@@ -1,9 +1,12 @@
 import 'dart:async';
+
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_list_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_text_field.dart';
@@ -49,12 +52,12 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                   Obx(() => Expanded(
                         flex: 1,
                         child: Text(
-                          'All Sold Ticket (${soldTicketListController.soldTicketCont})',
+                          '${context.tr('allSoldTicket')} (${soldTicketListController.soldTicketCont})',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
                               .copyWith(fontWeight: FontWeight.w400),
-                        ),
+                        ).tr(),
                       )),
                 ],
               ),
@@ -226,8 +229,9 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                                         child: CircularProgressIndicator
                                             .adaptive(),
                                       )
-                                    : const Center(
-                                        child: Text("No tickets found")),
+                                    : Center(
+                                        child:
+                                            const Text("noTicketsFound").tr()),
                           ))
                     ],
                   ),

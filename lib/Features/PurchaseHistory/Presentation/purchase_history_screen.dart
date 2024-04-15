@@ -1,9 +1,11 @@
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purches_list_pagination_widget.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Utils/date_time_format.dart';
@@ -75,7 +77,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                 children: [
                   Obx(() => Expanded(
                         child: Text(
-                          "Purchased Tickets (${purchaesController.countPurchaesTickets})",
+                          "${context.tr("purchasedTickets")}  (${purchaesController.countPurchaesTickets})",
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
@@ -212,8 +214,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                               child: CircularProgressIndicator
                                                   .adaptive(),
                                             )
-                                          : const Center(
-                                              child: Text("No tickets found"),
+                                          : Center(
+                                              child:
+                                                  const Text("noTicketsFound")
+                                                      .tr(),
                                             ))))
                     ],
                   ),

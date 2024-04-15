@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../Commons/app_colors.dart';
@@ -55,7 +56,7 @@ class CustomExpansionPanel extends StatelessWidget {
         iconColor: AppColors.primaryDark,
         title: Transform.translate(
           offset: const Offset(-15, 0),
-          child: Text(title, style: titleStyle ?? const TextStyle()),
+          child: Text(title, style: titleStyle ?? const TextStyle()).tr(),
         ),
         onExpansionChanged: onExpansionChanged,
         initiallyExpanded: initiallyExpanded,

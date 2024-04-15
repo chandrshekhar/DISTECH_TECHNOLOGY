@@ -1,7 +1,7 @@
 import 'package:distech_technology/Commons/app_icons.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 
 import '../Commons/app_colors.dart';
 
@@ -54,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: AppColors.white,
               ),
             ),
-      title: Text(title!, style: const TextStyle(fontSize: 18)),
+      title: Text(title!, style: const TextStyle(fontSize: 18)).tr(),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Commons/app_colors.dart';
@@ -41,7 +42,7 @@ class DrawerItem extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.8),
                   fontWeight: FontWeight.w500),
-            ))
+            ).tr())
           ],
         ),
       ),
