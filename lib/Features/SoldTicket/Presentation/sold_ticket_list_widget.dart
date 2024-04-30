@@ -9,8 +9,7 @@ import '../../../Commons/app_sizes.dart';
 import '../Widgets/ticket_list_item.dart';
 
 class SoldTicketsListWidget extends StatefulWidget {
-  final String date;
-  const SoldTicketsListWidget({super.key, required this.date});
+  const SoldTicketsListWidget({super.key});
 
   @override
   State<SoldTicketsListWidget> createState() => _SoldTicketsListWidgetState();
@@ -23,7 +22,7 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
 
   @override
   void initState() {
-    soldTicketListController.getSoldTicketList(date: widget.date);
+    soldTicketListController.getSoldTicketList();
     super.initState();
   }
 
@@ -44,7 +43,6 @@ class _SoldTicketsListWidgetState extends State<SoldTicketsListWidget> {
         onLoading: () async {
           soldTicketListController.limit.value += 10;
           await soldTicketListController.getSoldTicketList(
-              date: widget.date,
               search: soldTicketListController.searchText.value,
               semNumber: soldTicketListController.semNumber.value);
           refreshController.loadComplete();

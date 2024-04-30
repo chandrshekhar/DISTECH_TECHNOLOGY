@@ -18,8 +18,7 @@ class SoldTicketListController extends GetxController {
   RxInt limit = 10.obs;
   final timerController = Get.put(TimerController());
   final searchController = TextEditingController().obs;
-  final dateEditingController =
-      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
+  final dateEditingController = TextEditingController().obs;
   RxList<String> selectedSoldTicket = <String>[].obs;
   var checkBoxForSoldTicket = {}.obs;
   RxBool isAllSoldTicketSelected = false.obs;
@@ -66,33 +65,25 @@ class SoldTicketListController extends GetxController {
           backgroundColor: Colors.red, colorText: Colors.white);
       // getSoldTicketList(date: formatedDate.value);
     }
-    getSoldTicketList(date: formatedDate.value);
+    getSoldTicketList();
   }
 
   filterSemClear(int value) {
     semNumber.value = 0;
   }
 
-  getSoldTicketList({String? search, int? semNumber, String? date}) async {
+  getSoldTicketList({String? search, int? semNumber}) async {
     if (semNumber == 0) {
       semNumber = null;
     }
-    Map<String, dynamic> reqModel = (date == null || date.isEmpty)
-        ? {
-            "drawSlotId": timerController.slotId.value,
-            "offset": 0,
-            "limit": limit.value,
-            "search": search ?? "",
-            "SEM": semNumber,
-          }
-        : {
-            "drawSlotId": timerController.slotId.value,
-            "offset": 0,
-            "limit": limit.value,
-            "search": search ?? "",
-            "SEM": semNumber,
-            "date": date,
-          };
+    Map<String, dynamic> reqModel = {
+      "drawSlotId": timerController.slotId.value,
+      "offset": 0,
+      "limit": limit.value,
+      "search": search ?? "",
+      "SEM": semNumber,
+      "date": dateEditingController.value.text,
+    };
 
     isSoldListLoading(true);
     var res = await apiProvider.getAllSoldTicket(reqModel);
@@ -109,7 +100,8 @@ class SoldTicketListController extends GetxController {
     isSoldListLoading(false);
   }
 
-  RxString formatedDate = ''.obs;
+  // var soldTicketDateController = TextEditingController().obs;
+  // RxString formatedDate = ''.obs;
   DateTime selectedDate = DateTime.now();
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -120,10 +112,10 @@ class SoldTicketListController extends GetxController {
     );
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
-      formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
+      // soldTicketDateController.value.text =
+      //     formatDate(date: picked, formatType: "yyyy-MM-dd");
       dateEditingController.value.text = formateDateddMMyyyy(picked);
       getSoldTicketList(
-        date: formatedDate.value,
         semNumber: semNumber.value,
       );
     }

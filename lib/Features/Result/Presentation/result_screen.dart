@@ -1,6 +1,7 @@
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Controller/prize_controller.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,34 @@ import 'package:get/get.dart';
 
 import '../../../Controller/Timer Controller/timer_controller.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   ResultScreen({super.key, this.isComminFromDashboard = false});
   bool isComminFromDashboard;
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
   ScrollController? controller = ScrollController();
+
   final soldTicketController = Get.put(SoldTicketController());
+
   final getMyDashboardController = Get.put(PrizesController());
+
   final timerController = Get.put(TimerController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      getMyDashboardController.pwtDateController.value.text =
+          formateDateddMMyyyy(DateTime.now());
+      await getMyDashboardController.getMydashboard();
+      await getMyDashboardController.getPrize();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,21 +52,23 @@ class ResultScreen extends StatelessWidget {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    isComminFromDashboard
+                    widget.isComminFromDashboard
                         ? AppBar(
                             title: const Text("result").tr(),
                           )
                         : const SizedBox.shrink(),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                          vertical: isComminFromDashboard ? 20 : 8,
+                          vertical: widget.isComminFromDashboard ? 20 : 8,
                           horizontal: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: Text(
-                              isComminFromDashboard ? "selectedDate" : "sesult",
+                              widget.isComminFromDashboard
+                                  ? "selectedDate"
+                                  : "result",
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineSmall!

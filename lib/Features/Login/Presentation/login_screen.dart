@@ -5,6 +5,7 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
@@ -75,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextFormField(
                       textCapitalization: TextCapitalization.characters,
+                      enableInteractiveSelection: false,
                       decoration: InputDecoration(
                         hintText: 'Username',
                         prefixIcon: const Icon(
@@ -86,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       inputFormatters: const [
                         // UpperCaseTextFormatter(),
+                        // LengthLimitingTextInputFormatter(11)
                       ],
                       validator: (String? value) {
                         if (value!.isEmpty) {

@@ -42,7 +42,7 @@ class ScanBarcodeController extends GetxController {
       selectedDate = picked;
       var formatedDate = formatDate(date: picked, formatType: "yyyy-MM-dd");
       dateFormatValidateTicket.value = formatedDate;
-      purchaseController.getAllPurchaesTicket(dateTime: selectedDate);
+      // purchaseController.getAllPurchaesTicket(dateTime: selectedDate);
       invalidString.value = "";
       // scanbarcodeController.barcodeValue.value = "NA";
       dateEditingController.value.text = formateDateddMMyyyy(selectedDate);

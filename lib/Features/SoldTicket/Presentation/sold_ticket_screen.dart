@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Features/SoldTicket/Presentation/sold_ticket_list_widget.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
   void initState() {
     super.initState();
     soldTicketListController.limit.value = 10;
+    soldTicketListController.dateEditingController.value.text =
+        formateDateddMMyyyy(DateTime.now());
     soldTicketListController.getSoldTicketList();
     soldTicketListController.searchText.value = '';
     soldTicketListController.semNumber.value = 0;
@@ -59,6 +62,19 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                               .copyWith(fontWeight: FontWeight.w400),
                         ).tr(),
                       )),
+                  Expanded(
+                    flex: 1,
+                    child: CustomTextField(
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      readOnly: true,
+                      onTap: () async {
+                        soldTicketListController.selectDate(context);
+                      },
+                      controller:
+                          soldTicketListController.dateEditingController.value,
+                      suffixIcon: const Icon(Icons.date_range),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(
@@ -87,8 +103,6 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                           }
                           Timer(const Duration(milliseconds: 1000), () {
                             soldTicketListController.getSoldTicketList(
-                                date:
-                                    soldTicketListController.formatedDate.value,
                                 search:
                                     soldTicketListController.searchText.value,
                                 semNumber:
@@ -218,10 +232,7 @@ class _SoldTicketScreenState extends State<SoldTicketScreen> {
                           child: Obx(
                             () => soldTicketListController
                                     .soldTicketList.isNotEmpty
-                                ? SoldTicketsListWidget(
-                                    date: soldTicketListController
-                                        .formatedDate.value,
-                                  )
+                                ? const SoldTicketsListWidget()
                                 : soldTicketListController
                                             .isSoldListLoading.value ==
                                         true

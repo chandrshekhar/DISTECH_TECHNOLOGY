@@ -12,7 +12,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
   @override
   void initState() {
     // Go To Welcome Screen After 1.5 Seconds
@@ -20,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
         () => context.pushReplacement(const WelcomeScreen()));
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

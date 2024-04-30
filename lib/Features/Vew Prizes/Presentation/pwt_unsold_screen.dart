@@ -22,6 +22,8 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
 
   @override
   void initState() {
+    prizeController.pwtDateController.value.text =
+        formateDateddMMyyyy(DateTime.now());
     prizeController.getPwtList(pwtStatus: "Returned", date: DateTime.now());
     super.initState();
   }

@@ -15,6 +15,7 @@ void main() async {
   await Upgrader.clearSavedSettings();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await Upgrader.clearSavedSettings();
 
   /// app oriantation
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
