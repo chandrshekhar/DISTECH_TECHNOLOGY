@@ -1,4 +1,5 @@
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/custom_toast.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
     super.initState();
     newClaimController.fromTicketScanValue.value = '';
     newClaimController.toTicketScanValue.value = '';
+    newClaimController.dateEditingController.value.text =
+        formateDateddMMyyyy(DateTime.now());
     // newClaimController.dateFormat.value = '';
   }
 
@@ -64,7 +67,8 @@ class _NewClaimScreenState extends State<NewClaimScreen> {
                   subTitle: newClaimController.fromTicketScanValue.value,
                   onTap: () async {
                     // newClaimController.createSignature("B7393471Z");
-                    if (newClaimController.dateFormat.value.isEmpty) {
+                    if (newClaimController
+                        .dateEditingController.value.text.isEmpty) {
                       ToastMessage().toast(
                           context: context,
                           background: Colors.red,

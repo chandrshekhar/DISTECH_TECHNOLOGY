@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     PwtSoldScreen(), //6
     const NewClaimScreen(), // 7
     const MyClaimScreen(), // 8
-    ScanBarCodeScreen(), //9
+    const ScanBarCodeScreen(), //9
     ResultScreen(), //10
     const MyBillsScreen(), // 11
     const SupportScreen(), // 12

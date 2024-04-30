@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
+import 'package:distech_technology/Utils/Toast/app_toast.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 import '../../Features/ScanCode/Model/scan_ticket_model.dart';
 
@@ -18,6 +18,7 @@ class ScanBarcodeController extends GetxController {
 
   Rx<ScanTicketModel> scanTickModel = ScanTicketModel().obs;
   RxBool isTicketScanning = false.obs;
+  RxBool verifyingTicket = false.obs;
   RxString barcodeValue = "NA".obs;
   RxString invalidString = ''.obs;
   RxString ticketId = ''.obs;
@@ -28,8 +29,7 @@ class ScanBarcodeController extends GetxController {
   final timerController = Get.put(TimerController());
 
   final barcodeController = TextEditingController().obs;
-  final dateEditingController =
-      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
+  final dateEditingController = TextEditingController().obs;
 
   setverifyTicketButton(String val) {
     if (val.isNotEmpty) {
@@ -60,12 +60,25 @@ class ScanBarcodeController extends GetxController {
     }
   }
 
-  Future<void> verifyTicketById() async {
+  Future<void> verifyTicketById(BuildContext context) async {
+    verifyingTicket(true);
     scanTickModel.value = await apiProvider.verifyTicketbyID(
         ticketId: barcodeController.value.text.trim(),
         date: dateFormatValidateTicket.value,
         slotId: timerController.slotId.value);
-    barcodeController.value.clear();
+
+    setverifyTicketButton('');
+    print("error--> ${scanTickModel.value.success}");
+    if (scanTickModel.value.success == false) {
+      ToastMessage().toast(
+          context: context,
+          messageColor: Colors.white,
+          background: Colors.red,
+          message: 'Ticket Not fount!');
+    } else {
+      barcodeController.value.clear();
+    }
+    verifyingTicket(false);
   }
 
   Future<void> scanBarcodeNormal() async {

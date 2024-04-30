@@ -36,7 +36,7 @@ void main() async {
       supportedLocales: const [
         Locale('hi', 'IN'),
         Locale('en', 'US'),
-        Locale('bn', 'BD')
+        Locale('bn', 'BD'),
       ],
       startLocale: const Locale('en', 'US'), // Default starting locale
       path: "assets/translations",

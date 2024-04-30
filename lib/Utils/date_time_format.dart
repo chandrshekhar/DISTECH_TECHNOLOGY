@@ -33,4 +33,20 @@ String formatTime(String time24Hour) {
 
 String formateDateddMMyyyy(DateTime date) {
   return formatDate(date: date, formatType: "dd-MM-yyyy");
+
 }
+String formateDateyyyyMMdd(String dateInDDMMYYYY) {
+    // Create a DateFormat for "ddMMyyyy" format
+    DateFormat inputFormat = DateFormat('ddMMyyyy');
+
+    // Parse the input date string
+    DateTime dateTime = inputFormat.parse(dateInDDMMYYYY);
+
+    // Create a DateFormat for "yyyy-MM-dd" format
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+
+    // Format the DateTime object to the desired output format
+    String formattedDate = outputFormat.format(dateTime);
+
+    return formattedDate;
+  }

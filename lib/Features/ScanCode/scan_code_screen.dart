@@ -1,4 +1,7 @@
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Features/ReturnUnsoldTicket/Presentation/return_unsold_ticket_screen.dart';
+import 'package:distech_technology/Features/ScanCode/Model/scan_ticket_model.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,12 +11,29 @@ import '../../Commons/app_icons.dart';
 import '../../Commons/app_sizes.dart';
 import '../../Controller/Scan Barcode/scan_barcode_controller.dart';
 
-class ScanBarCodeScreen extends StatelessWidget {
-  ScanBarCodeScreen({super.key});
+class ScanBarCodeScreen extends StatefulWidget {
+  const ScanBarCodeScreen({super.key});
 
+  @override
+  State<ScanBarCodeScreen> createState() => _ScanBarCodeScreenState();
+}
+
+class _ScanBarCodeScreenState extends State<ScanBarCodeScreen> {
   final scanbarcodeController = Get.put(ScanBarcodeController());
 
   ApiProvider apiProvider = ApiProvider();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scanbarcodeController.dateEditingController.value.text =
+        formateDateddMMyyyy(DateTime.now());
+    scanbarcodeController.dateFormatValidateTicket.value =
+        formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd");
+    scanbarcodeController.scanTickModel.value = ScanTicketModel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,7 +76,7 @@ class ScanBarCodeScreen extends StatelessWidget {
           //   Text("Ticket--> ${scanbarcodeController.barcodeValue}"),
 
           Obx(() => scanbarcodeController
-                  .dateFormatValidateTicket.value.isNotEmpty
+                  .dateEditingController.value.text.isNotEmpty
               ? Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                   InkWell(
                     onTap: () {
@@ -88,6 +108,7 @@ class ScanBarCodeScreen extends StatelessWidget {
                             child: TextFormField(
                               controller:
                                   scanbarcodeController.barcodeController.value,
+                              inputFormatters: [UpperCaseTextFormatter()],
                               onChanged: (value) {
                                 scanbarcodeController
                                     .setverifyTicketButton(value);
@@ -102,7 +123,8 @@ class ScanBarCodeScreen extends StatelessWidget {
                             ? () {
                                 if (scanbarcodeController
                                     .barcodeController.value.text.isNotEmpty) {
-                                  scanbarcodeController.verifyTicketById();
+                                  scanbarcodeController
+                                      .verifyTicketById(context);
                                 }
                               }
                             : null,
@@ -114,13 +136,17 @@ class ScanBarCodeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   AppSizes.cardCornerRadius / 2),
                               border: Border.all(color: AppColors.bg)),
-                          child: Icon(
-                            Icons.verified,
-                            color:
-                                scanbarcodeController.verifyTicketButton.value
-                                    ? Colors.green
-                                    : Colors.grey,
-                          ),
+                          child: scanbarcodeController.verifyingTicket.value
+                              ? const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                )
+                              : Icon(
+                                  Icons.verified,
+                                  color: scanbarcodeController
+                                          .verifyTicketButton.value
+                                      ? Colors.green
+                                      : Colors.grey,
+                                ),
                         ),
                       )),
                 ])

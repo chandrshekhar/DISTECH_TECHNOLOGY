@@ -567,7 +567,7 @@
     },
     {
       "name": "upgrader",
-      "rootUri": "file:///Users/excellisit/.pub-cache/hosted/pub.dev/upgrader-8.4.0",
+      "rootUri": "file:///Users/excellisit/.pub-cache/hosted/pub.dev/upgrader-8.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -698,7 +698,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-04-30T09:21:28.389060Z",
+  "generated": "2024-04-30T12:39:01.448089Z",
   "generator": "pub",
   "generatorVersion": "3.3.1"
 }

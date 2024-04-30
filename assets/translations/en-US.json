@@ -44,7 +44,11 @@
 	"noTicketsFound":"No tickets found",
 	"manualEntry":"Manual Entry",
 	"scanTicket":"Scan Ticket",
-	"noTicketReturn":"No Ticket for Return"
+	"noTicketReturn":"No Ticket for Return",
+	"loginDesc":"Welcome to Singham Lotteries, where dreams have a chance to become reality.",
+	"welcome":"Welcome",
+	"login":"Retailer Login",
+	"loginText":"Enter your register mail id and password for the verification process and login."
 
 	
 }

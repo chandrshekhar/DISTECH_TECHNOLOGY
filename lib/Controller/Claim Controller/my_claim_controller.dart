@@ -3,14 +3,14 @@ import 'package:distech_technology/Controller/Timer%20Controller/timer_controlle
 import 'package:distech_technology/Features/Claim/Model/my-claim_ticket_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Utils/date_time_format.dart';
 
 class MyClaimController extends GetxController {
   RxString dateFormat = ''.obs;
   RxInt limit = 50.obs;
-  var toDates = ''.obs;
-  var fromDates = ''.obs;
+  var toDates = formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd").obs;
+  var fromDates =
+      formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd").obs;
   RxList<ClaimsData> claimsDataList = <ClaimsData>[].obs;
   RxBool isClaimingDataLoading = false.obs;
   Rx<MyClaimTicketModel> myClaimTicketModel = MyClaimTicketModel().obs;

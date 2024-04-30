@@ -17,6 +17,12 @@ class MyClaimScreen extends StatefulWidget {
 }
 
 class _MyClaimScreenState extends State<MyClaimScreen> {
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+      Get.delete<MyClaimController>();
+  }
   final myClaimController = Get.put(MyClaimController());
   @override
   Widget build(BuildContext context) {

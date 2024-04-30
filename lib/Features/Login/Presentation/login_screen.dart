@@ -3,6 +3,7 @@ import 'package:distech_technology/Features/ForgotPassword/Presentation/forgot_p
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -60,17 +61,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   //  shrinkWrap: true,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('User Login',
-                        style: Theme.of(context).textTheme.headlineMedium),
+                    Text('login',
+                            style: Theme.of(context).textTheme.headlineMedium)
+                        .tr(),
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        'Enter your register mail id and password for the verification process and login.',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.darkGrey.withOpacity(0.8),
-                            //color: AppColors.primary,
-                            letterSpacing: 0.5)),
+                    Text('loginText',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    color: AppColors.darkGrey.withOpacity(0.8),
+                                    //color: AppColors.primary,
+                                    letterSpacing: 0.5))
+                        .tr(),
                     const SizedBox(
                       height: 15,
                     ),
@@ -149,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const Center(
                             child: CircularProgressIndicator.adaptive())
                         : FullButton(
-                            label: 'Login',
+                            label: tr('login'),
                             onPressed: () {
                               if (_key.currentState!.validate()) {
                                 userLoginController.userLogin(context);

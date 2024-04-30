@@ -149,21 +149,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       height: AppSizes.kDefaultPadding * 3,
                     ),
                     Text(
-                      'Welcome',
+                      'welcome',
                       style:
                           Theme.of(context).textTheme.headlineLarge!.copyWith(
                                 color: AppColors.white,
                               ),
-                    ),
+                    ).tr(),
                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
                     Text(
-                      'Welcome to Singham Lotteries, where dreams have a chance to become reality.',
+                      'loginDesc',
                       // textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: AppColors.white, fontWeight: FontWeight.w300),
-                    ),
+                    ).tr(),
                     SizedBox(
                       height: AppSizes.kDefaultPadding,
                     ),
@@ -182,7 +182,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.kDefaultPadding),
             child: FullButton(
-              label: 'Portal Login',
+              label: tr('login'),
               arrowIconVisible: true,
               onPressed: () => context.pushReplacement(const LoginScreen()),
             ),

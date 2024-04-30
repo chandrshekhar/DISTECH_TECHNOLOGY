@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:base32/base32.dart';
 import 'package:crypto/crypto.dart';
@@ -14,11 +15,12 @@ import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
 import '../../Commons/app_colors.dart';
 import '../../Utils/date_time_format.dart';
 
 class NewClaimController extends GetxController {
-  RxString dateFormat = ''.obs;
+  // RxString dateFormat = ''.obs;
   RxString fromTicketScanValue = ''.obs;
   RxString toTicketScanValue = ''.obs;
   RxBool fromTicketScaning = false.obs;
@@ -30,8 +32,7 @@ class NewClaimController extends GetxController {
   Rx<ClaimToTicketModel> claimToTicketModel = ClaimToTicketModel().obs;
   RxString barCode1 = "".obs;
   RxString barCode2 = "".obs;
-  final dateEditingController =
-      TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
+  final dateEditingController = TextEditingController().obs;
 
   void scanBarCode(bool fromTicket, BuildContext context, String slodId) async {
     String? barcodeScanRes = await AppHelper().scanBarCode();
@@ -41,7 +42,9 @@ class NewClaimController extends GetxController {
       fromTicketScaning(true);
       barCode1.value = barcodeScanRes ?? "";
       claimFromTicketModel.value = await apiProvider.verifyFromTicket(
-          barcodeScanRes ?? "", dateFormat.value, slodId);
+          barcodeScanRes ?? "",
+          formateDateyyyyMMdd(dateEditingController.value.text),
+          slodId);
       if (claimFromTicketModel.value.success == false) {
         // ignore: use_build_context_synchronously
         AwesomeDialog(
@@ -53,7 +56,7 @@ class NewClaimController extends GetxController {
                 title: "Error!",
                 btnOkOnPress: () {},
                 desc:
-                    "${claimFromTicketModel.value.message}\n${dateFormat.value}\n",
+                    "${claimFromTicketModel.value.message}\n${dateEditingController.value.text}\n",
                 btnOkText: "Ok",
                 titleTextStyle: const TextStyle(
                     color: Colors.red,
@@ -70,7 +73,9 @@ class NewClaimController extends GetxController {
       toTicketScaing(true);
       barCode2.value = barcodeScanRes ?? "";
       claimToTicketModel.value = await apiProvider.verifyToTicket(
-          barcodeScanRes ?? "", dateFormat.value, slodId);
+          barcodeScanRes ?? "",
+          formateDateyyyyMMdd(dateEditingController.value.text),
+          slodId);
 
       if (claimToTicketModel.value.success == false) {
         toTicketScaing(false);
@@ -84,7 +89,7 @@ class NewClaimController extends GetxController {
                 title: "Error!",
                 btnOkOnPress: () {},
                 desc:
-                    "${claimToTicketModel.value.message}\n${dateFormat.value}\n",
+                    "${claimToTicketModel.value.message}\n${dateEditingController.value.text}\n",
                 btnOkText: "Ok",
                 titleTextStyle: const TextStyle(
                     color: Colors.red,
@@ -108,20 +113,19 @@ class NewClaimController extends GetxController {
   }
 
   //void selectDate() {}
-  DateTime selectedDate = DateTime.now();
+  // DateTime selectedDate = DateTime.now();
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(3000, 8),
     );
-    if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
-      var formatedDate =
-          formatDate(date: selectedDate, formatType: "yyyy-MM-dd");
-      dateFormat.value = formatedDate;
-      dateEditingController.value.text = formateDateddMMyyyy(selectedDate);
+    if (picked != null) {
+      // var formatedDate =
+      //     formatDate(date: selectedDate, formatType: "yyyy-MM-dd");
+      // dateFormat.value = formatedDate;
+      dateEditingController.value.text = formateDateddMMyyyy(picked);
     }
   }
 
@@ -130,8 +134,8 @@ class NewClaimController extends GetxController {
   RxString drawSlotId = ''.obs;
   RxList<ClaimModel> ticketClaimList = <ClaimModel>[].obs;
   handleAdd(BuildContext context) {
-    print("FromTicket--> ${claimFromTicketModel.value.ticket!.prize!.name}");
-    print("ToTicket--> ${claimToTicketModel.value.ticket!.prize!.name}");
+    log("FromTicket--> ${claimFromTicketModel.value.ticket!.prize!.name}");
+    log("ToTicket--> ${claimToTicketModel.value.ticket!.prize!.name}");
     if (claimFromTicketModel.value.ticket!.prize!.name !=
         claimToTicketModel.value.ticket!.prize!.name) {
       AwesomeDialog(
@@ -148,8 +152,8 @@ class NewClaimController extends GetxController {
                   color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16))
           .show();
     } else {
-      print("barcode1--> ${barCode1.value}");
-      print("barcode--2> $barCode2");
+      log("barcode1--> ${barCode1.value}");
+      log("barcode--2> $barCode2");
 
       totalCliamTicket.value = countTicketsInRange(
         claimFromTicketModel.value.ticket!.ticketLetter,
@@ -168,7 +172,7 @@ class NewClaimController extends GetxController {
           totalTicket: totalCliamTicket.value,
           fromTickeCode: barCode1.value,
           toTicketCode: barCode2.value,
-          ticketDate: dateFormat.toString()));
+          ticketDate: formateDateyyyyMMdd(dateEditingController.value.text)));
       // clear the from ticket to ticket value
       fromTicketScanValue.value = '';
       toTicketScanValue.value = '';
