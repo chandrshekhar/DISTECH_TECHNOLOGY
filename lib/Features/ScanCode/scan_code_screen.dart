@@ -85,24 +85,27 @@ class ScanBarCodeScreen extends StatelessWidget {
                             // padding:
                             //     EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
                             height: AppSizes.buttonHeight + 4,
-                            child: TextField(
+                            child: TextFormField(
                               controller:
                                   scanbarcodeController.barcodeController.value,
+                              onChanged: (value) {
+                                scanbarcodeController
+                                    .setverifyTicketButton(value);
+                              },
                               decoration: const InputDecoration(
                                   hintText: "Enter Ticket code"),
                             ),
                           ))),
                   const SizedBox(width: 10),
                   Obx(() => InkWell(
-                        onTap: scanbarcodeController
-                                .barcodeController.value.text.isEmpty
-                            ? null
-                            : () {
+                        onTap: scanbarcodeController.verifyTicketButton.value
+                            ? () {
                                 if (scanbarcodeController
                                     .barcodeController.value.text.isNotEmpty) {
                                   scanbarcodeController.verifyTicketById();
                                 }
-                              },
+                              }
+                            : null,
                         child: Container(
                           padding:
                               EdgeInsets.all(AppSizes.kDefaultPadding / 1.5),
@@ -113,10 +116,10 @@ class ScanBarCodeScreen extends StatelessWidget {
                               border: Border.all(color: AppColors.bg)),
                           child: Icon(
                             Icons.verified,
-                            color: scanbarcodeController
-                                    .barcodeController.value.text.isNotEmpty
-                                ? Colors.green
-                                : Colors.grey,
+                            color:
+                                scanbarcodeController.verifyTicketButton.value
+                                    ? Colors.green
+                                    : Colors.grey,
                           ),
                         ),
                       )),

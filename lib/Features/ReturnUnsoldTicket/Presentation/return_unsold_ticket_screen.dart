@@ -1,9 +1,11 @@
+import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
+import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -689,7 +691,77 @@ class _ReturnUnsoldTicketState extends State<ReturnUnsoldTicket> {
 //                   ),
 //                 ],
 //               ),
-//
+
+
+   SafeArea(child: Obx(() => FullButton(
+                          label: 'Return Unsold',
+                          onPressed: (getMyreturnController
+                                      .validateTicketsList.isEmpty ||
+                                  timerController.countdown.value == "0:00:00")
+                              ? () {}
+                              : () async {
+                                  if (getMyreturnController
+                                      .validateTicketsList.isNotEmpty) {
+                                    var res = await ApiProvider()
+                                        .retunTicketUnsold(
+                                            getMyreturnController
+                                                .validateTicketsList,
+                                            formatedDate!,
+                                            profileController.userProfileModel
+                                                .value.user!.sId!,
+                                            timerController.slotId.value);
+                                    if (res.success) {
+                                      await getMyreturnController
+                                          .getAllReturnTicket(
+                                              dateTime: formatedDate);
+                                      Get.snackbar(
+                                          "Successful", "Ticket Return Success",
+                                          backgroundColor: AppColors.white,
+                                          colorText: Colors.green,
+                                          isDismissible: true,
+                                          snackPosition: SnackPosition.TOP);
+                                      getMyreturnController.clearText();
+                                      getMyreturnController.validateTicketsList
+                                          .clear();
+                                      getMyreturnController.validateTicketsList
+                                          .value = res.failedSeriesList!;
+                                      if (res.failedSeriesList!.isNotEmpty) {
+                                        // ignore: use_build_context_synchronously
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return modelBottomSheet(res
+                                                .failedSeriesList!); // Your custom widget with ListView.builder
+                                          },
+                                        );
+                                      }
+
+                                      // soldTicketzcontroller
+                                      //     .selectedSoldTicket
+                                      //     .clear();
+
+                                      await soldTicketzcontroller.getAllTicket(
+                                          date: formatedDate);
+                                    } else {
+                                      Get.snackbar(
+                                          "Error", res.error.toString(),
+                                          backgroundColor: AppColors.black,
+                                          colorText: Colors.white,
+                                          isDismissible: true,
+                                          snackPosition: SnackPosition.TOP);
+                                    }
+                                  }
+                                },
+                          bgColor: (getMyreturnController
+                                      .validateTicketsList.isEmpty ||
+                                  timerController.countdown.value == "0:00:00")
+                              ? AppColors.lightGrey
+                              : AppColors.secondary,
+                        )),
+                  ),
+               
+               
             ],
           ),
         ),

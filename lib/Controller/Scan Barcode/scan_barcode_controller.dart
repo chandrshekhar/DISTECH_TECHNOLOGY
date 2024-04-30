@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import '../../Features/ScanCode/Model/scan_ticket_model.dart';
 
@@ -21,6 +22,7 @@ class ScanBarcodeController extends GetxController {
   RxString invalidString = ''.obs;
   RxString ticketId = ''.obs;
   RxString dateFormatValidateTicket = ''.obs;
+  RxBool verifyTicketButton = false.obs;
   RxString select = "Please Scan".obs;
   final purchaseController = Get.put(PurchaseController());
   final timerController = Get.put(TimerController());
@@ -28,6 +30,14 @@ class ScanBarcodeController extends GetxController {
   final barcodeController = TextEditingController().obs;
   final dateEditingController =
       TextEditingController(text: formateDateddMMyyyy(DateTime.now())).obs;
+
+  setverifyTicketButton(String val) {
+    if (val.isNotEmpty) {
+      verifyTicketButton.value = true;
+    } else {
+      verifyTicketButton.value = false;
+    }
+  }
 
   //void selectDate() {}
   DateTime selectedDate = DateTime.now();
