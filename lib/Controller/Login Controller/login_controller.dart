@@ -23,7 +23,7 @@ class LoginController extends GetxController {
     };
 
     if (kDebugMode) {
-      print(reqModel);
+      log(reqModel.toString());
     }
     try {
       isLoading(true);

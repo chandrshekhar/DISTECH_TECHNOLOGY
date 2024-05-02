@@ -36,7 +36,7 @@ class NewClaimController extends GetxController {
 
   void scanBarCode(bool fromTicket, BuildContext context, String slodId) async {
     String? barcodeScanRes = await AppHelper().scanBarCode();
-    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+    log("bar code eresnsuydg ${barcodeScanRes.toString()}");
 
     if (fromTicket) {
       fromTicketScaning(true);

@@ -76,8 +76,8 @@ class SaleTicketsController extends GetxController {
     int fromLetter = fromLetter1.codeUnitAt(0) + fromLetter2.codeUnitAt(0);
     int toLetter = toLetter1.codeUnitAt(0) + toLetter2.codeUnitAt(0);
 
-    print("from Numbe--> $fromNumber");
-    print("to Numbe--> $fromNumber");
+    log("from Numbe--> $fromNumber");
+    log("to Numbe--> $fromNumber");
 
     if (fromNumber < 00000 || toNumber > 99999 || fromNumber > 99999) {
       Get.snackbar("Error", "Invalid Number", backgroundColor: Colors.red);

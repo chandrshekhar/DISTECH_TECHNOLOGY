@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_sizes.dart';
-import '../../../Utils/date_time_format.dart';
 import '../../../Widgets/custom_divider.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
@@ -21,34 +20,17 @@ class PurchaseHistoryScreen extends StatefulWidget {
 class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   //Variable Declarations
   final TextEditingController _searchController = TextEditingController();
-  final dateEditngController =
-      TextEditingController(text: formateDateddMMyyyy(DateTime.now()));
   final purchaesController = Get.put(PurchaseController());
-  DateTime selectedDate = DateTime.now();
-
-  // Open date picker dialog and select date from calender view
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(3000, 8),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        purchaesController.getAllPurchaesTicket(dateTime: selectedDate);
-        dateEditngController.text = formateDateddMMyyyy(selectedDate);
-      });
-    }
-  }
-
   @override
   void initState() {
     // searchedList = ticketItemList;
     super.initState();
-    purchaesController.limit.value = 100;
-    purchaesController.getAllPurchaesTicket();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      purchaesController.limit.value = 100;
+      // purchaesController.dateEditngController.value.text =
+      //     formateDateddMMyyyy(DateTime.now());
+      purchaesController.getAllPurchaesTicket();
+    });
   }
 
   @override
@@ -92,9 +74,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         height: MediaQuery.of(context).size.height * 0.06,
                         readOnly: true,
                         onTap: () async {
-                          _selectDate(context);
+                          purchaesController.selectDate(context);
                         },
-                        controller: dateEditngController,
+                        controller:
+                            purchaesController.dateEditngController.value,
                         suffixIcon: const Icon(Icons.date_range),
                       )),
                 ],
@@ -116,10 +99,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         size: 20,
                       ),
                       onChanged: (value) {
-                        if (value.toString().isNotEmpty) {
-                          purchaesController.getAllPurchaesTicket(
-                              search: value);
-                        }
+                        purchaesController.setSearchText(value);
+
+                        purchaesController.getAllPurchaesTicket();
                       },
                       maxLines: 1,
                       minLines: 1,
@@ -204,9 +186,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                           CircularProgressIndicator.adaptive(),
                                     )
                                   : purchaesController.puchaseList.isNotEmpty
-                                      ? PurchesHistoryTicketWidget(
-                                          date: selectedDate,
-                                        )
+                                      ? const PurchesHistoryTicketWidget()
                                       : purchaesController
                                                   .isPurchaLoading.value ==
                                               true

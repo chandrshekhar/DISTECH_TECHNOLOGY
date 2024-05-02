@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ToastMessage {
-   void toast(
+  void toast(
       {required BuildContext context,
-        required String message,
-        required Color messageColor,
-        required Color background,
-        int duration = 3000}) {
+      required String message,
+      required Color messageColor,
+      required Color background,
+      int duration = 3000}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration:  Duration(milliseconds: duration),
+      duration: Duration(milliseconds: duration),
       behavior: SnackBarBehavior.floating,
       backgroundColor: background,
       //  margin: EdgeInsets.only(
@@ -22,8 +22,9 @@ class ToastMessage {
       ),
     ));
   }
+
   // ignore: non_constant_identifier_names
-   void AlertMessage(BuildContext context) {
+  void AlertMessage(BuildContext context) {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -40,11 +41,12 @@ class ToastMessage {
                 content: Builder(
                   builder: (context) {
                     return Container(
-                      padding: const EdgeInsets.all(5), 
-                      width: 300,
-                      height: 100,
-                      child: const Text("This feature is currently not available..",)
-                    );
+                        padding: const EdgeInsets.all(5),
+                        width: 300,
+                        height: 100,
+                        child: const Text(
+                          "This feature is currently not available..",
+                        ));
                   },
                 )),
             onWillPop: () async {

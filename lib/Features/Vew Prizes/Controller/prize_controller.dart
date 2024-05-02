@@ -55,7 +55,7 @@ class PrizesController extends GetxController {
           : formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
       "limit": 5,
     };
-    print("req pandey--> $reqModel");
+    log("req pandey--> $reqModel");
     var res = await ApiProvider().getMyDashboardDetails(reqModel);
     // print("dashboard-- > ${res.toString()}");
     if (res.success == true) {

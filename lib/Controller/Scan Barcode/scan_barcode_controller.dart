@@ -68,7 +68,7 @@ class ScanBarcodeController extends GetxController {
         slotId: timerController.slotId.value);
 
     setverifyTicketButton('');
-    print("error--> ${scanTickModel.value.success}");
+    log("error--> ${scanTickModel.value.success}");
     if (scanTickModel.value.success == false) {
       ToastMessage().toast(
           context: context,
@@ -110,7 +110,7 @@ class ScanBarcodeController extends GetxController {
       isTicketScanning(false);
     } on PlatformException {
       if (kDebugMode) {
-        print("Platform  Exception");
+        log("Platform  Exception");
       }
       isTicketScanning(false);
     }

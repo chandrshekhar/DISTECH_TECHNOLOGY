@@ -376,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(1);
                                       },
-                                      icon: AppIcons.ticketIcon,
+                                      icon: AppIcons.soldTickets,
                                       bgColor: AppColors.transparent,
                                       label: "soldTickets"),
                                   const SizedBox(height: 10),
@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(2);
                                       },
-                                      icon: AppIcons.ticketIcon,
+                                      icon: AppIcons.returnedTickets,
                                       bgColor: AppColors.transparent,
                                       label: "returnedTickets"),
                                   const SizedBox(height: 10),
@@ -403,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(3);
                                       },
-                                      icon: AppIcons.purchaseHistoryIcon,
+                                      icon: AppIcons.purchasedTickets,
                                       bgColor: AppColors.transparent,
                                       label: "purchasedTicket"),
                                 ])),
@@ -437,7 +437,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(4);
                                       },
-                                      icon: AppIcons.filterIcon,
+                                      icon: AppIcons.returnedTickets,
                                       bgColor: AppColors.transparent,
                                       label: "returnTickets"),
                                   DrawerItem(
@@ -445,7 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(5);
                                       },
-                                      icon: AppIcons.filterIcon,
+                                      icon: AppIcons.unsold,
                                       bgColor: AppColors.transparent,
                                       label: "unsoldPWT"),
                                 ])),
@@ -462,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(6);
                                       },
-                                      icon: AppIcons.newClaimIcon,
+                                      icon: AppIcons.soldPwt,
                                       bgColor: AppColors.transparent,
                                       label: "soldPWT"),
                                   const SizedBox(height: 10),
@@ -471,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(7);
                                       },
-                                      icon: AppIcons.newClaimIcon,
+                                      icon: AppIcons.newClaim,
                                       bgColor: AppColors.transparent,
                                       label: "newClaim"),
                                   const SizedBox(height: 10),
@@ -480,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         closeDrawer();
                                         navigate(8);
                                       },
-                                      icon: AppIcons.myClaimIcon,
+                                      icon: AppIcons.claimRequest,
                                       bgColor: AppColors.transparent,
                                       label: "myClaimRequest"),
                                 ])),
@@ -551,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         context.setLocale(newLocale);
                                         Get.updateLocale(newLocale);
                                       },
-                                      icon: AppIcons.ticketIcon,
+                                      icon: AppIcons.hindiICon,
                                       bgColor: AppColors.transparent,
                                       label: "hindi"),
                                   const SizedBox(height: 10),
@@ -572,7 +572,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             newLocale); // change `easy_localization` locale
                                         Get.updateLocale(newLocale);
                                       },
-                                      icon: AppIcons.ticketIcon,
+                                      icon: AppIcons.englishIcon,
                                       bgColor: AppColors.transparent,
                                       label: "english"),
                                   const SizedBox(height: 10),
@@ -583,7 +583,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         context.setLocale(newLocale);
                                         Get.updateLocale(newLocale);
                                       },
-                                      icon: AppIcons.purchaseHistoryIcon,
+                                      icon: AppIcons.bangalIcon,
                                       bgColor: AppColors.transparent,
                                       label: "bengali"),
                                 ])),

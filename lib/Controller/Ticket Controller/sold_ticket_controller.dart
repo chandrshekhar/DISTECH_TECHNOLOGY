@@ -62,9 +62,9 @@ class SoldTicketController extends GetxController {
           };
     isAllTicketLoading(true);
     if (kDebugMode) {
-      print(reqModel);
+      log(reqModel.toString());
     }
-    print("req--> Model  $reqModel");
+    log("req--> Model  $reqModel");
     var res = await apiProvider.getAllTicket(reqModel);
 
     // ignore: prefer_for_elements_to_map_fromiterable

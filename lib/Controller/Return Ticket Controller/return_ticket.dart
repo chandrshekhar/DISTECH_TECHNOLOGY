@@ -267,7 +267,7 @@ class GetMyReturnController extends GetxController {
 // verify scaned ticket
   void scanBarCode(bool fromTicket) async {
     String? barcodeScanRes = await AppHelper().scanBarCode();
-    print("bar code eresnsuydg ${barcodeScanRes.toString()}");
+    log("bar code eresnsuydg ${barcodeScanRes.toString()}");
 
     if (fromTicket) {
       ticketScannig(true);

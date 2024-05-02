@@ -17,4 +17,14 @@ class AppIcons {
   static const String barCode = "assets/icons/barcode-scanner.png";
   static const String prize = "assets/icons/cup.svg";
   static const String soldTicket = "assets/icons/ticket.svg";
+  static const String claimRequest = "assets/icons/Claim-request.png";
+  static const String newClaim = "assets/icons/New-claim.png";
+  static const String soldPwt = "assets/icons/Sold-pwt.png";
+  static const String soldTickets = "assets/icons/Sold.png";
+  static const String returnedTickets = "assets/icons/Returntckt.png";
+  static const String purchasedTickets = "assets/icons/PurchasedTicket.png";
+  static const String unsold = "assets/icons/unsold.png";
+  static const String bangalIcon = "assets/icons/অ.png";
+  static const String englishIcon = "assets/icons/A.png";
+  static const String hindiICon = "assets/icons/hindi.png";
 }

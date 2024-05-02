@@ -8,9 +8,7 @@ import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart
 import '../widget/purchase_history_card.dart';
 
 class PurchesHistoryTicketWidget extends StatefulWidget {
-  final DateTime date;
-
-  const PurchesHistoryTicketWidget({super.key, required this.date});
+  const PurchesHistoryTicketWidget({super.key});
 
   @override
   State<PurchesHistoryTicketWidget> createState() =>
@@ -36,7 +34,7 @@ class _PurchesHistoryTicketWidgetState
         },
         onLoading: () async {
           purchaseController.limit.value += 30;
-          await purchaseController.getAllPurchaesTicket(dateTime: widget.date);
+          await purchaseController.getAllPurchaesTicket();
           refreshController.loadComplete();
         },
         footer: const CustomFooterWidget(),
