@@ -34,7 +34,7 @@ jobs:
         run: flutter pub get
           # ^ If you want to use a specific version of flutter
       - name: Build APK
-        run: flutter build apk
+        run: flutter build apk --release
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
