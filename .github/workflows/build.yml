@@ -11,7 +11,6 @@ on:
 
 jobs:
   flutter_job:
-
     # The machine, we can also use windows-latest or ubuntu-latest
     # We are choosing macos-latest because we will be also building for iOS
     runs-on: macos-latest
@@ -28,8 +27,16 @@ jobs:
           channel: 'stable'
           # flutter-version: '3.16.8'
           # ^ If you want to use a specific version of flutter
-      
+      - name: Clean dependencies
+        run: flutter clean
       # Fetches proj dependencies from pub
       - name: Install dependencies
         run: flutter pub get
           # ^ If you want to use a specific version of flutter
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
