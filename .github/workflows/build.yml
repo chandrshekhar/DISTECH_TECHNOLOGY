@@ -31,7 +31,6 @@ jobs:
       
       # Fetches proj dependencies from pub
       - name: Install dependencies
-      - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk --release
   
