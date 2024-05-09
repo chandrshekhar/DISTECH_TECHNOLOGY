@@ -31,8 +31,5 @@ jobs:
       
       # Fetches proj dependencies from pub
       - name: Install dependencies
-      - run: flutter pub get
-      - run: flutter build apk --release
-  
+        run: flutter pub get
           # ^ If you want to use a specific version of flutter
-
