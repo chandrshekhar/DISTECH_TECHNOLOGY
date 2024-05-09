@@ -22,7 +22,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     getAlerttDialog();
-
     super.initState();
   }
 

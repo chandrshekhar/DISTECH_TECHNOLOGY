@@ -15,8 +15,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // Go To Welcome Screen After 1.5 Seconds
-    Future.delayed(const Duration(milliseconds: 1500),
-        () => context.pushReplacement(const WelcomeScreen()));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 1500),
+          () => context.pushReplacement(const WelcomeScreen()));
+    });
+
     super.initState();
   }
 
