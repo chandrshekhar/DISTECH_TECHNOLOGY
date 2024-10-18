@@ -5,13 +5,11 @@ import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../Commons/app_colors.dart';
 import '../../../Commons/app_images.dart';
 import '../../../Commons/app_sizes.dart';
 import '../../../Widgets/custom_shape_clipper.dart';
-import '../../ReturnUnsoldTicket/Presentation/return_unsold_ticket_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -92,10 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         contentPadding:
                             EdgeInsets.all(AppSizes.kDefaultPadding),
                       ),
-                      inputFormatters: [
-                        UpperCaseTextFormatter(),
-                        LengthLimitingTextInputFormatter(12)
+                      autocorrect: false,
+                      inputFormatters: const [
+                        // UpperCaseTextFormatter(),
+                        // LengthLimitingTextInputFormatter(12)
                       ],
+                      enableSuggestions: false,
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Please enter username';
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontWeight: FontWeight.w400),
                           )),
                     ),
-                    userLoginController.isLoading == true
+                    userLoginController.isLoading.value == true
                         ? const Center(
                             child: CircularProgressIndicator.adaptive())
                         : FullButton(

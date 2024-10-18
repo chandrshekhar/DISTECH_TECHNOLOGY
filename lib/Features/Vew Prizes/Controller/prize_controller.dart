@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/api_client.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PrizesController extends GetxController {
+  final apiClient = ApiClient();
+
   RxString formatedDate =
       formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy").obs;
   DateTime selectedDate = DateTime.now();
@@ -55,13 +58,14 @@ class PrizesController extends GetxController {
           : formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
       "limit": 5,
     };
-    log("req pandey--> $reqModel");
-    var res = await ApiProvider().getMyDashboardDetails(reqModel);
-    // print("dashboard-- > ${res.toString()}");
-    if (res.success == true) {
-      getModeldashBoard.value = res;
 
-      // await getPrize();
+    // var res = await ApiProvider().getMyDashboardDetails(reqModel);
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.getMyDashboard,
+        reqModel: reqModel,
+        fromJson: (v) => GetMyDashboardModel.fromJson(v));
+    if (res.errorMessage != null && res.data?.success == true) {
+      getModeldashBoard.value = res.data!;
       getMyDashboardLoadfing(false);
     }
     getMyDashboardLoadfing(false);
@@ -73,11 +77,15 @@ class PrizesController extends GetxController {
       "drawSlotId": timerController.slotId.value,
       "date": formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
     };
-    log("getPrize --> " + reqModel.toString());
-    var res = await ApiProvider().getPrizeDetails(reqModel);
+    log("getPrize --> $reqModel");
+    // var res = await ApiProvider().getPrizeDetails(reqModel);
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.getPrize,
+        reqModel: reqModel,
+        fromJson: (d) => GetPrizeModel.fromJson(d));
 
-    if (res.success == true) {
-      getPrizeModel.value = res;
+    if (res.errorMessage != null && res.data?.success == true) {
+      getPrizeModel.value = res.data!;
       getPrizeLoading(false);
     }
     getPrizeLoading(false);
@@ -96,10 +104,15 @@ class PrizesController extends GetxController {
       "search": ""
     };
     log(reqModel.toString());
-    var res = await ApiProvider().getPwtList(reqModel);
+    // var res = await ApiProvider().getPwtList(reqModel);
 
-    if (res.success == true) {
-      getpwtList.value = res;
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.myPwtSoldUnsoldData,
+        reqModel: reqModel,
+        fromJson: (d) => PwtListModel.fromJson(d));
+
+    if (res.errorMessage != null && res.data?.success == true) {
+      getpwtList.value = res.data!;
       isPwtLoading(false);
     }
     isPwtLoading(false);
@@ -107,7 +120,6 @@ class PrizesController extends GetxController {
 
   @override
   void onInit() async {
-    // TODO: implement onInit
     await getPrize();
     super.onInit();
   }

@@ -1,11 +1,11 @@
 class Urls {
   // static const String _baseUrl =
   //     "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
-  static const String _baseUrl =
-      "https://api.singhamlottery.in/api/v1"; // production
-
   // static const String _baseUrl =
-  //     "https://progapi.singhamlottery.in/api/v1"; //dev api
+  //     "https://api.singhamlottery.in/api/v1"; // production
+
+  static const String _baseUrl =
+      "https://progapi.singhamlottery.in/api/v1"; //dev api
   static const String encKey1 =
       "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
   static const String encKey2 =
@@ -61,4 +61,63 @@ class Urls {
   static const String setInactiveState =
       "$_baseUrl/users/unmount-user-online-counts";
   static const String setActiveState = "$_baseUrl/users/set-active-status";
+}
+
+class EndPoints {
+  // static const String _baseUrl =
+  //     "http://13.127.33.196:4001/api/v1"; // test dev api without slot id
+  // static const String _baseUrl =
+  //     "https://api.singhamlottery.in/api/v1"; // production
+
+  static const String baseUrl =
+      "https://progapi.singhamlottery.in/api/v1"; //dev api
+  static const String encKey1 =
+      "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
+  static const String encKey2 =
+      "WzxefYBrnfsQGDf6KsayoDRRo9dRE4yq9plUtZ0PJsIvYElHOHFArj2m0AAySf8SDjWE8Hr3L1FWsUqg5AgO224HLybYjZbRHI2JYq5MgYzqI2cbltzO9fEK9JlEXV0I";
+  static const String loginUrl = "/users/login";
+  static const String forgetPassword = "/users/forgot-password";
+  static const String verifyOtp = "/users/verify-forgot-password-otp";
+  static const String resetPassword = "/users/reset-password";
+  static const String getAllTicket = "/tickets/view-all-my-tickets";
+  static const String getUserDetails = "/users/get-user";
+  static const String editProfile = "/users/edit-account";
+  static const String returnTicket = "/orders/return-tickets";
+  // static const String markAsSold = "$_baseUrl/orders/mark-sold";
+  static const String markAsSold = "/orders/retailer-create-sale";
+  static const String soldTicketList = "/orders/get-my-sales";
+  static const String purchaseHistory = "/orders/get-my-purchases";
+  static const String verifyTickets = "/verify-ticket";
+  static const String verifyTicketById = "/tickets/search-ticket";
+  static const String contactUs = "/users/contact-us";
+  static const String getMyreturn = "/orders/get-my-returns";
+  static const String deleteMyReturn = "/orders/delete-returns";
+  static const String revertMySale = "/orders/revert-sales";
+  static const String getAllPurchaseDetails = "/orders/get-order-tickets";
+  static const String validateReturnTicket = "/orders/check-return-series";
+
+  /// validate sale ticket
+  static const String validateSaleTicket = "/orders/retailer-check-sale-list";
+  // get dashboard details
+  static const String getMyDashboard = "/users/get-my-dashboard";
+  static const String getPrize = "/lottery/get-result";
+
+  /// pwt
+  static const String myPwtSoldUnsoldData = "/lottery/my-pwt-sold-unsold-data";
+  // get slot
+  static const String getSlot = "/lottery/get-draw-slots";
+  static const String serverTime = "/get-draw-time";
+  static const String returnSeriesList = "/orders/return-series-list";
+
+  static const String getmycnf = "/users/get-my-cnf";
+  static const String scanPwt = "/lottery/scan-pwt";
+  static const String getMyclaims = "/users/get-my-claims-date";
+  static const String claimTicket = "/lottery/claim-ticket-series-request-list";
+
+  /// billing
+  static const String myBills = "/orders/view-user-bill/";
+
+  /// set online off line
+  static const String setInactiveState = "/users/unmount-user-online-counts";
+  static const String setActiveState = "/users/set-active-status";
 }

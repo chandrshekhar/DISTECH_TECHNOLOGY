@@ -50,7 +50,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
   getAlerttDialog() async {
     await Future.delayed(const Duration(microseconds: 1000), () {
       AwesomeDialog(
-        context: context,
+        context: Get.context!,
         dialogType: DialogType.info,
         animType: AnimType.bottomSlide,
         dismissOnTouchOutside: false,

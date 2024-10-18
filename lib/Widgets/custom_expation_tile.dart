@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../Commons/app_colors.dart';
-
 // ignore: must_be_immutable
 class CustomExpansionPanel extends StatelessWidget {
   void Function(bool)? onExpansionChanged;
@@ -31,7 +29,7 @@ class CustomExpansionPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-        collapsedTextColor: AppColors.primaryIconColor,
+        collapsedTextColor: Theme.of(context).primaryColorDark,
         leading: leading,
         tilePadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
         childrenPadding: const EdgeInsets.only(left: 10),
@@ -48,12 +46,12 @@ class CustomExpansionPanel extends StatelessWidget {
         shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(0))),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        backgroundColor: backgroundColor ?? AppColors.white,
-        collapsedBackgroundColor: AppColors.white,
+        backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+        collapsedBackgroundColor: Theme.of(context).primaryColor,
         expandedAlignment: Alignment.topLeft,
-        collapsedIconColor: AppColors.primaryIconColor,
-        textColor: AppColors.primaryDark,
-        iconColor: AppColors.primaryDark,
+        collapsedIconColor: Theme.of(context).primaryColorDark,
+        textColor: Theme.of(context).primaryColorLight,
+        iconColor: Theme.of(context).primaryColorDark,
         title: Transform.translate(
           offset: const Offset(-15, 0),
           child: Text(title, style: titleStyle ?? const TextStyle()).tr(),

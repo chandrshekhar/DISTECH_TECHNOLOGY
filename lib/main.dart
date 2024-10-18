@@ -55,18 +55,16 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'singham lottery',
-        theme: AppTheme.lightTheme,
-        themeMode: ThemeMode.light,
+        theme: AppTheme.darkTheme,
+        themeMode: ThemeMode.dark,
+        darkTheme: AppTheme.darkTheme,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         home: SafeArea(
           child: (jwtToken != "")
               ? UpgradeAlert(
-
-                  /// get update when upload new build in google play store and app store
                   upgrader: Upgrader(
-                    // debugDisplayAlways: true,
                     dialogStyle: UpgradeDialogStyle.cupertino,
                     showIgnore: false,
                     showLater: false,

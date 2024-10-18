@@ -308,9 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         // drawer: const CustomDrawarWidget(),
-
         drawer: Drawer(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,6 +342,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: Key(
                           userProfileController.isExpansionList[1].toString()),
                       children: [
+                        CustomExpansionPanel(
+                            isIconShowing: false,
+                            title: "dashboard",
+                            onExpansionChanged: (v) {
+                              print("vvvvv");
+                              timerController.switchTheme();
+                              Get.changeThemeMode(
+                                  timerController.currentTheme.value);
+                              // Get.updateLocale(timerController.currentTheme.value);
+                            },
+                            initiallyExpanded:
+                                userProfileController.isExpansionList[6],
+                            children: const []),
                         CustomExpansionPanel(
                             isIconShowing: false,
                             title: "dashboard",
@@ -653,7 +665,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => const LoginScreen()),
                           (route) => false);
                     },
-                    bgColor: AppColors.secondary,
+                    bgColor: Theme.of(context).primaryColor,
                   ),
                 ),
                 Padding(
@@ -663,16 +675,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                           child: Text('developedBy',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    color: AppColors.darkGrey.withOpacity(0.7),
-                                  )).tr()),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .primaryColorDark))
+                              .tr()),
                       Text(
                         'App V0.3.15',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.darkGrey.withOpacity(0.7)),
+                            color: Theme.of(context).primaryColorDark),
                       )
                     ],
                   ),
@@ -690,11 +703,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipPath(
                   clipper: CustomShape(),
                   child: Container(
-                    height: 150,
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width,
-                    color: AppColors.primaryDark,
-                  ),
+                      height: 150,
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      color: Theme.of(context).primaryColor),
                 ),
                 Obx(() => RichText(
                     textAlign: TextAlign.center,
@@ -716,8 +728,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               .textTheme
                               .headlineSmall!
                               .copyWith(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
+                                color: AppColors.white,
+                              ),
                         ),
                       ],
                     ))),

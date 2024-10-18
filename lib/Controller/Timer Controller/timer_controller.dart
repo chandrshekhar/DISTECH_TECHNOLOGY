@@ -1,9 +1,22 @@
 import 'dart:async';
-
+import 'package:distech_technology/Api/api_client.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TimerController extends GetxController {
+  final apiClient = ApiClient();
+
+  // initializing with the current theme of the device
+  Rx<ThemeMode> currentTheme = ThemeMode.system.obs;
+  // function to switch between themes
+  void switchTheme() {
+    currentTheme.value = currentTheme.value == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
+  }
+
   // Replace with your target time
   final countdown = RxString('');
   final lastReturnTime = RxString("00:00");
@@ -70,13 +83,16 @@ class TimerController extends GetxController {
 
   getServerTime() async {
     Map<String, dynamic> reqModel = {"drawSlotId": slotId.value};
-    var res = await apiProvider.getServerTime(reqModel);
-    if (res['success'] == true) {
+    // var res = await apiProvider.getServerTime(reqModel);
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.serverTime, fromJson: (v) => v, reqModel: reqModel);
+    if (res.data?['success'] == true) {
       lastReturnTime.value = convertTo12HourFormat(
-          res['lastReturnTime'].toString().substring(0, 5));
-      drawTime.value =
-          convertTo12HourFormat(res['drawTime'].toString().substring(0, 5));
-      timeParts = res['lastReturnTime'].toString().substring(0, 5).split(':');
+          res.data!['lastReturnTime'].toString().substring(0, 5));
+      drawTime.value = convertTo12HourFormat(
+          res.data!['drawTime'].toString().substring(0, 5));
+      timeParts =
+          res.data!['lastReturnTime'].toString().substring(0, 5).split(':');
       // print("target Time--$timeParts");
       var targetTime = DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day, int.parse(timeParts[0]), int.parse(timeParts[1]));
@@ -85,11 +101,15 @@ class TimerController extends GetxController {
     }
   }
 
-  getSloat() async {
+  Future<void> getSloat() async {
     gettingSlotLoding(true);
-    var res = await apiProvider.getSlot();
-    if (res.success == true) {
-      drawModel.value = res;
+    // var res = await apiProvider.getSlot();
+    var res = await apiClient.getRequest(
+        endPoint: EndPoints.getSlot,
+        fromJson: (d) => DrawSlotModel.fromJson(d));
+
+    if (res.data?.success == true) {
+      drawModel.value = res.data!;
       // slotId.value = drawModel.value.data?[0].sId ?? "";
       getServerTime();
       // intialSlot.value = drawModel.value.data![0].name.toString();

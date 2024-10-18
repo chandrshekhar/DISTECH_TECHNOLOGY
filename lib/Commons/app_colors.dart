@@ -8,6 +8,8 @@ class AppColors {
   static const primaryBg = Color(0xFFF2F4FF);
   static const primaryDark = Color(0xFF0042C2);
   static const secondary = Color(0xFFF34001);
+  static const sunRisesColor = Color(0xFFFBB825);
+  static const sunsetColor = Color(0xFF214675);
   static const white = Color(0xFFFFFFFF);
   static const scaffold = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -37,16 +39,13 @@ class AppColors {
 
   static int tintValue(int value, double factor) =>
       max(0, min((value + ((255 - value) * factor)).round(), 255));
-
   static Color tintColor(Color color, double factor) => Color.fromRGBO(
       tintValue(color.red, factor),
       tintValue(color.green, factor),
       tintValue(color.blue, factor),
       1);
-
   static int shadeValue(int value, double factor) =>
       max(0, min(value - (value * factor).round(), 255));
-
   static Color shadeColor(Color color, double factor) => Color.fromRGBO(
       shadeValue(color.red, factor),
       shadeValue(color.green, factor),
