@@ -1,4 +1,5 @@
 import 'package:distech_technology/Commons/app_colors.dart';
+import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchases_details_screen.dart';
 import 'package:distech_technology/Widgets/paginatiuon_custom_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,8 +9,9 @@ import '../../../Controller/Purchaes Controller/purchaes_history_controller.dart
 import '../widget/purchase_history_card.dart';
 
 class PurchesHistoryTicketWidget extends StatefulWidget {
-  const PurchesHistoryTicketWidget({super.key});
+  PurchesHistoryTicketWidget({super.key, required this.dateTime});
 
+  DateTime dateTime;
   @override
   State<PurchesHistoryTicketWidget> createState() =>
       _PurchesHistoryTicketWidgetState();
@@ -44,13 +46,13 @@ class _PurchesHistoryTicketWidgetState
             var item = purchaseController.puchaseList[index];
             return InkWell(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (_) => PurchaesDetailsScreen(
-                //               dateTime: widget.date,
-                //               orderID: item.sId.toString(),
-                //             )));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => PurchaesDetailsScreen(
+                              dateTime: widget.dateTime,
+                              orderID: item.sId.toString(),
+                            )));
               },
               child: PurchaseHistoryTicketListItem(
                   ticket:

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:distech_technology/Api/api_client.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_history_details_model.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Model/purchase_hostory_model.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PurchaseController extends GetxController {
+  final apiClient = ApiClient();
+
   RxList<Purchases> puchaseList = <Purchases>[].obs;
   RxList<Tickets> purchaseHistoryDetailsList = <Tickets>[].obs;
   RxBool isPurchaseDetailsLoading = false.obs;
@@ -18,7 +22,10 @@ class PurchaseController extends GetxController {
   RxInt purDetLimit = 40.obs;
   RxInt countPurchaesTickets = 0.obs;
   final timerController = Get.put(TimerController());
-  var dateEditngController = TextEditingController().obs;
+  final dateEditngController = TextEditingController(
+          text: formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy"))
+      .obs;
+
   RxString searchText = ''.obs;
 
   setSearchText(String val) {
@@ -58,42 +65,29 @@ class PurchaseController extends GetxController {
   getAllPurchaesTicketDetails(
       {String? search, int? semNumber, String? orderID}) async {
     Map<String, dynamic> reqModel = {
+      "drawSlotId": timerController.slotId.value,
       "orderId": orderID,
       "offset": 0,
       "limit": purDetLimit.value,
+      "date": formateDateyyyyMMdd(dateEditngController.value.text),
     };
 
     isPurchaseDetailsLoading(true);
-    var res = await apiProvider.getAllPurcHistoryTicketDetails(reqModel);
+    // var res = await apiProvider.getAllPurcHistoryTicketDetails(reqModel);
 
-    if (res.tickets!.isNotEmpty) {
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.getAllPurchaseDetails,
+        reqModel: reqModel,
+        fromJson: (f) => PurchaseHistoryTicketDetailsModel.fromJson(f));
+
+    if (res.data != null && res.data!.tickets!.isNotEmpty) {
       isPurchaseDetailsLoading(false);
-      purchaseHistoryDetailsList.value = res.tickets!;
+      purchaseHistoryDetailsList.value = res.data!.tickets!;
     } else {
       isPurchaseDetailsLoading(false);
       purchaseHistoryDetailsList.value = [];
     }
 
     isPurchaseDetailsLoading(false);
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    getAllPurchaesTicket();
-  }
-
-  // Open date picker dialog and select date from calender view
-  Future<void> selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(3000, 8),
-    );
-    if (picked != null) {
-      dateEditngController.value.text = formateDateddMMyyyy(picked);
-      getAllPurchaesTicket();
-    }
   }
 }

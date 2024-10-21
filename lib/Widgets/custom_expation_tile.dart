@@ -46,8 +46,8 @@ class CustomExpansionPanel extends StatelessWidget {
         shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(0))),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
-        collapsedBackgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
         expandedAlignment: Alignment.topLeft,
         collapsedIconColor: Theme.of(context).primaryColorDark,
         textColor: Theme.of(context).primaryColorLight,

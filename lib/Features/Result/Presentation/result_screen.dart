@@ -29,12 +29,10 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       getMyDashboardController.pwtDateController.value.text =
           formateDateddMMyyyy(DateTime.now());
-      await getMyDashboardController.getMydashboard();
       await getMyDashboardController.getPrize();
     });
   }
@@ -45,7 +43,7 @@ class _ResultScreenState extends State<ResultScreen> {
       body: SingleChildScrollView(
         controller: controller,
         child: Obx(
-          () => getMyDashboardController.getMyDashboardLoadfing.value == true
+          () => getMyDashboardController.isPwtLoading.value == true
               ? const Center(
                   child: CircularProgressIndicator.adaptive(),
                 )

@@ -1,6 +1,6 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
-import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
+import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Model/return_tickets_response_model.dart';

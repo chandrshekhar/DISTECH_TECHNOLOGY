@@ -31,8 +31,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../Controller/Profile Controller/profile_controller.dart';
 import '../../Claim/Presentation/new_claim_screen.dart';
+import '../../Profile/Profile Controller/profile_controller.dart';
 import '../../Result/Presentation/result_screen.dart';
 import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../Components/timer_card_widget.dart';
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         // drawer: const CustomDrawarWidget(),
         drawer: Drawer(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          backgroundColor: Colors.white,
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,20 +342,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: Key(
                           userProfileController.isExpansionList[1].toString()),
                       children: [
+                        // CustomExpansionPanel(
+                        //     isIconShowing: false,
+                        //     title: "dashboard",
+                        //     onExpansionChanged: (v) {
+                        //       print("vvvvv");
+                        //       timerController.switchTheme();
+                        //       Get.changeThemeMode(
+                        //           timerController.currentTheme.value);
+                        //       // Get.updateLocale(timerController.currentTheme.value);
+                        //     },
+                        //     initiallyExpanded:
+                        //         userProfileController.isExpansionList[6],
+                        //     children: const []),
                         CustomExpansionPanel(
-                            isIconShowing: false,
-                            title: "dashboard",
-                            onExpansionChanged: (v) {
-                              print("vvvvv");
-                              timerController.switchTheme();
-                              Get.changeThemeMode(
-                                  timerController.currentTheme.value);
-                              // Get.updateLocale(timerController.currentTheme.value);
-                            },
-                            initiallyExpanded:
-                                userProfileController.isExpansionList[6],
-                            children: const []),
-                        CustomExpansionPanel(
+                            backgroundColor: Colors.white,
                             isIconShowing: false,
                             title: "dashboard",
                             onExpansionChanged: (v) {
@@ -367,6 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 userProfileController.isExpansionList[0],
                             children: const []),
                         Obx(() => CustomExpansionPanel(
+                                backgroundColor: Colors.white,
                                 title: "tickets",
                                 onExpansionChanged: (v) {
                                   // userProfileController.setExpansion(1);
@@ -665,7 +667,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => const LoginScreen()),
                           (route) => false);
                     },
-                    bgColor: Theme.of(context).primaryColor,
+                    bgColor: AppColors.secondary,
                   ),
                 ),
                 Padding(

@@ -1,7 +1,7 @@
 import 'package:distech_technology/Commons/app_icons.dart';
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/Profile/Presentation/edit_profile_screen.dart';
+import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/Profile/Widgets/profile_item_widget.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
@@ -44,11 +44,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ClipPath(
                     clipper: CustomShape(),
                     child: Container(
-                      height: 130,
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      color: AppColors.primaryDark,
-                    ),
+                        height: 130,
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        color: Theme.of(context).primaryColor),
                   ),
                   const Positioned(
                     bottom: 0,
@@ -169,7 +168,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 24,
                   ),
                   onPressed: () {
-                    context.push(const EditProfileScreen()).then((value) {});
+                    context.push(const EditProfileScreen()).then((value) {
+                      profileController.intiValueController();
+                    });
                   }),
         )
         //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

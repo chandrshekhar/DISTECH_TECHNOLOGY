@@ -3,6 +3,7 @@ import 'package:distech_technology/Commons/app_images.dart';
 import 'package:distech_technology/Features/Welcome/Presentation/welcome_screen.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Go To Welcome Screen After 1.5 Seconds
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 1500),
-          () => context.pushReplacement(const WelcomeScreen()));
+          () => Get.context!.pushReplacement(const WelcomeScreen()));
     });
 
     super.initState();

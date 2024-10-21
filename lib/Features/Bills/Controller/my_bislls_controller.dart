@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:distech_technology/Api/api_provider.dart';
-import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
+import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/Bills/Models/my_bills_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:flutter/material.dart';

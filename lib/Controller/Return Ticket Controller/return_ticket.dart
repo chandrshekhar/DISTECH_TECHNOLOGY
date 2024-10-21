@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:distech_technology/Api/api_provider.dart';
-import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
+import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';

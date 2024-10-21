@@ -1,9 +1,13 @@
+import 'package:distech_technology/Api/api_client.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Profile/model/profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
+  final apiClient = ApiClient();
+
   var firstNameController = TextEditingController().obs;
   var addharController = TextEditingController().obs;
   var addressController = TextEditingController().obs;
@@ -21,43 +25,22 @@ class ProfileController extends GetxController {
   RxList<bool> isExpansionList =
       [false, false, false, false, false, false, false].obs;
 
-//get user data
-
-// drawar expantion
-  // RxBool isTickets = false.obs;
-  // RxBool isPrize = false.obs;
-
-  // setExpansion(int index) {
-  //   for (int i = 0; i < isExpansionList.length; i++) {
-  //     if (i == index) {
-  //     } else {
-  //       isExpansionList[index] = false;
-  //     }
-  //   }
-  // }
-
-  // setExpansion2(bool v) {
-  //   isPrize.value = v;
-  // }
-
   getUserDetails() async {
     try {
       isLoading(true);
-      var res = await apiProvider.getUserDetails();
-      if (res.success == true) {
-        userProfileModel.value = res;
-        intiValueController();
-        isLoading(false);
-      } else {
-        userProfileModel.value = res;
-        isLoading(false);
+      // var res = await apiProvider.getUserDetails();
+      var res = await apiClient.getRequest(
+          endPoint: EndPoints.getUserDetails,
+          fromJson: (d) => UserProfileModel.fromJson(d));
+      if (res.data?.success == true) {
+        userProfileModel.value = res.data!;
       }
-    } catch (e) {
+    } finally {
       isLoading(false);
     }
   }
 
-  intiValueController() {
+  Future<void> intiValueController() async {
     firstNameController.value.text =
         userProfileModel.value.user!.fullName ?? "";
     addressController.value.text = userProfileModel.value.user!.address1 ?? "";
@@ -87,26 +70,21 @@ class ProfileController extends GetxController {
       "billRatePrice": "3311"
     };
     isUserDataSave(true);
-    var res = await apiProvider.editProfile(reqModel);
-    if (res == true) {
+    // var res = await apiProvider.editProfile(reqModel);
+    var res = await apiClient.postRequest(
+        endPoint: EndPoints.editProfile,
+        fromJson: (data) => data,
+        reqModel: reqModel);
+
+    if (res.errorMessage != null && res.data?['success'] == true) {
       isUserDataSave(false);
       await getUserDetails();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text("Profile Update success fully")));
-
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      Navigator.pop(Get.context!);
     } else {
       isUserDataSave(false);
     }
-  }
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-    getUserDetails();
   }
 }

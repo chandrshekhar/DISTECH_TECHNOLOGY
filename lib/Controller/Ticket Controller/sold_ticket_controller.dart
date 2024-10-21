@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
@@ -106,8 +105,8 @@ class SoldTicketController extends GetxController {
     String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // String barcodeScanRes = "0VY5WAG8Y";
-    var data = await apiProvider.verifyTicket(
-        barcodeScanRes.toString().trim(), formatedDate.value,timerController.slotId.value);
+    var data = await apiProvider.verifyTicket(barcodeScanRes.toString().trim(),
+        formatedDate.value, timerController.slotId.value);
     log("data--> $data");
     if (data['valid'] == true && data['success']) {
       scanedTicket.add(data["ticket"]["ticketId"]);
@@ -213,12 +212,6 @@ class SoldTicketController extends GetxController {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       formatedDate.value = formatDate(date: picked, formatType: "yyyy-MM-dd");
-      await getAllTicket(
-          date: formatedDate.value,
-          search: searchText.value,
-          semNumber: semNumber.value);
     }
   }
-
-  List selectedValueList = [10, 25, 50, 100, 500];
 }

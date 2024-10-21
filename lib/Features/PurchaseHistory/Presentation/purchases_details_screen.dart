@@ -36,10 +36,12 @@ class _PurchaesDetailsScreenState extends State<PurchaesDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    purchaseHistoryTicketController.purchaseHistoryDetailsList.clear();
-    purchaseHistoryTicketController.purDetLimit.value = 40;
-    purchaseHistoryTicketController.getAllPurchaesTicketDetails(
-        orderID: widget.orderID);
+    WidgetsBinding.instance.addPostFrameCallback((v) {
+      purchaseHistoryTicketController.purchaseHistoryDetailsList.clear();
+      purchaseHistoryTicketController.purDetLimit.value = 40;
+      purchaseHistoryTicketController.getAllPurchaesTicketDetails(
+          orderID: widget.orderID);
+    });
   }
 
   @override

@@ -69,8 +69,7 @@ class EndPoints {
   // static const String _baseUrl =
   //     "https://api.singhamlottery.in/api/v1"; // production
 
-  static const String baseUrl =
-      "https://progapi.singhamlottery.in/api/v1"; //dev api
+  static const String baseUrl = "https://prog.singhamlottery.in/api"; //dev api
   static const String encKey1 =
       "8bx4lQmIK1pDxxlXpDbMdrDxqA75EHtX4WyYOtI4zlWOFox1pRJ9LZCkQ2wSUDglPXH59saoUGA9Noi7mmRdtm8Iao64RscPH0mhSwEsVIwDtUzO1ZHvvGee4gvkvViW";
   static const String encKey2 =

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:distech_technology/Api/api_client.dart';
 import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/timer_controller.dart';
-import 'package:distech_technology/Features/Vew%20Prizes/Model/get_my_dashboard.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/prize_model.dart';
 import 'package:distech_technology/Features/Vew%20Prizes/Model/pwt_list_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
@@ -19,11 +18,7 @@ class PrizesController extends GetxController {
   final timerController = Get.put(TimerController());
   RxMap<String, dynamic> userTicketCounts = <String, dynamic>{}.obs;
   RxBool isPopupShowing = false.obs;
-
-  RxBool getMyDashboardLoadfing = false.obs;
   RxBool getPrizeLoading = false.obs;
-
-  var getModeldashBoard = GetMyDashboardModel().obs;
   var getPrizeModel = GetPrizeModel().obs;
 
   /// pwt
@@ -44,31 +39,9 @@ class PrizesController extends GetxController {
       selectedDate = picked;
       // formatedDate.value = formatDate(date: picked, formatType: "dd-MM-yyyy");
       pwtDateController.value.text = formateDateddMMyyyy(selectedDate);
-      await getMydashboard();
+
       await getPrize();
     }
-  }
-
-  Future<void> getMydashboard() async {
-    getMyDashboardLoadfing(true);
-    var reqModel = {
-      "drawSlotId": timerController.slotId.value,
-      "date": formatedDate.value.isEmpty
-          ? formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd")
-          : formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
-      "limit": 5,
-    };
-
-    // var res = await ApiProvider().getMyDashboardDetails(reqModel);
-    var res = await apiClient.postRequest(
-        endPoint: EndPoints.getMyDashboard,
-        reqModel: reqModel,
-        fromJson: (v) => GetMyDashboardModel.fromJson(v));
-    if (res.errorMessage != null && res.data?.success == true) {
-      getModeldashBoard.value = res.data!;
-      getMyDashboardLoadfing(false);
-    }
-    getMyDashboardLoadfing(false);
   }
 
   Future<void> getPrize() async {
@@ -84,7 +57,7 @@ class PrizesController extends GetxController {
         reqModel: reqModel,
         fromJson: (d) => GetPrizeModel.fromJson(d));
 
-    if (res.errorMessage != null && res.data?.success == true) {
+    if (res.data?.success == true) {
       getPrizeModel.value = res.data!;
       getPrizeLoading(false);
     }
@@ -111,7 +84,7 @@ class PrizesController extends GetxController {
         reqModel: reqModel,
         fromJson: (d) => PwtListModel.fromJson(d));
 
-    if (res.errorMessage != null && res.data?.success == true) {
+    if (res.data?.success == true) {
       getpwtList.value = res.data!;
       isPwtLoading(false);
     }

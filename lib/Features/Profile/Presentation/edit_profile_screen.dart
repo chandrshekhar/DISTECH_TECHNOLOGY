@@ -1,5 +1,5 @@
 import 'package:distech_technology/Commons/app_sizes.dart';
-import 'package:distech_technology/Controller/Profile%20Controller/profile_controller.dart';
+import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Widgets/custom_app_bar.dart';
 import 'package:distech_technology/Widgets/custom_divider.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
@@ -24,12 +24,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final profileController = Get.put(ProfileController());
 
   @override
-  void initState() {
-    profileController.getUserDetails();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
@@ -42,11 +36,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ClipPath(
                 clipper: CustomShape(),
                 child: Container(
-                  height: 130,
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  color: AppColors.primaryDark,
-                ),
+                    height: 130,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    color: Theme.of(context).primaryColor),
               ),
               const Positioned(
                 bottom: 0,
@@ -203,8 +196,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: CircularProgressIndicator.adaptive())
                       : FullButton(
                           label: "Save",
-                          onPressed: () {
-                            profileController.editProfile(context);
+                          onPressed: () async {
+                            await profileController.editProfile(context);
                           }),
                   SafeArea(
                     child: SizedBox(

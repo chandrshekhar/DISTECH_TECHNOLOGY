@@ -2,11 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Commons/app_colors.dart';
 import 'package:distech_technology/Commons/app_icons.dart';
-import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_controller.dart';
-import 'package:distech_technology/Controller/Ticket%20Controller/sold_ticket_list_controller.dart';
 import 'package:distech_technology/Controller/Timer%20Controller/app_strate_controller.dart';
+import 'package:distech_technology/Features/Dashboard/Dashboard%20Controller/dashboard_controller.dart';
 import 'package:distech_technology/Features/Result/Presentation/result_screen.dart';
-import 'package:distech_technology/Features/Sale%20Tickets/Controller/sale_tickets_controller.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:distech_technology/Widgets/full_button.dart';
@@ -16,7 +14,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../Controller/Timer Controller/timer_controller.dart';
-import '../../Vew Prizes/Controller/prize_controller.dart';
 import '../../Vew Prizes/Presentation/pwt_sold_ticket.dart';
 
 class DashboardMainScreen extends StatefulWidget {
@@ -29,20 +26,17 @@ class DashboardMainScreen extends StatefulWidget {
 }
 
 class _DashboardMainScreenState extends State<DashboardMainScreen> {
-  ScrollController? controller = ScrollController();
-  final soldTicketController = Get.put(SoldTicketController());
-  final getMyDashboardController = Get.put(PrizesController());
+  final scrollController = ScrollController();
   final timerController = Get.put(TimerController());
-  final soldTicketListController = Get.put(SoldTicketListController());
-  final saleTicketController = Get.put(SaleTicketsController());
   final appStateController = Get.put(AppStateController());
-  final prizeController = Get.put(PrizesController());
+  final dashboardController = Get.put(DashboardController());
+
   @override
   void initState() {
-    getMyDashboardController.isPopupShowing.value == true
-        ? null
-        : getAlerttDialog();
-    getMyDashboardController.getMydashboard();
+    dashboardController.isPopupShowing.value == true ? null : getAlerttDialog();
+    WidgetsBinding.instance.addPostFrameCallback((v) {
+      dashboardController.getMydashboard();
+    });
 
     super.initState();
   }
@@ -91,7 +85,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                               timerController.getServerTime();
                               // soldTicketController.getAllTicket();
                               // soldTicketListController.getSoldTicketList();
-                              getMyDashboardController.getMydashboard();
+                              dashboardController.getMydashboard();
                               appStateController
                                   .callAppState(Urls.setActiveState);
                               Navigator.pop(context);
@@ -110,7 +104,7 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
               : const Center(child: CircularProgressIndicator.adaptive())),
         ),
       ).show();
-      getMyDashboardController.isPopupShowing.value = true;
+      dashboardController.isPopupShowing.value = true;
     });
   }
 
@@ -120,135 +114,119 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SingleChildScrollView(
-        controller: controller,
+        controller: scrollController,
         child: Obx(
-          () => soldTicketController.isAllTicketLoading.value == true
-              ? Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.3),
-                    child: const CircularProgressIndicator.adaptive(),
-                  ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          () =>
+              //  dashboardController.getMyDashboardLoadfing.value == true
+              //     ? Center(
+              //         child: Padding(
+              //           padding: EdgeInsets.only(
+              //               top: MediaQuery.of(context).size.height * 0.3),
+              //           child: const CircularProgressIndicator.adaptive(),
+              //         ),
+              //       )
+              //     :
+
+              Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'selectedDate',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18),
-                            ).tr(),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: CustomTextField(
-                              height: MediaQuery.of(context).size.height * 0.06,
-                              readOnly: true,
-                              onTap: () async {
-                                getMyDashboardController
-                                    .selectDateForCheckPrizes(context);
-                              },
-                              controller:
-                                  prizeController.pwtDateController.value,
-                              suffixIcon: const Icon(Icons.date_range),
-                            ),
-                          ),
-                        ],
-                      ),
+                    Expanded(
+                      child: Text(
+                        'selectedDate',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                fontWeight: FontWeight.w400, fontSize: 18),
+                      ).tr(),
                     ),
-                    priceCard(
-                        value: getMyDashboardController.getModeldashBoard.value
-                                .userTicketCounts?.ticketsCount?.sold
-                                .toString() ??
-                            "0",
-                        date: soldTicketController.formatedDate.toString(),
-                        title: "soldTickets",
-                        color: const Color(0xFF29C57F),
-                        imagePath: AppIcons.prize),
-                    priceCard(
-                        value: getMyDashboardController.getModeldashBoard.value
-                                .userTicketCounts?.ticketsCount?.returned
-                                .toString() ??
-                            "0",
-                        date: soldTicketController.formatedDate.toString(),
-                        title: "unsoldTickets",
-                        color: const Color(0xFFFF2E17),
-                        imagePath: AppIcons.soldTicket),
-                    priceCard(
-                        value: getMyDashboardController.getModeldashBoard.value
-                                .userTicketCounts?.ticketsCount?.total
-                                .toString() ??
-                            "0",
-                        date: soldTicketController.formatedDate.toString(),
-                        title: "purchasedTickets",
-                        color: const Color(0xFFFFBF1C),
-                        imagePath: AppIcons.soldTicket),
-                    // scanCode(context),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(
-                    //         AppSizes.cardCornerRadius / 2),
-                    //     border: Border.all(color: AppColors.bg),
-                    //   ),
-                    //   child: Container(
-                    //     color: AppColors.primaryBg,
-                    //     child: Column(
-                    //       children: [
-                    //         // const HeaderListWidget(),
-                    //         SizedBox(
-                    //           width: MediaQuery.of(context).size.width,
-                    //           height: MediaQuery.of(context).size.height * 0.36,
-                    //           // child: AddedTicketListWidget(),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FullButton(
-                              label: "viewMyPrize",
-                              bgColor: AppColors.primary,
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PwtSoldScreen(
-                                              isComminFromDashboard: true,
-                                            )));
-                              }),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: FullButton(
-                            label: 'result',
-                            bgColor: AppColors.primary,
-                            onPressed: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ResultScreen(
-                                            isComminFromDashboard: true,
-                                          )));
-                            },
-                          ),
-                        ),
-                      ],
+                    Expanded(
+                      flex: 1,
+                      child: CustomTextField(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        readOnly: true,
+                        onTap: () async {
+                          var date = await selectDate(context);
+                          dashboardController.timeController.value.text =
+                              formatDate(
+                                  date: date ?? DateTime.now(),
+                                  formatType: "dd-MM-yyyy");
+                          dashboardController.getMydashboard();
+                        },
+                        controller: dashboardController.timeController.value,
+                        suffixIcon: const Icon(Icons.date_range),
+                      ),
                     ),
                   ],
                 ),
+              ),
+              priceCard(
+                  value: dashboardController.getModeldashBoard.value
+                          .userTicketCounts?.ticketsCount?.unsold
+                          .toString() ??
+                      "0",
+                  date: dashboardController.timeController.value.text,
+                  title: "soldTickets",
+                  color: const Color(0xFF29C57F),
+                  imagePath: AppIcons.prize),
+              priceCard(
+                  value: dashboardController.getModeldashBoard.value
+                          .userTicketCounts?.ticketsCount?.returned
+                          .toString() ??
+                      "0",
+                  date: dashboardController.timeController.value.text,
+                  title: "unsoldTickets",
+                  color: const Color(0xFFFF2E17),
+                  imagePath: AppIcons.soldTicket),
+              priceCard(
+                  value: dashboardController.getModeldashBoard.value
+                          .userTicketCounts?.ticketsCount?.total
+                          .toString() ??
+                      "0",
+                  date: dashboardController.timeController.value.text,
+                  title: "purchasedTickets",
+                  color: const Color(0xFFFFBF1C),
+                  imagePath: AppIcons.soldTicket),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Row(
+                children: [
+                  Expanded(
+                    child: FullButton(
+                        label: "viewMyPrize",
+                        bgColor: Theme.of(context).primaryColor,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PwtSoldScreen(
+                                        isComminFromDashboard: true,
+                                      )));
+                        }),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: FullButton(
+                      label: 'result',
+                      bgColor: Theme.of(context).primaryColor,
+                      onPressed: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultScreen(
+                                      isComminFromDashboard: true,
+                                    )));
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -292,14 +270,19 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                     color: Colors.white),
               ).tr(),
               const SizedBox(height: 5),
-              Text(
-                value,
-                style: const TextStyle(
-                    fontSize: 18,
-                    letterSpacing: 1,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
+              dashboardController.getMyDashboardLoadfing.value
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator.adaptive())
+                  : Text(
+                      value,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          letterSpacing: 1,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
             ],
           ),
         ],
@@ -307,8 +290,6 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
     );
   }
 }
-
-
 
 /*   if (saleTicketController
                                       .successReturnTicketList.isNotEmpty) {

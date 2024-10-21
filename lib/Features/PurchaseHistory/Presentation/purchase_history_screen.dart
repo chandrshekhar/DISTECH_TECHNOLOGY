@@ -1,5 +1,6 @@
 import 'package:distech_technology/Controller/Purchaes%20Controller/purchaes_history_controller.dart';
 import 'package:distech_technology/Features/PurchaseHistory/Presentation/purches_list_pagination_widget.dart';
+import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -27,8 +28,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       purchaesController.limit.value = 100;
-      // purchaesController.dateEditngController.value.text =
-      //     formateDateddMMyyyy(DateTime.now());
       purchaesController.getAllPurchaesTicket();
     });
   }
@@ -59,7 +58,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                 children: [
                   Obx(() => Expanded(
                         child: Text(
-                          "${context.tr("purchasedTickets")}  (${purchaesController.countPurchaesTickets})",
+                          "Purchased Tickets (${purchaesController.countPurchaesTickets})",
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
@@ -74,7 +73,12 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         height: MediaQuery.of(context).size.height * 0.06,
                         readOnly: true,
                         onTap: () async {
-                          purchaesController.selectDate(context);
+                          var date = await selectDate(context);
+                          purchaesController.dateEditngController.value.text =
+                              formatDate(
+                                  date: date ?? DateTime.now(),
+                                  formatType: "dd-MM-yyyy");
+                          await purchaesController.getAllPurchaesTicket();
                         },
                         controller:
                             purchaesController.dateEditngController.value,
@@ -186,7 +190,13 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                           CircularProgressIndicator.adaptive(),
                                     )
                                   : purchaesController.puchaseList.isNotEmpty
-                                      ? const PurchesHistoryTicketWidget()
+                                      ? PurchesHistoryTicketWidget(
+                                          dateTime: DateFormat("dd-MM-yyyy")
+                                              .parse(purchaesController
+                                                  .dateEditngController
+                                                  .value
+                                                  .text),
+                                        )
                                       : purchaesController
                                                   .isPurchaLoading.value ==
                                               true
