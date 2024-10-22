@@ -24,7 +24,9 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
   void initState() {
     prizeController.pwtDateController.value.text =
         formateDateddMMyyyy(DateTime.now());
-    prizeController.getPwtList(pwtStatus: "Returned", date: DateTime.now());
+    prizeController.getPwtList(
+      pwtStatus: "Returned",
+    );
     super.initState();
   }
 
@@ -63,7 +65,8 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
                       prizeController.pwtDateController.value.text =
                           formateDateddMMyyyy(selectedDate!);
                       prizeController.getPwtList(
-                          pwtStatus: "Returned", date: selectedDate);
+                        pwtStatus: "Returned",
+                      );
                     },
                     controller: prizeController.pwtDateController.value,
                     suffixIcon: const Icon(Icons.date_range),
@@ -80,7 +83,7 @@ class _PwtSoldUnsoldScreenState extends State<PwtUnsoldScreen> {
                 ? const Center(
                     child: CircularProgressIndicator.adaptive(),
                   )
-                : prizeController.getpwtList.value.tickets!.isNotEmpty
+                : prizeController.tickets.isNotEmpty
                     ? PwtDataTable(
                         prizesController: prizeController,
                       )

@@ -17,7 +17,7 @@ class PwtDataTable extends StatelessWidget {
       headerWidgets: _getTitleWidget(),
       leftSideItemBuilder: _generateFirstColumnRow,
       rightSideItemBuilder: _generateRightHandSideColumnRow,
-      itemCount: prizesController.getpwtList.value.tickets!.length,
+      itemCount: prizesController.tickets.length,
       // itemCount: documentsVaultController.documentVaultList.length,
       // rowSeparatorWidget: const Divider(
       //   color: Colors.black38,
@@ -80,7 +80,7 @@ class PwtDataTable extends StatelessWidget {
               height: 30,
               alignment: Alignment.center,
               child: Text(
-                "${prizesController.getpwtList.value.tickets?[index].firstTicketLetter} - ${prizesController.getpwtList.value.tickets?[index].lastTicketLetter} ${prizesController.getpwtList.value.tickets?[index].ticketNumber}",
+                "${prizesController.tickets[index].firstTicketLetter} - ${prizesController.tickets[index].lastTicketLetter} ${prizesController.tickets[index].ticketNumber}",
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppColors.darkGrey.withOpacity(0.8),
                     fontWeight: FontWeight.w500),
@@ -90,7 +90,7 @@ class PwtDataTable extends StatelessWidget {
             height: 30,
             alignment: Alignment.center,
             child: Text(
-              "${prizesController.getpwtList.value.tickets?[index].prizeName}",
+              "${prizesController.tickets[index].prizeName}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.8),
@@ -102,7 +102,7 @@ class PwtDataTable extends StatelessWidget {
             height: 30,
             alignment: Alignment.center,
             child: Text(
-              "₹${prizesController.getpwtList.value.tickets?[index].prizeAmount}",
+              "₹${prizesController.tickets[index].prizeAmount}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.8),
@@ -114,7 +114,7 @@ class PwtDataTable extends StatelessWidget {
             height: 30,
             alignment: Alignment.center,
             child: Text(
-              "	₹${prizesController.getpwtList.value.tickets?[index].totalAgentAmount}",
+              "	₹${prizesController.tickets[index].totalAgentAmount}",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColors.darkGrey.withOpacity(0.8),

@@ -1,5 +1,4 @@
 import 'package:distech_technology/Commons/app_colors.dart';
-import 'package:distech_technology/Features/PurchaseHistory/Presentation/purchases_details_screen.dart';
 import 'package:distech_technology/Widgets/paginatiuon_custom_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,13 +45,13 @@ class _PurchesHistoryTicketWidgetState
             var item = purchaseController.puchaseList[index];
             return InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => PurchaesDetailsScreen(
-                              dateTime: widget.dateTime,
-                              orderID: item.sId.toString(),
-                            )));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => PurchaesDetailsScreen(
+                //               dateTime: widget.dateTime,
+                //               orderID: item.sId.toString(),
+                //             )));
               },
               child: PurchaseHistoryTicketListItem(
                   ticket:

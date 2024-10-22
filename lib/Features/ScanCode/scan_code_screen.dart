@@ -1,10 +1,10 @@
 import 'package:distech_technology/Api/api_provider.dart';
 import 'package:distech_technology/Features/ReturnUnsoldTicket/Presentation/return_unsold_ticket_screen.dart';
-import 'package:distech_technology/Features/ScanCode/Model/scan_ticket_model.dart';
 import 'package:distech_technology/Utils/date_time_format.dart';
 import 'package:distech_technology/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../Commons/app_colors.dart';
 import '../../Commons/app_icons.dart';
 import '../../Commons/app_sizes.dart';
@@ -24,13 +24,11 @@ class _ScanBarCodeScreenState extends State<ScanBarCodeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     scanbarcodeController.dateEditingController.value.text =
         formateDateddMMyyyy(DateTime.now());
     scanbarcodeController.dateFormatValidateTicket.value =
         formatDate(date: DateTime.now(), formatType: "yyyy-MM-dd");
-    scanbarcodeController.scanTickModel.value = ScanTicketModel();
   }
 
   @override
@@ -141,10 +139,14 @@ class _ScanBarCodeScreenState extends State<ScanBarCodeScreen> {
                                 )
                               : Icon(
                                   Icons.verified,
-                                  color: scanbarcodeController
-                                          .verifyTicketButton.value
-                                      ? Colors.green
-                                      : Colors.grey,
+                                  color: scanbarcodeController.scanTickModel
+                                              .value.ticket?.prize !=
+                                          null
+                                      ? Colors.red
+                                      : scanbarcodeController
+                                              .verifyTicketButton.value
+                                          ? Colors.green
+                                          : Colors.grey,
                                 ),
                         ),
                       )),

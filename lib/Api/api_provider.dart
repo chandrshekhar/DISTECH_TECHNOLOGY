@@ -995,33 +995,33 @@ class ApiProvider {
     }
   }
 
-  Future<Map<String, dynamic>> varidateReturnTicket(
-      Map<String, dynamic> reqModel) async {
-    Response response;
-    String token = await localStorageService
-            .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
-        "";
-    log("req-> $reqModel");
-    try {
-      _dio.options.headers = {"access-token": token};
-      response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
-
-      if (kDebugMode) {
-        log('--------Response valid : $response');
-      }
-      return response.statusCode == 200
-          ? response.data
-          : throw Exception('Something Went Wrong');
-    } catch (error, stacktrace) {
-      if (kDebugMode) {
-        log('$error');
-      }
-      if (kDebugMode) {
-        log("Exception occurred: $error stackTrace: $stacktrace");
-      }
-      return {"success": false, "error": error};
-    }
-  }
+//   Future<Map<String, dynamic>> varidateReturnTicket(
+//       Map<String, dynamic> reqModel) async {
+//     Response response;
+//     String token = await localStorageService
+//             .getFromDisk(LocalStorageService.ACCESS_TOKEN_KEY) ??
+//         "";
+//     log("req-> $reqModel");
+//     try {
+//       _dio.options.headers = {"access-token": token};
+//       response = await _dio.post(Urls.validateReturnTicket, data: reqModel);
+// 
+//       if (kDebugMode) {
+//         log('--------Response valid : $response');
+//       }
+//       return response.statusCode == 200
+//           ? response.data
+//           : throw Exception('Something Went Wrong');
+//     } catch (error, stacktrace) {
+//       if (kDebugMode) {
+//         log('$error');
+//       }
+//       if (kDebugMode) {
+//         log("Exception occurred: $error stackTrace: $stacktrace");
+//       }
+//       return {"success": false, "error": error};
+//     }
+//   }
 
   /// get my CNF
   Future<Map> getMyCnf() async {

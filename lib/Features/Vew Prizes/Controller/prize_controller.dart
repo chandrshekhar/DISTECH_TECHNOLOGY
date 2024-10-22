@@ -11,10 +11,6 @@ import 'package:get/get.dart';
 
 class PrizesController extends GetxController {
   final apiClient = ApiClient();
-
-  RxString formatedDate =
-      formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy").obs;
-  DateTime selectedDate = DateTime.now();
   final timerController = Get.put(TimerController());
   RxMap<String, dynamic> userTicketCounts = <String, dynamic>{}.obs;
   RxBool isPopupShowing = false.obs;
@@ -23,7 +19,8 @@ class PrizesController extends GetxController {
 
   /// pwt
   RxBool isPwtLoading = false.obs;
-  Rx<PwtListModel> getpwtList = PwtListModel().obs;
+  // Rx<PwtListModel> getpwtList = PwtListModel().obs;
+  RxList<Tickets> tickets = <Tickets>[].obs;
   final pwtDateController = TextEditingController(
           text: formatDate(date: DateTime.now(), formatType: "dd-MM-yyyy"))
       .obs;
@@ -31,15 +28,13 @@ class PrizesController extends GetxController {
   Future<void> selectDateForCheckPrizes(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(3000, 8),
     );
-    if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
+    if (picked != null) {
       // formatedDate.value = formatDate(date: picked, formatType: "dd-MM-yyyy");
-      pwtDateController.value.text = formateDateddMMyyyy(selectedDate);
-
+      pwtDateController.value.text = formateDateddMMyyyy(picked);
       await getPrize();
     }
   }
@@ -48,7 +43,7 @@ class PrizesController extends GetxController {
     getPrizeLoading(true);
     Map<String, dynamic> reqModel = {
       "drawSlotId": timerController.slotId.value,
-      "date": formatDate(date: selectedDate, formatType: "yyyy-MM-dd"),
+      "date": formateDateyyyyMMdd(pwtDateController.value.text),
     };
     log("getPrize --> $reqModel");
     // var res = await ApiProvider().getPrizeDetails(reqModel);
@@ -64,11 +59,10 @@ class PrizesController extends GetxController {
     getPrizeLoading(false);
   }
 
-  Future<void> getPwtList(
-      {required String pwtStatus, required DateTime date}) async {
+  Future<void> getPwtList({required String pwtStatus}) async {
     isPwtLoading(true);
     Map<String, dynamic> reqModel = {
-      "date": formatDate(date: date, formatType: "yyyy-MM-dd"),
+      "date": formateDateyyyyMMdd(pwtDateController.value.text),
       "drawSlotId": timerController.slotId.value,
       "status":
           pwtStatus, // "Returned"  for unsold data // "Sold" for sold data
@@ -76,16 +70,16 @@ class PrizesController extends GetxController {
       "offset": 0,
       "search": ""
     };
-    log(reqModel.toString());
-    // var res = await ApiProvider().getPwtList(reqModel);
 
+    // var res = await ApiProvider().getPwtList(reqModel);
+    tickets.clear();
     var res = await apiClient.postRequest(
         endPoint: EndPoints.myPwtSoldUnsoldData,
         reqModel: reqModel,
         fromJson: (d) => PwtListModel.fromJson(d));
 
     if (res.data?.success == true) {
-      getpwtList.value = res.data!;
+      tickets.value = res.data!.tickets!;
       isPwtLoading(false);
     }
     isPwtLoading(false);

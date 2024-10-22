@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:distech_technology/Api/api_client.dart';
 import 'package:distech_technology/Api/api_provider.dart';
+import 'package:distech_technology/Api/urls.dart';
 import 'package:distech_technology/Features/Profile/Profile%20Controller/profile_controller.dart';
 import 'package:distech_technology/Features/ReturnedTickets/model/returned_ticket_model.dart';
 import 'package:distech_technology/Utils/app_helper.dart';
@@ -12,6 +14,7 @@ import '../../Features/ReturnUnsoldTicket/Model/return_tickets_response_model.da
 import '../Timer Controller/timer_controller.dart';
 
 class GetMyReturnController extends GetxController {
+  final apiClient = ApiClient();
   RxInt returnCount = 0.obs;
   RxInt totalReturn = 0.obs;
   RxString searchText = ''.obs;
@@ -249,14 +252,22 @@ class GetMyReturnController extends GetxController {
       //   "toNumber": toNumberController.value.text.toString().trim()
       // };
 
-      var res = await apiProvider.varidateReturnTicket(reqModel.toJson());
-      if (res['success']) {
+      // var res = await apiProvider.varidateReturnTicket(reqModel.toJson());
+
+      var res = await apiClient.postRequest(
+          endPoint: EndPoints.validateReturnTicket,
+          reqModel: reqModel.toJson(),
+          fromJson: (p0) => p0);
+
+      log("resp--> $res");
+      if (res.data?['success'] == true) {
         validateTicketsList.add(reqModel);
         isTicketValidating(false);
-        Get.snackbar("Ticket", res['message'], backgroundColor: Colors.green);
+        Get.snackbar("Ticket", res.data?['message'],
+            backgroundColor: Colors.green);
       } else {
         isTicketValidating(false);
-        Get.snackbar("Error", res['error'], backgroundColor: Colors.red);
+        Get.snackbar("Error", res.data?['error'], backgroundColor: Colors.red);
       }
       clearText();
       isTicketValidating(false);
