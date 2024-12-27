@@ -16,10 +16,6 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-
-
-
-      
   await Upgrader.clearSavedSettings();
 
   /// app oriantation

@@ -66,37 +66,46 @@ class _DashboardMainScreenState extends State<DashboardMainScreen> {
                     const SizedBox(height: 10),
                     Column(
                       children: List.generate(
-                        timerController.drawModel.value.data!.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: ListTile(
-                            selected: true,
-                            shape: RoundedRectangleBorder(
+                        timerController.drawModel.value.data!.reversed
+                            .toList()
+                            .length,
+                        (index) {
+                          // Access the reversed list
+                          var reversedData = timerController
+                              .drawModel.value.data!.reversed
+                              .toList();
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: ListTile(
+                              selected: true,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 side:
-                                    const BorderSide(color: AppColors.primary)),
-                            onTap: () {
-                              timerController.intialSlot.value = timerController
-                                      .drawModel.value.data?[index].name ??
-                                  "";
-                              timerController.slotId.value = timerController
-                                      .drawModel.value.data?[index].sId ??
-                                  "";
-                              timerController.getServerTime();
-                              // soldTicketController.getAllTicket();
-                              // soldTicketListController.getSoldTicketList();
-                              dashboardController.getMydashboard();
-                              appStateController
-                                  .callAppState(Urls.setActiveState);
-                              Navigator.pop(context);
-                            },
-                            title: Text(
-                              " ${timerController.drawModel.value.data?[index].name} (${formatTime(timerController.drawModel.value.data?[index].drawTime ?? "")})",
-                              style: const TextStyle(
-                                  color: AppColors.primary, fontSize: 17),
+                                    const BorderSide(color: AppColors.primary),
+                              ),
+                              onTap: () {
+                                timerController.intialSlot.value =
+                                    reversedData[index].name ?? "";
+                                timerController.slotId.value =
+                                    reversedData[index].sId ?? "";
+                                timerController.getServerTime();
+                                dashboardController.getMydashboard();
+                                appStateController
+                                    .callAppState(Urls.setActiveState);
+                                Navigator.pop(context);
+                              },
+                              title: FittedBox(
+                                child: Text(
+                                  " ${reversedData[index].name} (${formatTime(reversedData[index].drawTime ?? "")})",
+                                  style: const TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ],

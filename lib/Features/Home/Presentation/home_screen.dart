@@ -242,10 +242,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     case '0':
                       {
                         timerController.slotId.value =
-                            timerController.drawModel.value.data?[0].sId ?? "";
+                            timerController.drawModel.value.data?[1].sId ?? "";
                         timerController.getServerTime();
                         timerController.intialSlot.value =
-                            timerController.drawModel.value.data?[0].name ?? "";
+                            timerController.drawModel.value.data?[1].name ?? "";
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -257,10 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     case '1':
                       {
                         timerController.slotId.value =
-                            timerController.drawModel.value.data?[1].sId ?? "";
+                            timerController.drawModel.value.data?[0].sId ?? "";
                         timerController.getServerTime();
                         timerController.intialSlot.value =
-                            timerController.drawModel.value.data?[1].name ?? "";
+                            timerController.drawModel.value.data?[0].name ?? "";
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -275,12 +275,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.expand_circle_down_outlined,
                     color: Colors.white, size: 36), // Icon for the button
                 itemBuilder: (BuildContext context) {
+                  var reverseData =
+                      timerController.drawModel.value.data!.reversed.toList();
                   return List.generate(
-                      timerController.drawModel.value.data!.length,
+                      reverseData.length,
                       (index) => PopupMenuItem<String>(
                           value: index.toString(),
                           child: Text(
-                              "${timerController.drawModel.value.data?[index].name} (${formatTime(timerController.drawModel.value.data?[index].drawTime ?? "")})",
+                              "${reverseData[index].name} (${formatTime(reverseData[index].drawTime ?? "")})",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
